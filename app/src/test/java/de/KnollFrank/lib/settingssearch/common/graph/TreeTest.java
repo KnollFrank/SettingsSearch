@@ -135,7 +135,6 @@ public class TreeTest {
 
     @Test
     public void test_asTree_wholeTree() {
-        // Given
         final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
                 new Subtree<>(
                         new Tree<>(
@@ -146,17 +145,15 @@ public class TreeTest {
                                         .build()),
                         nA);
 
-        // When
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> actualTree = subtree.asTree();
-
-        // Then
-        assertThat(actualTree, is(subtree.tree()));
+        assert_subtree_asTree_is_expectedTree(subtree, subtree.tree());
     }
 
     @Test
     public void test_asTree_properSubtree() {
         // Given
-        final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
+
+        // When
+        assert_subtree_asTree_is_expectedTree(
                 new Subtree<>(
                         new Tree<>(
                                 Graphs
@@ -165,45 +162,38 @@ public class TreeTest {
                                         .putEdgeValue(nB, nC, "B->C")
                                         .putEdgeValue(nA, nD, "A->D")
                                         .build()),
-                        nB);
-
-        // When
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> actualTree = subtree.asTree();
-
-        // Then
-        assertThat(
-                actualTree,
-                is(
-                        new Tree<>(
-                                Graphs
-                                        .<StringNode, String>directedImmutableValueGraphBuilder()
-                                        .putEdgeValue(nB, nC, "B->C")
-                                        .build())));
+                        nB),
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nB, nC, "B->C")
+                                .build()));
     }
 
     @Test
     public void test_asTree_shouldReturnSubtreeWithSingleNodeForLeaf() {
-        // Given
-        final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
+        assert_subtree_asTree_is_expectedTree(
                 new Subtree<>(
                         new Tree<>(
                                 Graphs
                                         .<StringNode, String>directedImmutableValueGraphBuilder()
                                         .putEdgeValue(nA, nB, "A->B")
                                         .build()),
-                        nB);
+                        nB),
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .addNode(nB)
+                                .build()));
+    }
 
+    private static void assert_subtree_asTree_is_expectedTree(
+            final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree,
+            final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> expectedTree) {
         // When
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> resultTree = subtree.asTree();
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> actualTree = subtree.asTree();
 
         // Then
-        assertThat(
-                resultTree,
-                is(
-                        new Tree<>(
-                                Graphs
-                                        .<StringNode, String>directedImmutableValueGraphBuilder()
-                                        .addNode(nB)
-                                        .build())));
+        assertThat(actualTree, is(expectedTree));
     }
 }
