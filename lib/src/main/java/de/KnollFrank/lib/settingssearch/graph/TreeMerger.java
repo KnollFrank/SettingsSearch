@@ -18,6 +18,7 @@ public class TreeMerger {
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> mergeTreeIntoTreeNode(
             final Tree<N, V, ImmutableValueGraph<N, V>> tree,
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        // FK-TODO: es fehlt ein Test dafür, dass die rootNode von tree mit der treeNode übereinstimmen muss bzgl. equals()
         assertNodesDoNotOverlap(tree, treeNode);
         final MutableValueGraph<N, V> mergedGraph =
                 ValueGraphBuilder
