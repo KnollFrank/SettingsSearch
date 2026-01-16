@@ -17,6 +17,14 @@ public class Sets {
                 .collect(Collectors.toSet());
     }
 
+    public static <T> Set<T> difference(final Set<T> set1, Set<T> set2) {
+        return com.google.common.collect.Sets.difference(set1, set2);
+    }
+
+    public static <T> Set<T> intersection(final Set<T> set1, final Set<T> set2) {
+        return com.google.common.collect.Sets.intersection(set1, set2);
+    }
+
     public static <T> Optional<T> findElementByPredicate(final Set<T> elements, final Predicate<T> predicate) {
         return asOptional(filterElementsByPredicate(elements, predicate));
     }

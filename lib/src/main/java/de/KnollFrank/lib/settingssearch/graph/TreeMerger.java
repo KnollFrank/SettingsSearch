@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import com.google.common.collect.Sets;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
@@ -8,6 +7,7 @@ import com.google.common.graph.ValueGraphBuilder;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
@@ -24,8 +24,9 @@ public class TreeMerger {
                 ValueGraphBuilder
                         .from(treeNode.tree().graph())
                         .build();
-
-        // 1. Add all nodes. Duplicates (only the root) are implicitly handled.
+        TreeMerger
+                .getNodesToAdd(tree, treeNode)
+                .forEach(mergedGraph::addNode);
         Stream
                 .concat(
                         treeNode
@@ -79,6 +80,15 @@ public class TreeMerger {
 
         // The constructor call will validate the final merged graph.
         return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
+    }
+
+    private static <N, V> Set<N> getNodesToAdd(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                               final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        return com.google.common.collect.Sets.union(
+                Sets.difference(
+                        treeNode.tree().graph().nodes(),
+                        Set.of(treeNode.node())),
+                tree.graph().nodes());
     }
 
     private static <N, V> void assertNodesDoNotOverlap(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
