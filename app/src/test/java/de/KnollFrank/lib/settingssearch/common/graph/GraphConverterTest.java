@@ -18,7 +18,8 @@ public class GraphConverterTest {
     // [A] --("Edge-AB")--> [B]
     private final AsUnmodifiableGraph<StringNode, StringEdge> jGraphT_GRAPH =
             new AsUnmodifiableGraph<>(
-                    DefaultDirectedGraph.<StringNode, StringEdge>createBuilder(StringEdge.class)
+                    DefaultDirectedGraph
+                            .<StringNode, StringEdge>createBuilder(StringEdge.class)
                             .addVertex(nA)
                             .addVertex(nB)
                             .addEdge(nA, nB, new StringEdge("Edge-AB"))

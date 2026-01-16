@@ -7,7 +7,7 @@ class StringNode {
     private final String label;
 
     public StringNode(final String label) {
-        this.label = Objects.requireNonNull(label, "Vertex label cannot be null");
+        this.label = Objects.requireNonNull(label, "Node label cannot be null");
     }
 
     public String getLabel() {
