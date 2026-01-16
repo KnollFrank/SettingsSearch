@@ -2,7 +2,8 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import java.util.Objects;
 
-class StringNode {
+// FK-TODO: convert to record class
+public class StringNode {
 
     private final String label;
 
