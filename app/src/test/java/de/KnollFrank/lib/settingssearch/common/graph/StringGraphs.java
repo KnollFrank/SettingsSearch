@@ -6,6 +6,7 @@ import com.google.common.graph.ValueGraphBuilder;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class StringGraphs {
 
+    // FK-TODO: use newStringGraphBuilder() where possible in tests
     public static ImmutableValueGraph.Builder<StringVertex, String> newStringGraphBuilder() {
         return ValueGraphBuilder.directed().immutable();
     }

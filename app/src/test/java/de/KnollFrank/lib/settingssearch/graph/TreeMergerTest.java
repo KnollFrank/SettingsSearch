@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.common.graph.TreeAtNode;
+import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
@@ -94,7 +94,7 @@ public class TreeMergerTest {
                 final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedGraph =
                         TreeMerger.mergeSubtreeIntoTreeAtMergePoint(
                                 Subtree.of(transformToPojoGraph(partialEntityGraph)),
-                                new TreeAtNode<>(pojoGraph, mergePointOfGraph));
+                                new TreeNode<>(mergePointOfGraph, pojoGraph));
 
                 // Then
                 final var mergedGraphExpected = transformToPojoGraph(createEntityGraph(rootOfGraph, preferenceKeys, activity));

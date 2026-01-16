@@ -39,7 +39,7 @@ public class NodeReplacerTest {
         // When replacing node R with X
         final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
-                        new TreeAtNode<>(originalGraph, vR),
+                        new TreeNode<>(vR, originalGraph),
                         vX);
 
         // Then the expected graph should have X connected to R's old neighbors:
@@ -76,7 +76,7 @@ public class NodeReplacerTest {
         // When replacing root R with X
         final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
-                        new TreeAtNode<>(originalGraph, vR),
+                        new TreeNode<>(vR, originalGraph),
                         vX);
 
         // Then X should become the new root:
@@ -109,7 +109,7 @@ public class NodeReplacerTest {
         // When replacing leaf R with X
         final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
-                        new TreeAtNode<>(originalGraph, vR),
+                        new TreeNode<>(vR, originalGraph),
                         vX);
 
         // Then X should become the new leaf:

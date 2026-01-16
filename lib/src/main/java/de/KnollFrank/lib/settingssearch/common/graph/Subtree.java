@@ -18,8 +18,8 @@ public record Subtree<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, N ro
         return new Subtree<>(tree, tree.rootNode());
     }
 
-    public TreeAtNode<N, V, G> asTreeAtNode() {
-        return new TreeAtNode<>(tree, rootNodeOfSubtree);
+    public TreeNode<N, V, G> asTreeAtNode() {
+        return new TreeNode<>(rootNodeOfSubtree, tree);
     }
 
     public Tree<N, V, ImmutableValueGraph<N, V>> asTree() {

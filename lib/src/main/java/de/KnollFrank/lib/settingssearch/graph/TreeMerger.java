@@ -10,7 +10,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.NodeReplacer;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.common.graph.TreeAtNode;
+import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -20,16 +20,16 @@ public class TreeMerger {
 
     public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergeSubtreeIntoTreeAtMergePoint(
             final Subtree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> subtree,
-            final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treeAtMergePoint) {
-        final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedTreeAtMergePoint =
-                new TreeAtNode<>(
-                        toMutableTree(
+            final TreeNode<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergePoint) {
+        final TreeNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedTreeAtMergePoint =
+                new TreeNode<>(
+                        subtree.rootNodeOfSubtree(), toMutableTree(
                                 NodeReplacer.replaceNode(
-                                        treeAtMergePoint,
-                                        subtree.rootNodeOfSubtree())),
-                        subtree.rootNodeOfSubtree());
+                                        mergePoint,
+                                        subtree.rootNodeOfSubtree()))
+                );
         // Re-attach original children of the merge point to the new root.
-        copySubtreesOfSrcToDst(treeAtMergePoint, mergedTreeAtMergePoint);
+        copySubtreesOfSrcToDst(mergePoint, mergedTreeAtMergePoint);
         // Attach children from the partial graph to the new root.
         copySubtreesOfSrcToDst(subtree.asTreeAtNode(), mergedTreeAtMergePoint);
         return new Tree<>(ImmutableValueGraph.copyOf(mergedTreeAtMergePoint.tree().graph()));
@@ -41,9 +41,9 @@ public class TreeMerger {
             EndpointPair<SearchablePreferenceScreen> edge) {
     }
 
-    private static void copySubtreesOfSrcToDst(final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> src,
-                                               final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> dst) {
-        for (final Edge<SearchablePreferenceScreen, SearchablePreference> outgoingEdgeOfMergePoint : src.tree().outgoingEdgesOf(src.nodeOfTree())) {
+    private static void copySubtreesOfSrcToDst(final TreeNode<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> src,
+                                               final TreeNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> dst) {
+        for (final Edge<SearchablePreferenceScreen, SearchablePreference> outgoingEdgeOfMergePoint : src.tree().outgoingEdgesOf(src.node())) {
             copyEdgeTargetSubtreeOfSrcToDst(
                     new TreeAndEdge(src.tree(), outgoingEdgeOfMergePoint.endpointPair()),
                     dst);
@@ -51,7 +51,7 @@ public class TreeMerger {
     }
 
     private static void copyEdgeTargetSubtreeOfSrcToDst(final TreeAndEdge src,
-                                                        final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> dst) {
+                                                        final TreeNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> dst) {
         final Subtree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> srcSubtree = getEdgeTargetAsSubtree(src);
         copyNodesAndEdges(srcSubtree, dst.tree().graph());
         addEdgeFromMergePointToSubtree(
@@ -67,12 +67,12 @@ public class TreeMerger {
     }
 
     private static void addEdgeFromMergePointToSubtree(final SearchablePreference edgeValue,
-                                                       final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergePoint,
+                                                       final TreeNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergePoint,
                                                        final Subtree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> subtree) {
         final MutableValueGraph<SearchablePreferenceScreen, SearchablePreference> graph = mergePoint.tree().graph();
         final EndpointPair<SearchablePreferenceScreen> edge =
                 EndpointPair.ordered(
-                        mergePoint.nodeOfTree(),
+                        mergePoint.node(),
                         subtree.rootNodeOfSubtree());
         if (!graph.hasEdgeConnecting(edge)) {
             addEdgeHavingPreferenceFromSource(edgeValue, edge, graph);
