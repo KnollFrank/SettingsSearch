@@ -13,51 +13,34 @@ public class SubtreeReplacer {
             final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
             final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {
         return ReplacerWorker
-                .withinGraph(subtreeToReplace.tree().graph())
-                .replaceSubtreeWithTree(subtreeToReplace, replacementTree);
+                .withinTree(subtreeToReplace.tree())
+                .replace(subtreeToReplace.asTree(), replacementTree);
     }
 
     private static class ReplacerWorker<N, V> {
 
+        private final Tree<N, V, ImmutableValueGraph<N, V>> tree;
         private final MutableValueGraph<N, V> resultGraph;
 
-        public static <N, V> ReplacerWorker<N, V> withinGraph(final ImmutableValueGraph<N, V> graph) {
-            return new ReplacerWorker<>(graph);
+        public static <N, V> ReplacerWorker<N, V> withinTree(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+            return new ReplacerWorker<>(tree);
         }
 
-        public ReplacerWorker(final ImmutableValueGraph<N, V> graph) {
-            this.resultGraph = Graphs.toMutableValueGraph(graph);
+        public ReplacerWorker(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+            this.tree = tree;
+            this.resultGraph = Graphs.toMutableValueGraph(tree.graph());
         }
 
-        public Tree<N, V, ImmutableValueGraph<N, V>> replaceSubtreeWithTree(
-                final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
+        public Tree<N, V, ImmutableValueGraph<N, V>> replace(
+                final Tree<N, V, ImmutableValueGraph<N, V>> treeToReplace,
                 final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {
-            remove(subtreeToReplace);
+            remove(treeToReplace);
             {
                 add(replacementTree);
-                final var edgeToRootOfReplacementTree = createEdgeFromParentOfTreeAtNodeToTarget(subtreeToReplace.asTreeAtNode(), replacementTree.rootNode());
+                final var edgeToRootOfReplacementTree = createEdgeFromParentOfNodeToTarget(treeToReplace.rootNode(), replacementTree.rootNode());
                 add(edgeToRootOfReplacementTree);
             }
             return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
-        }
-
-        private static <N, V> Optional<Edge<N, V>> createEdgeFromParentOfTreeAtNodeToTarget(
-                final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNode,
-                final N target) {
-            return ReplacerWorker
-                    .getIncomingEdgeOf(treeAtNode)
-                    .map(edgeToTreeAtNode -> {
-                        final N parentOfTreeAtNode = edgeToTreeAtNode.endpointPair().source();
-                        return new Edge<>(
-                                EndpointPair.ordered(
-                                        parentOfTreeAtNode,
-                                        target),
-                                edgeToTreeAtNode.value());
-                    });
-        }
-
-        private static <N, V> Optional<Edge<N, V>> getIncomingEdgeOf(final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNode) {
-            return treeAtNode.tree().incomingEdgeOf(treeAtNode.nodeOfTree());
         }
 
         /**
@@ -79,12 +62,23 @@ public class SubtreeReplacer {
          *    Q
          * </pre>
          */
-        private void remove(final Subtree<N, V, ImmutableValueGraph<N, V>> subtree) {
-            subtree.getSubtreeNodes().forEach(resultGraph::removeNode);
+        private void remove(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+            tree.graph().nodes().forEach(resultGraph::removeNode);
         }
 
         private void add(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
             GraphCopiers.copySrcToDst(tree.graph(), resultGraph);
+        }
+
+        private Optional<Edge<N, V>> createEdgeFromParentOfNodeToTarget(final N node, final N target) {
+            return tree
+                    .incomingEdgeOf(node)
+                    .map(edgeToNode -> {
+                        final N parentOfNode = edgeToNode.endpointPair().source();
+                        return new Edge<>(
+                                EndpointPair.ordered(parentOfNode, target),
+                                edgeToNode.value());
+                    });
         }
 
         private void add(final Optional<Edge<N, V>> edge) {

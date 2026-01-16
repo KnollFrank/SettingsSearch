@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import java.util.Objects;
 
+// FK-TODO: rename to StringNode
 class StringVertex {
 
     private final String label;

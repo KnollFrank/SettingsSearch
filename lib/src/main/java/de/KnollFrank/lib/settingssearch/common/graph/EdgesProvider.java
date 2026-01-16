@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ValueGraph;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -49,7 +50,11 @@ class EdgesProvider {
                                                    final ValueGraph<N, V> graph) {
         return endpointPairs
                 .stream()
-                .map(endpointPair -> new Edge<>(endpointPair, graph.edgeValueOrDefault(endpointPair, null)))
+                .map(endpointPair ->
+                             new Edge<>(
+                                     endpointPair,
+                                     // FK-TODO: add "Objects.requireNonNull" for each method call edgeValueOrDefault() in this library
+                                     Objects.requireNonNull(graph.edgeValueOrDefault(endpointPair, null))))
                 .collect(Collectors.toSet());
     }
 }
