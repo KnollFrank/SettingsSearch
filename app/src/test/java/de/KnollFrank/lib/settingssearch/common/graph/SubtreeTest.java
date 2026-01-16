@@ -8,20 +8,20 @@ import org.junit.Test;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SubtreeTest {
 
-    private final StringVertex vA = new StringVertex("A");
-    private final StringVertex vB = new StringVertex("B");
-    private final StringVertex vE = new StringVertex("E");
+    private final StringNode nA = new StringNode("A");
+    private final StringNode nB = new StringNode("B");
+    private final StringNode nE = new StringNode("E");
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfSubtreeNodeIsNotInTree() {
         // Given
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()
-                                .putEdgeValue(vA, vB, "val")
+                                .putEdgeValue(nA, nB, "val")
                                 .build());
-        final StringVertex nodeNotInTree = vE;
+        final StringNode nodeNotInTree = nE;
 
         // When
         new Subtree<>(tree, nodeNotInTree);
@@ -30,14 +30,14 @@ public class SubtreeTest {
     @Test
     public void shouldCreateSubtreeNodeIsInTree() {
         // Given
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
                         ValueGraphBuilder
                                 .directed()
-                                .<StringVertex, String>immutable()
-                                .putEdgeValue(vA, vB, "val")
+                                .<StringNode, String>immutable()
+                                .putEdgeValue(nA, nB, "val")
                                 .build());
-        final StringVertex nodeOfTree = tree.graph().nodes().stream().findAny().orElseThrow();
+        final StringNode nodeOfTree = tree.graph().nodes().stream().findAny().orElseThrow();
 
         // When
         new Subtree<>(tree, nodeOfTree);

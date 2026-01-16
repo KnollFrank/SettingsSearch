@@ -13,17 +13,17 @@ public class TreeNodeTest {
     public void treeNodeConstructor_shouldThrowIllegalArgumentException_ifNodeIsNotInGraph() {
         // Given
         // Graph structure: [ v1 ]
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> graph =
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> graph =
                 new Tree<>(
                         StringGraphs
                         .newStringGraphBuilder()
-                        .addNode(new StringVertex("v1"))
+                        .addNode(new StringNode("v1"))
                         .build());
-        final StringVertex vNotInGraph = new StringVertex("not-in-graph");
+        final StringNode nodeNotInGraph = new StringNode("not-in-graph");
 
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new TreeNode<>(vNotInGraph, graph));
+                () -> new TreeNode<>(nodeNotInGraph, graph));
     }
 }

@@ -2,12 +2,11 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import java.util.Objects;
 
-// FK-TODO: rename to StringNode
-class StringVertex {
+class StringNode {
 
     private final String label;
 
-    public StringVertex(final String label) {
+    public StringNode(final String label) {
         this.label = Objects.requireNonNull(label, "Vertex label cannot be null");
     }
 
@@ -19,7 +18,7 @@ class StringVertex {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final StringVertex that = (StringVertex) o;
+        final StringNode that = (StringNode) o;
         return label.equals(that.label);
     }
 

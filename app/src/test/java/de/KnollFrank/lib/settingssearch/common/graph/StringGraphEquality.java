@@ -11,20 +11,20 @@ import java.util.stream.Collectors;
 
 class StringGraphEquality {
 
-    public static void assertActualEqualsExpected(final Graph<StringVertex, StringEdge> actual,
-                                                  final Graph<StringVertex, StringEdge> expected) {
+    public static void assertActualEqualsExpected(final Graph<StringNode, StringEdge> actual,
+                                                  final Graph<StringNode, StringEdge> expected) {
         assertActualEqualsExpected(actual.vertexSet(), expected.vertexSet());
         assertActualEdgesEqualsExpectedEdges(actual, expected);
     }
 
-    private static void assertActualEqualsExpected(final Set<StringVertex> nodesActual, final Set<StringVertex> nodesExpected) {
+    private static void assertActualEqualsExpected(final Set<StringNode> nodesActual, final Set<StringNode> nodesExpected) {
         assertThat(
                 "Vertex sets should be equal. Expected: [" + nodes2String(nodesExpected) + "], Actual: [" + nodes2String(nodesActual) + "]",
                 nodesActual,
                 is(equalTo(nodesExpected)));
     }
 
-    private static void assertActualEdgesEqualsExpectedEdges(final Graph<StringVertex, StringEdge> actual, final Graph<StringVertex, StringEdge> expected) {
+    private static void assertActualEdgesEqualsExpectedEdges(final Graph<StringNode, StringEdge> actual, final Graph<StringNode, StringEdge> expected) {
         final Set<String> expectedEdgesRepr = edgesAsStrings(expected);
         final Set<String> actualEdgesRepr = edgesAsStrings(actual);
         assertThat(
@@ -33,15 +33,15 @@ class StringGraphEquality {
                 is(equalTo(expectedEdgesRepr)));
     }
 
-    private static String nodes2String(final Set<StringVertex> nodes) {
+    private static String nodes2String(final Set<StringNode> nodes) {
         return nodes
                 .stream()
-                .map(StringVertex::getLabel)
+                .map(StringNode::getLabel)
                 .sorted()
                 .collect(Collectors.joining(", "));
     }
 
-    private static Set<String> edgesAsStrings(final Graph<StringVertex, StringEdge> graph) {
+    private static Set<String> edgesAsStrings(final Graph<StringNode, StringEdge> graph) {
         return graph
                 .edgeSet()
                 .stream()

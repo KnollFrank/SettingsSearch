@@ -12,29 +12,29 @@ import org.junit.Test;
 
 public class GraphConverterTest {
 
-    private final StringVertex vA = new StringVertex("A");
-    private final StringVertex vB = new StringVertex("B");
+    private final StringNode nA = new StringNode("A");
+    private final StringNode nB = new StringNode("B");
 
     // [A] --("Edge-AB")--> [B]
-    private final AsUnmodifiableGraph<StringVertex, StringEdge> jGraphT_GRAPH =
+    private final AsUnmodifiableGraph<StringNode, StringEdge> jGraphT_GRAPH =
             new AsUnmodifiableGraph<>(
-                    DefaultDirectedGraph.<StringVertex, StringEdge>createBuilder(StringEdge.class)
-                            .addVertex(vA)
-                            .addVertex(vB)
-                            .addEdge(vA, vB, new StringEdge("Edge-AB"))
+                    DefaultDirectedGraph.<StringNode, StringEdge>createBuilder(StringEdge.class)
+                            .addVertex(nA)
+                            .addVertex(nB)
+                            .addEdge(nA, nB, new StringEdge("Edge-AB"))
                             .build());
 
     // [A] --("Edge-AB")--> [B]
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    private final ImmutableValueGraph<StringVertex, String> GUAVA_GRAPH =
+    private final ImmutableValueGraph<StringNode, String> GUAVA_GRAPH =
             StringGraphs
                     .newStringGraphBuilder()
-                    .addNode(vA)
-                    .addNode(vB)
-                    .putEdgeValue(vA, vB, "Edge-AB")
+                    .addNode(nA)
+                    .addNode(nB)
+                    .putEdgeValue(nA, nB, "Edge-AB")
                     .build();
 
-    private final GraphConverter<StringVertex, StringEdge, String> graphConverter =
+    private final GraphConverter<StringNode, StringEdge, String> graphConverter =
             new GraphConverter<>(
                     new ToJGraphTConverter<>(StringEdge.class, StringEdge::new),
                     new ToGuavaGraphConverter<>(StringEdge::getLabel));

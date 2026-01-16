@@ -12,24 +12,24 @@ import org.junit.Test;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreeTest {
 
-    private final StringVertex vA = new StringVertex("A");
-    private final StringVertex vB = new StringVertex("B");
-    private final StringVertex vC = new StringVertex("C");
-    private final StringVertex vD = new StringVertex("D");
+    private final StringNode nA = new StringNode("A");
+    private final StringNode nB = new StringNode("B");
+    private final StringNode nC = new StringNode("C");
+    private final StringNode nD = new StringNode("D");
 
     // FK-TODO: male schönere ASCII-Bäume
     @Test
     public void shouldCreateTreeFromValidGraph() {
         // Given: A valid graph: [A] --("val")--> [B]
-        final ImmutableValueGraph<StringVertex, String> validGraph =
+        final ImmutableValueGraph<StringNode, String> validGraph =
                 ValueGraphBuilder
                         .directed()
-                        .<StringVertex, String>immutable()
-                        .putEdgeValue(vA, vB, "val")
+                        .<StringNode, String>immutable()
+                        .putEdgeValue(nA, nB, "val")
                         .build();
 
         // When
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree = new Tree<>(validGraph);
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = new Tree<>(validGraph);
 
         // Then
         assertThat(tree.graph(), is(validGraph));
@@ -38,11 +38,11 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForUndirectedGraph() {
         // Given
-        final ImmutableValueGraph<StringVertex, String> undirectedGraph =
+        final ImmutableValueGraph<StringNode, String> undirectedGraph =
                 ValueGraphBuilder
                         .undirected()
-                        .<StringVertex, String>immutable()
-                        .putEdgeValue(vA, vB, "val")
+                        .<StringNode, String>immutable()
+                        .putEdgeValue(nA, nB, "val")
                         .build();
 
         // When & Then
@@ -52,10 +52,10 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForEmptyGraph() {
         // Given
-        final ImmutableValueGraph<StringVertex, String> emptyGraph =
+        final ImmutableValueGraph<StringNode, String> emptyGraph =
                 ValueGraphBuilder
                         .directed()
-                        .<StringVertex, String>immutable()
+                        .<StringNode, String>immutable()
                         .build();
 
         // When & Then
@@ -65,12 +65,12 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithCycle1() {
         // Given: [A] <--> [B]
-        final ImmutableValueGraph<StringVertex, String> graphWithCycle =
+        final ImmutableValueGraph<StringNode, String> graphWithCycle =
                 ValueGraphBuilder
                         .directed()
-                        .<StringVertex, String>immutable()
-                        .putEdgeValue(vA, vB, "val1")
-                        .putEdgeValue(vB, vA, "val2")
+                        .<StringNode, String>immutable()
+                        .putEdgeValue(nA, nB, "val1")
+                        .putEdgeValue(nB, nA, "val2")
                         .build();
 
         // When & Then
@@ -80,13 +80,13 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithCycle2() {
         // Given: [C] --> [A] <--> [B]
-        final ImmutableValueGraph<StringVertex, String> graphWithCycle =
+        final ImmutableValueGraph<StringNode, String> graphWithCycle =
                 ValueGraphBuilder
                         .directed()
-                        .<StringVertex, String>immutable()
-                        .putEdgeValue(vC, vA, "C->A")
-                        .putEdgeValue(vA, vB, "A->B")
-                        .putEdgeValue(vB, vA, "B->A")
+                        .<StringNode, String>immutable()
+                        .putEdgeValue(nC, nA, "C->A")
+                        .putEdgeValue(nA, nB, "A->B")
+                        .putEdgeValue(nB, nA, "B->A")
                         .build();
 
         // When & Then
@@ -96,12 +96,12 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForNodeWithMultipleParents() {
         // Given: [A] --> [C] <-- [B]
-        final ImmutableValueGraph<StringVertex, String> graphWithMultipleParents =
+        final ImmutableValueGraph<StringNode, String> graphWithMultipleParents =
                 ValueGraphBuilder
                         .directed()
-                        .<StringVertex, String>immutable()
-                        .putEdgeValue(vA, vC, "val1")
-                        .putEdgeValue(vB, vC, "val2")
+                        .<StringNode, String>immutable()
+                        .putEdgeValue(nA, nC, "val1")
+                        .putEdgeValue(nB, nC, "val2")
                         .build();
 
         // When & Then
@@ -111,12 +111,12 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithMultipleRoots() {
         // Given: [A], [B] (disconnected)
-        final ImmutableValueGraph<StringVertex, String> graphWithMultipleRoots =
+        final ImmutableValueGraph<StringNode, String> graphWithMultipleRoots =
                 ValueGraphBuilder
                         .directed()
-                        .<StringVertex, String>immutable()
-                        .addNode(vA)
-                        .addNode(vB)
+                        .<StringNode, String>immutable()
+                        .addNode(nA)
+                        .addNode(nB)
                         .build();
 
         // When & Then
@@ -126,37 +126,37 @@ public class TreeTest {
     @Test
     public void shouldReturnRootNode() {
         // Given: A valid tree with root A
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
                         ValueGraphBuilder
                                 .directed()
-                                .<StringVertex, String>immutable()
-                                .putEdgeValue(vA, vB, "val")
+                                .<StringNode, String>immutable()
+                                .putEdgeValue(nA, nB, "val")
                                 .build());
 
         // When
-        final StringVertex rootNode = tree.rootNode();
+        final StringNode rootNode = tree.rootNode();
 
         // Then
-        assertThat(rootNode, is(vA));
+        assertThat(rootNode, is(nA));
     }
 
     @Test
     public void test_asTree_wholeTree() {
         // Given: A valid tree A -> B -> C
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
                         ValueGraphBuilder
                                 .directed()
-                                .<StringVertex, String>immutable()
-                                .putEdgeValue(vA, vB, "A->B")
-                                .putEdgeValue(vB, vC, "B->C")
+                                .<StringNode, String>immutable()
+                                .putEdgeValue(nA, nB, "A->B")
+                                .putEdgeValue(nB, nC, "B->C")
                                 .build());
-        final Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> subtree =
+        final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
                 new Subtree<>(tree, tree.rootNode());
 
         // When
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> actualTree = subtree.asTree();
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> actualTree = subtree.asTree();
 
         // Then
         assertThat(actualTree, is(tree));
@@ -165,55 +165,55 @@ public class TreeTest {
     @Test
     public void test_asTree_properSubtree() {
         // Given: A valid tree A -> B -> C, and A -> D
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
                         ValueGraphBuilder
                                 .directed()
-                                .<StringVertex, String>immutable()
-                                .putEdgeValue(vA, vB, "A->B")
-                                .putEdgeValue(vB, vC, "B->C")
-                                .putEdgeValue(vA, vD, "A->D")
+                                .<StringNode, String>immutable()
+                                .putEdgeValue(nA, nB, "A->B")
+                                .putEdgeValue(nB, nC, "B->C")
+                                .putEdgeValue(nA, nD, "A->D")
                                 .build());
-        final Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> subtree =
-                new Subtree<>(tree, vB);
+        final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
+                new Subtree<>(tree, nB);
 
         // When
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> actualTree = subtree.asTree();
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> actualTree = subtree.asTree();
 
         // Then
         // FK-TODO: erzeuge und vergleiche mit dem gewünschten Subtree B -> C
         assertThat(actualTree, is(not(tree))); // It's a new tree object
-        assertThat(actualTree.rootNode(), is(vB)); // Root is B
+        assertThat(actualTree.rootNode(), is(nB)); // Root is B
         assertThat(actualTree.graph().nodes().size(), is(2)); // Contains B and C
-        assertThat(actualTree.graph().hasEdgeConnecting(vB, vC), is(true));
-        assertThat(actualTree.graph().edgeValueOrDefault(vB, vC, null), is("B->C"));
-        assertThat(actualTree.graph().nodes().contains(vA), is(false)); // Should not contain A
-        assertThat(actualTree.graph().nodes().contains(vD), is(false)); // Should not contain D
+        assertThat(actualTree.graph().hasEdgeConnecting(nB, nC), is(true));
+        assertThat(actualTree.graph().edgeValueOrDefault(nB, nC, null), is("B->C"));
+        assertThat(actualTree.graph().nodes().contains(nA), is(false)); // Should not contain A
+        assertThat(actualTree.graph().nodes().contains(nD), is(false)); // Should not contain D
     }
 
     @Test
     public void test_asTree_shouldReturnSubtreeWithSingleNodeForLeaf() {
         // Given: A valid tree A -> B
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
                         ValueGraphBuilder
                                 .directed()
-                                .<StringVertex, String>immutable()
-                                .putEdgeValue(vA, vB, "A->B")
+                                .<StringNode, String>immutable()
+                                .putEdgeValue(nA, nB, "A->B")
                                 .build());
         // And a subtree starting from the leaf node B
-        final Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> subtree =
-                new Subtree<>(tree, vB);
+        final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
+                new Subtree<>(tree, nB);
 
         // When
-        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> resultTree = subtree.asTree();
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> resultTree = subtree.asTree();
 
         // Then: The result should be a new tree with only node B
         // FK-TODO: erzeuge und vergleiche mit dem gewünschten Subtree B
         assertThat(resultTree, is(not(tree)));
-        assertThat(resultTree.rootNode(), is(vB));
+        assertThat(resultTree.rootNode(), is(nB));
         assertThat(resultTree.graph().nodes().size(), is(1));
-        assertThat(resultTree.graph().nodes().contains(vB), is(true));
-        assertThat(resultTree.graph().nodes().contains(vA), is(false));
+        assertThat(resultTree.graph().nodes().contains(nB), is(true));
+        assertThat(resultTree.graph().nodes().contains(nA), is(false));
     }
 }
