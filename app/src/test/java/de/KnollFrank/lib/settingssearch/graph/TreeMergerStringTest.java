@@ -13,7 +13,6 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-// FK-TODO: refactor
 public class TreeMergerStringTest {
 
     private final StringNode nP = new StringNode("P");
@@ -63,6 +62,7 @@ public class TreeMergerStringTest {
                                 .putEdgeValue(nX, nC, "A->C")
                                 .build()));
     }
+
 
     @Test
     public void shouldMergeSubtreeWithChildren() {
@@ -211,6 +211,39 @@ public class TreeMergerStringTest {
          */
         final TreeNode<StringNode, String, ImmutableValueGraph<StringNode, String>> mergePoint = new TreeNode<>(nA, tree);
         TreeMerger.mergeTreeIntoTreeNode(treeToMerge, mergePoint);
+    }
+
+    @Test
+    public void shouldMergeTreeWhenItsRootNodeExistsInTargetTree() {
+        // This test ensures that the root of the tree-to-merge is correctly excluded from the intersection check.
+        // We merge tree A->B into P->A at merge point P.
+        // Without the filter, the intersection check would incorrectly fail because 'A' exists in both trees.
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nA, nB, "A->B")
+                                .build());
+
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> targetTree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nP, nA, "P->A")
+                                .build());
+
+        assert_mergeTreeIntoTreeNode_is_expectedTree(
+                /*
+                 * merge      into      =>
+                 *
+                 *  A          >P<             A
+                 *  |            |             |
+                 *  v            v             v
+                 *  B            A             B
+                 */
+                treeToMerge,
+                new TreeNode<>(nP, targetTree),
+                treeToMerge); // The expected result is simply the treeToMerge itself
     }
 
 

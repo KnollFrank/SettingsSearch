@@ -74,11 +74,17 @@ public class TreeMerger {
                                                                                   incomingEdge.value()));
 
         // 4. Attach outgoing edges of "mergePoint" to the root of the new tree.
-        treeNode.tree().outgoingEdgesOf(treeNode.node()).forEach(outgoingEdge ->
-                                                                         mergedGraph.putEdgeValue(
-                                                                                 tree.rootNode(),
-                                                                                 outgoingEdge.endpointPair().target(),
-                                                                                 outgoingEdge.value()));
+        treeNode.tree().outgoingEdgesOf(treeNode.node()).forEach(outgoingEdge -> {
+            final N newSource = tree.rootNode();
+            final N newTarget = outgoingEdge.endpointPair().target();
+            // Prevent self-loops
+            if (!newSource.equals(newTarget)) {
+                mergedGraph.putEdgeValue(
+                        newSource,
+                        newTarget,
+                        outgoingEdge.value());
+            }
+        });
 
         // 5. Add all edges from the new tree to be merged.
         tree.graph().edges().forEach(edge ->
@@ -91,4 +97,3 @@ public class TreeMerger {
         return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
     }
 }
-
