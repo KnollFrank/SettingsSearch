@@ -7,6 +7,7 @@ import com.google.common.graph.ValueGraphBuilder;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
+import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
@@ -24,18 +25,8 @@ public class TreeMerger {
                 ValueGraphBuilder
                         .from(treeNode.tree().graph())
                         .build();
-        TreeMerger
-                .getNodesToAdd(tree, treeNode)
-                .forEach(mergedGraph::addNode);
-        // 2. Add all edges from the original tree that are not connected to the "mergePoint".
-        treeNode.tree().graph().edges().forEach(edge -> {
-            if (!edge.source().equals(treeNode.node()) && !edge.target().equals(treeNode.node())) {
-                mergedGraph.putEdgeValue(
-                        edge.source(),
-                        edge.target(),
-                        Graphs.getEdgeValue(edge, treeNode.tree().graph()));
-            }
-        });
+        addNodes(tree, treeNode, mergedGraph);
+        addEdges(treeNode, mergedGraph);
 
         // 3. Redirect incoming edge of "mergePoint" to the root of the new tree.
         treeNode.tree().incomingEdgeOf(treeNode.node()).ifPresent(incomingEdge ->
@@ -68,6 +59,28 @@ public class TreeMerger {
         return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
     }
 
+    private static <N, V> void assertNodesDoNotOverlap(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                                       final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        final Set<N> overlappingNodes =
+                Sets.intersection(
+                        getChildrenOfTreeToMerge(tree),
+                        treeNode.tree().graph().nodes());
+        if (!overlappingNodes.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Merge would result in an invalid tree. The following nodes exist in both trees: " + overlappingNodes);
+        }
+    }
+
+    private static <N, V> Set<N> getChildrenOfTreeToMerge(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+        return Sets.difference(tree.graph().nodes(), Set.of(tree.rootNode()));
+    }
+
+    private static <N, V> void addNodes(final Tree<N, V, ImmutableValueGraph<N, V>> tree, final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode, final MutableValueGraph<N, V> mergedGraph) {
+        TreeMerger
+                .getNodesToAdd(tree, treeNode)
+                .forEach(mergedGraph::addNode);
+    }
+
     private static <N, V> Set<N> getNodesToAdd(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
                                                final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
         return com.google.common.collect.Sets.union(
@@ -77,16 +90,19 @@ public class TreeMerger {
                 tree.graph().nodes());
     }
 
-    private static <N, V> void assertNodesDoNotOverlap(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                                       final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
-        final Set<N> overlappingNodes = Sets.intersection(getChildrenOfTreeToMerge(tree), treeNode.tree().graph().nodes());
-        if (!overlappingNodes.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Merge would result in an invalid tree. The following nodes exist in both trees: " + overlappingNodes);
-        }
+    // 2. Add all edges from the original tree that are not connected to the "mergePoint".
+    private static <N, V> void addEdges(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+                                        final MutableValueGraph<N, V> mergedGraph) {
+        Graphs
+                .getEdges(treeNode.tree().graph())
+                .stream()
+                .filter(edge -> !isEdgeConnectedToNode(edge, treeNode.node()))
+                .forEach(edge -> Graphs.addEdge(mergedGraph, edge));
     }
 
-    private static <N, V> Set<N> getChildrenOfTreeToMerge(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
-        return Sets.difference(tree.graph().nodes(), Set.of(tree.rootNode()));
+    private static <N, V> boolean isEdgeConnectedToNode(final Edge<N, V> edge, final N node) {
+        return Set
+                .of(edge.endpointPair().source(), edge.endpointPair().target())
+                .contains(node);
     }
 }
