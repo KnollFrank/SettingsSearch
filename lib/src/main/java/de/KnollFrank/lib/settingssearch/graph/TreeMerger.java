@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
@@ -27,13 +28,7 @@ public class TreeMerger {
                         .build();
         addNodes(tree, treeNode, mergedGraph);
         addEdges(treeNode, mergedGraph);
-
-        // 3. Redirect incoming edge of "mergePoint" to the root of the new tree.
-        treeNode.tree().incomingEdgeOf(treeNode.node()).ifPresent(incomingEdge ->
-                                                                          mergedGraph.putEdgeValue(
-                                                                                  incomingEdge.endpointPair().source(),
-                                                                                  tree.rootNode(),
-                                                                                  incomingEdge.value()));
+        redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
 
         // 4. Attach outgoing edges of "mergePoint" to the root of the new tree.
         treeNode.tree().outgoingEdgesOf(treeNode.node()).forEach(outgoingEdge -> {
@@ -104,5 +99,21 @@ public class TreeMerger {
         return Set
                 .of(edge.endpointPair().source(), edge.endpointPair().target())
                 .contains(node);
+    }
+
+    private static <N, V> void redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+            final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+            final MutableValueGraph<N, V> mergedGraph) {
+        treeNode
+                .incomingEdge()
+                .ifPresent(incomingEdgeOfTreeNode ->
+                                   Graphs.addEdge(
+                                           mergedGraph,
+                                           new Edge<>(
+                                                   EndpointPair.ordered(
+                                                           incomingEdgeOfTreeNode.endpointPair().source(),
+                                                           tree.rootNode()),
+                                                   incomingEdgeOfTreeNode.value())));
     }
 }
