@@ -24,13 +24,11 @@ public class Trees {
     }
 
     public static <N, V> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V, ? extends ValueGraph<N, V>> path) {
-        final List<N> nodes = path.nodes();
-        final ValueGraph<N, V> graph = path.tree().graph();
         return Lists
-                .getConsecutivePairs(nodes)
+                .getConsecutivePairs(path.nodes())
                 .stream()
                 .map(consecutiveNodePair -> EndpointPair.ordered(consecutiveNodePair.first, consecutiveNodePair.second))
-                .map(endpointPair -> new Edge<>(endpointPair, graph.edgeValueOrDefault(endpointPair, null)))
+                .map(edge -> new Edge<>(edge, Graphs.getEdgeValue(edge, path.tree().graph())))
                 .toList();
     }
 }

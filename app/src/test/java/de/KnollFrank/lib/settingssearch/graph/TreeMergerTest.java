@@ -35,6 +35,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
@@ -120,7 +121,7 @@ public class TreeMergerTest {
 
     private static void assertPreferenceOfEdgeExistsInSourceScreen(final EndpointPair<SearchablePreferenceScreen> edge,
                                                                    final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> graph) {
-        final SearchablePreference searchablePreference = graph.graph().edgeValueOrDefault(edge, null);
+        final SearchablePreference searchablePreference = Graphs.getEdgeValue(edge, graph.graph());
         final SearchablePreferenceScreen sourceScreen = edge.source();
         assertThat(
                 String.format(

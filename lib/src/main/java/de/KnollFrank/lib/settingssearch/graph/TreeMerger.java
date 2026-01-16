@@ -24,9 +24,9 @@ public class TreeMerger {
         final TreeNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedTreeAtMergePoint =
                 new TreeNode<>(
                         subtree.rootNodeOfSubtree(), toMutableTree(
-                                NodeReplacer.replaceNode(
-                                        mergePoint,
-                                        subtree.rootNodeOfSubtree()))
+                        NodeReplacer.replaceNode(
+                                mergePoint,
+                                subtree.rootNodeOfSubtree()))
                 );
         // Re-attach original children of the merge point to the new root.
         copySubtreesOfSrcToDst(mergePoint, mergedTreeAtMergePoint);
@@ -55,7 +55,7 @@ public class TreeMerger {
         final Subtree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> srcSubtree = getEdgeTargetAsSubtree(src);
         copyNodesAndEdges(srcSubtree, dst.tree().graph());
         addEdgeFromMergePointToSubtree(
-                src.tree().graph().edgeValueOrDefault(src.edge(), null),
+                Graphs.getEdgeValue(src.edge(), src.tree().graph()),
                 dst,
                 srcSubtree);
     }
@@ -126,7 +126,7 @@ public class TreeMerger {
                                  final MutableValueGraph<SearchablePreferenceScreen, SearchablePreference> dst) {
         if (dst.nodes().contains(edge.source()) && dst.nodes().contains(edge.target()) && !dst.hasEdgeConnecting(edge)) {
             addEdgeHavingPreferenceFromSource(
-                    src.edgeValueOrDefault(edge, null),
+                    Graphs.getEdgeValue(edge, src),
                     edge,
                     dst);
         }

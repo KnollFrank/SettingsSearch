@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
@@ -47,5 +48,10 @@ public class Graphs {
 
     public static <N, V> ImmutableValueGraph.Builder<N, V> directedImmutableValueGraphBuilder() {
         return ValueGraphBuilder.directed().immutable();
+    }
+
+    public static <N, V> V getEdgeValue(final EndpointPair<N> endpointPair,
+                                        final ValueGraph<N, V> graph) {
+        return EdgesProvider.getEdgeValue(endpointPair, graph);
     }
 }

@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.HashMap;
@@ -29,7 +30,10 @@ public class TreeTransformerAlgorithm {
                     @Override
                     protected void visitInnerNode(final NSrc innerNode, final NSrc parentNode) {
                         final NDst transformedParentNode = transformedNodeByNode.get(parentNode);
-                        final VSrc edgeValue = tree.graph().edgeValueOrDefault(parentNode, innerNode, null);
+                        final VSrc edgeValue =
+                                Graphs.getEdgeValue(
+                                        EndpointPair.ordered(parentNode, innerNode),
+                                        tree.graph());
                         final NDst transformedInnerNode =
                                 treeTransformer.transformInnerNode(
                                         innerNode,

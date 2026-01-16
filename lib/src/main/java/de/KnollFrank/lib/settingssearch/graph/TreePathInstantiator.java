@@ -94,6 +94,6 @@ public class TreePathInstantiator {
     private static SearchablePreference getSearchablePreferenceOnEdge(
             final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
             final EndpointPair<SearchablePreferenceScreen> edge) {
-        return tree.graph().edgeValueOrDefault(edge, null);
+        return Graphs.getEdgeValue(edge, tree.graph());
     }
 }

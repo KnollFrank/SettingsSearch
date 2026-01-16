@@ -27,6 +27,11 @@ class EdgesProvider {
         return getFilteredIncidentEdgesOfNode(graph, node, isOutgoingEdgeOf(node));
     }
 
+    public static <N, V> V getEdgeValue(final EndpointPair<N> endpointPair,
+                                        final ValueGraph<N, V> graph) {
+        return Objects.requireNonNull(graph.edgeValueOrDefault(endpointPair, null));
+    }
+
     private static <N> Predicate<EndpointPair<N>> isIncomingEdgeOf(final N node) {
         return edge -> edge.target().equals(node);
     }
@@ -50,11 +55,7 @@ class EdgesProvider {
                                                    final ValueGraph<N, V> graph) {
         return endpointPairs
                 .stream()
-                .map(endpointPair ->
-                             new Edge<>(
-                                     endpointPair,
-                                     // FK-TODO: add "Objects.requireNonNull" for each method call edgeValueOrDefault() in this library
-                                     Objects.requireNonNull(graph.edgeValueOrDefault(endpointPair, null))))
+                .map(endpointPair -> new Edge<>(endpointPair, getEdgeValue(endpointPair, graph)))
                 .collect(Collectors.toSet());
     }
 }

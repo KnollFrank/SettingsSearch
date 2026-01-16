@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 
 import org.jgrapht.graph.AsUnmodifiableGraph;
@@ -33,14 +32,14 @@ public class ToJGraphTConverter<Node, Edge, EdgeValue> {
         vertices.forEach(jgraphtGraphBuilder::addVertex);
     }
 
-    private void addEdges(final GraphBuilder<Node, Edge, ? extends DefaultDirectedGraph<Node, Edge>> jgraphtGraphBuilder, final ImmutableValueGraph<Node, EdgeValue> guavaGraph) {
-        for (final EndpointPair<Node> edge : guavaGraph.edges()) {
-            final Node source = edge.nodeU();
-            final Node target = edge.nodeV();
-            jgraphtGraphBuilder.addEdge(
-                    source,
-                    target,
-                    edgeWrapper.apply(guavaGraph.edgeValueOrDefault(source, target, null)));
-        }
+    private void addEdges(final GraphBuilder<Node, Edge, ? extends DefaultDirectedGraph<Node, Edge>> jgraphtGraphBuilder,
+                          final ImmutableValueGraph<Node, EdgeValue> guavaGraph) {
+        Graphs
+                .getEdges(guavaGraph)
+                .forEach(edge ->
+                                 jgraphtGraphBuilder.addEdge(
+                                         edge.endpointPair().source(),
+                                         edge.endpointPair().target(),
+                                         edgeWrapper.apply(edge.value())));
     }
 }

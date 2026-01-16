@@ -11,6 +11,7 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -74,10 +75,10 @@ class EntityGraphEquality {
 
     private static Set<String> edgesAsStrings(final ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> graph,
                                               final SearchablePreferenceEntity.DbDataProvider dbDataProvider) {
-        return graph
-                .edges()
+        return Graphs
+                .getEdges(graph)
                 .stream()
-                .map(edge -> edge.source().id() + "->" + edge.target().id() + ":" + toString(graph.edgeValueOrDefault(edge, null), dbDataProvider))
+                .map(edge -> edge.endpointPair().source().id() + "->" + edge.endpointPair().target().id() + ":" + toString(edge.value(), dbDataProvider))
                 .collect(Collectors.toSet());
     }
 
@@ -90,9 +91,9 @@ class EntityGraphEquality {
                 .add("summary=" + entity.summary())
                 .add("graphId=" + new LocaleConverter().convertBackward(entity.graphId()))
                 .add("allPreferencesOfPreferenceHierarchy=" +
-                        toString(
-                                entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider),
-                                dbDataProvider))
+                             toString(
+                                     entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider),
+                                     dbDataProvider))
                 .toString();
     }
 
