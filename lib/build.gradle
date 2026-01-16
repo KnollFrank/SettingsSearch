@@ -7,13 +7,12 @@ android {
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 34
         vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         release {
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
         }
     }
 
@@ -33,6 +32,12 @@ android {
         singleVariant('release') {
             withSourcesJar()
         }
+    }
+    lint {
+        targetSdk 34
+    }
+    testOptions {
+        targetSdk 34
     }
 }
 
