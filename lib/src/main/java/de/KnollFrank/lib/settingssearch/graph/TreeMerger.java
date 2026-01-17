@@ -5,6 +5,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
@@ -29,19 +30,7 @@ public class TreeMerger {
         addNodes(tree, treeNode, mergedGraph);
         addEdges(treeNode, mergedGraph);
         redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
-
-        // 4. Attach outgoing edges of "mergePoint" to the root of the new tree.
-        treeNode.tree().outgoingEdgesOf(treeNode.node()).forEach(outgoingEdge -> {
-            final N newSource = tree.rootNode();
-            final N newTarget = outgoingEdge.endpointPair().target();
-            // Prevent self-loops
-            if (!newSource.equals(newTarget)) {
-                mergedGraph.putEdgeValue(
-                        newSource,
-                        newTarget,
-                        outgoingEdge.value());
-            }
-        });
+        attachOutgoingEdgesOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
 
         // 5. Add all edges from the new tree to be merged.
         tree.graph().edges().forEach(edge ->
@@ -115,5 +104,31 @@ public class TreeMerger {
                                                            incomingEdgeOfTreeNode.endpointPair().source(),
                                                            tree.rootNode()),
                                                    incomingEdgeOfTreeNode.value())));
+    }
+
+    private static <N, V> void attachOutgoingEdgesOfTreeNodeToRootNodeOfTree(
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+            final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+            final MutableValueGraph<N, V> mergedGraph) {
+        TreeMerger
+                .attachOutgoingEdgesOfTreeNodeToSource(tree.rootNode(), treeNode)
+                .forEach(newEdge -> Graphs.addEdge(mergedGraph, newEdge));
+    }
+
+    private static <N, V> List<Edge<N, V>> attachOutgoingEdgesOfTreeNodeToSource(final N source, final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        return treeNode
+                .outgoingEdges()
+                .stream()
+                .map(outgoingEdge -> getEdgeHavingSource(outgoingEdge, source))
+                .filter(edge -> !edge.isSelfLoop())
+                .toList();
+    }
+
+    private static <N, V> Edge<N, V> getEdgeHavingSource(final Edge<N, V> edge, final N source) {
+        return new Edge<>(
+                EndpointPair.ordered(
+                        source,
+                        edge.endpointPair().target()),
+                edge.value());
     }
 }

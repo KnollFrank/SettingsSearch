@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Optional;
+import java.util.Set;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public record TreeNode<N, V, G extends ValueGraph<N, V>>(N node, Tree<N, V, G> tree) {
@@ -15,5 +16,9 @@ public record TreeNode<N, V, G extends ValueGraph<N, V>>(N node, Tree<N, V, G> t
 
     public Optional<Edge<N, V>> incomingEdge() {
         return tree.incomingEdgeOf(node);
+    }
+
+    public Set<Edge<N, V>> outgoingEdges() {
+        return tree.outgoingEdgesOf(node);
     }
 }
