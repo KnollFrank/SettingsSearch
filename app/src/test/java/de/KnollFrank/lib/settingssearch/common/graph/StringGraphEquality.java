@@ -36,7 +36,7 @@ class StringGraphEquality {
     private static String nodes2String(final Set<StringNode> nodes) {
         return nodes
                 .stream()
-                .map(StringNode::getLabel)
+                .map(StringNode::label)
                 .sorted()
                 .collect(Collectors.joining(", "));
     }
@@ -45,7 +45,7 @@ class StringGraphEquality {
         return graph
                 .edgeSet()
                 .stream()
-                .map(edge -> graph.getEdgeSource(edge).getLabel() + "->" + graph.getEdgeTarget(edge).getLabel() + ":" + edge.getLabel())
+                .map(edge -> graph.getEdgeSource(edge).label() + "->" + graph.getEdgeTarget(edge).label() + ":" + edge.getLabel())
                 .collect(Collectors.toSet());
     }
 }
