@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import com.google.common.base.Preconditions;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
@@ -22,14 +21,34 @@ public class TreeMerger {
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> mergeTreeIntoTreeNode(
             final Tree<N, V, ImmutableValueGraph<N, V>> tree,
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
-        Preconditions.checkState(
-                Objects.equals(
-                        tree.rootNode(),
-                        treeNode.node()));
+        assertRootNodeMatchesTreeNode(tree, treeNode);
         assertNodesDoNotOverlap(tree, treeNode);
+
         final MutableValueGraph<N, V> mergedGraph = createEmptyGraph(treeNode);
         mergeTreeIntoTreeNode(tree, treeNode, mergedGraph);
         return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
+    }
+
+    private static <N, V> void assertRootNodeMatchesTreeNode(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                                             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        if (!Objects.equals(tree.rootNode(), treeNode.node())) {
+            throw new IllegalArgumentException("root node of tree " + tree.rootNode() + " does not match tree node " + treeNode.node());
+        }
+    }
+
+    private static <N, V> void assertNodesDoNotOverlap(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                                       final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        final Set<N> overlappingNodes =
+                Sets.intersection(
+                        getChildrenOfTreeToMerge(tree),
+                        treeNode.tree().graph().nodes());
+        if (!overlappingNodes.isEmpty()) {
+            throw new IllegalArgumentException("Merge would result in an invalid tree. The following nodes exist in both trees: " + overlappingNodes);
+        }
+    }
+
+    private static <N, V> Set<N> getChildrenOfTreeToMerge(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+        return Sets.difference(tree.graph().nodes(), Set.of(tree.rootNode()));
     }
 
     private static <N, V> MutableValueGraph<N, V> createEmptyGraph(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
@@ -47,22 +66,6 @@ public class TreeMerger {
         redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
         attachOutgoingEdgesOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
         addEdges(tree, mergedGraph);
-    }
-
-    private static <N, V> void assertNodesDoNotOverlap(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                                       final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
-        final Set<N> overlappingNodes =
-                Sets.intersection(
-                        getChildrenOfTreeToMerge(tree),
-                        treeNode.tree().graph().nodes());
-        if (!overlappingNodes.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Merge would result in an invalid tree. The following nodes exist in both trees: " + overlappingNodes);
-        }
-    }
-
-    private static <N, V> Set<N> getChildrenOfTreeToMerge(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
-        return Sets.difference(tree.graph().nodes(), Set.of(tree.rootNode()));
     }
 
     private static <N, V> void addAllNodesWithoutTreeNode(

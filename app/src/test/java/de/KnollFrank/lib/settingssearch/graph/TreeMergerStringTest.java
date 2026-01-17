@@ -210,7 +210,7 @@ public class TreeMergerStringTest {
                                 .build()));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void shouldFailWhenRootNodesDoNotMatch() {
         // This test must fail because the precondition (tree.rootNode() == treeNode.node()) is not met.
         // We are trying to merge a tree rooted at 'B' into a merge point 'A'.
