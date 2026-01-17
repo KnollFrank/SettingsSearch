@@ -29,15 +29,17 @@ public class TreeMerger {
         return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
     }
 
-    private static <N, V> void assertRootNodeMatchesTreeNode(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                                             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+    private static <N, V> void assertRootNodeMatchesTreeNode(
+            final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
         if (!Objects.equals(tree.rootNode(), treeNode.node())) {
             throw new IllegalArgumentException("root node of tree " + tree.rootNode() + " does not match tree node " + treeNode.node());
         }
     }
 
-    private static <N, V> void assertNodesDoNotOverlap(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                                       final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+    private static <N, V> void assertNodesDoNotOverlap(
+            final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
         final Set<N> overlappingNodes =
                 Sets.intersection(
                         getChildrenOfTreeToMerge(tree),
@@ -87,8 +89,9 @@ public class TreeMerger {
                         Set.of(treeNode.node())));
     }
 
-    private static <N, V> void addEdgesNotConnectedToTreeNode(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
-                                                              final MutableValueGraph<N, V> dst) {
+    private static <N, V> void addEdgesNotConnectedToTreeNode(
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+            final MutableValueGraph<N, V> dst) {
         TreeMerger
                 .getEdgesNotConnectedToTreeNode(treeNode)
                 .forEach(edgesNotConnectedToTreeNode -> Graphs.addEdge(dst, edgesNotConnectedToTreeNode));
@@ -117,7 +120,9 @@ public class TreeMerger {
                 .ifPresent(newEdge -> Graphs.addEdge(dst, newEdge));
     }
 
-    private static <N, V> Optional<Edge<N, V>> redirectIncomingEdgeOfTreeNodeToTarget(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode, final N target) {
+    private static <N, V> Optional<Edge<N, V>> redirectIncomingEdgeOfTreeNodeToTarget(
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+            final N target) {
         return treeNode
                 .incomingEdge()
                 .map(incomingEdge -> incomingEdge.asEdgeHavingTarget(target));
@@ -132,7 +137,9 @@ public class TreeMerger {
                 .forEach(newEdge -> Graphs.addEdge(dst, newEdge));
     }
 
-    private static <N, V> List<Edge<N, V>> attachOutgoingEdgesOfTreeNodeToSource(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode, final N source) {
+    private static <N, V> List<Edge<N, V>> attachOutgoingEdgesOfTreeNodeToSource(
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+            final N source) {
         return treeNode
                 .outgoingEdges()
                 .stream()
