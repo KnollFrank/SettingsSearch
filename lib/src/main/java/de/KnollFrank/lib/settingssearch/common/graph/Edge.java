@@ -13,4 +13,20 @@ public record Edge<N, V>(EndpointPair<N> endpointPair, V value) {
     public boolean isSelfLoop() {
         return endpointPair.source().equals(endpointPair.target());
     }
+
+    public Edge<N, V> asEdgeHavingSource(final N source) {
+        return new Edge<>(
+                EndpointPair.ordered(
+                        source,
+                        endpointPair.target()),
+                value);
+    }
+
+    public Edge<N, V> asEdgeHavingTarget(final N target) {
+        return new Edge<>(
+                EndpointPair.ordered(
+                        endpointPair.source(),
+                        target),
+                value);
+    }
 }
