@@ -107,7 +107,7 @@ public class SubtreeReplacerTest {
                                      *       >A< --------------------> X                     X (now has two parents: P and X)
                                      *                                 | (X->R)
                                      *                                 R (overlapping)
-                                     * */
+                                     */
                                     @Override
                                     public Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> getSubtreeToReplace() {
                                         return new Subtree<>(
