@@ -27,7 +27,7 @@ public class TreeMerger {
                 ValueGraphBuilder
                         .from(treeNode.tree().graph())
                         .build();
-        addNodes(tree, treeNode, mergedGraph);
+        addAllNodesWithoutTreeNode(tree, treeNode, mergedGraph);
         addEdgesNotConnectedToTreeNode(treeNode, mergedGraph);
         redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
         attachOutgoingEdgesOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
@@ -53,21 +53,23 @@ public class TreeMerger {
         return Sets.difference(tree.graph().nodes(), Set.of(tree.rootNode()));
     }
 
-    private static <N, V> void addNodes(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                        final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
-                                        final MutableValueGraph<N, V> dst) {
+    private static <N, V> void addAllNodesWithoutTreeNode(
+            final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+            final MutableValueGraph<N, V> dst) {
         TreeMerger
-                .getNodesToAdd(tree, treeNode)
+                .getAllNodesWithoutTreeNode(tree, treeNode)
                 .forEach(dst::addNode);
     }
 
-    private static <N, V> Set<N> getNodesToAdd(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                               final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+    private static <N, V> Set<N> getAllNodesWithoutTreeNode(
+            final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
         return com.google.common.collect.Sets.union(
+                tree.graph().nodes(),
                 Sets.difference(
                         treeNode.tree().graph().nodes(),
-                        Set.of(treeNode.node())),
-                tree.graph().nodes());
+                        Set.of(treeNode.node())));
     }
 
     private static <N, V> void addEdgesNotConnectedToTreeNode(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
