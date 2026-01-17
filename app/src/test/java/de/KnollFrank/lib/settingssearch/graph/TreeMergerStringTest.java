@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.StringNode;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
 
+// FK-TODO: refactor
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreeMergerStringTest {
 
@@ -20,6 +21,38 @@ public class TreeMergerStringTest {
     private final StringNode nB = new StringNode("B");
     private final StringNode nC = new StringNode("C");
     private final StringNode nD = new StringNode("D");
+
+    @Test
+    public void shouldMergeSubtreeWithSingleNode() {
+        // Test merging a tree that is just a single node (A) into a tree where A is a leaf.
+        // The result should be the original tree, as there are no new children to add.
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .addNode(nA)
+                                .build());
+
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> targetTree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nP, nA, "P->A")
+                                .build());
+
+        assert_mergeTreeIntoTreeNode_is_expectedTree(
+                /*
+                 * merge      into      =>      P
+                 *                              |
+                 *   A          P               v
+                 *              |               A
+                 *              v
+                 *             >A<
+                 */
+                treeToMerge,
+                new TreeNode<>(nA, targetTree),
+                targetTree); // Expected: The original tree is unchanged.
+    }
 
     @Test
     public void shouldMergeNodeWithNewChildren() {
