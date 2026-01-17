@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
-import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,16 +36,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -89,7 +85,6 @@ import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
-import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -541,7 +536,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
+                preferenceScreenTree -> {
+                });
     }
 
     @Test
@@ -561,7 +557,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
                 createTreeRepository(),
-                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
+                preferenceScreenTree -> {
+                });
     }
 
     @Test
@@ -581,7 +578,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
                 createTreeRepository(),
-                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
+                preferenceScreenTree -> {
+                });
     }
 
     @Test
@@ -881,17 +879,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                     CustomDialogFragment::getSearchableInfo)) :
                     Optional.empty();
         }
-    }
-
-    private static void makeGraphRootedAtPrefsFragmentFirstConnected(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
-        final Set<PreferenceScreenWithHost> nodesToRemove =
-                preferenceScreenTree
-                        .graph()
-                        .nodes()
-                        .stream()
-                        .filter(preferenceScreenWithHost -> preferenceScreenWithHost.host() instanceof PreferenceFragmentWithSinglePreference)
-                        .collect(Collectors.toSet());
-        // FK-FIXME: preferenceScreenTree.removeAllVertices(nodesToRemove);
     }
 
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
