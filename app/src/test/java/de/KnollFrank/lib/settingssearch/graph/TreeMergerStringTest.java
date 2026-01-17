@@ -20,29 +20,27 @@ public class TreeMergerStringTest {
     private final StringNode nB = new StringNode("B");
     private final StringNode nC = new StringNode("C");
     private final StringNode nD = new StringNode("D");
-    private final StringNode nX = new StringNode("X");
-    private final StringNode nY = new StringNode("Y");
 
     @Test
-    public void shouldMergeSubtreeWithSingleNode() {
-        // Test merging a single node X, replacing A
+    public void shouldMergeNodeWithNewChildren() {
+        // Test merging a tree with root A and new children (B, C) into a tree where A is a leaf.
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .addNode(nX)
+                                .putEdgeValue(nA, nB, "A->B")
+                                .putEdgeValue(nA, nC, "A->C")
                                 .build());
+
         assert_mergeTreeIntoTreeNode_is_expectedTree(
                 /*
-                 * merge      into      =>      P
-                 *                           /
-                 *  X          P            X
-                 *             |           / \
-                 *             v          v   v
-                 *            >A<         B   C
-                 *            / \
-                 *           v   v
-                 *           B   C
+                 * merge         into      =>      P
+                 *                                 |
+                 *    A          P                 v
+                 *   / \         |                 A
+                 *  v   v        v                / \
+                 *  B   C       >A<              v   v
+                 *                               B   C
                  */
                 treeToMerge,
                 new TreeNode<>(
@@ -51,39 +49,37 @@ public class TreeMergerStringTest {
                                 Graphs
                                         .<StringNode, String>directedImmutableValueGraphBuilder()
                                         .putEdgeValue(nP, nA, "P->A")
-                                        .putEdgeValue(nA, nB, "A->B")
-                                        .putEdgeValue(nA, nC, "A->C")
                                         .build())),
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nP, nX, "P->A")
-                                .putEdgeValue(nX, nB, "A->B")
-                                .putEdgeValue(nX, nC, "A->C")
+                                .putEdgeValue(nP, nA, "P->A")
+                                .putEdgeValue(nA, nB, "A->B")
+                                .putEdgeValue(nA, nC, "A->C")
                                 .build()));
     }
 
-
     @Test
-    public void shouldMergeSubtreeWithChildren() {
-        // Test merging a subtree (X -> Y), replacing A
+    public void shouldMergeNodeAndAddChildren() {
+        // Test merging a tree (A -> C) adding to the old structure (A -> B)
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nX, nY, "X->Y")
+                                .putEdgeValue(nA, nC, "A->C")
                                 .build());
+
         assert_mergeTreeIntoTreeNode_is_expectedTree(
                 /*
                  * merge      into      =>      P
-                 *                               /
-                 *  X          P               X
-                 *  |          |              /|\
-                 *  v          v             v v v
-                 *  Y         >A<            B C Y
-                 *            / \
-                 *           v   v
-                 *           B   C
+                 *                              |
+                 *   A          P               v
+                 *   |          |               A
+                 *   v          v              / \
+                 *   C         >A<            v   v
+                 *              |             B   C
+                 *              v
+                 *              B
                  */
                 treeToMerge,
                 new TreeNode<>(
@@ -93,35 +89,34 @@ public class TreeMergerStringTest {
                                         .<StringNode, String>directedImmutableValueGraphBuilder()
                                         .putEdgeValue(nP, nA, "P->A")
                                         .putEdgeValue(nA, nB, "A->B")
-                                        .putEdgeValue(nA, nC, "A->C")
                                         .build())),
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nP, nX, "P->A")
-                                .putEdgeValue(nX, nB, "A->B")
-                                .putEdgeValue(nX, nC, "A->C")
-                                .putEdgeValue(nX, nY, "X->Y")
+                                .putEdgeValue(nP, nA, "P->A")
+                                .putEdgeValue(nA, nB, "A->B")
+                                .putEdgeValue(nA, nC, "A->C")
                                 .build()));
     }
 
     @Test
     public void shouldMergeAtRoot() {
-        // Test merging at the root node P
+        // Test merging new children into the root node P
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nX, nY, "X->Y")
+                                .putEdgeValue(nP, nC, "P->C")
                                 .build());
+
         assert_mergeTreeIntoTreeNode_is_expectedTree(
                 /*
-                 * merge      into      =>      X
-                 *                               /|\
-                 *  X          >P<             v v v
-                 *  |          / \             A B Y
-                 *  v         v   v
-                 *  Y         A   B
+                 * merge      into      =>      P
+                 *                              /|\
+                 *   P          >P<            v v v
+                 *   |          / \            A B C
+                 *   v         v   v
+                 *   C         A   B
                  */
                 treeToMerge,
                 new TreeNode<>(
@@ -135,33 +130,34 @@ public class TreeMergerStringTest {
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nX, nA, "P->A")
-                                .putEdgeValue(nX, nB, "P->B")
-                                .putEdgeValue(nX, nY, "X->Y")
+                                .putEdgeValue(nP, nA, "P->A")
+                                .putEdgeValue(nP, nB, "P->B")
+                                .putEdgeValue(nP, nC, "P->C")
                                 .build()));
     }
 
     @Test
     public void shouldMergeAtLeaf() {
-        // Test merging at a leaf node C
+        // Test merging new children into a leaf node C
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nX, nY, "X->Y")
+                                .putEdgeValue(nC, nD, "C->D")
                                 .build());
+
         assert_mergeTreeIntoTreeNode_is_expectedTree(
                 /*
                  * merge      into      =>      P
-                 *                               |
-                 *  X          P               v
-                 *  |          |               A
-                 *  v          v               |
-                 *  Y          A               v
-                 *             |               X
-                 *             v               |
-                 *            >C<              v
-                 *                             Y
+                 *                              |
+                 *   C          P               v
+                 *   |          |               A
+                 *   v          v               |
+                 *   D          A               v
+                 *              |               C
+                 *              v               |
+                 *             >C<              v
+                 *                              D
                  */
                 treeToMerge,
                 new TreeNode<>(
@@ -176,48 +172,43 @@ public class TreeMergerStringTest {
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nP, nA, "P->A")
-                                .putEdgeValue(nA, nX, "A->C")
-                                .putEdgeValue(nX, nY, "X->Y")
+                                .putEdgeValue(nA, nC, "A->C")
+                                .putEdgeValue(nC, nD, "C->D")
                                 .build()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldFailWhenMergedTreeIsInvalid() {
-        // Merging X->B into P->A->B should fail, because B would have two parents (A and X).
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
-                new Tree<>(
-                        Graphs
-                                .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nP, nA, "P->A")
-                                .putEdgeValue(nA, nB, "A->B")
-                                .build());
-
+    @Test(expected = IllegalStateException.class)
+    public void shouldFailWhenRootNodesDoNotMatch() {
+        // This test must fail because the precondition (tree.rootNode() == treeNode.node()) is not met.
+        // We are trying to merge a tree rooted at 'B' into a merge point 'A'.
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nX, nB, "X->B") // B is also in the main tree
+                                .putEdgeValue(nB, nC, "B->C")
+                                .build());
+
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> targetTree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nP, nA, "P->A")
                                 .build());
         /*
-         * merge      into      =>
+         * merge      into
          *
-         *  X          P
-         *  |          |         INVALID TREE
-         *  v          v         (B would have two parents: A and X)
-         *  B         >A<
-         *             |
-         *             v
-         *             B
+         *  B          P
+         *  |          |
+         *  v          v
+         *  C         >A<      => IllegalStateException
          */
-        final TreeNode<StringNode, String, ImmutableValueGraph<StringNode, String>> mergePoint = new TreeNode<>(nA, tree);
+        final TreeNode<StringNode, String, ImmutableValueGraph<StringNode, String>> mergePoint = new TreeNode<>(nA, targetTree);
         TreeMerger.mergeTreeIntoTreeNode(treeToMerge, mergePoint);
     }
 
-    @Test
-    public void shouldMergeTreeWhenItsRootNodeExistsInTargetTree() {
-        // This test ensures that the root of the tree-to-merge is correctly excluded from the intersection check.
-        // We merge tree A->B into P->A at merge point P.
-        // Without the filter, the intersection check would incorrectly fail because 'A' exists in both trees.
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldFailWhenChildNodeExistsInTargetTree() {
+        // Merging A->B into P->B should fail, because child 'B' of the merged tree already exists in the target tree.
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
                 new Tree<>(
                         Graphs
@@ -229,23 +220,20 @@ public class TreeMergerStringTest {
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nP, nB, "P->B") // Target tree already contains B
                                 .putEdgeValue(nP, nA, "P->A")
                                 .build());
-
-        assert_mergeTreeIntoTreeNode_is_expectedTree(
-                /*
-                 * merge      into      =>
-                 *
-                 *  A          >P<             A
-                 *  |            |             |
-                 *  v            v             v
-                 *  B            A             B
-                 */
-                treeToMerge,
-                new TreeNode<>(nP, targetTree),
-                treeToMerge); // The expected result is simply the treeToMerge itself
+        /*
+         * merge      into
+         *
+         *  A          P
+         *  |         / \
+         *  v        v   v
+         *  B       B   >A<      => IllegalArgumentException (node 'B' overlaps)
+         */
+        final TreeNode<StringNode, String, ImmutableValueGraph<StringNode, String>> mergePoint = new TreeNode<>(nA, targetTree);
+        TreeMerger.mergeTreeIntoTreeNode(treeToMerge, mergePoint);
     }
-
 
     private static void assert_mergeTreeIntoTreeNode_is_expectedTree(
             final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree,
