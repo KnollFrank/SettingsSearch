@@ -24,34 +24,30 @@ public class TreeMergerStringTest {
 
     @Test
     public void shouldMergeSubtreeWithSingleNode() {
-        // Test merging a tree that is just a single node (A) into a tree where A is a leaf.
-        // The result should be the original tree, as there are no new children to add.
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> treeToMerge =
+        /*
+         *                        P       P
+         *                        |       |
+         *                        v       v
+         *   A  --merge into-->  >A<  =>  A
+         */
+        final var tree =
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .addNode(nA)
                                 .build());
-
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> targetTree =
-                new Tree<>(
-                        Graphs
-                                .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nP, nA, "P->A")
-                                .build());
-
+        final var treeNode =
+                new TreeNode<>(
+                        nA,
+                        new Tree<>(
+                                Graphs
+                                        .<StringNode, String>directedImmutableValueGraphBuilder()
+                                        .putEdgeValue(nP, nA, "P->A")
+                                        .build()));
         assert_mergeTreeIntoTreeNode_is_expectedTree(
-                /*
-                 * merge      into      =>      P
-                 *                              |
-                 *   A          P               v
-                 *              |               A
-                 *              v
-                 *             >A<
-                 */
-                treeToMerge,
-                new TreeNode<>(nA, targetTree),
-                targetTree); // Expected: The original tree is unchanged.
+                tree,
+                treeNode,
+                treeNode.tree());
     }
 
     @Test
