@@ -7,6 +7,7 @@ import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Test;
 
+import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.StringNode;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -45,6 +46,42 @@ public class TreeMergerStringTest {
                                 .build()),
                 treeNode,
                 treeNode.tree());
+    }
+
+    @Test
+    public void test_mergeTreeIntoTreeNode_nodeAFromActualTreeIsSameAsRootNodeOfTree() {
+        /*
+         *   A  --merge into-->  >A<  =>  A
+         */
+        final var tree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .addNode(createNodeA())
+                                .build());
+        final var treeNode =
+                new TreeNode<>(
+                        createNodeA(),
+                        new Tree<>(
+                                Graphs
+                                        .<StringNode, String>directedImmutableValueGraphBuilder()
+                                        .addNode(createNodeA())
+                                        .build()));
+        // When
+        final var actualTree = TreeMerger.mergeTreeIntoTreeNode(tree, treeNode);
+
+        // Then
+        final StringNode nodeAFromActualTree =
+                Sets
+                        .findElementByPredicate(
+                                actualTree.graph().nodes(),
+                                node -> node.equals(createNodeA()))
+                        .orElseThrow();
+        assertThat(nodeAFromActualTree == tree.rootNode(), is(true));
+    }
+
+    private static StringNode createNodeA() {
+        return new StringNode("A");
     }
 
     @Test
