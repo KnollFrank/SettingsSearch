@@ -28,16 +28,10 @@ public class TreeMerger {
                         .from(treeNode.tree().graph())
                         .build();
         addNodes(tree, treeNode, mergedGraph);
-        addEdges(treeNode, mergedGraph);
+        addEdgesNotConnectedToTreeNode(treeNode, mergedGraph);
         redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
         attachOutgoingEdgesOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
-
-        // 5. Add all edges from the new tree to be merged.
-        tree.graph().edges().forEach(edge ->
-                                             mergedGraph.putEdgeValue(
-                                                     edge.source(),
-                                                     edge.target(),
-                                                     Graphs.getEdgeValue(edge, tree.graph())));
+        addEdges(tree, mergedGraph);
 
         // The constructor call will validate the final merged graph.
         return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
@@ -59,10 +53,12 @@ public class TreeMerger {
         return Sets.difference(tree.graph().nodes(), Set.of(tree.rootNode()));
     }
 
-    private static <N, V> void addNodes(final Tree<N, V, ImmutableValueGraph<N, V>> tree, final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode, final MutableValueGraph<N, V> mergedGraph) {
+    private static <N, V> void addNodes(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                        final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+                                        final MutableValueGraph<N, V> dst) {
         TreeMerger
                 .getNodesToAdd(tree, treeNode)
-                .forEach(mergedGraph::addNode);
+                .forEach(dst::addNode);
     }
 
     private static <N, V> Set<N> getNodesToAdd(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
@@ -74,14 +70,26 @@ public class TreeMerger {
                 tree.graph().nodes());
     }
 
-    // 2. Add all edges from the original tree that are not connected to the "mergePoint".
-    private static <N, V> void addEdges(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
-                                        final MutableValueGraph<N, V> mergedGraph) {
-        Graphs
+    private static <N, V> void addEdgesNotConnectedToTreeNode(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+                                                              final MutableValueGraph<N, V> dst) {
+        TreeMerger
+                .getEdgesNotConnectedToTreeNode(treeNode)
+                .forEach(edgesNotConnectedToTreeNode -> Graphs.addEdge(dst, edgesNotConnectedToTreeNode));
+    }
+
+    private static <N, V> List<Edge<N, V>> getEdgesNotConnectedToTreeNode(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        return Graphs
                 .getEdges(treeNode.tree().graph())
                 .stream()
                 .filter(edge -> !isEdgeConnectedToNode(edge, treeNode.node()))
-                .forEach(edge -> Graphs.addEdge(mergedGraph, edge));
+                .toList();
+    }
+
+    private static <N, V> void addEdges(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                        final MutableValueGraph<N, V> dst) {
+        Graphs
+                .getEdges(tree.graph())
+                .forEach(edge -> Graphs.addEdge(dst, edge));
     }
 
     private static <N, V> boolean isEdgeConnectedToNode(final Edge<N, V> edge, final N node) {
@@ -93,10 +101,10 @@ public class TreeMerger {
     private static <N, V> void redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
             final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-            final MutableValueGraph<N, V> mergedGraph) {
+            final MutableValueGraph<N, V> dst) {
         TreeMerger
                 .redirectIncomingEdgeOfTreeNodeToTarget(treeNode, tree.rootNode())
-                .ifPresent(newEdge -> Graphs.addEdge(mergedGraph, newEdge));
+                .ifPresent(newEdge -> Graphs.addEdge(dst, newEdge));
     }
 
     private static <N, V> Optional<Edge<N, V>> redirectIncomingEdgeOfTreeNodeToTarget(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode, final N target) {
@@ -108,10 +116,10 @@ public class TreeMerger {
     private static <N, V> void attachOutgoingEdgesOfTreeNodeToRootNodeOfTree(
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
             final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-            final MutableValueGraph<N, V> mergedGraph) {
+            final MutableValueGraph<N, V> dst) {
         TreeMerger
                 .attachOutgoingEdgesOfTreeNodeToSource(treeNode, tree.rootNode())
-                .forEach(newEdge -> Graphs.addEdge(mergedGraph, newEdge));
+                .forEach(newEdge -> Graphs.addEdge(dst, newEdge));
     }
 
     private static <N, V> List<Edge<N, V>> attachOutgoingEdgesOfTreeNodeToSource(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode, final N source) {
