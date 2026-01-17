@@ -80,10 +80,6 @@ public class TreeMergerStringTest {
         assertThat(nodeAFromActualTree == tree.rootNode(), is(true));
     }
 
-    private static StringNode createNodeA() {
-        return new StringNode("A");
-    }
-
     @Test
     public void shouldMergeNodeWithNewChildren() {
         /*
@@ -285,5 +281,9 @@ public class TreeMergerStringTest {
 
         // Then
         assertThat(actualTree, is(expectedTree));
+    }
+
+    private static StringNode createNodeA() {
+        return new StringNode("A");
     }
 }
