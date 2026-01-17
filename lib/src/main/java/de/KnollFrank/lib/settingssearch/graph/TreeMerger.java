@@ -15,7 +15,6 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-// FK-TODO: refactor
 public class TreeMerger {
 
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> mergeTreeIntoTreeNode(
@@ -23,18 +22,26 @@ public class TreeMerger {
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
         // FK-TODO: es fehlt ein Test dafür, dass die rootNode von tree mit der treeNode übereinstimmen muss bzgl. equals()
         assertNodesDoNotOverlap(tree, treeNode);
-        final MutableValueGraph<N, V> mergedGraph =
-                ValueGraphBuilder
-                        .from(treeNode.tree().graph())
-                        .build();
+        final MutableValueGraph<N, V> mergedGraph = createEmptyGraph(treeNode);
+        mergeTreeIntoTreeNode(tree, treeNode, mergedGraph);
+        return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
+    }
+
+    private static <N, V> MutableValueGraph<N, V> createEmptyGraph(final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
+        return ValueGraphBuilder
+                .from(treeNode.tree().graph())
+                .build();
+    }
+
+    private static <N, V> void mergeTreeIntoTreeNode(
+            final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+            final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode,
+            final MutableValueGraph<N, V> mergedGraph) {
         addAllNodesWithoutTreeNode(tree, treeNode, mergedGraph);
         addEdgesNotConnectedToTreeNode(treeNode, mergedGraph);
         redirectIncomingEdgeOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
         attachOutgoingEdgesOfTreeNodeToRootNodeOfTree(treeNode, tree, mergedGraph);
         addEdges(tree, mergedGraph);
-
-        // The constructor call will validate the final merged graph.
-        return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
     }
 
     private static <N, V> void assertNodesDoNotOverlap(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
@@ -87,13 +94,6 @@ public class TreeMerger {
                 .toList();
     }
 
-    private static <N, V> void addEdges(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                        final MutableValueGraph<N, V> dst) {
-        Graphs
-                .getEdges(tree.graph())
-                .forEach(edge -> Graphs.addEdge(dst, edge));
-    }
-
     private static <N, V> boolean isEdgeConnectedToNode(final Edge<N, V> edge, final N node) {
         return Set
                 .of(edge.endpointPair().source(), edge.endpointPair().target())
@@ -131,5 +131,12 @@ public class TreeMerger {
                 .map(outgoingEdge -> outgoingEdge.asEdgeHavingSource(source))
                 .filter(edge -> !edge.isSelfLoop())
                 .toList();
+    }
+
+    private static <N, V> void addEdges(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                        final MutableValueGraph<N, V> dst) {
+        Graphs
+                .getEdges(tree.graph())
+                .forEach(edge -> Graphs.addEdge(dst, edge));
     }
 }
