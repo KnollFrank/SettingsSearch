@@ -37,7 +37,10 @@ class PreferenceScreenTreeProvider {
     private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root,
                                             final MutableValueGraph<PreferenceScreenWithHost, Preference> preferenceScreenGraph) {
         if (preferenceScreenGraph.nodes().contains(root)) {
-            return;
+            throw new IllegalStateException(
+                    String.format(
+                            "Cycle detected in the preference screen graph. The node '%s' has been visited twice. A tree structure must not contain cycles. Please check your PreferenceFragment hierarchy for circular dependencies.",
+                            root));
         }
         preferenceScreenGraph.addNode(root);
         this
