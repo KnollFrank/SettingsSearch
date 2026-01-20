@@ -55,10 +55,10 @@ class PreferenceScreenTreeProvider {
     private Map<Preference, PreferenceScreenWithHost> getConnectedPreferenceScreenByPreference(final PreferenceScreenWithHost root) {
         return Maps.filter(
                 connectedPreferenceScreenByPreferenceProvider.getConnectedPreferenceScreenByPreference(root),
-                (final Preference preference, final PreferenceScreenWithHost child) ->
+                (preference, connectedPreferenceScreen) ->
                         addEdgeToTreePredicate.shallAddEdgeToTree(
                                 new Edge<>(
-                                        EndpointPair.ordered(root, child),
+                                        EndpointPair.ordered(root, connectedPreferenceScreen),
                                         preference)));
     }
 }
