@@ -50,6 +50,10 @@ public class Graphs {
         return ValueGraphBuilder.directed().immutable();
     }
 
+    public static <N, V> MutableValueGraph<N, V> createEmptyDirectedMutableValueGraph() {
+        return ValueGraphBuilder.directed().build();
+    }
+
     public static <N, V> V getEdgeValue(final EndpointPair<N> endpointPair,
                                         final ValueGraph<N, V> graph) {
         return EdgesProvider.getEdgeValue(endpointPair, graph);

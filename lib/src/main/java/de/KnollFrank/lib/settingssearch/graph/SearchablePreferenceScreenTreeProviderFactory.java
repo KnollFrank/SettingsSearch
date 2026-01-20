@@ -76,9 +76,8 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         addEdgeToTreePredicate,
-                        context,
-                        preferenceScreenWithHost -> {
-                        }),
+                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
+                        context),
                 locale);
     }
 }

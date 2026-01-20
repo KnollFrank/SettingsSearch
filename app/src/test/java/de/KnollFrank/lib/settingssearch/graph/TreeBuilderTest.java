@@ -2,13 +2,11 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import java.util.Collections;
@@ -48,7 +46,7 @@ public class TreeBuilderTest {
                 };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
-                        createNoOpGraphListener(),
+                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
                         childNodeByEdgeValueProvider);
 
         // When
@@ -65,7 +63,7 @@ public class TreeBuilderTest {
                                 .build())));
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void shouldThrowExceptionOnCycle() {
         /*
          * A
@@ -83,18 +81,17 @@ public class TreeBuilderTest {
             }
             return Collections.emptyMap();
         };
-
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
-                        createNoOpGraphListener(),
+                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
                         childNodeByEdgeValueProvider);
 
-        // When & Then
-        assertThrows(IllegalStateException.class, () -> treeBuilder.buildTreeWithRoot(nA));
+        // When
+        treeBuilder.buildTreeWithRoot(nA);
     }
 
     @Test
-    public void shouldNotifyListenerForEachNodeAdded() {
+    public void shouldNotifyListenerInCorrectOrder() {
         /*
          * A
          * |
@@ -107,7 +104,7 @@ public class TreeBuilderTest {
             }
             return Collections.emptyMap();
         };
-        final GraphListener<StringNode> listener = Mockito.mock(GraphListener.class);
+        final TreeBuilderListener<StringNode> listener = Mockito.mock(TreeBuilderListener.class);
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         listener,
@@ -117,16 +114,10 @@ public class TreeBuilderTest {
         treeBuilder.buildTreeWithRoot(nA);
 
         // Then
-        verify(listener, times(1)).nodeAdded(nA);
-        verify(listener, times(1)).nodeAdded(nB);
-    }
-
-    private static GraphListener<StringNode> createNoOpGraphListener() {
-        return new GraphListener<>() {
-
-            @Override
-            public void nodeAdded(final StringNode node) {
-            }
-        };
+        final InOrder inOrder = Mockito.inOrder(listener);
+        inOrder.verify(listener).onBuildSubtreeStarted(nA);
+        inOrder.verify(listener).onBuildSubtreeStarted(nB);
+        inOrder.verify(listener).onBuildSubtreeFinished(nB);
+        inOrder.verify(listener).onBuildSubtreeFinished(nA);
     }
 }

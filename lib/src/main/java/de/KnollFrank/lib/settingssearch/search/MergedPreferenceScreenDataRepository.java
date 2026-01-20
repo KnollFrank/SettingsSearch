@@ -23,9 +23,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
-import de.KnollFrank.lib.settingssearch.graph.GraphListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeBuilderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
+import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -108,14 +108,18 @@ public class MergedPreferenceScreenDataRepository<C> {
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         edge -> true,
-                        activityContext,
-                        new GraphListener<PreferenceScreenWithHost>() {
+                        new TreeBuilderListener<>() {
 
                             @Override
-                            public void nodeAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
+                            public void onBuildSubtreeStarted(final PreferenceScreenWithHost preferenceScreenWithHost) {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
-                        }),
+
+                            @Override
+                            public void onBuildSubtreeFinished(final PreferenceScreenWithHost subtreeRoot) {
+                            }
+                        },
+                        activityContext),
                 locale);
     }
 }

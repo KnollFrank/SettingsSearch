@@ -16,10 +16,10 @@ public class PreferenceScreenTreeBuilderFactory {
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
             final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate,
-            final Context context,
-            final GraphListener<PreferenceScreenWithHost> graphListener) {
+            final TreeBuilderListener<PreferenceScreenWithHost> treeBuilderListener,
+            final Context context) {
         return new TreeBuilder<>(
-                graphListener,
+                treeBuilderListener,
                 new FilteredChildNodeByEdgeValueProvider<>(
                         new ConnectedPreferenceScreenByPreferenceProvider(
                                 preferenceScreenWithHostProvider,

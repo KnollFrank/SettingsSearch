@@ -56,9 +56,8 @@ public class PojoTreeTestFactory {
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         addEdgeToTreePredicate,
-                        context,
-                        preferenceScreenWithHost -> {
-                        })
+                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
+                        context)
                 .buildTreeWithRoot(root);
     }
 

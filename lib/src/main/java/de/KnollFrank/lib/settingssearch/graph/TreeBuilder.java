@@ -4,22 +4,23 @@ import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreeBuilder<N, V> {
 
-    private final GraphListener<N> graphListener;
+    private final TreeBuilderListener<N> treeBuilderListener;
     private final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider;
 
-    public TreeBuilder(final GraphListener<N> graphListener,
+    public TreeBuilder(final TreeBuilderListener<N> treeBuilderListener,
                        final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider) {
-        this.graphListener = graphListener;
+        this.treeBuilderListener = treeBuilderListener;
         this.childNodeByEdgeValueProvider = childNodeByEdgeValueProvider;
     }
 
     public Tree<N, V, ImmutableValueGraph<N, V>> buildTreeWithRoot(final N root) {
-        final MutableValueGraph<N, V> graph = GraphFactory.createEmptyGraph(graphListener);
+        final MutableValueGraph<N, V> graph = Graphs.createEmptyDirectedMutableValueGraph();
         buildGraph(root, graph);
         return new Tree<>(ImmutableValueGraph.copyOf(graph));
     }
@@ -31,6 +32,7 @@ public class TreeBuilder<N, V> {
                             "Cycle detected in the graph. The node '%s' has been visited twice. A tree structure must not contain cycles.",
                             root));
         }
+        treeBuilderListener.onBuildSubtreeStarted(root);
         graph.addNode(root);
         childNodeByEdgeValueProvider
                 .getChildNodeOfNodeByEdgeValue(root)
@@ -41,5 +43,6 @@ public class TreeBuilder<N, V> {
                                     EndpointPair.ordered(root, childNodeOfRoot),
                                     edgeValue);
                         });
+        treeBuilderListener.onBuildSubtreeFinished(root);
     }
 }

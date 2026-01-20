@@ -120,9 +120,8 @@ public class SearchableTreeBuilderTest {
                         (preference, hostOfPreference) -> Optional.empty(),
                         activityClass -> Optional.empty(),
                         edge -> true,
-                        fragmentActivity,
-                        preferenceScreenWithHost -> {
-                        }),
+                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
+                        fragmentActivity),
                 Locale.GERMAN);
     }
 }

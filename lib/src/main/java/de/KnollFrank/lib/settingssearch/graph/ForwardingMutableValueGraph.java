@@ -10,6 +10,7 @@ import com.google.common.graph.MutableValueGraph;
 import java.util.Set;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+// FK-TODO: remove class?
 public abstract class ForwardingMutableValueGraph<N, V> implements MutableValueGraph<N, V> {
 
     protected abstract MutableValueGraph<N, V> delegate();
