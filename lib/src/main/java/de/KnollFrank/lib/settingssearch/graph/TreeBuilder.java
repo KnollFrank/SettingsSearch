@@ -12,23 +12,23 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
 // FK-TODO: add unit test
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-class TreeBuilder<N, V> {
+public class TreeBuilder<N, V> {
 
     @FunctionalInterface
-    public interface ChildByEdgeValueProvider<N, V> {
+    public interface ChildNodeByEdgeValueProvider<N, V> {
 
-        Map<V, N> getChildOfNodeByEdgeValue(N node);
+        Map<V, N> getChildNodeOfNodeByEdgeValue(N node);
     }
 
     private final GraphListener<N> graphListener;
-    private final ChildByEdgeValueProvider<N, V> childByEdgeValueProvider;
+    private final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider;
     private final AddEdgeToTreePredicate<N, V> addEdgeToTreePredicate;
 
     public TreeBuilder(final GraphListener<N> graphListener,
-                       final ChildByEdgeValueProvider<N, V> childByEdgeValueProvider,
+                       final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider,
                        final AddEdgeToTreePredicate<N, V> addEdgeToTreePredicate) {
         this.graphListener = graphListener;
-        this.childByEdgeValueProvider = childByEdgeValueProvider;
+        this.childNodeByEdgeValueProvider = childNodeByEdgeValueProvider;
         this.addEdgeToTreePredicate = addEdgeToTreePredicate;
     }
 
@@ -47,24 +47,23 @@ class TreeBuilder<N, V> {
         }
         graph.addNode(root);
         this
-                .getChildOfNodeByEdgeValue(root)
+                .getChildNodeOfNodeByEdgeValue(root)
                 .forEach(
-                        (edgeValue, childOfRoot) -> {
-                            buildGraph(childOfRoot, graph);
-                            graph.addNode(childOfRoot);
+                        (edgeValue, childNodeOfRoot) -> {
+                            buildGraph(childNodeOfRoot, graph);
                             graph.putEdgeValue(
-                                    EndpointPair.ordered(root, childOfRoot),
+                                    EndpointPair.ordered(root, childNodeOfRoot),
                                     edgeValue);
                         });
     }
 
-    private Map<V, N> getChildOfNodeByEdgeValue(final N root) {
+    private Map<V, N> getChildNodeOfNodeByEdgeValue(final N root) {
         return Maps.filter(
-                childByEdgeValueProvider.getChildOfNodeByEdgeValue(root),
-                (edgeValue, childOfRoot) ->
+                childNodeByEdgeValueProvider.getChildNodeOfNodeByEdgeValue(root),
+                (edgeValue, childNodeOfRoot) ->
                         addEdgeToTreePredicate.shallAddEdgeToTree(
                                 new Edge<>(
-                                        EndpointPair.ordered(root, childOfRoot),
+                                        EndpointPair.ordered(root, childNodeOfRoot),
                                         edgeValue)));
     }
 }

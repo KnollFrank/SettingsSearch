@@ -23,7 +23,7 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
-class ConnectedPreferenceScreenByPreferenceProvider implements TreeBuilder.ChildByEdgeValueProvider<PreferenceScreenWithHost, Preference> {
+class ConnectedPreferenceScreenByPreferenceProvider implements TreeBuilder.ChildNodeByEdgeValueProvider<PreferenceScreenWithHost, Preference> {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
@@ -41,7 +41,7 @@ class ConnectedPreferenceScreenByPreferenceProvider implements TreeBuilder.Child
     }
 
     @Override
-    public Map<Preference, PreferenceScreenWithHost> getChildOfNodeByEdgeValue(final PreferenceScreenWithHost node) {
+    public Map<Preference, PreferenceScreenWithHost> getChildNodeOfNodeByEdgeValue(final PreferenceScreenWithHost node) {
         return getConnectedPreferenceScreenByPreference(node);
     }
 
