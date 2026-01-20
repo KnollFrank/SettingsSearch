@@ -6,9 +6,11 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
+import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -27,6 +29,7 @@ public class SearchDatabaseConfig {
     public final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
     public final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
+    public final TreeBuilderListener<PreferenceScreenWithHost> preferenceScreenTreeBuilderListener;
     public final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener;
     public final ComputePreferencesListener computePreferencesListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
@@ -41,6 +44,7 @@ public class SearchDatabaseConfig {
                          final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                          final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
+                         final TreeBuilderListener<PreferenceScreenWithHost> preferenceScreenTreeBuilderListener,
                          final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener,
                          final ComputePreferencesListener computePreferencesListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
@@ -54,6 +58,7 @@ public class SearchDatabaseConfig {
         this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
+        this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
         this.preferenceScreenTreeAvailableListener = preferenceScreenTreeAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
         this.preferenceSearchablePredicate = new PreferenceVisibleAndSearchablePredicate(preferenceSearchablePredicate);
