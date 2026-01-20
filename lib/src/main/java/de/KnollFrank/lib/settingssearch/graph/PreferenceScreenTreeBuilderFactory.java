@@ -20,11 +20,12 @@ public class PreferenceScreenTreeBuilderFactory {
             final GraphListener<PreferenceScreenWithHost> graphListener) {
         return new TreeBuilder<>(
                 graphListener,
-                new ConnectedPreferenceScreenByPreferenceProvider(
-                        preferenceScreenWithHostProvider,
-                        preferenceFragmentConnected2PreferenceProvider,
-                        rootPreferenceFragmentOfActivityProvider,
-                        context),
-                addEdgeToTreePredicate);
+                new FilteredChildNodeByEdgeValueProvider<>(
+                        new ConnectedPreferenceScreenByPreferenceProvider(
+                                preferenceScreenWithHostProvider,
+                                preferenceFragmentConnected2PreferenceProvider,
+                                rootPreferenceFragmentOfActivityProvider,
+                                context),
+                        addEdgeToTreePredicate));
     }
 }

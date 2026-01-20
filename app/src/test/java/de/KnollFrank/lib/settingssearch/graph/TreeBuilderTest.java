@@ -3,13 +3,13 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Collections;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class TreeBuilderTest {
          * v
          * C
          */
-        final TreeBuilder.ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider =
+        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider =
                 node -> {
                     if (node.equals(nA)) {
                         return Map.of("A->B", nB);
@@ -49,8 +49,7 @@ public class TreeBuilderTest {
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         createNoOpGraphListener(),
-                        childNodeByEdgeValueProvider,
-                        edge -> true);
+                        childNodeByEdgeValueProvider);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = treeBuilder.buildTreeWithRoot(nA);
@@ -67,47 +66,6 @@ public class TreeBuilderTest {
     }
 
     @Test
-    public void shouldFilterEdgesBasedOnPredicate() {
-        /*
-         * A              =>         A
-         * | A->B                    | A->B
-         * v                         v
-         * B                         B
-         * | B->C  <--- reject edge
-         * v
-         * C
-         */
-        final TreeBuilder.ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider = node -> {
-            if (node.equals(nA)) {
-                return Map.of("A->B", nB);
-            }
-            if (node.equals(nB)) {
-                return Map.of("B->C", nC);
-            }
-            return Collections.emptyMap();
-        };
-        final AddEdgeToTreePredicate<StringNode, String> rejectEdgeBC =
-                edge -> !edge.value().equals("B->C");
-        final TreeBuilder<StringNode, String> treeBuilder =
-                new TreeBuilder<>(
-                        createNoOpGraphListener(),
-                        childNodeByEdgeValueProvider,
-                        rejectEdgeBC);
-
-        // When
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = treeBuilder.buildTreeWithRoot(nA);
-
-        // Then
-        assertThat(
-                tree,
-                is(new Tree<>(
-                        Graphs
-                                .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nA, nB, "A->B")
-                                .build())));
-    }
-
-    @Test
     public void shouldThrowExceptionOnCycle() {
         /*
          * A
@@ -116,7 +74,7 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final TreeBuilder.ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider = node -> {
+        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider = node -> {
             if (node.equals(nA)) {
                 return Map.of("A->B", nB);
             }
@@ -129,8 +87,7 @@ public class TreeBuilderTest {
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         createNoOpGraphListener(),
-                        childNodeByEdgeValueProvider,
-                        edge -> true);
+                        childNodeByEdgeValueProvider);
 
         // When & Then
         assertThrows(IllegalStateException.class, () -> treeBuilder.buildTreeWithRoot(nA));
@@ -144,18 +101,17 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final TreeBuilder.ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider = node -> {
+        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider = node -> {
             if (node.equals(nA)) {
                 return Map.of("A->B", nB);
             }
             return Collections.emptyMap();
         };
-        final GraphListener<StringNode> listener = mock(GraphListener.class);
+        final GraphListener<StringNode> listener = Mockito.mock(GraphListener.class);
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         listener,
-                        childNodeByEdgeValueProvider,
-                        edge -> true);
+                        childNodeByEdgeValueProvider);
 
         // When
         treeBuilder.buildTreeWithRoot(nA);

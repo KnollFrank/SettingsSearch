@@ -4,32 +4,18 @@ import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 
-import java.util.Map;
-
-import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
-// FK-TODO: add unit test
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreeBuilder<N, V> {
 
-    @FunctionalInterface
-    public interface ChildNodeByEdgeValueProvider<N, V> {
-
-        Map<V, N> getChildNodeOfNodeByEdgeValue(N node);
-    }
-
     private final GraphListener<N> graphListener;
     private final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider;
-    private final AddEdgeToTreePredicate<N, V> addEdgeToTreePredicate;
 
     public TreeBuilder(final GraphListener<N> graphListener,
-                       final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider,
-                       final AddEdgeToTreePredicate<N, V> addEdgeToTreePredicate) {
+                       final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider) {
         this.graphListener = graphListener;
         this.childNodeByEdgeValueProvider = childNodeByEdgeValueProvider;
-        this.addEdgeToTreePredicate = addEdgeToTreePredicate;
     }
 
     public Tree<N, V, ImmutableValueGraph<N, V>> buildTreeWithRoot(final N root) {
@@ -46,7 +32,7 @@ public class TreeBuilder<N, V> {
                             root));
         }
         graph.addNode(root);
-        this
+        childNodeByEdgeValueProvider
                 .getChildNodeOfNodeByEdgeValue(root)
                 .forEach(
                         (edgeValue, childNodeOfRoot) -> {
@@ -55,15 +41,5 @@ public class TreeBuilder<N, V> {
                                     EndpointPair.ordered(root, childNodeOfRoot),
                                     edgeValue);
                         });
-    }
-
-    private Map<V, N> getChildNodeOfNodeByEdgeValue(final N root) {
-        return Maps.filter(
-                childNodeByEdgeValueProvider.getChildNodeOfNodeByEdgeValue(root),
-                (edgeValue, childNodeOfRoot) ->
-                        addEdgeToTreePredicate.shallAddEdgeToTree(
-                                new Edge<>(
-                                        EndpointPair.ordered(root, childNodeOfRoot),
-                                        edgeValue)));
     }
 }
