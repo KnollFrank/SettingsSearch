@@ -7,9 +7,11 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.Preference;
 
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
@@ -27,7 +29,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final @IdRes int containerViewId,
             final SearchDatabaseConfig searchDatabaseConfig,
             final Locale locale,
-            final AddEdgeToTreePredicate addEdgeToTreePredicate) {
+            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
         return createSearchablePreferenceScreenTreeProvider(
                 containerViewId,
                 (ViewGroup) fragment.requireView(),
@@ -47,7 +49,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final Context context,
             final SearchDatabaseConfig searchDatabaseConfig,
             final Locale locale,
-            final AddEdgeToTreePredicate addEdgeToTreePredicate) {
+            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,
                 containerViewId);
@@ -60,7 +62,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                                         searchDatabaseConfig,
                                         PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId, searchDatabaseConfig.preferenceSearchablePredicate))),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
-                PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
+                PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         new PreferenceScreenWithHostProvider(
                                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                                         searchDatabaseConfig.fragmentFactory,

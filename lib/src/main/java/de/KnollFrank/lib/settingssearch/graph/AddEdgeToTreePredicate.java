@@ -1,12 +1,9 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import androidx.preference.Preference;
-
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 
 @FunctionalInterface
-public interface AddEdgeToTreePredicate {
+public interface AddEdgeToTreePredicate<N, V> {
 
-    boolean shallAddEdgeToTree(Edge<PreferenceScreenWithHost, Preference> edge);
+    boolean shallAddEdgeToTree(Edge<N, V> edge);
 }

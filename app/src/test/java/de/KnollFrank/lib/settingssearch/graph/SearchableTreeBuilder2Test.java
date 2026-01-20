@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByTitle;
-import static de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider1Test.createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider;
+import static de.KnollFrank.lib.settingssearch.graph.SearchableTreeBuilder1Test.createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider;
 
 import android.os.Bundle;
 
@@ -24,12 +24,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenTreeProvider2Test {
+public class SearchableTreeBuilder2Test {
 
     @Test
     public void shouldIgnoreNonPreferenceFragments() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(SearchablePreferenceScreenTreeProvider2Test::shouldIgnoreNonPreferenceFragments);
+            scenario.onActivity(SearchableTreeBuilder2Test::shouldIgnoreNonPreferenceFragments);
         }
     }
 

@@ -51,7 +51,7 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoomDatabaseTest {
+public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
 
     @Test
     public void shouldGetSearchablePreferenceScreenTree() {
@@ -91,7 +91,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                 final var result =
                         createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                                 Fragment1ConnectedToFragment2AndFragment4.class,
-                                new AddEdgeToTreePredicate() {
+                                new AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference>() {
 
                                     @Override
                                     public boolean shallAddEdgeToTree(final Edge<PreferenceScreenWithHost, Preference> edge) {
@@ -175,7 +175,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
     private static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
             final FragmentActivity activity,
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-            final AddEdgeToTreePredicate addEdgeToTreePredicate) {
+            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
         return new SearchablePreferenceScreenTreeProvider(
                 preferenceScreenGraph -> {
                 },
@@ -188,7 +188,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                                                 preference -> Optional.empty(),
                                                 (preference, hostOfPreference) -> Optional.empty()))),
                         new DefaultPreferenceFragmentIdProvider()),
-                PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
+                PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
@@ -235,7 +235,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
 
     private static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
             final Class<? extends Fragment> root,
-            final AddEdgeToTreePredicate addEdgeToTreePredicate,
+            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate,
             final FragmentActivity activity) {
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(activity);
         return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(

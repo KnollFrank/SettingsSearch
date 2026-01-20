@@ -48,10 +48,10 @@ public class PojoTreeTestFactory {
     public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final AddEdgeToTreePredicate addEdgeToTreePredicate,
+            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate,
             final Context context) {
-        return PreferenceScreenTreeProviderFactory
-                .createPreferenceScreenTreeProvider(
+        return PreferenceScreenTreeBuilderFactory
+                .createPreferenceScreenTreeBuilder(
                         getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
@@ -59,7 +59,7 @@ public class PojoTreeTestFactory {
                         context,
                         preferenceScreenWithHost -> {
                         })
-                .getPreferenceScreenTree(root);
+                .buildTreeWithRoot(root);
     }
 
     private static PreferenceScreenWithHostProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {

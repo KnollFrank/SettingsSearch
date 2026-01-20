@@ -170,7 +170,7 @@ public class TreeMergerTest {
                         .instantiate(pojoTree.getPathFromRootNodeToTarget(rootOfPartialPojoTree))
                         .endNode(),
                 instantiateAndInitializeFragment,
-                new AddEdgeToTreePredicate() {
+                new AddEdgeToTreePredicate<>() {
 
                     @Override
                     public boolean shallAddEdgeToTree(final Edge<PreferenceScreenWithHost, Preference> edge) {

@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoPro
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenTreeProviderTest {
+public class SearchableTreeBuilderTest {
 
     @Test
     public void shouldInvokeComputePreferencesListener() {
@@ -115,7 +115,7 @@ public class SearchablePreferenceScreenTreeProviderTest {
                                                                 (preference, hostOfPreference) -> preference.isVisible()),
                                                         (preference, hostOfPreference) -> Optional.empty())))),
                         new DefaultPreferenceFragmentIdProvider()),
-                PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
+                PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         activityClass -> Optional.empty(),

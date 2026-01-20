@@ -23,8 +23,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeProviderFactory;
+import de.KnollFrank.lib.settingssearch.graph.GraphListener;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeBuilderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
@@ -103,16 +103,16 @@ public class MergedPreferenceScreenDataRepository<C> {
                                         searchDatabaseConfig,
                                         preferenceDialogs)),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
-                PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
+                PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         preferenceScreenWithHostProvider,
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         edge -> true,
                         activityContext,
-                        new PreferenceScreenGraphListener() {
+                        new GraphListener<PreferenceScreenWithHost>() {
 
                             @Override
-                            public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
+                            public void nodeAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
                         }),
