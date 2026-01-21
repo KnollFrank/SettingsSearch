@@ -6,6 +6,7 @@ import androidx.preference.PreferenceGroup;
 
 import java.util.function.Predicate;
 
+import de.KnollFrank.lib.settingssearch.common.Functions;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
@@ -15,10 +16,11 @@ class PreferenceScreenAdapter {
             final PreferenceFragmentCompat preferenceFragment,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         final Predicate<Preference> isPreferenceNonSearchable =
-                preference ->
-                        !preferenceSearchablePredicate.isPreferenceSearchable(
-                                preference,
-                                preferenceFragment);
+                Functions
+                        .apply(
+                                Functions.swap(preferenceSearchablePredicate::isPreferenceSearchable),
+                                preferenceFragment)
+                        .negate();
         removePreferencesFromPreferenceGroup(preferenceFragment.getPreferenceScreen(), isPreferenceNonSearchable);
     }
 
