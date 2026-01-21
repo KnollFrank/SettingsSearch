@@ -12,6 +12,9 @@ import de.KnollFrank.lib.settingssearch.common.Lists;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class Trees {
 
+    private Trees() {
+    }
+
     public static <N, V, G extends ValueGraph<N, V>> TreePath<N, V, G> getPathFromRootNodeToTarget(final Tree<N, V, G> tree, final N target) {
         if (!tree.graph().nodes().contains(target)) {
             throw new IllegalArgumentException("Target node " + target + " is not part of the tree.");

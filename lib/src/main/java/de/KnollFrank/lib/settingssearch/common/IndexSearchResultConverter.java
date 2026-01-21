@@ -4,6 +4,9 @@ import java.util.OptionalInt;
 
 public class IndexSearchResultConverter {
 
+    private IndexSearchResultConverter() {
+    }
+
     public static OptionalInt minusOne2Empty(final int index) {
         return index == -1 ? OptionalInt.empty() : OptionalInt.of(index);
     }

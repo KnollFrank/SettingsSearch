@@ -13,6 +13,9 @@ import de.KnollFrank.lib.settingssearch.common.Sets;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class EdgesProvider {
 
+    private EdgesProvider() {
+    }
+
     public static <N, V> Set<Edge<N, V>> getEdges(final ValueGraph<N, V> graph) {
         return getEdges(graph.edges(), graph);
     }

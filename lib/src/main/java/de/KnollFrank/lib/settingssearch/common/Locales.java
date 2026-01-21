@@ -6,6 +6,9 @@ import java.util.Locale;
 
 public class Locales {
 
+    private Locales() {
+    }
+
     public static Locale getLanguageLocale(final Locale locale) {
         return new Locale(locale.getLanguage());
     }

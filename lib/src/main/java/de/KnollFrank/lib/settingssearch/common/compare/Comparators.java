@@ -4,6 +4,9 @@ import java.util.Comparator;
 
 class Comparators {
 
+    private Comparators() {
+    }
+
     public static <T> Comparator<T> asComparator(final ComparatorWithCompareResult<T> comparatorWithCompareResult) {
         return (o1, o2) -> comparatorWithCompareResult.compare(o1, o2).value;
     }

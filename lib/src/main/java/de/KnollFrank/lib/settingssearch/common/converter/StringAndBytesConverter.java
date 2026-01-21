@@ -7,6 +7,9 @@ class StringAndBytesConverter {
 
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
+    private StringAndBytesConverter() {
+    }
+
     public static byte[] string2Bytes(final String string) {
         return string.getBytes(CHARSET);
     }

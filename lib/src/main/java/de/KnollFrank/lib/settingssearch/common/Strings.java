@@ -8,6 +8,9 @@ import java.util.OptionalInt;
 
 public class Strings {
 
+    private Strings() {
+    }
+
     public static OptionalInt indexOf(final String haystack, final String needle, final int fromIndex) {
         return minusOne2Empty(haystack.indexOf(needle, fromIndex));
     }

@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 public class Sets {
 
+    private Sets() {
+    }
+
     public static <T> Set<T> union(final Collection<Set<T>> sets) {
         return sets
                 .stream()

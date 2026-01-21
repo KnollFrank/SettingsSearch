@@ -6,6 +6,9 @@ import java.util.function.Function;
 
 public class NodeReplacer {
 
+    private NodeReplacer() {
+    }
+
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> replaceNode(
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNodeToReplace,

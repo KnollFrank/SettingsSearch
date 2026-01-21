@@ -6,6 +6,9 @@ import java.util.function.Function;
 
 public class NodesTransformer {
 
+    private NodesTransformer() {
+    }
+
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static <NSrc, V, NDst> Tree<NDst, V, ImmutableValueGraph<NDst, V>> transformNodes(
             final Tree<NSrc, V, ImmutableValueGraph<NSrc, V>> tree,

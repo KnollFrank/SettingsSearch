@@ -6,6 +6,9 @@ import com.google.common.graph.MutableValueGraph;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class GraphCopiers {
 
+    private GraphCopiers() {
+    }
+
     public static <N, V> void copySrcToDst(final ImmutableValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
         copyNodes(src, dst);
         copyEdges(src, dst);

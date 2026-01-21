@@ -10,6 +10,9 @@ import java.util.stream.Stream;
 
 public class Optionals {
 
+    private Optionals() {
+    }
+
     @SafeVarargs
     public static <T> Stream<T> streamOfPresentElements(final Optional<T>... elements) {
         return Arrays

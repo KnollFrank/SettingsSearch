@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 
 public class Functions {
 
-    // FK-TODO: add private constructor to each class having only static methods
     private Functions() {
     }
 

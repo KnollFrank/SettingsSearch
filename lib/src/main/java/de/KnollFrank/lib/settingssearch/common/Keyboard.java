@@ -7,6 +7,9 @@ import android.view.inputmethod.InputMethodManager;
 
 public class Keyboard {
 
+    private Keyboard() {
+    }
+
     public static void showKeyboard(final Activity activity, final View view) {
         final InputMethodManager inputMethodManager = getInputMethodManager(activity);
         if (inputMethodManager != null) {

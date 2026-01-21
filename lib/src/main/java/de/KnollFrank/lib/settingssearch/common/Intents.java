@@ -7,6 +7,9 @@ import java.util.Optional;
 
 public class Intents {
 
+    private Intents() {
+    }
+
     public static Optional<String> getClassName(final Intent intent) {
         return Optional
                 .ofNullable(intent.getComponent())

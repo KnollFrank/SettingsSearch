@@ -9,6 +9,9 @@ public class Views {
 
     public static final @IdRes int ROOT_VIEW_CONTAINER_ID = android.R.id.content;
 
+    private Views() {
+    }
+
     public static ViewGroup getRootViewContainer(final Activity activity) {
         return activity.findViewById(ROOT_VIEW_CONTAINER_ID);
     }

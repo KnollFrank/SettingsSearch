@@ -5,6 +5,9 @@ import java.util.OptionalLong;
 
 class DatabaseStateFactory {
 
+    private DatabaseStateFactory() {
+    }
+
     public static DatabaseState fromNumberOfChangedRows(final int numberOfChangedRows) {
         return DatabaseState.fromDatabaseChanged(numberOfChangedRows > 0);
     }

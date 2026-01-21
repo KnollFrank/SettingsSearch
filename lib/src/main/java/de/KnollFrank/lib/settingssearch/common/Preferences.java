@@ -13,6 +13,9 @@ import java.util.Optional;
 
 public class Preferences {
 
+    private Preferences() {
+    }
+
     public static Preference findPreferenceByKeyOrElseThrow(final PreferenceFragmentCompat hostOfPreference,
                                                             final String keyOfPreference) {
         return Optional

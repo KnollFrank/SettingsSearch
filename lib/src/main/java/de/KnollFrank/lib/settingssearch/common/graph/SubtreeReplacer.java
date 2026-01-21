@@ -9,6 +9,9 @@ import java.util.Optional;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SubtreeReplacer {
 
+    private SubtreeReplacer() {
+    }
+
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> replaceSubtreeWithTree(
             final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
             final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {

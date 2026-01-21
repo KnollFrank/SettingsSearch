@@ -9,6 +9,9 @@ import java.util.stream.IntStream;
 
 public class Lists {
 
+    private Lists() {
+    }
+
     public static <T> Optional<HeadAndTail<T>> asHeadAndTail(final List<T> ts) {
         return ts.isEmpty() ?
                 Optional.empty() :

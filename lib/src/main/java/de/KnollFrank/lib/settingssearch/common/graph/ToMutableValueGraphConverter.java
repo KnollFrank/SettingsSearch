@@ -7,6 +7,9 @@ import com.google.common.graph.ValueGraphBuilder;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class ToMutableValueGraphConverter {
 
+    private ToMutableValueGraphConverter() {
+    }
+
     public static <N, V> MutableValueGraph<N, V> toMutableValueGraph(final ImmutableValueGraph<N, V> graph) {
         final MutableValueGraph<N, V> mutableCopy = ValueGraphBuilder.from(graph).build();
         GraphCopiers.copySrcToDst(graph, mutableCopy);

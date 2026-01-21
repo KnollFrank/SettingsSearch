@@ -14,6 +14,9 @@ import android.graphics.drawable.Drawable;
 
 public class DrawableAndStringConverter {
 
+    private DrawableAndStringConverter() {
+    }
+
     public static String drawable2String(final Drawable drawable) {
         return bytes2String(encodeBase64(bitmap2Bytes(drawable2Bitmap(drawable))));
     }

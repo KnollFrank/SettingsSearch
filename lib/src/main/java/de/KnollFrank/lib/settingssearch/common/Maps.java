@@ -15,6 +15,9 @@ import java.util.stream.Stream;
 
 public class Maps {
 
+    private Maps() {
+    }
+
     public static <K, V> Map<K, V> merge(final Collection<Map<K, V>> maps) {
         return Maps
                 .getEntryStream(maps)

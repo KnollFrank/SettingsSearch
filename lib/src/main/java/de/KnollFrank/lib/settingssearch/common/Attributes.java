@@ -8,6 +8,9 @@ import androidx.annotation.ColorInt;
 
 public class Attributes {
 
+    private Attributes() {
+    }
+
     public static @ColorInt int getColorFromAttr(final Context context, final int attr) {
         final TypedValue typedValue = getTypedValue(context, attr);
         try (final TypedArray typedArray = context.obtainStyledAttributes(typedValue.data, new int[]{attr})) {

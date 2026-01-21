@@ -11,6 +11,9 @@ import java.util.Optional;
 
 public class Classes {
 
+    private Classes() {
+    }
+
     public static <T> Class<? extends T> getClass(final String className) {
         try {
             return (Class<? extends T>) Class.forName(className);

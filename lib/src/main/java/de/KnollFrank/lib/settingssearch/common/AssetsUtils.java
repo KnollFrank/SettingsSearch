@@ -8,6 +8,9 @@ import java.io.InputStream;
 
 public class AssetsUtils {
 
+    private AssetsUtils() {
+    }
+
     public static InputStream open(final File assetFile, final AssetManager assetManager) {
         try {
             return assetManager.open(assetFile.getPath());

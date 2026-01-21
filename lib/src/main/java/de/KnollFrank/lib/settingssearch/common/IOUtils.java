@@ -19,6 +19,9 @@ import java.nio.charset.StandardCharsets;
 
 public class IOUtils {
 
+    private IOUtils() {
+    }
+
     public static void persist(final String source, final OutputStream sink) {
         try (final Writer writer = new OutputStreamWriter(sink, StandardCharsets.UTF_8)) {
             writer.write(source);

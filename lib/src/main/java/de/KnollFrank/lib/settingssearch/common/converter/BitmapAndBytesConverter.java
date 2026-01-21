@@ -7,6 +7,9 @@ import java.io.ByteArrayOutputStream;
 
 class BitmapAndBytesConverter {
 
+    private BitmapAndBytesConverter() {
+    }
+
     public static byte[] bitmap2Bytes(final Bitmap bitmap) {
         final ByteArrayOutputStream sink = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, sink);

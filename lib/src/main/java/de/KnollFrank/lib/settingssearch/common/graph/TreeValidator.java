@@ -10,6 +10,9 @@ import java.util.Set;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class TreeValidator {
 
+    private TreeValidator() {
+    }
+
     public static <Node> TreeValidatorResult validateIsTree(final ValueGraph<Node, ?> graph) {
         if (!graph.isDirected()) {
             return TreeValidatorResult.invalid("A Tree must be a directed graph.");

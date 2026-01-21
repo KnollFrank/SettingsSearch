@@ -11,6 +11,9 @@ import java.util.Optional;
 
 public class DrawableAndBitmapConverter {
 
+    private DrawableAndBitmapConverter() {
+    }
+
     // adapted from https://stackoverflow.com/a/10600736
     public static Bitmap drawable2Bitmap(final Drawable drawable) {
         if (drawable instanceof final BitmapDrawable bitmapDrawable) {

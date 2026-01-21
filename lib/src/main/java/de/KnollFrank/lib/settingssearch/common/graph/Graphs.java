@@ -12,6 +12,9 @@ import java.util.Set;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class Graphs {
 
+    private Graphs() {
+    }
+
     public static <Node, Value> boolean isEmpty(final ValueGraph<Node, Value> graph) {
         return graph.nodes().isEmpty();
     }

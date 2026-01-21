@@ -18,7 +18,7 @@ public record Subtree<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, N ro
         return new Subtree<>(tree, tree.rootNode());
     }
 
-    public TreeNode<N, V, G> asTreeAtNode() {
+    public TreeNode<N, V, G> asTreeNode() {
         return new TreeNode<>(rootNodeOfSubtree, tree);
     }
 

@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class RootNodeProvider {
 
+    private RootNodeProvider() {
+    }
+
     public static <N> Optional<N> getRootNode(final ValueGraph<N, ?> graph) {
         return RootNodeProvider
                 .getRootNodes(graph)

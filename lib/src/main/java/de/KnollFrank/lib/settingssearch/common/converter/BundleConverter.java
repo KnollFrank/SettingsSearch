@@ -11,6 +11,9 @@ public class BundleConverter {
 
     private static final Gson gson = new Gson();
 
+    private BundleConverter() {
+    }
+
     public static PersistableBundle toPersistableBundle(final Bundle bundle) {
         final PersistableBundle persistableBundle = new PersistableBundle();
         for (final String key : bundle.keySet()) {

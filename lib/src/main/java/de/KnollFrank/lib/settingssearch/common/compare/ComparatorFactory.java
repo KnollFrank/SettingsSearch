@@ -12,6 +12,9 @@ import java.util.Optional;
 
 public class ComparatorFactory {
 
+    private ComparatorFactory() {
+    }
+
     public static <T> Comparator<List<T>> lexicographicalListComparator(final Comparator<T> elementComparator) {
         return asComparator(new LexicographicalListComparator<>(asComparatorWithCompareResult(elementComparator)));
     }

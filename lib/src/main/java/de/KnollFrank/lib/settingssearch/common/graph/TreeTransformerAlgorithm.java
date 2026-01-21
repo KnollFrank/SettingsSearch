@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer.ContextOfIn
 
 public class TreeTransformerAlgorithm {
 
+    private TreeTransformerAlgorithm() {
+    }
+
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static <NSrc, VSrc, NDst, VDst> Tree<NDst, VDst, ImmutableValueGraph<NDst, VDst>> transform(
             final Tree<NSrc, VSrc, ImmutableValueGraph<NSrc, VSrc>> tree,
