@@ -13,6 +13,9 @@ public class SearchablePreferenceScreenEntityTestFactory {
             DbDataProvider dbDataProvider) {
     }
 
+    private SearchablePreferenceScreenEntityTestFactory() {
+    }
+
     public static SearchablePreferenceScreenEntityAndDbDataProvider createSomeSearchablePreferenceScreen(final SearchablePreferenceScreenGraphTestFactory.Data data) {
         final TreeAndDbDataProvider entityTreeAndDbDataProvider =
                 SearchablePreferenceScreenGraphTestFactory

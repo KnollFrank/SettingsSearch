@@ -7,6 +7,9 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class DbDataProviderFactory {
 
+    private DbDataProviderFactory() {
+    }
+
     public static DbDataProvider createDbDataProvider(final SearchablePreferenceScreenTreeEntity.DbDataProvider treeDbDataProvider,
                                                       final SearchablePreferenceScreenEntity.DbDataProvider screenDbDataProvider,
                                                       final SearchablePreferenceEntity.DbDataProvider preferenceDbDataProvider) {

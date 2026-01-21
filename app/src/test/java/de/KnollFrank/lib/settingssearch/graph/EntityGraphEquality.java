@@ -24,6 +24,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConv
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class EntityGraphEquality {
 
+    private EntityGraphEquality() {
+    }
+
     public static void assertActualEqualsExpected(final TreeAndDbDataProvider actual,
                                                   final TreeAndDbDataProvider expected) {
         assertActualEqualsExpected(actual.tree(), expected.tree());

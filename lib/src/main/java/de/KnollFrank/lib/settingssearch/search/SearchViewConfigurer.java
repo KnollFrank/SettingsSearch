@@ -8,6 +8,9 @@ import java.util.Optional;
 
 class SearchViewConfigurer {
 
+    private SearchViewConfigurer() {
+    }
+
     public static void configureSearchView(final SearchView searchView,
                                            final Optional<String> queryHint,
                                            final SearchAndDisplay searchAndDisplay,

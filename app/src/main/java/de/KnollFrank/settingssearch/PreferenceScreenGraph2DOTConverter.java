@@ -22,6 +22,9 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 
 class PreferenceScreenGraph2DOTConverter {
 
+    private PreferenceScreenGraph2DOTConverter() {
+    }
+
     public static String graph2DOT(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
         final Writer writer = new StringWriter();
         getDOTExporter().exportGraph(preferenceScreenGraph, writer);

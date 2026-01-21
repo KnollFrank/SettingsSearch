@@ -12,6 +12,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceToSearchablePreferenceEntityConverter {
 
+    private SearchablePreferenceToSearchablePreferenceEntityConverter() {
+    }
+
     public static DetachedSearchablePreferenceEntity toEntity(
             final SearchablePreference preferenceToConvertToEntity,
             final Optional<String> parentId,

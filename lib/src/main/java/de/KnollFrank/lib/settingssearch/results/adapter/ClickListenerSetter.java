@@ -5,6 +5,9 @@ import android.view.ViewGroup;
 
 public class ClickListenerSetter {
 
+    private ClickListenerSetter() {
+    }
+
     public static void setOnClickListener(final View view, final View.OnClickListener onClickListener) {
         disableClicksOnSubviews(view);
         view.setOnClickListener(onClickListener);

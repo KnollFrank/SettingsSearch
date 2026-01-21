@@ -14,6 +14,9 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 
 public class PrincipalAndProxyProviderFactory {
 
+    private PrincipalAndProxyProviderFactory() {
+    }
+
     public static PrincipalAndProxyProvider createPrincipalAndProxyProvider(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
         return new PrincipalAndProxyProvider(getProxyByPrincipalBiMap(principalAndProxies));
     }

@@ -9,6 +9,9 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class DbDataProviderDatas {
 
+    private DbDataProviderDatas() {
+    }
+
     public static DbDataProviderData merge(final Collection<DbDataProviderData> dbDataProviderDatas) {
         return new DbDataProviderData(
                 mapThenMerge(dbDataProviderDatas, DbDataProviderData::nodesByTree),

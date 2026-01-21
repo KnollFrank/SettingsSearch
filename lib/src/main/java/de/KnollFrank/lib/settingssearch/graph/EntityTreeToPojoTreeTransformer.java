@@ -17,6 +17,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences
 
 public class EntityTreeToPojoTreeTransformer {
 
+    private EntityTreeToPojoTreeTransformer() {
+    }
+
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> toPojoTree(
             final Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>> entityTree,

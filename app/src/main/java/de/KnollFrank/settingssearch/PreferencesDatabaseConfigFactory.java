@@ -15,6 +15,9 @@ class PreferencesDatabaseConfigFactory {
 
     public static final String SEARCHABLE_PREFERENCES_DB = "searchable_preferences.db";
 
+    private PreferencesDatabaseConfigFactory() {
+    }
+
     public static PreferencesDatabaseConfig<Configuration> createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() {
         return new PreferencesDatabaseConfig<>(
                 SEARCHABLE_PREFERENCES_DB,

@@ -14,6 +14,9 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class MergedPreferenceScreenDataRepositoryFactory {
 
+    private MergedPreferenceScreenDataRepositoryFactory() {
+    }
+
     public static <C> MergedPreferenceScreenDataRepository<C> createMergedPreferenceScreenDataRepository(
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final PreferenceDialogs preferenceDialogs,

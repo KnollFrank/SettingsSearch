@@ -12,6 +12,9 @@ class SearchableInfoView {
 
     private static final int SEARCHABLE_INFO_VIEW_ID = R.id.searchable_info;
 
+    private SearchableInfoView() {
+    }
+
     public static TextView createSearchableInfoView(final String text, final Context context) {
         final TextView searchableInfoView = new TextView(context);
         searchableInfoView.setText(text);

@@ -2,6 +2,9 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 public class TreeBuilderListeners {
 
+    private TreeBuilderListeners() {
+    }
+
     public static <N> TreeBuilderListener<N> createNoOpTreeBuilderListener() {
         return new TreeBuilderListener<>() {
 

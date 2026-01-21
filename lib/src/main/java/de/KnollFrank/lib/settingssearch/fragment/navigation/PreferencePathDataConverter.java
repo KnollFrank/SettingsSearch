@@ -9,6 +9,9 @@ class PreferencePathDataConverter {
 
     private static final String PREFERENCE_PATH_DATA = PreferencePathData.class.getPackage().getName();
 
+    private PreferencePathDataConverter() {
+    }
+
     public static Bundle toBundle(final PreferencePathData preferencePathData) {
         final Bundle bundle = new Bundle();
         bundle.putBundle(PREFERENCE_PATH_DATA, new Converter().convertForward(preferencePathData));

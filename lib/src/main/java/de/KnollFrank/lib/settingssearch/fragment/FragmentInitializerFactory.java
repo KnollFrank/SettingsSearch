@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
 public class FragmentInitializerFactory {
 
+    private FragmentInitializerFactory() {
+    }
+
     public static FragmentInitializer createFragmentInitializer(final FragmentManager fragmentManager,
                                                                 final @IdRes int containerViewId,
                                                                 final OnUiThreadRunner onUiThreadRunner,

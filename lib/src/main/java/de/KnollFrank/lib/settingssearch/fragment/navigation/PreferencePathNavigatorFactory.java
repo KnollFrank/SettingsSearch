@@ -12,6 +12,9 @@ import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 
 public class PreferencePathNavigatorFactory {
 
+    private PreferencePathNavigatorFactory() {
+    }
+
     public static PreferencePathNavigator createPreferencePathNavigator(
             final Context context,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,

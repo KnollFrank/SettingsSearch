@@ -11,6 +11,9 @@ import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivit
 
 public class PreferenceScreenTreeBuilderFactory {
 
+    private PreferenceScreenTreeBuilderFactory() {
+    }
+
     public static TreeBuilder<PreferenceScreenWithHost, Preference> createPreferenceScreenTreeBuilder(
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,

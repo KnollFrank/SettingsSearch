@@ -9,6 +9,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 class ParentPreferenceByPreferenceProvider {
 
+    private ParentPreferenceByPreferenceProvider() {
+    }
+
     public static Map<SearchablePreference, SearchablePreference> getParentPreferenceByPreference(final SearchablePreferenceScreen screen) {
             return Maps.merge(
                 screen

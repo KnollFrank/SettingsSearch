@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 
 class PreferenceMatchHelper {
 
+    private PreferenceMatchHelper() {
+    }
+
     public static Set<String> getKeySet(final Set<PreferenceMatch> preferenceMatches) {
         return PreferenceMatchHelper
                 .getKeyStream(preferenceMatches)

@@ -30,6 +30,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PojoGraphToEntityGraphTransformer {
 
+    private PojoGraphToEntityGraphTransformer() {
+    }
+
     public static TreeAndDbDataProvider toEntityGraph(
             final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
             final Locale graphId,

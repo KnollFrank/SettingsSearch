@@ -9,6 +9,9 @@ import java.util.function.Consumer;
 
 public class TestHelper {
 
+    private TestHelper() {
+    }
+
     public static void doWithFragmentActivity(final Consumer<FragmentActivity> fragmentActivityConsumer) {
         try (final ActivityController<FragmentActivity> controller =
                      Robolectric

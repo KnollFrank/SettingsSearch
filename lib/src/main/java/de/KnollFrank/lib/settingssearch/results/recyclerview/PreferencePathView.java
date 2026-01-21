@@ -13,6 +13,9 @@ class PreferencePathView {
 
     private static final int PREFERENCE_PATH_VIEW_ID = R.id.preference_path;
 
+    private PreferencePathView() {
+    }
+
     public static TextView createPreferencePathView(final Context context) {
         final TextView preferencePathView = new TextView(context);
         preferencePathView.setId(PREFERENCE_PATH_VIEW_ID);

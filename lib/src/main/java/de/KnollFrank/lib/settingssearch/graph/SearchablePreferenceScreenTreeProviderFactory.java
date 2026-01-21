@@ -24,6 +24,9 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerVi
 
 public class SearchablePreferenceScreenTreeProviderFactory {
 
+    private SearchablePreferenceScreenTreeProviderFactory() {
+    }
+
     public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenTreeProvider(
             final Fragment fragment,
             final @IdRes int containerViewId,

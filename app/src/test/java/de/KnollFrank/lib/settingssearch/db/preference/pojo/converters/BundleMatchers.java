@@ -8,6 +8,9 @@ import org.hamcrest.TypeSafeMatcher;
 
 public class BundleMatchers {
 
+    private BundleMatchers() {
+    }
+
     public static Matcher<PersistableBundle> isEqualTo(final PersistableBundle expectedBundle) {
         return new TypeSafeMatcher<>() {
 

@@ -12,6 +12,9 @@ import java.util.Optional;
 
 class ViewsAdder {
 
+    private ViewsAdder() {
+    }
+
     public static PreferenceViewHolder addViews(final List<View> views,
                                                 final PreferenceViewHolder holder,
                                                 final Context context) {

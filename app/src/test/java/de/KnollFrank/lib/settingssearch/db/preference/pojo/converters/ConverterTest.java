@@ -5,6 +5,9 @@ import static org.hamcrest.Matchers.is;
 
 class ConverterTest {
 
+    private ConverterTest() {
+    }
+
     public static <A, B> void test_a_convertForward_convertBackward_equals_a(
             // Given
             final A a,

@@ -13,6 +13,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class GraphConverterFactory {
 
+    private GraphConverterFactory() {
+    }
+
     public static GraphConverter<SearchablePreferenceScreen, SearchablePreferenceEdge, SearchablePreference> createSearchablePreferenceScreenGraphConverter() {
         return new GraphConverter<>(
                 new ToJGraphTConverter<>(

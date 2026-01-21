@@ -9,6 +9,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 
 class SearchablePreferenceToSearchablePreferenceEntityTransformerFactory {
 
+    private SearchablePreferenceToSearchablePreferenceEntityTransformerFactory() {
+    }
+
     public static SearchablePreferenceToSearchablePreferenceEntityTransformer createTransformer(final Set<SearchablePreferenceEntity> preferences) {
         return new SearchablePreferenceToSearchablePreferenceEntityTransformer(getPreferenceById(preferences));
     }

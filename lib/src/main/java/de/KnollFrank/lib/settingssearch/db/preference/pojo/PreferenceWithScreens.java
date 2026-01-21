@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 public class PreferenceWithScreens {
 
+    private PreferenceWithScreens() {
+    }
+
     public static List<PreferenceWithScreen> internObjects(final List<PreferenceWithScreen> preferenceWithScreens) {
         final Map<String, SearchablePreferenceScreenEntity> uniqueScreensById = getUniqueScreensById(preferenceWithScreens);
         return preferenceWithScreens

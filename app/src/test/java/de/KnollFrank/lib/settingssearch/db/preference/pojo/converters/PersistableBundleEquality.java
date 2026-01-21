@@ -8,6 +8,9 @@ import java.util.Arrays;
 
 class PersistableBundleEquality {
 
+    private PersistableBundleEquality() {
+    }
+
     public static boolean areBundlesEqual(@Nullable final PersistableBundle one, @Nullable final PersistableBundle two) {
         if (one == two) {
             return true;

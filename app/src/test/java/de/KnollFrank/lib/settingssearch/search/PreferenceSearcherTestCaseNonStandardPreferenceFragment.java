@@ -24,6 +24,9 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     private static final String TITLE_OF_PREFERENCE = "some preference of NonStandardPreferenceFragment";
     private static final String KEY_OF_PREFERENCE = "key";
 
+    private PreferenceSearcherTestCaseNonStandardPreferenceFragment() {
+    }
+
     public static void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
             final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository) {
         testSearch(

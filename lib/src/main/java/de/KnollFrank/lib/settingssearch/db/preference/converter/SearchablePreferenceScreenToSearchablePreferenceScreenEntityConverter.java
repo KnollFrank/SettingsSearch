@@ -21,6 +21,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter {
 
+    private SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter() {
+    }
+
     public static DetachedSearchablePreferenceScreenEntity toEntity(
             final SearchablePreferenceScreen screenToConvertToEntity,
             final Optional<SearchablePreferenceEntity> predecessorEntity,

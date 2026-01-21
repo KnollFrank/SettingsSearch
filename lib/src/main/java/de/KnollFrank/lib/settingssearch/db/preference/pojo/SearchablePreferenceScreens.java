@@ -7,6 +7,9 @@ import de.KnollFrank.lib.settingssearch.common.Sets;
 
 public class SearchablePreferenceScreens {
 
+    private SearchablePreferenceScreens() {
+    }
+
     public static Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(
             final Set<SearchablePreferenceScreen> screens,
             final String id) {

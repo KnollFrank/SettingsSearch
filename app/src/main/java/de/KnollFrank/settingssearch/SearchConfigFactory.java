@@ -26,6 +26,9 @@ class SearchConfigFactory {
     @IdRes
     static final int SEARCH_RESULTS_VIEW_ID = R.id.searchResultsCustom;
 
+    private SearchConfigFactory() {
+    }
+
     public static SearchConfig createSearchConfig(final @IdRes int fragmentContainerViewId,
                                                   final Context context) {
         final IgnoreSearchResultsFilter ignoreSearchResultsFilter = new IgnoreSearchResultsFilter();

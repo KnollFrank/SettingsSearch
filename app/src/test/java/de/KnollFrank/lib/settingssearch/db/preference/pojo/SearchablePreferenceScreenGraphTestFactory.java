@@ -24,6 +24,9 @@ import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest.Pref
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchablePreferenceScreenGraphTestFactory {
 
+    private SearchablePreferenceScreenGraphTestFactory() {
+    }
+
     public static ImmutableValueGraph.Builder<SearchablePreferenceScreen, SearchablePreference> createGraphBuilder() {
         return Graphs.directedImmutableValueGraphBuilder();
     }

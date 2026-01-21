@@ -15,6 +15,9 @@ import de.KnollFrank.lib.settingssearch.graph.PojoTrees;
 
 class PreferencePathFactory {
 
+    private PreferencePathFactory() {
+    }
+
     public static <C> PreferencePath createPreferencePath(final PreferencePathData preferencePathData,
                                                           final SearchablePreferenceScreenTreeRepository<C> treeRepository,
                                                           final Locale locale,

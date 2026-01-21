@@ -12,6 +12,9 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
 class PreferenceScreenAdapter {
 
+    private PreferenceScreenAdapter() {
+    }
+
     public static void removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(
             final PreferenceFragmentCompat preferenceFragment,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {

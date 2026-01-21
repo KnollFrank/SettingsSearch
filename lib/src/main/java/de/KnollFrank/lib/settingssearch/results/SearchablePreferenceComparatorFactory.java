@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 
 class SearchablePreferenceComparatorFactory {
 
+    private SearchablePreferenceComparatorFactory() {
+    }
+
     public static Comparator<SearchablePreferenceOfHostWithinTree> lexicographicalComparator() {
         return SearchablePreferenceComparatorFactory
                 .title()

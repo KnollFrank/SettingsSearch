@@ -15,6 +15,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PreferencePathProvider {
 
+    private PreferencePathProvider() {
+    }
+
     public static PreferencePath getPreferencePath(final SearchablePreferenceOfHostWithinTree target) {
         return new PreferencePath(getPathPreferences(target));
     }

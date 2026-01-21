@@ -7,6 +7,9 @@ import java.util.Set;
 
 public class SearchablePreferenceScreenTestFactory {
 
+    private SearchablePreferenceScreenTestFactory() {
+    }
+
     public static SearchablePreferenceScreen createScreen(final String id,
                                                           final Set<SearchablePreference> allPreferencesOfPreferenceHierarchy) {
         return new SearchablePreferenceScreen(

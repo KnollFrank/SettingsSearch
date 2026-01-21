@@ -6,6 +6,9 @@ import java.io.File;
 
 class DatabaseFileDeleter {
 
+    private DatabaseFileDeleter() {
+    }
+
     public static void deleteDatabaseFile(final Context context, String dbName) {
         final File dbFile = context.getDatabasePath(dbName);
         deleteIfExists(dbFile);

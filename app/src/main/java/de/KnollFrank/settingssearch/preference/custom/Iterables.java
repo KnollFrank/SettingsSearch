@@ -9,6 +9,9 @@ import java.util.function.Predicate;
 
 public class Iterables {
 
+    private Iterables() {
+    }
+
     public static <T extends @Nullable Object> OptionalInt indexOf(final Iterable<T> iterable,
                                                                    final Predicate<? super T> predicate) {
         return minusOne2Empty(com.google.common.collect.Iterables.indexOf(iterable, predicate::test));

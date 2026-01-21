@@ -9,6 +9,9 @@ import java.util.Optional;
 
 class ViewAtPositionHighlighter {
 
+    private ViewAtPositionHighlighter() {
+    }
+
     public static void highlightViewAtPosition(final RecyclerView recyclerView,
                                                final int position,
                                                final Duration highlightDuration,

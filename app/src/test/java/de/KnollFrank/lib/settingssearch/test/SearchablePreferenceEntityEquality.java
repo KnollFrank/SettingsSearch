@@ -8,6 +8,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 
 public class SearchablePreferenceEntityEquality {
 
+    private SearchablePreferenceEntityEquality() {
+    }
+
     public static void assertActualEqualsExpected(final SearchablePreferenceEntity actual, final SearchablePreferenceEntity expected) {
         assertThat(actual.id(), is(expected.id()));
         assertThat(actual.key(), is(expected.key()));

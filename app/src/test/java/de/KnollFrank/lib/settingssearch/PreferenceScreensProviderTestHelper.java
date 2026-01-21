@@ -16,6 +16,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class PreferenceScreensProviderTestHelper {
 
+    private PreferenceScreensProviderTestHelper() {
+    }
+
     public static void configureConnectedPreferencesOfFragment(
             final PreferenceFragmentCompat fragment,
             final String title,

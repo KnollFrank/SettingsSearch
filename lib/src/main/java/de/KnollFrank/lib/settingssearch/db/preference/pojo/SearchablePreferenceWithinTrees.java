@@ -7,6 +7,9 @@ import de.KnollFrank.lib.settingssearch.common.Sets;
 
 public class SearchablePreferenceWithinTrees {
 
+    private SearchablePreferenceWithinTrees() {
+    }
+
     public static Optional<SearchablePreferenceOfHostWithinTree> findPreferenceByKey(
             final Set<SearchablePreferenceOfHostWithinTree> preferences,
             final String key) {

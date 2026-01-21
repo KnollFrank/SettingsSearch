@@ -18,6 +18,9 @@ import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreeMerger {
 
+    private TreeMerger() {
+    }
+
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> mergeTreeIntoTreeNode(
             final Tree<N, V, ImmutableValueGraph<N, V>> tree,
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {

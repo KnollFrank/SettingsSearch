@@ -11,6 +11,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenEntityEquality {
 
+    private SearchablePreferenceScreenEntityEquality() {
+    }
+
     public static void assertActualEqualsExpected(final SearchablePreferenceScreenEntity actual, final SearchablePreferenceScreenEntity expected) {
         assertThat(actual.id(), is(expected.id()));
         assertThat(actual.host(), Matchers.<Class<? extends PreferenceFragmentCompat>>is(expected.host()));

@@ -10,6 +10,9 @@ import java.util.function.Function;
 
 public class PreferenceFragmentFactory {
 
+    private PreferenceFragmentFactory() {
+    }
+
     public static PreferenceFragmentCompat fromSinglePreference(final Function<Context, Preference> preferenceFactory) {
         return new PreferenceFragmentTemplate(context -> List.of(preferenceFactory.apply(context)));
     }

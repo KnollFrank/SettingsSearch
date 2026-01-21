@@ -15,6 +15,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 
 public class SearchPreferenceFragmentsFactory {
 
+    private SearchPreferenceFragmentsFactory() {
+    }
+
     public static SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(
             final @IdRes int fragmentContainerViewId,
             final FragmentActivity activity,

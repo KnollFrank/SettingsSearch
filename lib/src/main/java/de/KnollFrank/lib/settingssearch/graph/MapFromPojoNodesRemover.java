@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class MapFromPojoNodesRemover {
 
+    private MapFromPojoNodesRemover() {
+    }
+
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> removeMapFromPojoNodes(
             final Tree<SearchablePreferenceScreenWithMap, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreenWithMap, SearchablePreference>> pojoGraph) {

@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 
 class FragmentFactoryFactory {
 
+    private FragmentFactoryFactory() {
+    }
+
     public static FragmentFactory createFragmentFactory(
             final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies,
             final FragmentFactory delegate) {

@@ -19,6 +19,9 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PojoTreeTestFactory {
 
+    private PojoTreeTestFactory() {
+    }
+
     public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
             final Class<? extends PreferenceFragmentCompat> root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,

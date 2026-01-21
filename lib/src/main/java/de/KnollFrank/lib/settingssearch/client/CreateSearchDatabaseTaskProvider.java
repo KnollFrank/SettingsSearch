@@ -22,6 +22,9 @@ public class CreateSearchDatabaseTaskProvider {
 
     public static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
+    private CreateSearchDatabaseTaskProvider() {
+    }
+
     public static <C> AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,

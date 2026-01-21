@@ -14,6 +14,9 @@ public class SearchablePreferenceTestFactory {
 
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
+    private SearchablePreferenceTestFactory() {
+    }
+
     public static SearchablePreference createSearchablePreference(final String key) {
         return new SearchablePreference(
                 "id-" + key,

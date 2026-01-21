@@ -10,6 +10,9 @@ import java.util.List;
 
 class ViewAdder {
 
+    private ViewAdder() {
+    }
+
     public static void replaceViewWithViews(final View viewToReplace,
                                             final List<View> replacingViews,
                                             final Context context) {

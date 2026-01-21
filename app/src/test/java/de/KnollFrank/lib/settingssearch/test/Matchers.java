@@ -19,6 +19,9 @@ import java.util.Set;
 
 public class Matchers {
 
+    private Matchers() {
+    }
+
     public static Matcher<View> recyclerViewHasItemCount(final Matcher<Integer> itemCountMatcher) {
         return new BoundedMatcher<>(RecyclerView.class) {
 

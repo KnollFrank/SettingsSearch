@@ -16,6 +16,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchablePreferenceScreenEntitiesToGraphConverter {
 
+    private SearchablePreferenceScreenEntitiesToGraphConverter() {
+    }
+
     public static Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>> convertScreensToTree(
             final Set<SearchablePreferenceScreenEntity> screens,
             final DbDataProvider dbDataProvider) {

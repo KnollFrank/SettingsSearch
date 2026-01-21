@@ -10,7 +10,10 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 
 class ArgumentsFactory {
 
-	public static Arguments createArguments(final Class<? extends Fragment> fragmentClass,
+    private ArgumentsFactory() {
+    }
+
+    public static Arguments createArguments(final Class<? extends Fragment> fragmentClass,
 											final Optional<PreferenceWithHost> preferenceWithHost) {
 		return new Arguments(
 				fragmentClass,

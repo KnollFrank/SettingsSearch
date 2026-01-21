@@ -9,6 +9,9 @@ import de.KnollFrank.lib.settingssearch.common.Strings;
 
 public class ProgressProvider {
 
+    private ProgressProvider() {
+    }
+
     public static String getProgress(final PreferenceScreenWithHost preferenceScreenWithHost) {
         return "processing settings of " + getTitleOrClassName(preferenceScreenWithHost);
     }

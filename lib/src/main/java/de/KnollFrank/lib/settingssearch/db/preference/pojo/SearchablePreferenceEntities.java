@@ -7,6 +7,9 @@ import de.KnollFrank.lib.settingssearch.common.Sets;
 
 public class SearchablePreferenceEntities {
 
+    private SearchablePreferenceEntities() {
+    }
+
     public static Optional<SearchablePreferenceEntity> findPreferenceByKey(final Set<SearchablePreferenceEntity> preferences, final String key) {
         return Sets.findElementByPredicate(
                 preferences,

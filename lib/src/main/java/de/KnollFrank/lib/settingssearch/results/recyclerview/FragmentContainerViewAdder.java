@@ -9,6 +9,9 @@ import androidx.fragment.app.FragmentContainerView;
 
 public class FragmentContainerViewAdder {
 
+    private FragmentContainerViewAdder() {
+    }
+
     public static void addInvisibleFragmentContainerViewWithIdToParent(final ViewGroup parent,
                                                                        final @IdRes int id) {
         if (parent.findViewById(id) == null) {

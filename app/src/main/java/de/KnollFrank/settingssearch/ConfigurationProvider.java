@@ -10,6 +10,9 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class ConfigurationProvider {
 
+    private ConfigurationProvider() {
+    }
+
     public static Configuration getActualConfiguration(final Context context) {
         return getConfiguration(PreferenceManager.getDefaultSharedPreferences(context));
     }

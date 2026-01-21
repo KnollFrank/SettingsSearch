@@ -6,6 +6,9 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 
 public class InstantiateAndInitializeFragmentFactory {
 
+    private InstantiateAndInitializeFragmentFactory() {
+    }
+
     public static InstantiateAndInitializeFragment createInstantiateAndInitializeFragment(
             final FragmentFactory fragmentFactory,
             final FragmentInitializer fragmentInitializer,

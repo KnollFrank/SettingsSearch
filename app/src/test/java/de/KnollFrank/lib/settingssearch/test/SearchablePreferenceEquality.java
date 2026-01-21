@@ -13,6 +13,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class SearchablePreferenceEquality {
 
+    private SearchablePreferenceEquality() {
+    }
+
     public static void assertActualEqualsExpected(final SearchablePreference actual,
                                                   final SearchablePreference expected) {
         assertThat(actual.getId(), is(expected.getId()));

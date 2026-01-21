@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment
 
 public class PreferenceFragmentTestFactory {
 
+    private PreferenceFragmentTestFactory() {
+    }
+
     public static PreferenceFragmentCompat createSomePreferenceFragment(final FragmentActivity activity) {
         final PreferenceFragmentCompat preferenceFragment = new TestPreferenceFragment();
         return (PreferenceFragmentCompat) initializeFragment(

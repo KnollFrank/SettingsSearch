@@ -10,6 +10,9 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
 public class PreferenceDialogsFactory {
 
+    private PreferenceDialogsFactory() {
+    }
+
     public static PreferenceDialogs createPreferenceDialogs(final FragmentManager fragmentManager,
                                                             final @IdRes int containerViewId,
                                                             final OnUiThreadRunner onUiThreadRunner,

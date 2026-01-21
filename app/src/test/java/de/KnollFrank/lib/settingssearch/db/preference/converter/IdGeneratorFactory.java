@@ -2,6 +2,9 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 public class IdGeneratorFactory {
 
+    private IdGeneratorFactory() {
+    }
+
     public static IdGenerator createIdGeneratorStartingAt(final int startId) {
         return new IdGenerator() {
 

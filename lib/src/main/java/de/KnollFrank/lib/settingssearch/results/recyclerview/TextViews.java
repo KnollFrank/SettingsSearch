@@ -7,6 +7,9 @@ import java.util.Optional;
 
 class TextViews {
 
+    private TextViews() {
+    }
+
     public static void setOptionalTextOnOptionalTextView(final Optional<TextView> optionalTextView,
                                                          final Optional<CharSequence> optionalText) {
         optionalTextView.ifPresent(

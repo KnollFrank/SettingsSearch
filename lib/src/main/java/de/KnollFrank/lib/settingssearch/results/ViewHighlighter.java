@@ -13,6 +13,9 @@ import de.KnollFrank.lib.settingssearch.common.Attributes;
 
 public class ViewHighlighter {
 
+    private ViewHighlighter() {
+    }
+
     public static void highlightView(final View view, final Duration highlightDuration) {
         final Drawable background = view.getBackground();
         view.setBackgroundColor(getHighlightColor(view.getContext()));

@@ -18,6 +18,9 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class InstantiateAndInitializeFragmentFactory {
 
+    private InstantiateAndInitializeFragmentFactory() {
+    }
+
     public static InstantiateAndInitializeFragment createInstantiateAndInitializeFragment(final FragmentActivity activity) {
         return createInstantiateAndInitializeFragment(activity, new DefaultFragmentFactory());
     }

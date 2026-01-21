@@ -7,6 +7,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 
 public class PreferenceMatches {
 
+    private PreferenceMatches() {
+    }
+
     public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Set<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()

@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 
 class StringGraphEquality {
 
+    private StringGraphEquality() {
+    }
+
     public static void assertActualEqualsExpected(final Graph<StringNode, StringEdge> actual,
                                                   final Graph<StringNode, StringEdge> expected) {
         assertActualEqualsExpected(actual.vertexSet(), expected.vertexSet());

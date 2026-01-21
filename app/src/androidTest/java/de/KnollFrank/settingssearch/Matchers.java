@@ -17,6 +17,9 @@ import java.util.Objects;
 
 class Matchers {
 
+    private Matchers() {
+    }
+
     // adapted from https://stackoverflow.com/a/53289078/12982352
     public static Matcher<View> recyclerViewHasItem(final Matcher<View> matcher) {
         return new BoundedMatcher<>(RecyclerView.class) {

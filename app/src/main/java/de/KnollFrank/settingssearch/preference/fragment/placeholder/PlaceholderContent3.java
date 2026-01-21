@@ -19,6 +19,9 @@ public class PlaceholderContent3 {
         }
     }
 
+    private PlaceholderContent3() {
+    }
+
     private static void addItem(final PlaceholderContent.PlaceholderItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.key(), item);

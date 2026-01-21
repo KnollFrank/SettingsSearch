@@ -9,6 +9,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class ChildrenByPreferenceProvider {
 
+    private ChildrenByPreferenceProvider() {
+    }
+
     public static Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference(
             final Set<SearchablePreference> searchablePreferences) {
         return searchablePreferences

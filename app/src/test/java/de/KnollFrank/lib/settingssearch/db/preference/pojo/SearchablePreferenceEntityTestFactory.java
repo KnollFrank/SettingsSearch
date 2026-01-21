@@ -13,6 +13,9 @@ public class SearchablePreferenceEntityTestFactory {
 
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
+    private SearchablePreferenceEntityTestFactory() {
+    }
+
     public static SearchablePreferenceEntity createSearchablePreference(
             final String id,
             final Optional<String> title,

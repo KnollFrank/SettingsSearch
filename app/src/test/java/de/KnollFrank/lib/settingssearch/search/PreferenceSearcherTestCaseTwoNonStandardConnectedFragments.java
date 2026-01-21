@@ -28,6 +28,9 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
     private static final String KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "some preference of connected fragment";
     private static final String KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "keyOfPreferenceOfConnectedFragment";
 
+    private PreferenceSearcherTestCaseTwoNonStandardConnectedFragments() {
+    }
+
     public static void shouldSearchAndFindPreferenceOfNonStandardConnectedFragment(
             final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository) {
         testSearch(

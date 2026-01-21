@@ -6,6 +6,9 @@ import de.KnollFrank.settingssearch.Configuration;
 
 public class PersistableBundleTestFactory {
 
+    private PersistableBundleTestFactory() {
+    }
+
     public static PersistableBundle createSomePersistableBundle() {
         final PersistableBundle bundle = new PersistableBundle();
         bundle.putStringArray("some string key", new String[]{"some string 1", "some string 2"});
