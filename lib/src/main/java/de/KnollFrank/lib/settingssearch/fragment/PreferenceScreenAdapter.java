@@ -11,8 +11,9 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
 class PreferenceScreenAdapter {
 
-    public static void removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(final PreferenceFragmentCompat preferenceFragment,
-                                                                                              final PreferenceSearchablePredicate preferenceSearchablePredicate) {
+    public static void removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(
+            final PreferenceFragmentCompat preferenceFragment,
+            final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         final Predicate<Preference> isPreferenceNonSearchable =
                 preference ->
                         !preferenceSearchablePredicate.isPreferenceSearchable(
