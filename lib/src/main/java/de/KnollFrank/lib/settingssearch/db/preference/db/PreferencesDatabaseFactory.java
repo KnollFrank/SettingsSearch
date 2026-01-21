@@ -13,6 +13,9 @@ import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 public class PreferencesDatabaseFactory {
 
+    private PreferencesDatabaseFactory() {
+    }
+
     public static <C> PreferencesDatabase<C> createPreferencesDatabase(
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
             final C configuration,

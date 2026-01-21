@@ -14,6 +14,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class PojoTrees {
 
+    private PojoTrees() {
+    }
+
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
         return getPreferences(

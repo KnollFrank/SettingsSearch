@@ -7,6 +7,9 @@ import androidx.room.RoomDatabase;
 
 class PreferencesRoomDatabaseFactory {
 
+    private PreferencesRoomDatabaseFactory() {
+    }
+
     public static <C> PreferencesRoomDatabase createPreferencesRoomDatabase(
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
             final Context context) {
