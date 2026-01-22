@@ -189,7 +189,7 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         addEdgeToTreePredicate,
-                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
+                        TreeBuilderListeners.emptyTreeBuilderListener(),
                         activity),
                 Locale.GERMAN);
     }

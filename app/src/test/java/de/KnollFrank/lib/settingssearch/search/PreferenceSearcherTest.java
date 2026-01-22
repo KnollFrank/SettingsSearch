@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
-import static de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners.createNoOpTreeBuilderListener;
+import static de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners.emptyTreeBuilderListener;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER;
 
@@ -116,7 +116,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceToIncludeInSearchResults)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -185,7 +185,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreferenceToExcludeFromSearchResults))),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -242,7 +242,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfNestedPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -268,7 +268,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -294,7 +294,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -323,7 +323,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -353,7 +353,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -381,7 +381,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -409,7 +409,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -438,7 +438,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -465,7 +465,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -503,7 +503,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItems(keyOfPreference1, keyOfPreference2)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -523,7 +523,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -543,7 +543,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -563,7 +563,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -592,7 +592,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -622,7 +622,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test
@@ -649,7 +649,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
                 createTreeRepository(),
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 
     @Test

@@ -9,7 +9,7 @@ public class TreeBuilderListeners {
     private TreeBuilderListeners() {
     }
 
-    public static <N, V> TreeBuilderListener<N, V> createNoOpTreeBuilderListener() {
+    public static <N, V> TreeBuilderListener<N, V> emptyTreeBuilderListener() {
         return new TreeBuilderListener<>() {
 
             @Override

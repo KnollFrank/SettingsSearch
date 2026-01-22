@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners.createNoOpTreeBuilderListener;
+import static de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners.emptyTreeBuilderListener;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeyList;
 
 import android.content.Context;
@@ -106,6 +106,6 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 checkPreferenceMatches,
                 treeRepository,
-                createNoOpTreeBuilderListener());
+                emptyTreeBuilderListener());
     }
 }

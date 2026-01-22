@@ -31,7 +31,7 @@ public class SearchDatabaseConfigBuilder {
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
-    private TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener = TreeBuilderListeners.createNoOpTreeBuilderListener();
+    private TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener = TreeBuilderListeners.emptyTreeBuilderListener();
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();

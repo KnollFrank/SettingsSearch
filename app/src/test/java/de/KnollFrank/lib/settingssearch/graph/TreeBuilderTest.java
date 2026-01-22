@@ -46,7 +46,7 @@ public class TreeBuilderTest {
                 };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
-                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
+                        TreeBuilderListeners.emptyTreeBuilderListener(),
                         childNodeByEdgeValueProvider);
 
         // When
@@ -84,7 +84,7 @@ public class TreeBuilderTest {
                 };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
-                        TreeBuilderListeners.createNoOpTreeBuilderListener(),
+                        TreeBuilderListeners.emptyTreeBuilderListener(),
                         childNodeByEdgeValueProvider);
 
         // When
