@@ -4,6 +4,7 @@ import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.function.Function;
 
+// FK-TODO: führe eine Klasse SubtreeRemover ein, die einen Teilbaum entfernt?
 public class NodeReplacer {
 
     private NodeReplacer() {

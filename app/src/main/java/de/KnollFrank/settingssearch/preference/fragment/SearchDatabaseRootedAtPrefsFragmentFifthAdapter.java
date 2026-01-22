@@ -38,18 +38,18 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
 
     @Override
     public SearchablePreferenceScreenTree transformTree(final SearchablePreferenceScreenTree tree,
-                                                        final Configuration actualConfiguration,
+                                                        final Configuration targetConfiguration,
                                                         final FragmentActivity activityContext) {
         return adaptGraphAtPrefsFragmentFifth(
                 tree,
-                actualConfiguration,
+                targetConfiguration,
                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                 activityContext);
     }
 
     public SearchablePreferenceScreenTree adaptGraphAtPrefsFragmentFifth(
             final SearchablePreferenceScreenTree searchablePreferenceScreenTree,
-            final Configuration newConfiguration,
+            final Configuration targetConfiguration,
             final SearchDatabaseConfig searchDatabaseConfig,
             final FragmentActivity activityContext) {
         final OnUiThreadRunner onUiThreadRunner = OnUiThreadRunnerFactory.fromActivity(activityContext);
@@ -75,7 +75,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                                 activityContext,
                                 searchDatabaseConfig)),
                 searchablePreferenceScreenTree.locale(),
-                new ConfigurationBundleConverter().convertForward(newConfiguration));
+                new ConfigurationBundleConverter().convertForward(targetConfiguration));
     }
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})

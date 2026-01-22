@@ -35,11 +35,11 @@ class PreferencesDatabaseConfigFactory {
 
                                     @Override
                                     public SearchablePreferenceScreenTree transformTree(final SearchablePreferenceScreenTree tree,
-                                                                                        final Configuration actualConfiguration,
+                                                                                        final Configuration targetConfiguration,
                                                                                         final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptGraphAtPrefsFragmentFifth(
                                                 tree,
-                                                actualConfiguration,
+                                                targetConfiguration,
                                                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                                                 activityContext);
                                     }

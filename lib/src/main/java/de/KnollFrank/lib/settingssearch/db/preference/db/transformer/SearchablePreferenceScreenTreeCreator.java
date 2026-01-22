@@ -10,7 +10,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public interface SearchablePreferenceScreenTreeCreator<C> {
 
     SearchablePreferenceScreenTree createTree(Locale locale,
-                                              // FK-FIXME: für actualConfiguration wird manchmal null übergeben, was bei mir verboten ist.
-                                              C actualConfiguration,
+                                              // FK-FIXME: für targetConfiguration wird manchmal null übergeben, was bei mir verboten ist.
+                                              C targetConfiguration,
                                               FragmentActivity activityContext);
 }

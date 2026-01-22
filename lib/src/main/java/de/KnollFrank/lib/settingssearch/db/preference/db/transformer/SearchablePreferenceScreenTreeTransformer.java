@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public interface SearchablePreferenceScreenTreeTransformer<C> {
 
     SearchablePreferenceScreenTree transformTree(SearchablePreferenceScreenTree tree,
-                                                 // FK-FIXME: für actualConfiguration wird manchmal null übergeben, was bei mir verboten ist.
-                                                 C actualConfiguration,
+                                                 // FK-FIXME: für targetConfiguration wird manchmal null übergeben, was bei mir verboten ist.
+                                                 C targetConfiguration,
                                                  FragmentActivity activityContext);
 }
