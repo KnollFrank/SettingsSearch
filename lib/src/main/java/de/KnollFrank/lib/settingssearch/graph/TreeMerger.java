@@ -45,14 +45,14 @@ public class TreeMerger {
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
         final Set<N> overlappingNodes =
                 Sets.intersection(
-                        getChildrenOfTreeToMerge(tree),
-                        getChildrenOfTreeToMerge(treeNode.tree()));
+                        getNodesWithoutRootNode(tree),
+                        getNodesWithoutRootNode(treeNode.tree()));
         if (!overlappingNodes.isEmpty()) {
             throw new IllegalArgumentException("Merge would result in an invalid tree. The following nodes exist in both trees: " + overlappingNodes);
         }
     }
 
-    private static <N, V> Set<N> getChildrenOfTreeToMerge(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+    private static <N, V> Set<N> getNodesWithoutRootNode(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
         return Sets.difference(tree.graph().nodes(), Set.of(tree.rootNode()));
     }
 
