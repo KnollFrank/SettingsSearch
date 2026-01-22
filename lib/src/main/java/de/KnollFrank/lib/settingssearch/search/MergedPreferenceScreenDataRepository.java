@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.search;
 import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.Preference;
 
 import com.google.common.graph.ImmutableValueGraph;
 
@@ -108,15 +109,25 @@ public class MergedPreferenceScreenDataRepository<C> {
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         edge -> true,
+                        // FK-FIXME: hier baruchen wir unbedingt als delegate den vom Benutzer zur Verfügung gestellten TreeBuilderListener.
                         new TreeBuilderListener<>() {
 
                             @Override
-                            public void onBuildSubtreeStarted(final PreferenceScreenWithHost preferenceScreenWithHost) {
+                            public void onStartBuildTree(final PreferenceScreenWithHost treeRoot) {
+                            }
+
+                            @Override
+                            public void onStartBuildSubtree(final PreferenceScreenWithHost preferenceScreenWithHost) {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
 
                             @Override
-                            public void onBuildSubtreeFinished(final PreferenceScreenWithHost subtreeRoot) {
+                            public void onFinishBuildSubtree(final PreferenceScreenWithHost subtreeRoot) {
+                            }
+
+                            @Override
+                            @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+                            public void onFinishBuildTree(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> tree) {
                             }
                         },
                         activityContext),

@@ -72,15 +72,16 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider = node -> {
-            if (node.equals(nA)) {
-                return Map.of("A->B", nB);
-            }
-            if (node.equals(nB)) {
-                return Map.of("B->A", nA);
-            }
-            return Collections.emptyMap();
-        };
+        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider =
+                node -> {
+                    if (node.equals(nA)) {
+                        return Map.of("A->B", nB);
+                    }
+                    if (node.equals(nB)) {
+                        return Map.of("B->A", nA);
+                    }
+                    return Collections.emptyMap();
+                };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         TreeBuilderListeners.createNoOpTreeBuilderListener(),
@@ -98,26 +99,24 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider = node -> {
-            if (node.equals(nA)) {
-                return Map.of("A->B", nB);
-            }
-            return Collections.emptyMap();
-        };
-        final TreeBuilderListener<StringNode> listener = Mockito.mock(TreeBuilderListener.class);
+        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider =
+                node -> node.equals(nA) ? Map.of("A->B", nB) : Collections.emptyMap();
+        @SuppressWarnings("unchecked") final TreeBuilderListener<StringNode, String> listener = Mockito.mock(TreeBuilderListener.class);
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         listener,
                         childNodeByEdgeValueProvider);
 
         // When
-        treeBuilder.buildTreeWithRoot(nA);
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = treeBuilder.buildTreeWithRoot(nA);
 
         // Then
         final InOrder inOrder = Mockito.inOrder(listener);
-        inOrder.verify(listener).onBuildSubtreeStarted(nA);
-        inOrder.verify(listener).onBuildSubtreeStarted(nB);
-        inOrder.verify(listener).onBuildSubtreeFinished(nB);
-        inOrder.verify(listener).onBuildSubtreeFinished(nA);
+        inOrder.verify(listener).onStartBuildTree(nA);
+        inOrder.verify(listener).onStartBuildSubtree(nA);
+        inOrder.verify(listener).onStartBuildSubtree(nB);
+        inOrder.verify(listener).onFinishBuildSubtree(nB);
+        inOrder.verify(listener).onFinishBuildSubtree(nA);
+        inOrder.verify(listener).onFinishBuildTree(tree);
     }
 }

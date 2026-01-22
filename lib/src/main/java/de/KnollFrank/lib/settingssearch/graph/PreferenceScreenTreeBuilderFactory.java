@@ -19,7 +19,7 @@ public class PreferenceScreenTreeBuilderFactory {
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
             final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate,
-            final TreeBuilderListener<PreferenceScreenWithHost> treeBuilderListener,
+            final TreeBuilderListener<PreferenceScreenWithHost, Preference> treeBuilderListener,
             final Context context) {
         return new TreeBuilder<>(
                 treeBuilderListener,

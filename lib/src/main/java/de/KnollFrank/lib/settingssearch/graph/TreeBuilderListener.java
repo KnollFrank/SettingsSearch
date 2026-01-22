@@ -1,8 +1,17 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-public interface TreeBuilderListener<N> {
+import com.google.common.graph.ImmutableValueGraph;
 
-    void onBuildSubtreeStarted(N subtreeRoot);
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
-    void onBuildSubtreeFinished(N subtreeRoot);
+public interface TreeBuilderListener<N, V> {
+
+    void onStartBuildTree(N treeRoot);
+
+    void onStartBuildSubtree(N subtreeRoot);
+
+    void onFinishBuildSubtree(N subtreeRoot);
+
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    void onFinishBuildTree(Tree<N, V, ImmutableValueGraph<N, V>> tree);
 }

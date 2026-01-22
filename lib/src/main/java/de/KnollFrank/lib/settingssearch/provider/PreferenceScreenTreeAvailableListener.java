@@ -7,6 +7,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
+// FK-TODO: remove
 @FunctionalInterface
 public interface PreferenceScreenTreeAvailableListener {
 

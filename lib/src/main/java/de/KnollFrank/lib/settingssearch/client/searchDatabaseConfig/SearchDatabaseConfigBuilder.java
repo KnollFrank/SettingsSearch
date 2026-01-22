@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
 import android.app.Activity;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
@@ -32,7 +33,7 @@ public class SearchDatabaseConfigBuilder {
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
-    private TreeBuilderListener<PreferenceScreenWithHost> preferenceScreenTreeBuilderListener = TreeBuilderListeners.createNoOpTreeBuilderListener();
+    private TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener = TreeBuilderListeners.createNoOpTreeBuilderListener();
     private PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener = preferenceScreenTree -> {
     };
     private ComputePreferencesListener computePreferencesListener =
@@ -87,7 +88,7 @@ public class SearchDatabaseConfigBuilder {
 
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withPreferenceScreenTreeBuilderListener(final TreeBuilderListener<PreferenceScreenWithHost> preferenceScreenTreeBuilderListener) {
+    public SearchDatabaseConfigBuilder withPreferenceScreenTreeBuilderListener(final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener) {
         this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
         return this;
     }
