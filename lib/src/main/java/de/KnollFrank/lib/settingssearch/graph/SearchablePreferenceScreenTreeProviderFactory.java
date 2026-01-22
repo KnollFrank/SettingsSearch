@@ -57,7 +57,6 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                 view,
                 containerViewId);
         return new SearchablePreferenceScreenTreeProvider(
-                searchDatabaseConfig.computePreferencesListener,
                 new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(

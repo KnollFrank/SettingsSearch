@@ -50,7 +50,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                         configuration,
                         new ConfigurationBundleConverter(),
-                        searchDatabaseConfig.computePreferencesListener,
                         this);
         final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabaseManager().getPreferencesDatabase();
         final SearchPreferenceFragments<Configuration> searchPreferenceFragments =

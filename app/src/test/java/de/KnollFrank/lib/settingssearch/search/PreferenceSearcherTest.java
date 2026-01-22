@@ -63,7 +63,6 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeBuilderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
@@ -695,7 +694,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         preferenceFragmentConnected2PreferenceProvider,
                                         preferenceDialogAndSearchableInfoProvider,
                                         principalAndProxyProvider,
-                                        emptyComputePreferencesListener(),
                                         treeRepository,
                                         treeBuilderListener,
                                         locale,
@@ -732,19 +730,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         };
     }
 
-    public static ComputePreferencesListener emptyComputePreferencesListener() {
-        return new ComputePreferencesListener() {
-
-            @Override
-            public void onStartComputePreferences() {
-            }
-
-            @Override
-            public void onFinishComputePreferences() {
-            }
-        };
-    }
-
     private static MergedPreferenceScreen<Configuration> getMergedPreferenceScreen(
             final Fragment preferenceFragment,
             final PreferenceSearchablePredicate preferenceSearchablePredicate,
@@ -753,7 +738,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PrincipalAndProxyProvider principalAndProxyProvider,
-            final ComputePreferencesListener computePreferencesListener,
             final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
             final TreeBuilderListener<PreferenceScreenWithHost, Preference> treeBuilderListener,
             final Locale locale,
@@ -775,7 +759,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         principalAndProxyProvider);
         final SearchablePreferenceScreenTreeProvider searchablePreferenceScreenTreeProvider =
                 new SearchablePreferenceScreenTreeProvider(
-                        computePreferencesListener,
                         new TreeToPojoTreeTransformer(
                                 new PreferenceScreenToSearchablePreferenceScreenConverter(
                                         new PreferenceToSearchablePreferenceConverter(
@@ -863,7 +846,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
         return SearchablePreferenceScreenTreeRepository.of(
-                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
-                emptyComputePreferencesListener());
+                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO());
     }
 }

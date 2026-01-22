@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByTitle;
-import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 
 import android.os.Bundle;
 
@@ -177,7 +176,6 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
         return new SearchablePreferenceScreenTreeProvider(
-                emptyComputePreferencesListener(),
                 new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 new PreferenceToSearchablePreferenceConverter(

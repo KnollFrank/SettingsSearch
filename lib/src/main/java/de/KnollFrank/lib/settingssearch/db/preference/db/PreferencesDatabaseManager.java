@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 public class PreferencesDatabaseManager<C> {
 
@@ -16,7 +15,6 @@ public class PreferencesDatabaseManager<C> {
     public void initPreferencesDatabase(final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
                                         final C configuration,
                                         final ConfigurationBundleConverter<C> configurationBundleConverter,
-                                        final ComputePreferencesListener computePreferencesListener,
                                         final FragmentActivity activityContext) {
         if (preferencesDatabase.isEmpty()) {
             synchronized (LOCK) {
@@ -28,7 +26,6 @@ public class PreferencesDatabaseManager<C> {
                                             configuration,
                                             Locales.getCurrentLanguageLocale(activityContext.getResources()),
                                             configurationBundleConverter,
-                                            computePreferencesListener,
                                             activityContext));
                 }
             }

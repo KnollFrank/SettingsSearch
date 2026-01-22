@@ -14,26 +14,20 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchablePreferenceScreenTreeProvider {
 
-    private final ComputePreferencesListener computePreferencesListener;
     private final TreeToPojoTreeTransformer treeToPojoTreeTransformer;
     private final TreeBuilder<PreferenceScreenWithHost, Preference> treeBuilder;
     private final Locale locale;
 
-    public SearchablePreferenceScreenTreeProvider(final ComputePreferencesListener computePreferencesListener,
-                                                  final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
+    public SearchablePreferenceScreenTreeProvider(final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
                                                   final TreeBuilder<PreferenceScreenWithHost, Preference> treeBuilder,
                                                   final Locale locale) {
-        this.computePreferencesListener = computePreferencesListener;
         this.treeToPojoTreeTransformer = treeToPojoTreeTransformer;
         this.treeBuilder = treeBuilder;
         this.locale = locale;
     }
 
     public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getSearchablePreferenceScreenTree(final PreferenceScreenWithHost root) {
-        computePreferencesListener.onStartComputePreferences();
-        final var searchablePreferenceScreenGraph = transformGraphToPojoGraph(treeBuilder.buildTreeWithRoot(root));
-        computePreferencesListener.onFinishComputePreferences();
-        return searchablePreferenceScreenGraph;
+        return transformGraphToPojoGraph(treeBuilder.buildTreeWithRoot(root));
     }
 
     private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformGraphToPojoGraph(

@@ -25,7 +25,6 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
@@ -163,17 +162,6 @@ public class SearchDatabaseConfigFactory {
                                                 GraphConverterFactory
                                                         .createPreferenceScreenWithHostGraphConverter()
                                                         .toJGraphT(preferenceScreenTree.graph())));
-                            }
-                        })
-                .withComputePreferencesListener(
-                        new ComputePreferencesListener() {
-
-                            @Override
-                            public void onStartComputePreferences() {
-                            }
-
-                            @Override
-                            public void onFinishComputePreferences() {
                             }
                         })
                 .build();

@@ -9,7 +9,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 public class PreferencesDatabaseFactory {
 
@@ -21,7 +20,6 @@ public class PreferencesDatabaseFactory {
             final C configuration,
             final Locale locale,
             final ConfigurationBundleConverter<C> configurationBundleConverter,
-            final ComputePreferencesListener computePreferencesListener,
             final FragmentActivity activityContext) {
         final PreferencesRoomDatabase preferencesRoomDatabase =
                 PreferencesRoomDatabaseFactory.createPreferencesRoomDatabase(
@@ -42,8 +40,7 @@ public class PreferencesDatabaseFactory {
 
             private final SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository =
                     SearchablePreferenceScreenTreeRepository.of(
-                            preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
-                            computePreferencesListener);
+                            preferencesRoomDatabase.searchablePreferenceScreenTreeDAO());
 
             @Override
             public SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository() {

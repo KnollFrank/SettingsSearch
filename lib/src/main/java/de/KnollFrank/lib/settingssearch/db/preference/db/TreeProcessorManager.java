@@ -11,18 +11,12 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 class TreeProcessorManager<C> {
 
-    private final ComputePreferencesListener computePreferencesListener;
     // FK-TODO: treeProcessors in der Suchdatenbank speichern
     // FK-TODO: use Queue instead of List?
     private final List<Either<SearchablePreferenceScreenTreeTransformer<C>, SearchablePreferenceScreenTreeCreator<C>>> treeProcessors = new ArrayList<>();
-
-    public TreeProcessorManager(final ComputePreferencesListener computePreferencesListener) {
-        this.computePreferencesListener = computePreferencesListener;
-    }
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
         treeProcessors.add(Either.ofLeft(treeTransformer));
@@ -45,14 +39,12 @@ class TreeProcessorManager<C> {
             final List<SearchablePreferenceScreenTree> trees,
             final C configuration,
             final FragmentActivity activityContext) {
-        computePreferencesListener.onStartComputePreferences();
         final List<SearchablePreferenceScreenTree> transformedTrees =
                 trees
                         .stream()
                         .map(tree -> applyTreeProcessorsToTree(tree, configuration, activityContext))
                         .collect(Collectors.toList());
         removeTreeProcessors();
-        computePreferencesListener.onFinishComputePreferences();
         return transformedTrees;
     }
 
