@@ -15,7 +15,6 @@ import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenTreeAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
@@ -31,7 +30,6 @@ public class SearchDatabaseConfig {
     public final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener;
-    public final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener;
     public final ComputePreferencesListener computePreferencesListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final PrincipalAndProxyProvider principalAndProxyProvider;
@@ -46,7 +44,6 @@ public class SearchDatabaseConfig {
                          final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener,
-                         final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener,
                          final ComputePreferencesListener computePreferencesListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final PrincipalAndProxyProvider principalAndProxyProvider,
@@ -60,7 +57,6 @@ public class SearchDatabaseConfig {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
-        this.preferenceScreenTreeAvailableListener = preferenceScreenTreeAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
         this.preferenceSearchablePredicate = new PreferenceVisibleAndSearchablePredicate(preferenceSearchablePredicate);
         this.principalAndProxyProvider = principalAndProxyProvider;

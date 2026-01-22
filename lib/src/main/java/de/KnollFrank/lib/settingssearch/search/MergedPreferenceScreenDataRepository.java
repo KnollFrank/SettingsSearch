@@ -96,7 +96,6 @@ public class MergedPreferenceScreenDataRepository<C> {
 
     private SearchablePreferenceScreenTreeProvider getSearchablePreferenceScreenGraphProvider() {
         return new SearchablePreferenceScreenTreeProvider(
-                searchDatabaseConfig.preferenceScreenTreeAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
                 new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(

@@ -99,8 +99,6 @@ public class SearchableTreeBuilderTest {
             final FragmentActivity fragmentActivity,
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         return new SearchablePreferenceScreenTreeProvider(
-                preferenceScreenGraph -> {
-                },
                 computePreferencesListener,
                 new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(

@@ -177,8 +177,6 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
         return new SearchablePreferenceScreenTreeProvider(
-                preferenceScreenGraph -> {
-                },
                 emptyComputePreferencesListener(),
                 new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(

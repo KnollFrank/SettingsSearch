@@ -27,11 +27,11 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
+import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenTreeAvailableListener;
 import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
 import de.KnollFrank.settingssearch.SettingsActivity2.SettingsFragment2;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -137,12 +137,26 @@ public class SearchDatabaseConfigFactory {
                                         Optional.empty();
                             }
                         })
-                .withPreferenceScreenGraphAvailableListener(
-                        new PreferenceScreenTreeAvailableListener() {
+                .withPreferenceScreenTreeBuilderListener(
+                        new TreeBuilderListener<>() {
+
+                            @Override
+                            public void onStartBuildTree(final PreferenceScreenWithHost treeRoot) {
+                                Log.i(this.getClass().getSimpleName(), "onStartComputePreferences");
+                            }
+
+                            @Override
+                            public void onStartBuildSubtree(final PreferenceScreenWithHost subtreeRoot) {
+                            }
+
+                            @Override
+                            public void onFinishBuildSubtree(final PreferenceScreenWithHost subtreeRoot) {
+                            }
 
                             @Override
                             @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-                            public void onPreferenceScreenTreeAvailable(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
+                            public void onFinishBuildTree(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
+                                Log.i(this.getClass().getSimpleName(), "onFinishComputePreferences");
                                 Log.i(
                                         this.getClass().getSimpleName(),
                                         PreferenceScreenGraph2DOTConverter.graph2DOT(
@@ -156,12 +170,10 @@ public class SearchDatabaseConfigFactory {
 
                             @Override
                             public void onStartComputePreferences() {
-                                Log.i(this.getClass().getSimpleName(), "onStartComputePreferences");
                             }
 
                             @Override
                             public void onFinishComputePreferences() {
-                                Log.i(this.getClass().getSimpleName(), "onFinishComputePreferences");
                             }
                         })
                 .build();
