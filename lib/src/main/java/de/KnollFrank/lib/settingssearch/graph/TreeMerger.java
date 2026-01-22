@@ -46,7 +46,7 @@ public class TreeMerger {
         final Set<N> overlappingNodes =
                 Sets.intersection(
                         getChildrenOfTreeToMerge(tree),
-                        treeNode.tree().graph().nodes());
+                        getChildrenOfTreeToMerge(treeNode.tree()));
         if (!overlappingNodes.isEmpty()) {
             throw new IllegalArgumentException("Merge would result in an invalid tree. The following nodes exist in both trees: " + overlappingNodes);
         }
