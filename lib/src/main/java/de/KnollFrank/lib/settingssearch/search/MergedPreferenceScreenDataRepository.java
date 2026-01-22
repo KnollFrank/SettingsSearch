@@ -3,14 +3,12 @@ package de.KnollFrank.lib.settingssearch.search;
 import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.Preference;
 
 import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
@@ -26,9 +24,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeBuilderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
-import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
-import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class MergedPreferenceScreenDataRepository<C> {
@@ -107,27 +103,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         edge -> true,
-                        // FK-FIXME: hier baruchen wir unbedingt als delegate den vom Benutzer zur Verfügung gestellten TreeBuilderListener.
-                        new TreeBuilderListener<>() {
-
-                            @Override
-                            public void onStartBuildTree(final PreferenceScreenWithHost treeRoot) {
-                            }
-
-                            @Override
-                            public void onStartBuildSubtree(final PreferenceScreenWithHost preferenceScreenWithHost) {
-                                progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
-                            }
-
-                            @Override
-                            public void onFinishBuildSubtree(final PreferenceScreenWithHost subtreeRoot) {
-                            }
-
-                            @Override
-                            @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-                            public void onFinishBuildTree(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> tree) {
-                            }
-                        },
+                        new ProgressUpdatingTreeBuilderListener(searchDatabaseConfig.preferenceScreenTreeBuilderListener, progressUpdateListener),
                         activityContext),
                 locale);
     }
