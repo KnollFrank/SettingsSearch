@@ -220,16 +220,64 @@ public class TreeTest {
                                 .build());
 
         // When
-        final Optional<Edge<StringNode, String>> incomingEdgeOfnB = tree.incomingEdgeOf(innerNode);
+        final Optional<Edge<StringNode, String>> incomingEdgeOfInnerNode = tree.incomingEdgeOf(innerNode);
 
         // Then
         assertThat(
-                incomingEdgeOfnB,
+                incomingEdgeOfInnerNode,
                 is(
                         Optional.of(
                                 new Edge<>(
                                         EndpointPair.ordered(nA, innerNode),
                                         edgeValueOfnAnB))));
+    }
+
+    @Test
+    public void test_parentNodeOfRootNode() {
+        // Given
+        /*
+         * A
+         * |
+         * v
+         * B
+         */
+        final StringNode rootNode = nA;
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(rootNode, nB, "val")
+                                .build());
+
+        // When
+        final Optional<StringNode> parentNodeOfRootNode = tree.parentNodeOf(rootNode);
+
+        // Then
+        assertThat(parentNodeOfRootNode, is(Optional.empty()));
+    }
+
+    @Test
+    public void test_parentNodeOfInnerNode() {
+        // Given
+        /*
+         * A
+         * |
+         * v
+         * B
+         */
+        final StringNode innerNode = nB;
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nA, innerNode, "val")
+                                .build());
+
+        // When
+        final Optional<StringNode> parentNodeOfInnerNode = tree.parentNodeOf(innerNode);
+
+        // Then
+        assertThat(parentNodeOfInnerNode, is(Optional.of(nA)));
     }
 
     @Test
