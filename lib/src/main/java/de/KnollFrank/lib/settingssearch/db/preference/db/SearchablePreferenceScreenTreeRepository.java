@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
         this.treeProcessorManager = treeProcessorManager;
     }
 
-    public void persistOrReplace(final SearchablePreferenceScreenTree searchablePreferenceScreenTree) {
+    public void persistOrReplace(final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree) {
         delegate.persistOrReplace(searchablePreferenceScreenTree);
         treeProcessorManager.removeTreeProcessors();
     }
@@ -40,15 +42,15 @@ public class SearchablePreferenceScreenTreeRepository<C> {
         treeProcessorManager.addTreeCreator(TreeCreator);
     }
 
-    public Optional<SearchablePreferenceScreenTree> findTreeById(final Locale id,
-                                                                 final C actualConfiguration,
-                                                                 final FragmentActivity activityContext) {
+    public Optional<SearchablePreferenceScreenTree<PersistableBundle>> findTreeById(final Locale id,
+                                                                                    final C actualConfiguration,
+                                                                                    final FragmentActivity activityContext) {
         updateSearchDatabase(actualConfiguration, activityContext);
         return delegate.findTreeById(id);
     }
 
-    public Set<SearchablePreferenceScreenTree> loadAll(final C actualConfiguration,
-                                                       final FragmentActivity activityContext) {
+    public Set<SearchablePreferenceScreenTree<PersistableBundle>> loadAll(final C actualConfiguration,
+                                                                          final FragmentActivity activityContext) {
         updateSearchDatabase(actualConfiguration, activityContext);
         return delegate.loadAll();
     }

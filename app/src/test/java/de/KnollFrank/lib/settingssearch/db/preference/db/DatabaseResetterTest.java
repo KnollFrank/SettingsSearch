@@ -77,7 +77,7 @@ public class DatabaseResetterTest {
         preferencesDatabase
                 .searchablePreferenceScreenTreeRepository()
                 .persistOrReplace(
-                        new SearchablePreferenceScreenTree(
+                        new SearchablePreferenceScreenTree<>(
                                 singleNodeGraph.pojoTree(),
                                 singleNodeGraph.entityTreeAndDbDataProvider().tree().id(),
                                 singleNodeGraph.entityTreeAndDbDataProvider().tree().configuration()));

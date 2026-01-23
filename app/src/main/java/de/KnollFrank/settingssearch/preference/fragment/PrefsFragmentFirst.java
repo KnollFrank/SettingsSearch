@@ -3,6 +3,7 @@ package de.KnollFrank.settingssearch.preference.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -80,7 +81,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 true);
     }
 
-    private SearchablePreferenceScreenTree getPojoGraph(final Locale locale) {
+    private SearchablePreferenceScreenTree<PersistableBundle> getPojoGraph(final Locale locale) {
         return getPreferencesDatabase()
                 .searchablePreferenceScreenTreeRepository()
                 .findTreeById(locale, null, requireActivity())
@@ -99,7 +100,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private boolean onPreferenceChange(final @NonNull Preference preference, final boolean checked) {
-                        final SearchablePreferenceScreenTree pojoGraph = getPojoGraph(locale);
+                        final SearchablePreferenceScreenTree<PersistableBundle> pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
                                 getSummaryChangingPreference(pojoGraph.tree()),
@@ -117,8 +118,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return true;
                     }
 
-                    private SearchablePreferenceScreenTree getGraphHavingConfiguration(final SearchablePreferenceScreenTree graph,
-                                                                                       final Configuration configuration) {
+                    private SearchablePreferenceScreenTree<PersistableBundle> getGraphHavingConfiguration(final SearchablePreferenceScreenTree<PersistableBundle> graph,
+                                                                                                          final Configuration configuration) {
                         return graph.asTreeHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
                     }
 

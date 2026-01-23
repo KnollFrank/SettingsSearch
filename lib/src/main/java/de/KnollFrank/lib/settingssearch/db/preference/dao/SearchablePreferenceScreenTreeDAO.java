@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
+import android.os.PersistableBundle;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class SearchablePreferenceScreenTreeDAO {
 
     private final EntityTreePojoTreeConverter entityTreePojoTreeConverter;
     private final SearchablePreferenceScreenTreeEntityDAO delegate;
-    private final Map<Locale, Optional<SearchablePreferenceScreenTree>> graphById = new HashMap<>();
+    private final Map<Locale, Optional<SearchablePreferenceScreenTree<PersistableBundle>>> graphById = new HashMap<>();
 
     public SearchablePreferenceScreenTreeDAO(final EntityTreePojoTreeConverter entityTreePojoTreeConverter,
                                              final SearchablePreferenceScreenTreeEntityDAO delegate) {
@@ -22,20 +24,20 @@ public class SearchablePreferenceScreenTreeDAO {
         this.delegate = delegate;
     }
 
-    public void persistOrReplace(final SearchablePreferenceScreenTree searchablePreferenceScreenTree) {
+    public void persistOrReplace(final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree) {
         delegate.persistOrReplace(entityTreePojoTreeConverter.convertBackward(searchablePreferenceScreenTree));
         graphById.put(searchablePreferenceScreenTree.locale(), Optional.of(searchablePreferenceScreenTree));
     }
 
-    public Optional<SearchablePreferenceScreenTree> findTreeById(final Locale id) {
+    public Optional<SearchablePreferenceScreenTree<PersistableBundle>> findTreeById(final Locale id) {
         if (!graphById.containsKey(id)) {
             graphById.put(id, _findGraphById(id));
         }
         return graphById.get(id);
     }
 
-    public Set<SearchablePreferenceScreenTree> loadAll() {
-        final Set<SearchablePreferenceScreenTree> graphs = _loadAll();
+    public Set<SearchablePreferenceScreenTree<PersistableBundle>> loadAll() {
+        final Set<SearchablePreferenceScreenTree<PersistableBundle>> graphs = _loadAll();
         cache(graphs);
         return graphs;
     }
@@ -47,13 +49,13 @@ public class SearchablePreferenceScreenTreeDAO {
         }
     }
 
-    private Optional<SearchablePreferenceScreenTree> _findGraphById(final Locale id) {
+    private Optional<SearchablePreferenceScreenTree<PersistableBundle>> _findGraphById(final Locale id) {
         return delegate
                 .findTreeById(id)
                 .map(entityTreePojoTreeConverter::convertForward);
     }
 
-    private Set<SearchablePreferenceScreenTree> _loadAll() {
+    private Set<SearchablePreferenceScreenTree<PersistableBundle>> _loadAll() {
         return delegate
                 .loadAll()
                 .stream()
@@ -61,8 +63,8 @@ public class SearchablePreferenceScreenTreeDAO {
                 .collect(Collectors.toSet());
     }
 
-    private void cache(final Set<SearchablePreferenceScreenTree> graphs) {
-        for (final SearchablePreferenceScreenTree graph : graphs) {
+    private void cache(final Set<SearchablePreferenceScreenTree<PersistableBundle>> graphs) {
+        for (final SearchablePreferenceScreenTree<PersistableBundle> graph : graphs) {
             graphById.put(graph.locale(), Optional.of(graph));
         }
     }

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.Collections;
@@ -53,7 +55,7 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenTree> graph) {
+    private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenTree<PersistableBundle>> graph) {
         return graph
                 .map(SearchablePreferenceScreenTree::tree)
                 .map(PojoTrees::getPreferences)

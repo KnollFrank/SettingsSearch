@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import android.os.PersistableBundle;
 import android.view.View;
 
 import androidx.annotation.IdRes;
@@ -37,9 +38,9 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     @Override
-    public SearchablePreferenceScreenTree transformTree(final SearchablePreferenceScreenTree tree,
-                                                        final Configuration targetConfiguration,
-                                                        final FragmentActivity activityContext) {
+    public SearchablePreferenceScreenTree<PersistableBundle> transformTree(final SearchablePreferenceScreenTree<PersistableBundle> tree,
+                                                                           final Configuration targetConfiguration,
+                                                                           final FragmentActivity activityContext) {
         return adaptGraphAtPrefsFragmentFifth(
                 tree,
                 targetConfiguration,
@@ -47,8 +48,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 activityContext);
     }
 
-    public SearchablePreferenceScreenTree adaptGraphAtPrefsFragmentFifth(
-            final SearchablePreferenceScreenTree searchablePreferenceScreenTree,
+    public SearchablePreferenceScreenTree<PersistableBundle> adaptGraphAtPrefsFragmentFifth(
+            final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree,
             final Configuration targetConfiguration,
             final SearchDatabaseConfig searchDatabaseConfig,
             final FragmentActivity activityContext) {
@@ -60,7 +61,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
             return null;
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(searchablePreferenceScreenTree);
-        return new SearchablePreferenceScreenTree(
+        return new SearchablePreferenceScreenTree<>(
                 SubtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(
                                 searchablePreferenceScreenTree.tree(),
@@ -97,7 +98,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 .getSearchablePreferenceScreenTree(root);
     }
 
-    private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenTree treeToSearchIn) {
+    private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenTree<PersistableBundle> treeToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         treeToSearchIn.tree().graph().nodes(),

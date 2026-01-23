@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.codepoetics.ambivalence.Either;
@@ -35,11 +37,11 @@ class TreeProcessorManager<C> {
         return !treeProcessors.isEmpty();
     }
 
-    public List<SearchablePreferenceScreenTree> applyTreeProcessorsToTrees(
-            final List<SearchablePreferenceScreenTree> trees,
+    public List<SearchablePreferenceScreenTree<PersistableBundle>> applyTreeProcessorsToTrees(
+            final List<SearchablePreferenceScreenTree<PersistableBundle>> trees,
             final C configuration,
             final FragmentActivity activityContext) {
-        final List<SearchablePreferenceScreenTree> transformedTrees =
+        final List<SearchablePreferenceScreenTree<PersistableBundle>> transformedTrees =
                 trees
                         .stream()
                         .map(tree -> applyTreeProcessorsToTree(tree, configuration, activityContext))
@@ -48,8 +50,8 @@ class TreeProcessorManager<C> {
         return transformedTrees;
     }
 
-    private SearchablePreferenceScreenTree applyTreeProcessorsToTree(
-            final SearchablePreferenceScreenTree tree,
+    private SearchablePreferenceScreenTree<PersistableBundle> applyTreeProcessorsToTree(
+            final SearchablePreferenceScreenTree<PersistableBundle> tree,
             final C configuration,
             final FragmentActivity activityContext) {
         return treeProcessors
@@ -67,9 +69,9 @@ class TreeProcessorManager<C> {
                         });
     }
 
-    private static <C> SearchablePreferenceScreenTree applyTreeProcessorToTree(
+    private static <C> SearchablePreferenceScreenTree<PersistableBundle> applyTreeProcessorToTree(
             final Either<SearchablePreferenceScreenTreeTransformer<C>, SearchablePreferenceScreenTreeCreator<C>> treeProcessor,
-            final SearchablePreferenceScreenTree tree,
+            final SearchablePreferenceScreenTree<PersistableBundle> tree,
             final C configuration,
             final FragmentActivity activityContext) {
         return treeProcessor.join(

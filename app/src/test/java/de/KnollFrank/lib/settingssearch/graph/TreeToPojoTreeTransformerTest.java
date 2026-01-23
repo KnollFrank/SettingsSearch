@@ -7,6 +7,7 @@ import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.rem
 import static de.KnollFrank.lib.settingssearch.graph.PojoTrees.getPreferences;
 
 import android.content.Context;
+import android.os.PersistableBundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -172,11 +173,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 });
 
                 // When
-                final SearchablePreferenceScreenTree germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.GERMAN);
+                final SearchablePreferenceScreenTree<PersistableBundle> germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.GERMAN);
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDAO().persistOrReplace(germanPojoGraph);
 
                 // And
-                final SearchablePreferenceScreenTree chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.CHINESE);
+                final SearchablePreferenceScreenTree<PersistableBundle> chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.CHINESE);
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDAO().persistOrReplace(chinesePojoGraph);
 
                 // Then no exception was thrown
@@ -188,11 +189,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
         return locale.getLanguage() + "-" + id;
     }
 
-    private static SearchablePreferenceScreenTree transformTreeToPojoTree(
+    private static SearchablePreferenceScreenTree<PersistableBundle> transformTreeToPojoTree(
             final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityGraph,
             final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
             final Locale locale) {
-        return new SearchablePreferenceScreenTree(
+        return new SearchablePreferenceScreenTree<>(
                 MapFromPojoNodesRemover.removeMapFromPojoNodes(
                         treeToPojoTreeTransformer.transformTreeToPojoTree(
                                 entityGraph,

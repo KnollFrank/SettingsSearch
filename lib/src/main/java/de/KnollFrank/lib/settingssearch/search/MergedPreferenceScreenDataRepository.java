@@ -67,7 +67,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
                 progressUpdateListener.onProgressUpdate("persisting search database");
                 treeRepository.persistOrReplace(
-                        new SearchablePreferenceScreenTree(
+                        new SearchablePreferenceScreenTree<>(
                                 searchablePreferenceScreenGraph,
                                 locale,
                                 configuration));

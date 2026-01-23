@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import java.io.File;
@@ -34,9 +36,9 @@ class PreferencesDatabaseConfigFactory {
                                 new SearchablePreferenceScreenTreeTransformer<>() {
 
                                     @Override
-                                    public SearchablePreferenceScreenTree transformTree(final SearchablePreferenceScreenTree tree,
-                                                                                        final Configuration targetConfiguration,
-                                                                                        final FragmentActivity activityContext) {
+                                    public SearchablePreferenceScreenTree<PersistableBundle> transformTree(final SearchablePreferenceScreenTree<PersistableBundle> tree,
+                                                                                                           final Configuration targetConfiguration,
+                                                                                                           final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptGraphAtPrefsFragmentFifth(
                                                 tree,
                                                 targetConfiguration,

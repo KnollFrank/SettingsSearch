@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.Locale;
@@ -49,7 +51,7 @@ public class PreferencesDatabaseFactory {
         };
     }
 
-    private static <C> void processAndPersistTree(final Optional<SearchablePreferenceScreenTree> tree,
+    private static <C> void processAndPersistTree(final Optional<SearchablePreferenceScreenTree<PersistableBundle>> tree,
                                                   final Optional<SearchablePreferenceScreenTreeTransformer<C>> treeTransformer,
                                                   final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO,
                                                   final C configuration,

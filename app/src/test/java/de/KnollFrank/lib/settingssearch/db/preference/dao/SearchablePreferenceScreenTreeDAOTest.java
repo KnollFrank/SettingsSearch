@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Trees;
 
+import android.os.PersistableBundle;
+
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.junit.Test;
@@ -28,7 +30,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
         final SearchablePreferenceScreenTreeDAO dao = createGraphDAO();
 
         // When
-        final Optional<SearchablePreferenceScreenTree> graphFromDb = dao.findTreeById(Locale.GERMAN);
+        final Optional<SearchablePreferenceScreenTree<PersistableBundle>> graphFromDb = dao.findTreeById(Locale.GERMAN);
 
         // Then
         assertThat(graphFromDb, is(Optional.empty()));
@@ -38,8 +40,8 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
     public void test_persistOrReplace_findTreeById() {
         // Given
         final SearchablePreferenceScreenTreeDAO dao = createGraphDAO();
-        final SearchablePreferenceScreenTree searchablePreferenceScreenTree =
-                new SearchablePreferenceScreenTree(
+        final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree =
+                new SearchablePreferenceScreenTree<>(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(
                                         PreferenceFragmentCompat.class,
@@ -69,7 +71,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
         final SearchablePreferenceScreenTreeDAO dao = createGraphDAO();
 
         // When
-        final SearchablePreferenceScreenTree germanGraph =
+        final SearchablePreferenceScreenTree<PersistableBundle> germanGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
                                 PreferenceFragmentCompat.class,
@@ -87,7 +89,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
         dao.persistOrReplace(germanGraph);
 
         // And
-        final SearchablePreferenceScreenTree chineseGraph =
+        final SearchablePreferenceScreenTree<PersistableBundle> chineseGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createGraph(
                                 PreferenceFragmentCompat.class,
@@ -116,7 +118,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
         final Locale locale = Locale.GERMAN;
 
         // When
-        final SearchablePreferenceScreenTree graphToBeOverwritten =
+        final SearchablePreferenceScreenTree<PersistableBundle> graphToBeOverwritten =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createSingleNodeGraph(
@@ -135,7 +137,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
         dao.persistOrReplace(graphToBeOverwritten);
 
         // And
-        final SearchablePreferenceScreenTree overwritingGraph =
+        final SearchablePreferenceScreenTree<PersistableBundle> overwritingGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(
@@ -163,22 +165,23 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
                 preferencesRoomDatabase.searchablePreferenceScreenTreeEntityDAO());
     }
 
-    private static void testFindTreeById(final SearchablePreferenceScreenTree searchablePreferenceScreenTree,
+    private static void testFindTreeById(final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree,
                                          final SearchablePreferenceScreenTreeDAO dao) {
-        final SearchablePreferenceScreenTree searchablePreferenceScreenTreeFromDb =
+        final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTreeFromDb =
                 dao
                         .findTreeById(searchablePreferenceScreenTree.locale())
                         .orElseThrow();
         assertActualEqualsExpected(searchablePreferenceScreenTreeFromDb, searchablePreferenceScreenTree);
     }
 
-    private static void assertActualEqualsExpected(final SearchablePreferenceScreenTree actual, final SearchablePreferenceScreenTree expected) {
+    private static void assertActualEqualsExpected(final SearchablePreferenceScreenTree<PersistableBundle> actual,
+                                                   final SearchablePreferenceScreenTree<PersistableBundle> expected) {
         assertThat(actual.tree().graph(), is(expected.tree().graph()));
         assertThat(actual.locale(), is(expected.locale()));
     }
 
-    private static SearchablePreferenceScreenTree asSearchablePreferenceScreenGraph(final Trees trees) {
-        return new SearchablePreferenceScreenTree(
+    private static SearchablePreferenceScreenTree<PersistableBundle> asSearchablePreferenceScreenGraph(final Trees trees) {
+        return new SearchablePreferenceScreenTree<>(
                 trees.pojoTree(),
                 trees.entityTreeAndDbDataProvider().tree().id(),
                 trees.entityTreeAndDbDataProvider().tree().configuration());

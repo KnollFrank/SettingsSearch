@@ -793,7 +793,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 fragmentActivity),
                         locale);
         treeRepository.persistOrReplace(
-                new SearchablePreferenceScreenTree(
+                new SearchablePreferenceScreenTree<>(
                         searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(
