@@ -79,6 +79,7 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePa
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.Configuration;
+import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 import de.KnollFrank.settingssearch.SettingsActivity;
 import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
 import de.KnollFrank.settingssearch.SettingsActivity2;
@@ -846,6 +847,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
         return SearchablePreferenceScreenTreeRepository.of(
-                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO());
+                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
+                new ConfigurationBundleConverter());
     }
 }

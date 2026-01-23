@@ -13,12 +13,18 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 class TreeProcessorManager<C> {
 
+    private final ConfigurationBundleConverter<C> configurationBundleConverter;
     // FK-TODO: treeProcessors in der Suchdatenbank speichern
     // FK-TODO: use Queue instead of List?
     private final List<Either<SearchablePreferenceScreenTreeTransformer<C>, SearchablePreferenceScreenTreeCreator<C>>> treeProcessors = new ArrayList<>();
+
+    public TreeProcessorManager(final ConfigurationBundleConverter<C> configurationBundleConverter) {
+        this.configurationBundleConverter = configurationBundleConverter;
+    }
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
         treeProcessors.add(Either.ofLeft(treeTransformer));
@@ -69,13 +75,20 @@ class TreeProcessorManager<C> {
                         });
     }
 
-    private static <C> SearchablePreferenceScreenTree<PersistableBundle> applyTreeProcessorToTree(
+    private SearchablePreferenceScreenTree<PersistableBundle> applyTreeProcessorToTree(
             final Either<SearchablePreferenceScreenTreeTransformer<C>, SearchablePreferenceScreenTreeCreator<C>> treeProcessor,
             final SearchablePreferenceScreenTree<PersistableBundle> tree,
             final C configuration,
             final FragmentActivity activityContext) {
         return treeProcessor.join(
                 treeTransformer -> treeTransformer.transformTree(tree, configuration, activityContext),
-                treeCreator -> treeCreator.createTree(tree.locale(), configuration, activityContext));
+                treeCreator ->
+                        new SearchablePreferenceScreenTree<>(
+                                treeCreator.createTree(
+                                        tree.locale(),
+                                        configuration,
+                                        activityContext).tree(),
+                                tree.locale(),
+                                configurationBundleConverter.convertForward(configuration)));
     }
 }

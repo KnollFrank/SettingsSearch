@@ -42,7 +42,8 @@ public class PreferencesDatabaseFactory {
 
             private final SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository =
                     SearchablePreferenceScreenTreeRepository.of(
-                            preferencesRoomDatabase.searchablePreferenceScreenTreeDAO());
+                            preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
+                            configurationBundleConverter);
 
             @Override
             public SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository() {

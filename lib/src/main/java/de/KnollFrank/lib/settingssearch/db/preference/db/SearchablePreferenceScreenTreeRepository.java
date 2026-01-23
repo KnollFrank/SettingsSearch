@@ -13,14 +13,16 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 public class SearchablePreferenceScreenTreeRepository<C> {
 
     private final SearchablePreferenceScreenTreeDAO delegate;
     private final TreeProcessorManager<C> treeProcessorManager;
 
-    public static <C> SearchablePreferenceScreenTreeRepository<C> of(final SearchablePreferenceScreenTreeDAO delegate) {
-        return new SearchablePreferenceScreenTreeRepository<>(delegate, new TreeProcessorManager<>());
+    public static <C> SearchablePreferenceScreenTreeRepository<C> of(final SearchablePreferenceScreenTreeDAO delegate,
+                                                                     final ConfigurationBundleConverter<C> configurationBundleConverter) {
+        return new SearchablePreferenceScreenTreeRepository<>(delegate, new TreeProcessorManager<>(configurationBundleConverter));
     }
 
     private SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenTreeDAO delegate,
