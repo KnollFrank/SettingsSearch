@@ -32,7 +32,7 @@ public class PreferencesRoomDatabaseFactoryTest {
                                             Optional.of(
                                                     new PrepackagedPreferencesDatabase<>(
                                                             new File("database/searchable_preferences_prepackaged.db"),
-                                                            (graph, actualConfiguration, activityContext) -> graph)),
+                                                            (tree, targetConfiguration, activityContext) -> tree.tree())),
                                             JournalMode.AUTOMATIC),
                                     fragmentActivity);
 

@@ -2,12 +2,17 @@ package de.KnollFrank.settingssearch;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.common.graph.ImmutableValueGraph;
+
 import java.io.File;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedPreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
@@ -34,12 +39,13 @@ class PreferencesDatabaseConfigFactory {
                                 new SearchablePreferenceScreenTreeTransformer<>() {
 
                                     @Override
-                                    public SearchablePreferenceScreenTree<Configuration> transformTree(final SearchablePreferenceScreenTree<Configuration> tree,
-                                                                                                       final Configuration targetConfiguration,
-                                                                                                       final FragmentActivity activityContext) {
+                                    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+                                    public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformTree(
+                                            final SearchablePreferenceScreenTree<Configuration> tree,
+                                            final Configuration targetConfiguration,
+                                            final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptGraphAtPrefsFragmentFifth(
                                                 tree,
-                                                targetConfiguration,
                                                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                                                 activityContext);
                                     }

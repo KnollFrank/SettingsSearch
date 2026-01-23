@@ -80,23 +80,19 @@ class TreeProcessorManager<C> {
             final SearchablePreferenceScreenTree<PersistableBundle> tree,
             final C configuration,
             final FragmentActivity activityContext) {
-        return treeProcessor.join(
-                treeTransformer ->
-                        treeTransformer
-                                .transformTree(
+        return new SearchablePreferenceScreenTree<>(
+                treeProcessor.join(
+                        treeTransformer ->
+                                treeTransformer.transformTree(
                                         tree.mapConfiguration(configurationBundleConverter::convertBackward),
                                         configuration,
-                                        activityContext)
-                                .mapConfiguration(configurationBundleConverter::convertForward),
-                treeCreator ->
-                        new SearchablePreferenceScreenTree<>(
-                                treeCreator
-                                        .createTree(
-                                                tree.locale(),
-                                                configuration,
-                                                activityContext)
-                                        .tree(),
-                                tree.locale(),
-                                configurationBundleConverter.convertForward(configuration)));
+                                        activityContext),
+                        treeCreator ->
+                                treeCreator.createTree(
+                                        tree.locale(),
+                                        configuration,
+                                        activityContext)),
+                tree.locale(),
+                configurationBundleConverter.convertForward(configuration));
     }
 }

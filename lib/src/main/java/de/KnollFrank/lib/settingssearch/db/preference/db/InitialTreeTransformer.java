@@ -41,13 +41,19 @@ class InitialTreeTransformer<C> {
     private SearchablePreferenceScreenTree<PersistableBundle> process(final SearchablePreferenceScreenTree<PersistableBundle> tree,
                                                                       final C configuration) {
         return treeTransformer
-                .map(_treeTransformer ->
-                             _treeTransformer
-                                     .transformTree(
-                                             tree.mapConfiguration(configurationBundleConverter::convertBackward),
-                                             configuration,
-                                             activityContext)
-                                     .mapConfiguration(configurationBundleConverter::convertForward))
+                .map(_treeTransformer -> process(_treeTransformer, tree, configuration))
                 .orElse(tree);
+    }
+
+    private SearchablePreferenceScreenTree<PersistableBundle> process(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer,
+                                                                      final SearchablePreferenceScreenTree<PersistableBundle> tree,
+                                                                      final C configuration) {
+        return new SearchablePreferenceScreenTree<>(
+                treeTransformer.transformTree(
+                        tree.mapConfiguration(configurationBundleConverter::convertBackward),
+                        configuration,
+                        activityContext),
+                tree.locale(),
+                configurationBundleConverter.convertForward(configuration));
     }
 }

@@ -36,19 +36,20 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     @Override
-    public SearchablePreferenceScreenTree<Configuration> transformTree(final SearchablePreferenceScreenTree<Configuration> tree,
-                                                                       final Configuration targetConfiguration,
-                                                                       final FragmentActivity activityContext) {
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformTree(
+            final SearchablePreferenceScreenTree<Configuration> tree,
+            final Configuration targetConfiguration,
+            final FragmentActivity activityContext) {
         return adaptGraphAtPrefsFragmentFifth(
                 tree,
-                targetConfiguration,
                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                 activityContext);
     }
 
-    public SearchablePreferenceScreenTree<Configuration> adaptGraphAtPrefsFragmentFifth(
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> adaptGraphAtPrefsFragmentFifth(
             final SearchablePreferenceScreenTree<Configuration> searchablePreferenceScreenTree,
-            final Configuration targetConfiguration,
             final SearchDatabaseConfig searchDatabaseConfig,
             final FragmentActivity activityContext) {
         final OnUiThreadRunner onUiThreadRunner = OnUiThreadRunnerFactory.fromActivity(activityContext);
@@ -59,22 +60,19 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
             return null;
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(searchablePreferenceScreenTree);
-        return new SearchablePreferenceScreenTree<>(
-                SubtreeReplacer.replaceSubtreeWithTree(
-                        new Subtree<>(
+        return SubtreeReplacer.replaceSubtreeWithTree(
+                new Subtree<>(
+                        searchablePreferenceScreenTree.tree(),
+                        prefsFragmentFifthPreferenceScreen),
+                getPojoGraphRootedAt(
+                        instantiateSearchablePreferenceScreen(
+                                prefsFragmentFifthPreferenceScreen,
                                 searchablePreferenceScreenTree.tree(),
-                                prefsFragmentFifthPreferenceScreen),
-                        getPojoGraphRootedAt(
-                                instantiateSearchablePreferenceScreen(
-                                        prefsFragmentFifthPreferenceScreen,
-                                        searchablePreferenceScreenTree.tree(),
-                                        createTreePathInstantiator(searchDatabaseConfig, activityContext),
-                                        onUiThreadRunner),
-                                searchablePreferenceScreenTree.locale(),
-                                activityContext,
-                                searchDatabaseConfig)),
-                searchablePreferenceScreenTree.locale(),
-                targetConfiguration);
+                                createTreePathInstantiator(searchDatabaseConfig, activityContext),
+                                onUiThreadRunner),
+                        searchablePreferenceScreenTree.locale(),
+                        activityContext,
+                        searchDatabaseConfig));
     }
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
