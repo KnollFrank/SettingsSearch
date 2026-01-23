@@ -81,13 +81,21 @@ class TreeProcessorManager<C> {
             final C configuration,
             final FragmentActivity activityContext) {
         return treeProcessor.join(
-                treeTransformer -> treeTransformer.transformTree(tree, configuration, activityContext),
+                treeTransformer ->
+                        treeTransformer
+                                .transformTree(
+                                        tree.mapConfiguration(configurationBundleConverter::convertBackward),
+                                        configuration,
+                                        activityContext)
+                                .mapConfiguration(configurationBundleConverter::convertForward),
                 treeCreator ->
                         new SearchablePreferenceScreenTree<>(
-                                treeCreator.createTree(
-                                        tree.locale(),
-                                        configuration,
-                                        activityContext).tree(),
+                                treeCreator
+                                        .createTree(
+                                                tree.locale(),
+                                                configuration,
+                                                activityContext)
+                                        .tree(),
                                 tree.locale(),
                                 configurationBundleConverter.convertForward(configuration)));
     }

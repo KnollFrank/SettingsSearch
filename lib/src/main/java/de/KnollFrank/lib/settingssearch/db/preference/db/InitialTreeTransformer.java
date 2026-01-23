@@ -41,8 +41,13 @@ class InitialTreeTransformer<C> {
     private SearchablePreferenceScreenTree<PersistableBundle> process(final SearchablePreferenceScreenTree<PersistableBundle> tree,
                                                                       final C configuration) {
         return treeTransformer
-                .map(_treeTransformer -> _treeTransformer.transformTree(tree, configuration, activityContext))
-                .orElse(tree)
-                .asTreeHavingConfiguration(configurationBundleConverter.convertForward(configuration));
+                .map(_treeTransformer ->
+                             _treeTransformer
+                                     .transformTree(
+                                             tree.mapConfiguration(configurationBundleConverter::convertBackward),
+                                             configuration,
+                                             activityContext)
+                                     .mapConfiguration(configurationBundleConverter::convertForward))
+                .orElse(tree);
     }
 }
