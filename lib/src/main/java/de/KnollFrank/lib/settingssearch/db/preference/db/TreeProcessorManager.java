@@ -83,7 +83,7 @@ class TreeProcessorManager<C> {
         return new SearchablePreferenceScreenTree<>(
                 treeProcessor.join(
                         treeTransformer ->
-                                treeTransformer.transformTree(
+                                treeTransformer.transformSearchablePreferenceScreenTree(
                                         tree.mapConfiguration(configurationBundleConverter::convertBackward),
                                         configuration,
                                         activityContext),

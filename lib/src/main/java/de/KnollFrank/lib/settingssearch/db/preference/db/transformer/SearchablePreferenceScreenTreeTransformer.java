@@ -13,8 +13,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public interface SearchablePreferenceScreenTreeTransformer<C> {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformTree(
-            SearchablePreferenceScreenTree<C> tree,
+    Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformSearchablePreferenceScreenTree(
+            SearchablePreferenceScreenTree<C> searchablePreferenceScreenTree,
             // FK-FIXME: für targetConfiguration wird manchmal null übergeben, was bei mir verboten ist.
             C targetConfiguration,
             FragmentActivity activityContext);

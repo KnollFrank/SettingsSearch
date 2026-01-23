@@ -37,12 +37,12 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
 
     @Override
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformTree(
-            final SearchablePreferenceScreenTree<Configuration> tree,
+    public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformSearchablePreferenceScreenTree(
+            final SearchablePreferenceScreenTree<Configuration> searchablePreferenceScreenTree,
             final Configuration targetConfiguration,
             final FragmentActivity activityContext) {
         return adaptGraphAtPrefsFragmentFifth(
-                tree,
+                searchablePreferenceScreenTree,
                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                 activityContext);
     }

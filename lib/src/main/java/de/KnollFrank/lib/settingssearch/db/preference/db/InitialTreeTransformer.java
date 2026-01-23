@@ -49,7 +49,7 @@ class InitialTreeTransformer<C> {
                                                                       final SearchablePreferenceScreenTree<PersistableBundle> tree,
                                                                       final C configuration) {
         return new SearchablePreferenceScreenTree<>(
-                treeTransformer.transformTree(
+                treeTransformer.transformSearchablePreferenceScreenTree(
                         tree.mapConfiguration(configurationBundleConverter::convertBackward),
                         configuration,
                         activityContext),
