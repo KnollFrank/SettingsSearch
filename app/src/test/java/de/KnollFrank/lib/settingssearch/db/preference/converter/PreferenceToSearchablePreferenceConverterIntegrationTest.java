@@ -19,7 +19,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -74,8 +73,7 @@ public class PreferenceToSearchablePreferenceConverterIntegrationTest {
                         preference,
                         List.of(),
                         "-1",
-                        hostOfPreference,
-                        Locale.GERMAN)
+                        hostOfPreference)
                 .searchablePreference();
     }
 

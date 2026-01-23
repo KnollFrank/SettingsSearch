@@ -7,7 +7,6 @@ import androidx.preference.PreferenceScreen;
 import com.google.common.collect.BiMap;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
@@ -26,15 +25,13 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
     public SearchablePreferenceScreenWithMap convertPreferenceScreen(
             final PreferenceScreen preferenceScreen,
             final PreferenceFragmentCompat hostOfPreferenceScreen,
-            final String id,
-            final Locale locale) {
+            final String id) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preferenceToSearchablePreferenceConverter.convertPreferences(
                         Preferences.getImmediateChildren(preferenceScreen),
                         List.of(),
                         id,
-                        hostOfPreferenceScreen,
-                        locale);
+                        hostOfPreferenceScreen);
         return new SearchablePreferenceScreenWithMap(
                 new SearchablePreferenceScreen(
                         id,

@@ -62,8 +62,7 @@ public class TreeToPojoTreeTransformer {
                 return preferenceScreenToSearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
-                        preferenceFragmentIdProvider.getId(node.host()),
-                        locale);
+                        preferenceFragmentIdProvider.getId(node.host()));
             }
 
             private static SearchablePreference getTransformedPreference(
