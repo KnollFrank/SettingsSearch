@@ -18,11 +18,9 @@ public record Tree<N, V, G extends ValueGraph<N, V>>(G graph) {
     }
 
     public Optional<N> parentNodeOf(final N node) {
-        // FK-TODO: implement using incomingEdgeOf()
-        return graph
-                .predecessors(node)
-                .stream()
-                .collect(MoreCollectors.toOptional());
+        return this
+                .incomingEdgeOf(node)
+                .map(incomingEdgeOfNode -> incomingEdgeOfNode.endpointPair().source());
     }
 
     public Optional<Edge<N, V>> incomingEdgeOf(final N node) {
