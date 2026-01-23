@@ -20,19 +20,19 @@ class TreeProcessorManager<C> {
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
     // FK-TODO: treeProcessors in der Suchdatenbank speichern
     // FK-TODO: use Queue instead of List?
-    private final List<Either<SearchablePreferenceScreenTreeTransformer<C>, SearchablePreferenceScreenTreeCreator<C>>> treeProcessors = new ArrayList<>();
+    private final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> treeProcessors = new ArrayList<>();
 
     public TreeProcessorManager(final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.configurationBundleConverter = configurationBundleConverter;
     }
 
-    public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
-        treeProcessors.add(Either.ofLeft(treeTransformer));
-    }
-
     public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
         removeTreeProcessors();
-        treeProcessors.add(Either.ofRight(treeCreator));
+        treeProcessors.add(Either.ofLeft(treeCreator));
+    }
+
+    public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
+        treeProcessors.add(Either.ofRight(treeTransformer));
     }
 
     public void removeTreeProcessors() {
@@ -76,20 +76,20 @@ class TreeProcessorManager<C> {
     }
 
     private SearchablePreferenceScreenTree<PersistableBundle> applyTreeProcessorToTree(
-            final Either<SearchablePreferenceScreenTreeTransformer<C>, SearchablePreferenceScreenTreeCreator<C>> treeProcessor,
+            final Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> treeProcessor,
             final SearchablePreferenceScreenTree<PersistableBundle> tree,
             final C configuration,
             final FragmentActivity activityContext) {
         return new SearchablePreferenceScreenTree<>(
                 treeProcessor.join(
-                        treeTransformer ->
-                                treeTransformer.transformSearchablePreferenceScreenTree(
-                                        tree.mapConfiguration(configurationBundleConverter::convertBackward),
-                                        configuration,
-                                        activityContext),
                         treeCreator ->
                                 treeCreator.createTree(
                                         tree.locale(),
+                                        configuration,
+                                        activityContext),
+                        treeTransformer ->
+                                treeTransformer.transformSearchablePreferenceScreenTree(
+                                        tree.mapConfiguration(configurationBundleConverter::convertBackward),
                                         configuration,
                                         activityContext)),
                 tree.locale(),
