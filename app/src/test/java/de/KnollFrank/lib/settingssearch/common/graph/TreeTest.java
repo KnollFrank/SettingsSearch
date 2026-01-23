@@ -3,10 +3,13 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
 import org.junit.Test;
+
+import java.util.Optional;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreeTest {
@@ -152,7 +155,7 @@ public class TreeTest {
     }
 
     @Test
-    public void shouldReturnRootNode() {
+    public void test_rootNode() {
         // Given
         /*
          * A
@@ -172,6 +175,61 @@ public class TreeTest {
 
         // Then
         assertThat(rootNode, is(nA));
+    }
+
+    @Test
+    public void test_incomingEdgeOfRootNode() {
+        // Given
+        /*
+         * A
+         * |
+         * v
+         * B
+         */
+        final StringNode rootNode = nA;
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(rootNode, nB, "val")
+                                .build());
+
+        // When
+        final Optional<Edge<StringNode, String>> incomingEdgeOfRootNode = tree.incomingEdgeOf(rootNode);
+
+        // Then
+        assertThat(incomingEdgeOfRootNode, is(Optional.empty()));
+    }
+
+    @Test
+    public void test_incomingEdgeOfInnerNode() {
+        // Given
+        /*
+         * A
+         * | "val"
+         * v
+         * B
+         */
+        final String edgeValueOfnAnB = "val";
+        final StringNode innerNode = nB;
+        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nA, innerNode, edgeValueOfnAnB)
+                                .build());
+
+        // When
+        final Optional<Edge<StringNode, String>> incomingEdgeOfnB = tree.incomingEdgeOf(innerNode);
+
+        // Then
+        assertThat(
+                incomingEdgeOfnB,
+                is(
+                        Optional.of(
+                                new Edge<>(
+                                        EndpointPair.ordered(nA, innerNode),
+                                        edgeValueOfnAnB))));
     }
 
     @Test
