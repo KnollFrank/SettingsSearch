@@ -12,8 +12,6 @@ public class TreeProcessorManagerFactory {
         final TreeProcessorDAO<C> treeProcessorDAO = new TreeProcessorDAO<>();
         return new TreeProcessorManager<>(
                 treeProcessorDAO,
-                new TreeProcessorExecutor<>(
-                        treeProcessorDAO,
-                        configurationBundleConverter));
+                new TreeProcessorExecutor<>(configurationBundleConverter));
     }
 }

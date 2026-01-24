@@ -9,7 +9,6 @@ import com.codepoetics.ambivalence.Either;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -17,34 +16,29 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 
 class TreeProcessorExecutor<C> {
 
-    private final TreeProcessorDAO<C> treeProcessorDAO;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
-    public TreeProcessorExecutor(final TreeProcessorDAO<C> treeProcessorDAO,
-                                 final ConfigurationBundleConverter<C> configurationBundleConverter) {
-        this.treeProcessorDAO = treeProcessorDAO;
+    public TreeProcessorExecutor(final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.configurationBundleConverter = configurationBundleConverter;
     }
 
     public List<SearchablePreferenceScreenTree<PersistableBundle>> applyTreeProcessorsToTrees(
+            final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> treeProcessors,
             final List<SearchablePreferenceScreenTree<PersistableBundle>> trees,
             final C configuration,
             final FragmentActivity activityContext) {
-        final List<SearchablePreferenceScreenTree<PersistableBundle>> transformedTrees =
-                trees
-                        .stream()
-                        .map(tree -> applyTreeProcessorsToTree(tree, configuration, activityContext))
-                        .collect(Collectors.toList());
-        treeProcessorDAO.removeTreeProcessors();
-        return transformedTrees;
+        return trees
+                .stream()
+                .map(tree -> applyTreeProcessorsToTree(treeProcessors, tree, configuration, activityContext))
+                .collect(Collectors.toList());
     }
 
     private SearchablePreferenceScreenTree<PersistableBundle> applyTreeProcessorsToTree(
+            final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> treeProcessors,
             final SearchablePreferenceScreenTree<PersistableBundle> tree,
             final C configuration,
             final FragmentActivity activityContext) {
-        return treeProcessorDAO
-                .getTreeProcessors()
+        return treeProcessors
                 .stream()
                 .reduce(
                         tree,
