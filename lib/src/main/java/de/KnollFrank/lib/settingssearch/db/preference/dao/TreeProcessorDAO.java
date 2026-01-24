@@ -7,32 +7,32 @@ import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorDescriptionConverter;
 
 public class TreeProcessorDAO<C> {
 
-    private final TreeProcessorFactory<C> treeProcessorFactory;
+    private final TreeProcessorDescriptionConverter<C> treeProcessorDescriptionConverter;
     private final List<TreeProcessorDescription<C>> treeProcessorDescriptions = new ArrayList<>();
 
-    public TreeProcessorDAO(final TreeProcessorFactory<C> treeProcessorFactory) {
-        this.treeProcessorFactory = treeProcessorFactory;
+    public TreeProcessorDAO(final TreeProcessorDescriptionConverter<C> treeProcessorDescriptionConverter) {
+        this.treeProcessorDescriptionConverter = treeProcessorDescriptionConverter;
     }
 
     public List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> getTreeProcessors() {
         return treeProcessorDescriptions
                 .stream()
-                .map(treeProcessorFactory::createTreeProcessor)
+                .map(treeProcessorDescriptionConverter::convertForward)
                 .toList();
     }
 
     public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
         removeTreeProcessors();
-        treeProcessorDescriptions.add(getTreeProcessorDescription(treeCreator));
+        treeProcessorDescriptions.add(treeProcessorDescriptionConverter.convertBackward(Either.ofLeft(treeCreator)));
     }
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
-        treeProcessorDescriptions.add(getTreeProcessorDescription(treeTransformer));
+        treeProcessorDescriptions.add(treeProcessorDescriptionConverter.convertBackward(Either.ofRight(treeTransformer)));
     }
 
     public void removeTreeProcessors() {
@@ -41,17 +41,5 @@ public class TreeProcessorDAO<C> {
 
     public boolean hasTreeProcessors() {
         return !treeProcessorDescriptions.isEmpty();
-    }
-
-    private static <C> TreeProcessorDescription<C> getTreeProcessorDescription(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
-        return new TreeProcessorDescription<>(
-                Either.ofLeft((Class<? extends SearchablePreferenceScreenTreeCreator<C>>) treeCreator.getClass()),
-                treeCreator.getParams());
-    }
-
-    private static <C> TreeProcessorDescription<C> getTreeProcessorDescription(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
-        return new TreeProcessorDescription<>(
-                Either.ofRight((Class<? extends SearchablePreferenceScreenTreeTransformer<C>>) treeTransformer.getClass()),
-                treeTransformer.getParams());
     }
 }

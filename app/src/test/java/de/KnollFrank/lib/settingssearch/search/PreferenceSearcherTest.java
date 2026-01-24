@@ -51,11 +51,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragme
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.db.TreeProcessorExecutor;
-import de.KnollFrank.lib.settingssearch.db.preference.db.TreeProcessorManager;
+import de.KnollFrank.lib.settingssearch.db.preference.db.TreeProcessorManagerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
@@ -856,15 +854,14 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
         return new SearchablePreferenceScreenTreeRepository<>(
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
-                new TreeProcessorManager<>(
-                        new TreeProcessorDAO<>(
-                                new TreeProcessorFactory<>() {
+                TreeProcessorManagerFactory.createTreeProcessorManager(
+                        new TreeProcessorFactory<>() {
 
-                                    @Override
-                                    public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
-                                        throw new IllegalArgumentException(treeProcessorDescription.toString());
-                                    }
-                                }),
-                        new TreeProcessorExecutor<>(new ConfigurationBundleConverter())));
+                            @Override
+                            public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
+                                throw new IllegalArgumentException(treeProcessorDescription.toString());
+                            }
+                        },
+                        new ConfigurationBundleConverter()));
     }
 }

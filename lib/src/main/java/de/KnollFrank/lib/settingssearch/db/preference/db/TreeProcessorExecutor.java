@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
-public class TreeProcessorExecutor<C> {
+class TreeProcessorExecutor<C> {
 
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
