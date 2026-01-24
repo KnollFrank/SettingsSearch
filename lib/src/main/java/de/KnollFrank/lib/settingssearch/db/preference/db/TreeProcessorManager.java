@@ -42,13 +42,13 @@ class TreeProcessorManager<C> {
             final List<SearchablePreferenceScreenTree<PersistableBundle>> trees,
             final C configuration,
             final FragmentActivity activityContext) {
-        final var searchablePreferenceScreenTrees =
+        final var processedTrees =
                 treeProcessorExecutor.applyTreeProcessorsToTrees(
                         treeProcessorDAO.getTreeProcessors(),
                         trees,
                         configuration,
                         activityContext);
         treeProcessorDAO.removeTreeProcessors();
-        return searchablePreferenceScreenTrees;
+        return processedTrees;
     }
 }
