@@ -17,7 +17,7 @@ public class Functions {
         return u -> biPredicate.test(t, u);
     }
 
-    public static <T, R> Function<T, R> constant(final R value) {
-        return t -> value;
+    public static <T, R> Function<T, R> constant(final R constant) {
+        return t -> constant;
     }
 }
