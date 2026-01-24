@@ -20,9 +20,12 @@ public class SearchablePreferenceScreenTreeRepository<C> {
     private final SearchablePreferenceScreenTreeDAO delegate;
     private final TreeProcessorManager<C> treeProcessorManager;
 
-    public static <C> SearchablePreferenceScreenTreeRepository<C> of(final SearchablePreferenceScreenTreeDAO delegate,
-                                                                     final ConfigurationBundleConverter<C> configurationBundleConverter) {
-        return new SearchablePreferenceScreenTreeRepository<>(delegate, new TreeProcessorManager<>(configurationBundleConverter));
+    public static <C> SearchablePreferenceScreenTreeRepository<C> of(
+            final SearchablePreferenceScreenTreeDAO delegate,
+            final ConfigurationBundleConverter<C> configurationBundleConverter) {
+        return new SearchablePreferenceScreenTreeRepository<>(
+                delegate,
+                TreeProcessorManagerFactory.createTreeProcessorManager(configurationBundleConverter));
     }
 
     private SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenTreeDAO delegate,
