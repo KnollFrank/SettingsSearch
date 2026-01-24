@@ -58,12 +58,14 @@ public class SearchablePreferenceScreenTreeRepository<C> {
 
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
         if (treeProcessorManager.hasTreeProcessors()) {
+            // FK-TODO: start transaction
             treeProcessorManager
                     .applyTreeProcessorsToTrees(
                             new ArrayList<>(delegate.loadAll()),
                             actualConfiguration,
                             activityContext)
                     .forEach(delegate::persistOrReplace);
+            // FK-TODO: commit transaction
         }
     }
 }
