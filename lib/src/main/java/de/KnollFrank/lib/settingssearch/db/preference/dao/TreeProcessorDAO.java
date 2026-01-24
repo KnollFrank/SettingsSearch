@@ -7,31 +7,51 @@ import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
 
 public class TreeProcessorDAO<C> {
 
-    // FK-TODO: treeProcessors in der Suchdatenbank speichern
-    // FK-TODO: use Queue instead of List?
-    private final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> treeProcessors = new ArrayList<>();
+    private final TreeProcessorFactory<C> treeProcessorFactory;
+    private final List<TreeProcessorDescription<C>> treeProcessorDescriptions = new ArrayList<>();
+
+    public TreeProcessorDAO(final TreeProcessorFactory<C> treeProcessorFactory) {
+        this.treeProcessorFactory = treeProcessorFactory;
+    }
 
     public List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> getTreeProcessors() {
-        return treeProcessors;
+        return treeProcessorDescriptions
+                .stream()
+                .map(treeProcessorFactory::createTreeProcessor)
+                .toList();
     }
 
     public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
         removeTreeProcessors();
-        treeProcessors.add(Either.ofLeft(treeCreator));
+        treeProcessorDescriptions.add(getTreeProcessorDescription(treeCreator));
     }
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
-        treeProcessors.add(Either.ofRight(treeTransformer));
+        treeProcessorDescriptions.add(getTreeProcessorDescription(treeTransformer));
     }
 
     public void removeTreeProcessors() {
-        treeProcessors.clear();
+        treeProcessorDescriptions.clear();
     }
 
     public boolean hasTreeProcessors() {
-        return !treeProcessors.isEmpty();
+        return !treeProcessorDescriptions.isEmpty();
+    }
+
+    private static <C> TreeProcessorDescription<C> getTreeProcessorDescription(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
+        return new TreeProcessorDescription<>(
+                Either.ofLeft((Class<? extends SearchablePreferenceScreenTreeCreator<C>>) treeCreator.getClass()),
+                treeCreator.getParams());
+    }
+
+    private static <C> TreeProcessorDescription<C> getTreeProcessorDescription(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
+        return new TreeProcessorDescription<>(
+                Either.ofRight((Class<? extends SearchablePreferenceScreenTreeTransformer<C>>) treeTransformer.getClass()),
+                treeTransformer.getParams());
     }
 }

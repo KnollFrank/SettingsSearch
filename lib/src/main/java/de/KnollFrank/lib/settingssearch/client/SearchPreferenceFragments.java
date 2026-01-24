@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataRepositoryProvider<C> {
 
     public final SearchConfig searchConfig;
-    private final SearchDatabaseConfig searchDatabaseConfig;
+    private final SearchDatabaseConfig<C> searchDatabaseConfig;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
@@ -47,7 +47,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
     private final PersistableBundle configuration;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
-    public static <C> SearchPreferenceFragmentsBuilder<C> builder(final SearchDatabaseConfig searchDatabaseConfig,
+    public static <C> SearchPreferenceFragmentsBuilder<C> builder(final SearchDatabaseConfig<C> searchDatabaseConfig,
                                                                   final SearchConfig searchConfig,
                                                                   final FragmentActivity activity,
                                                                   final PreferencesDatabase<C> preferencesDatabase,
@@ -64,7 +64,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                 configurationBundleConverter);
     }
 
-    protected SearchPreferenceFragments(final SearchDatabaseConfig searchDatabaseConfig,
+    protected SearchPreferenceFragments(final SearchDatabaseConfig<C> searchDatabaseConfig,
                                         final SearchConfig searchConfig,
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,

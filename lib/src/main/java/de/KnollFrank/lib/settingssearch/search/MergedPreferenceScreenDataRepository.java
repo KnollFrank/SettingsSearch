@@ -31,7 +31,7 @@ public class MergedPreferenceScreenDataRepository<C> {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceDialogs preferenceDialogs;
-    private final SearchDatabaseConfig searchDatabaseConfig;
+    private final SearchDatabaseConfig<C> searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
     private final FragmentActivity activityContext;
     private final PreferencesDatabase<C> preferencesDatabase;
@@ -41,7 +41,7 @@ public class MergedPreferenceScreenDataRepository<C> {
     MergedPreferenceScreenDataRepository(
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final PreferenceDialogs preferenceDialogs,
-            final SearchDatabaseConfig searchDatabaseConfig,
+            final SearchDatabaseConfig<C> searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
             final FragmentActivity activityContext,
             final PreferencesDatabase<C> preferencesDatabase,

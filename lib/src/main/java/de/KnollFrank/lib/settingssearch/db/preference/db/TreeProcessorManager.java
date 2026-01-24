@@ -11,7 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchableP
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 
-class TreeProcessorManager<C> {
+public class TreeProcessorManager<C> {
 
     private final TreeProcessorDAO<C> treeProcessorDAO;
     private final TreeProcessorExecutor<C> treeProcessorExecutor;

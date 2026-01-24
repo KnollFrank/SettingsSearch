@@ -9,8 +9,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 
-@FunctionalInterface
-public interface SearchablePreferenceScreenTreeTransformer<C> {
+public interface SearchablePreferenceScreenTreeTransformer<C> extends TreeProcessor {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformSearchablePreferenceScreenTree(

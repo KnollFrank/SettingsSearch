@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ImmutableValueGraph;
 
@@ -22,6 +23,10 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAnd
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -42,15 +47,35 @@ import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSi
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
+import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
 public class SearchDatabaseConfigFactory {
 
     private SearchDatabaseConfigFactory() {
     }
 
-    public static SearchDatabaseConfig createSearchDatabaseConfig() {
+    public static SearchDatabaseConfig<Configuration> createSearchDatabaseConfig() {
         return SearchDatabaseConfig
-                .builder(PrefsFragmentFirst.class)
+                .builder(
+                        PrefsFragmentFirst.class,
+                        new TreeProcessorFactory<Configuration>() {
+
+                            @Override
+                            public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
+                                return treeProcessorDescription
+                                        .treeProcessor()
+                                        .map(
+                                                treeCreatorClass -> {
+                                                    throw new IllegalArgumentException(treeCreatorClass.toString());
+                                                },
+                                                treeTransformerClass -> {
+                                                    if (SearchDatabaseRootedAtPrefsFragmentFifthAdapter.class.equals(treeTransformerClass)) {
+                                                        return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter();
+                                                    }
+                                                    throw new IllegalArgumentException(treeTransformerClass.toString());
+                                                });
+                            }
+                        })
                 .withFragmentFactory(
                         new FragmentFactory() {
 

@@ -20,7 +20,7 @@ public class MergedPreferenceScreenDataRepositoryFactory {
     public static <C> MergedPreferenceScreenDataRepository<C> createMergedPreferenceScreenDataRepository(
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final PreferenceDialogs preferenceDialogs,
-            final SearchDatabaseConfig searchDatabaseConfig,
+            final SearchDatabaseConfig<C> searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
             final FragmentActivity activityContext,
             final PreferencesDatabase<C> preferencesDatabase,

@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformers;
 
 @RunWith(RobolectricTestRunner.class)
 public class PreferencesRoomDatabaseFactoryTest {
@@ -32,7 +33,7 @@ public class PreferencesRoomDatabaseFactoryTest {
                                             Optional.of(
                                                     new PrepackagedPreferencesDatabase<>(
                                                             new File("database/searchable_preferences_prepackaged.db"),
-                                                            (tree, targetConfiguration, activityContext) -> tree.tree())),
+                                                            SearchablePreferenceScreenTreeTransformers.identityTreeTransformer())),
                                             JournalMode.AUTOMATIC),
                                     fragmentActivity);
 

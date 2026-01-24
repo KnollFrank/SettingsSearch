@@ -24,6 +24,7 @@ import androidx.preference.SwitchPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
+import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.ImmutableBiMap;
 
 import org.junit.Test;
@@ -50,10 +51,17 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragme
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.db.TreeProcessorExecutor;
+import de.KnollFrank.lib.settingssearch.db.preference.db.TreeProcessorManager;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -846,8 +854,17 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
     }
 
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
-        return SearchablePreferenceScreenTreeRepository.of(
+        return new SearchablePreferenceScreenTreeRepository<>(
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
-                new ConfigurationBundleConverter());
+                new TreeProcessorManager<>(
+                        new TreeProcessorDAO<>(
+                                new TreeProcessorFactory<>() {
+
+                                    @Override
+                                    public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
+                                        throw new IllegalArgumentException(treeProcessorDescription.toString());
+                                    }
+                                }),
+                        new TreeProcessorExecutor<>(new ConfigurationBundleConverter())));
     }
 }

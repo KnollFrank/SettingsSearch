@@ -25,7 +25,7 @@ public class SearchPreferenceFragmentsFactory {
             final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable,
             final PreferencesDatabase<Configuration> preferencesDatabase,
             final Configuration configuration,
-            final SearchDatabaseConfig searchDatabaseConfig) {
+            final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
         return SearchPreferenceFragments
                 .builder(
                         searchDatabaseConfig,

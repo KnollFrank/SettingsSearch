@@ -9,6 +9,7 @@ import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
@@ -19,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivit
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
-public class SearchDatabaseConfig {
+public class SearchDatabaseConfig<C> {
 
     public final FragmentFactory fragmentFactory;
     public final IconResourceIdProvider iconResourceIdProvider;
@@ -33,6 +34,7 @@ public class SearchDatabaseConfig {
     public final PrincipalAndProxyProvider principalAndProxyProvider;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
+    public final TreeProcessorFactory<C> treeProcessorFactory;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
@@ -45,7 +47,8 @@ public class SearchDatabaseConfig {
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final PrincipalAndProxyProvider principalAndProxyProvider,
                          final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-                         final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+                         final PreferenceFragmentIdProvider preferenceFragmentIdProvider,
+                         final TreeProcessorFactory<C> treeProcessorFactory) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -58,9 +61,11 @@ public class SearchDatabaseConfig {
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
+        this.treeProcessorFactory = treeProcessorFactory;
     }
 
-    public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
-        return new SearchDatabaseConfigBuilder(rootPreferenceFragment);
+    public static <C> SearchDatabaseConfigBuilder<C> builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+                                                             final TreeProcessorFactory<C> treeProcessorFactory) {
+        return new SearchDatabaseConfigBuilder<>(rootPreferenceFragment, treeProcessorFactory);
     }
 }

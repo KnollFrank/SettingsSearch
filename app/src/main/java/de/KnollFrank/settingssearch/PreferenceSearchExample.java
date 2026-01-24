@@ -41,7 +41,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         final Configuration configuration = ConfigurationProvider.getActualConfiguration(this);
-        final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
+        final SearchDatabaseConfig<Configuration> searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
         this
                 .getPreferencesDatabaseManager()
                 .initPreferencesDatabase(
@@ -49,6 +49,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() :
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                         configuration,
+                        searchDatabaseConfig.treeProcessorFactory,
                         new ConfigurationBundleConverter(),
                         this);
         final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabaseManager().getPreferencesDatabase();
@@ -103,7 +104,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(
             final PreferencesDatabase<Configuration> preferencesDatabase,
             final Configuration configuration,
-            final SearchDatabaseConfig searchDatabaseConfig) {
+            final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
                 this,

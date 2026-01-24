@@ -8,6 +8,8 @@ import static de.KnollFrank.lib.settingssearch.test.TestHelper.doWithFragmentAct
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.codepoetics.ambivalence.Either;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -17,8 +19,13 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformers;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
@@ -50,10 +57,17 @@ public class DatabaseResetterTest {
                         Optional.of(
                                 new PrepackagedPreferencesDatabase<>(
                                         new File("database/searchable_preferences_prepackaged.db"),
-                                        (tree, targetConfiguration, activityContext) -> tree.tree())),
+                                        SearchablePreferenceScreenTreeTransformers.identityTreeTransformer())),
                         JournalMode.AUTOMATIC),
                 PersistableBundleTestFactory.createSomeConfiguration(),
                 locale,
+                new TreeProcessorFactory<>() {
+
+                    @Override
+                    public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
+                        throw new IllegalArgumentException(treeProcessorDescription.toString());
+                    }
+                },
                 new ConfigurationBundleConverter(),
                 activity);
     }

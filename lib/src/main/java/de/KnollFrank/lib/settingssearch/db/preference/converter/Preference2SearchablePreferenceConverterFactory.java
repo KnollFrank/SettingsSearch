@@ -12,7 +12,7 @@ public class Preference2SearchablePreferenceConverterFactory {
     }
 
     public static PreferenceToSearchablePreferenceConverter createPreference2SearchablePreferenceConverter(
-            final SearchDatabaseConfig searchDatabaseConfig,
+            final SearchDatabaseConfig<?> searchDatabaseConfig,
             final PreferenceDialogs preferenceDialogs) {
         return new PreferenceToSearchablePreferenceConverter(
                 new IconProvider(searchDatabaseConfig.iconResourceIdProvider),

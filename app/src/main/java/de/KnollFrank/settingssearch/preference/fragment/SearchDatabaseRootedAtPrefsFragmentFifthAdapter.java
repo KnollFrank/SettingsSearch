@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import android.os.PersistableBundle;
 import android.view.View;
 
 import androidx.annotation.IdRes;
@@ -36,6 +37,11 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     @Override
+    public PersistableBundle getParams() {
+        return new PersistableBundle();
+    }
+
+    @Override
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformSearchablePreferenceScreenTree(
             final SearchablePreferenceScreenTree<Configuration> searchablePreferenceScreenTree,
@@ -50,7 +56,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> adaptGraphAtPrefsFragmentFifth(
             final SearchablePreferenceScreenTree<Configuration> searchablePreferenceScreenTree,
-            final SearchDatabaseConfig searchDatabaseConfig,
+            final SearchDatabaseConfig<Configuration> searchDatabaseConfig,
             final FragmentActivity activityContext) {
         final OnUiThreadRunner onUiThreadRunner = OnUiThreadRunnerFactory.fromActivity(activityContext);
         onUiThreadRunner.runBlockingOnUiThread(() -> {
@@ -80,7 +86,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
             final PreferenceScreenWithHost root,
             final Locale locale,
             final FragmentActivity activityContext,
-            final SearchDatabaseConfig searchDatabaseConfig) {
+            final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
         return SearchablePreferenceScreenTreeProviderFactory
                 .createSearchablePreferenceScreenTreeProvider(
                         FRAGMENT_CONTAINER_VIEW_ID,
@@ -113,7 +119,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 .endNode();
     }
 
-    private TreePathInstantiator createTreePathInstantiator(final SearchDatabaseConfig searchDatabaseConfig,
+    private TreePathInstantiator createTreePathInstantiator(final SearchDatabaseConfig<Configuration> searchDatabaseConfig,
                                                             final FragmentActivity activityContext) {
         return new TreePathInstantiator(
                 new PreferenceScreenWithHostProvider(

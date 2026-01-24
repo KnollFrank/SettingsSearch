@@ -8,7 +8,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
@@ -21,6 +23,7 @@ public class PreferencesDatabaseFactory {
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
             final C configuration,
             final Locale locale,
+            final TreeProcessorFactory<C> treeProcessorFactory,
             final ConfigurationBundleConverter<C> configurationBundleConverter,
             final FragmentActivity activityContext) {
         final PreferencesRoomDatabase preferencesRoomDatabase =
@@ -41,9 +44,11 @@ public class PreferencesDatabaseFactory {
         return new PreferencesDatabase<>() {
 
             private final SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository =
-                    SearchablePreferenceScreenTreeRepository.of(
+                    new SearchablePreferenceScreenTreeRepository<>(
                             preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
-                            configurationBundleConverter);
+                            new TreeProcessorManager<>(
+                                    new TreeProcessorDAO<>(treeProcessorFactory),
+                                    new TreeProcessorExecutor<>(configurationBundleConverter)));
 
             @Override
             public SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository() {

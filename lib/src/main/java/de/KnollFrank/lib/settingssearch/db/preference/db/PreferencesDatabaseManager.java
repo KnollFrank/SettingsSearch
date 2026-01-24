@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Locales;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 public class PreferencesDatabaseManager<C> {
@@ -14,6 +15,7 @@ public class PreferencesDatabaseManager<C> {
 
     public void initPreferencesDatabase(final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
                                         final C configuration,
+                                        final TreeProcessorFactory<C> treeProcessorFactory,
                                         final ConfigurationBundleConverter<C> configurationBundleConverter,
                                         final FragmentActivity activityContext) {
         if (preferencesDatabase.isEmpty()) {
@@ -25,6 +27,7 @@ public class PreferencesDatabaseManager<C> {
                                             preferencesDatabaseConfig,
                                             configuration,
                                             Locales.getCurrentLanguageLocale(activityContext.getResources()),
+                                            treeProcessorFactory,
                                             configurationBundleConverter,
                                             activityContext));
                 }

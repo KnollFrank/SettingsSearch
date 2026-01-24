@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 
 public class SearchPreferenceFragmentsBuilder<C> {
 
-    private final SearchDatabaseConfig searchDatabaseConfig;
+    private final SearchDatabaseConfig<C> searchDatabaseConfig;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
@@ -30,7 +30,7 @@ public class SearchPreferenceFragmentsBuilder<C> {
     private Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
 
-    protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig searchDatabaseConfig,
+    protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig<C> searchDatabaseConfig,
                                                final SearchConfig searchConfig,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,

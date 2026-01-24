@@ -11,6 +11,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
@@ -24,9 +25,10 @@ import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
-public class SearchDatabaseConfigBuilder {
+public class SearchDatabaseConfigBuilder<C> {
 
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
+    private final TreeProcessorFactory<C> treeProcessorFactory;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -37,67 +39,69 @@ public class SearchDatabaseConfigBuilder {
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
     private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
 
-    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
+    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+                                final TreeProcessorFactory<C> treeProcessorFactory) {
         this.rootPreferenceFragment = rootPreferenceFragment;
+        this.treeProcessorFactory = treeProcessorFactory;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
+    public SearchDatabaseConfigBuilder<C> withActivitySearchDatabaseConfigs(final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
         this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
+    public SearchDatabaseConfigBuilder<C> withFragmentFactory(final FragmentFactory fragmentFactory) {
         this.fragmentFactory = fragmentFactory;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withSearchableInfoProvider(final SearchableInfoProvider searchableInfoProvider) {
+    public SearchDatabaseConfigBuilder<C> withSearchableInfoProvider(final SearchableInfoProvider searchableInfoProvider) {
         this.searchableInfoProvider = searchableInfoProvider;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withPreferenceDialogAndSearchableInfoProvider(final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
+    public SearchDatabaseConfigBuilder<C> withPreferenceDialogAndSearchableInfoProvider(final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withPreferenceFragmentConnected2PreferenceProvider(final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider) {
+    public SearchDatabaseConfigBuilder<C> withPreferenceFragmentConnected2PreferenceProvider(final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider) {
         this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         return this;
     }
 
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withPreferenceScreenTreeBuilderListener(final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener) {
+    public SearchDatabaseConfigBuilder<C> withPreferenceScreenTreeBuilderListener(final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener) {
         this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withPreferenceSearchablePredicate(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
+    public SearchDatabaseConfigBuilder<C> withPreferenceSearchablePredicate(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withActivityInitializerByActivity(final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
+    public SearchDatabaseConfigBuilder<C> withActivityInitializerByActivity(final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
         this.activityInitializerByActivity = activityInitializerByActivity;
         return this;
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withPreferenceFragmentIdProvider(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+    public SearchDatabaseConfigBuilder<C> withPreferenceFragmentIdProvider(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
         return this;
     }
 
-    public SearchDatabaseConfig build() {
-        return new SearchDatabaseConfig(
+    public SearchDatabaseConfig<C> build() {
+        return new SearchDatabaseConfig<>(
                 FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs.principalAndProxies(), fragmentFactory),
                 new ReflectionIconResourceIdProvider(),
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
@@ -115,6 +119,7 @@ public class SearchDatabaseConfigBuilder {
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
                 activityInitializerByActivity,
-                preferenceFragmentIdProvider);
+                preferenceFragmentIdProvider,
+                treeProcessorFactory);
     }
 }

@@ -30,7 +30,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
     public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenTreeProvider(
             final Fragment fragment,
             final @IdRes int containerViewId,
-            final SearchDatabaseConfig searchDatabaseConfig,
+            final SearchDatabaseConfig<?> searchDatabaseConfig,
             final Locale locale,
             final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
         return createSearchablePreferenceScreenTreeProvider(
@@ -50,7 +50,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final FragmentActivity fragmentActivity,
             final FragmentManager childFragmentManager,
             final Context context,
-            final SearchDatabaseConfig searchDatabaseConfig,
+            final SearchDatabaseConfig<?> searchDatabaseConfig,
             final Locale locale,
             final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(

@@ -1,19 +1,10 @@
 package de.KnollFrank.settingssearch;
 
-import androidx.fragment.app.FragmentActivity;
-
-import com.google.common.graph.ImmutableValueGraph;
-
 import java.io.File;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedPreferencesDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
 class PreferencesDatabaseConfigFactory {
@@ -36,20 +27,7 @@ class PreferencesDatabaseConfigFactory {
                 Optional.of(
                         new PrepackagedPreferencesDatabase<>(
                                 new File("database/searchable_preferences_prepackaged.db"),
-                                new SearchablePreferenceScreenTreeTransformer<>() {
-
-                                    @Override
-                                    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-                                    public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformSearchablePreferenceScreenTree(
-                                            final SearchablePreferenceScreenTree<Configuration> searchablePreferenceScreenTree,
-                                            final Configuration targetConfiguration,
-                                            final FragmentActivity activityContext) {
-                                        return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptGraphAtPrefsFragmentFifth(
-                                                searchablePreferenceScreenTree,
-                                                SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
-                                                activityContext);
-                                    }
-                                })),
+                                new SearchDatabaseRootedAtPrefsFragmentFifthAdapter())),
                 PreferencesDatabaseConfig.JournalMode.AUTOMATIC);
     }
 }
