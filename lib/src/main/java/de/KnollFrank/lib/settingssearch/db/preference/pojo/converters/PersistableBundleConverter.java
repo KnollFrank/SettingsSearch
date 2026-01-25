@@ -15,8 +15,8 @@ public class PersistableBundleConverter implements Converter<PersistableBundle, 
 
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
-    @Override
     @TypeConverter
+    @Override
     @SuppressLint("NewApi")
     public String convertForward(final PersistableBundle bundle) {
         try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -27,8 +27,8 @@ public class PersistableBundleConverter implements Converter<PersistableBundle, 
         }
     }
 
-    @Override
     @TypeConverter
+    @Override
     @SuppressLint("NewApi")
     public PersistableBundle convertBackward(final String xmlString) {
         try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(xmlString.getBytes(CHARSET))) {
