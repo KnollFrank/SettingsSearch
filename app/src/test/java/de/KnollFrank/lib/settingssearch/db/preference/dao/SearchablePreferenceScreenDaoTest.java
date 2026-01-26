@@ -18,12 +18,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenDAOTest extends PreferencesRoomDatabaseTest {
+public class SearchablePreferenceScreenDaoTest extends PreferencesRoomDatabaseTest {
 
     @Test
     public void shouldGetHostOfPreferencesOfScreen() {
         // Given
-        final SearchablePreferenceScreenEntityDAO dao = preferencesRoomDatabase.searchablePreferenceScreenEntityDAO();
+        final SearchablePreferenceScreenEntityDao dao = preferencesRoomDatabase.searchablePreferenceScreenEntityDao();
         final SearchablePreferenceScreenGraphTestFactory.Data data =
                 new SearchablePreferenceScreenGraphTestFactory.Data(
                         "5",
@@ -43,7 +43,7 @@ public class SearchablePreferenceScreenDAOTest extends PreferencesRoomDatabaseTe
                         .orElseThrow();
 
         // When
-        final SearchablePreferenceScreenEntity hostOfPreference = preference.getHost(preferencesRoomDatabase.searchablePreferenceEntityDAO());
+        final SearchablePreferenceScreenEntity hostOfPreference = preference.getHost(preferencesRoomDatabase.searchablePreferenceEntityDao());
 
         // Then
         assertThat(hostOfPreference, is(screen.entity()));

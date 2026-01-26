@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.Objects;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDao;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
@@ -15,16 +15,16 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 class InitialTreeTransformer<C> {
 
     private final Optional<SearchablePreferenceScreenTreeTransformer<C>> treeTransformer;
-    private final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO;
+    private final SearchablePreferenceScreenTreeDao searchablePreferenceScreenTreeDao;
     private final FragmentActivity activityContext;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
     public InitialTreeTransformer(final Optional<SearchablePreferenceScreenTreeTransformer<C>> treeTransformer,
-                                  final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO,
+                                  final SearchablePreferenceScreenTreeDao searchablePreferenceScreenTreeDao,
                                   final FragmentActivity activityContext,
                                   final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.treeTransformer = treeTransformer;
-        this.searchablePreferenceScreenTreeDAO = searchablePreferenceScreenTreeDAO;
+        this.searchablePreferenceScreenTreeDao = searchablePreferenceScreenTreeDao;
         this.activityContext = activityContext;
         this.configurationBundleConverter = configurationBundleConverter;
     }
@@ -33,7 +33,7 @@ class InitialTreeTransformer<C> {
         tree.ifPresent(
                 _tree -> {
                     if (!Objects.equals(configuration, configurationBundleConverter.convertBackward(_tree.configuration()))) {
-                        searchablePreferenceScreenTreeDAO.persistOrReplace(process(_tree, configuration));
+                        searchablePreferenceScreenTreeDao.persistOrReplace(process(_tree, configuration));
                     }
                 });
     }

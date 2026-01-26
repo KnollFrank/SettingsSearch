@@ -174,11 +174,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
 
                 // When
                 final SearchablePreferenceScreenTree<PersistableBundle> germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.GERMAN);
-                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO().persistOrReplace(germanPojoGraph);
+                preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(germanPojoGraph);
 
                 // And
                 final SearchablePreferenceScreenTree<PersistableBundle> chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.CHINESE);
-                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO().persistOrReplace(chinesePojoGraph);
+                preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(chinesePojoGraph);
 
                 // Then no exception was thrown
             });

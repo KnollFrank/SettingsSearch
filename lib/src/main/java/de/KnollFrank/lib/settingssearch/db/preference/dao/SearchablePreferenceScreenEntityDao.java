@@ -25,22 +25,22 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @Dao
-public abstract class SearchablePreferenceScreenEntityDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
+public abstract class SearchablePreferenceScreenEntityDao implements SearchablePreferenceScreenEntity.DbDataProvider {
 
-    private final SearchablePreferenceEntityDAO searchablePreferenceDAO;
+    private final SearchablePreferenceEntityDao searchablePreferenceDao;
     private Optional<Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
     private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
     private Optional<List<PreferenceWithScreen>> preferenceWithScreens = Optional.empty();
 
-    public SearchablePreferenceScreenEntityDAO(final PreferencesRoomDatabase preferencesRoomDatabase) {
-        this.searchablePreferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
+    public SearchablePreferenceScreenEntityDao(final PreferencesRoomDatabase preferencesRoomDatabase) {
+        this.searchablePreferenceDao = preferencesRoomDatabase.searchablePreferenceEntityDao();
     }
 
     @Transaction
     public DatabaseState persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
                                  final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
         final DatabaseState preferenceDatabaseState =
-                searchablePreferenceDAO.persist(
+                searchablePreferenceDao.persist(
                         getAllPreferences(
                                 searchablePreferenceScreens,
                                 dbDataProvider));
@@ -73,7 +73,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     @Transaction
     public DatabaseState removeAll() {
-        final DatabaseState preferenceDatabaseState = searchablePreferenceDAO.removeAll();
+        final DatabaseState preferenceDatabaseState = searchablePreferenceDao.removeAll();
         final DatabaseState screenDatabaseState = wrapper.removeAll();
         final DatabaseState databaseState = preferenceDatabaseState.combine(screenDatabaseState);
         if (databaseState.isDatabaseChanged()) {
@@ -84,7 +84,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     @Transaction
     public DatabaseState remove(final Collection<SearchablePreferenceScreenEntity> screens) {
-        final DatabaseState preferenceDatabaseState = searchablePreferenceDAO.remove(getAllPreferences(screens, this));
+        final DatabaseState preferenceDatabaseState = searchablePreferenceDao.remove(getAllPreferences(screens, this));
         final DatabaseState screenDatabaseState = wrapper.remove(screens);
         final DatabaseState databaseState = preferenceDatabaseState.combine(screenDatabaseState);
         if (databaseState.isDatabaseChanged()) {

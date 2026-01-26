@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDao;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -31,12 +31,12 @@ public class PreferencesDatabaseFactory {
                         activityContext);
         processAndPersistTree(
                 preferencesRoomDatabase
-                        .searchablePreferenceScreenTreeDAO()
+                        .searchablePreferenceScreenTreeDao()
                         .findTreeById(locale),
                 preferencesDatabaseConfig
                         .prepackagedPreferencesDatabase()
                         .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenTreeTransformer),
-                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
+                preferencesRoomDatabase.searchablePreferenceScreenTreeDao(),
                 configuration,
                 configurationBundleConverter,
                 activityContext);
@@ -44,7 +44,7 @@ public class PreferencesDatabaseFactory {
 
             private final SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository =
                     new SearchablePreferenceScreenTreeRepository<>(
-                            preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
+                            preferencesRoomDatabase.searchablePreferenceScreenTreeDao(),
                             TreeProcessorManagerFactory.createTreeProcessorManager(
                                     preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
                                     treeProcessorFactory,
@@ -59,14 +59,14 @@ public class PreferencesDatabaseFactory {
 
     private static <C> void processAndPersistTree(final Optional<SearchablePreferenceScreenTree<PersistableBundle>> tree,
                                                   final Optional<SearchablePreferenceScreenTreeTransformer<C>> treeTransformer,
-                                                  final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO,
+                                                  final SearchablePreferenceScreenTreeDao searchablePreferenceScreenTreeDao,
                                                   final C configuration,
                                                   final ConfigurationBundleConverter<C> configurationBundleConverter,
                                                   final FragmentActivity activityContext) {
         final InitialTreeTransformer<C> initialTreeTransformer =
                 new InitialTreeTransformer<>(
                         treeTransformer,
-                        searchablePreferenceScreenTreeDAO,
+                        searchablePreferenceScreenTreeDao,
                         activityContext,
                         configurationBundleConverter);
         initialTreeTransformer.transformAndPersist(tree, configuration);

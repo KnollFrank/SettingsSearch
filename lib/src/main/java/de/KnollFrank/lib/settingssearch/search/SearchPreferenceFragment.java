@@ -121,7 +121,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
             final PersistableBundle configuration) {
         final AsyncTaskWithProgressUpdateListenersAndProgressContainer<PreferencesDatabase<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask =
                 new AsyncTaskWithProgressUpdateListenersAndProgressContainer<>(
-                        (searchablePreferenceDAO, _progressUpdateListener) -> getMergedPreferenceScreen(_progressUpdateListener, configuration),
+                        (searchablePreferenceDao, _progressUpdateListener) -> getMergedPreferenceScreen(_progressUpdateListener, configuration),
                         mergedPreferenceScreen -> {
                             showSearchResultsFragment(
                                     mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),

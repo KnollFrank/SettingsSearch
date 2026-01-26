@@ -4,10 +4,10 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeEntityDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDao;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDao;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDao;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeEntityDao;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDescriptionEntityDao;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
@@ -45,23 +45,23 @@ import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
         })
 public abstract class PreferencesRoomDatabase extends RoomDatabase {
 
-    private final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO =
-            new SearchablePreferenceScreenTreeDAO(
+    private final SearchablePreferenceScreenTreeDao searchablePreferenceScreenTreeDao =
+            new SearchablePreferenceScreenTreeDao(
                     new EntityTreePojoTreeConverter(),
-                    searchablePreferenceScreenTreeEntityDAO());
+                    searchablePreferenceScreenTreeEntityDao());
 
     protected PreferencesRoomDatabase() {
     }
 
-    public SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO() {
-        return searchablePreferenceScreenTreeDAO;
+    public SearchablePreferenceScreenTreeDao searchablePreferenceScreenTreeDao() {
+        return searchablePreferenceScreenTreeDao;
     }
 
-    public abstract SearchablePreferenceScreenTreeEntityDAO searchablePreferenceScreenTreeEntityDAO();
+    public abstract SearchablePreferenceScreenTreeEntityDao searchablePreferenceScreenTreeEntityDao();
 
-    public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
+    public abstract SearchablePreferenceScreenEntityDao searchablePreferenceScreenEntityDao();
 
-    public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
+    public abstract SearchablePreferenceEntityDao searchablePreferenceEntityDao();
 
     public abstract TreeProcessorDescriptionEntityDao treeProcessorDescriptionEntityDao();
 }

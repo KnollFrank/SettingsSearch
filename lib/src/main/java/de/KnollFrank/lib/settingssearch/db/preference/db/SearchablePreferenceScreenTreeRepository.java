@@ -9,17 +9,17 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDao;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 
 public class SearchablePreferenceScreenTreeRepository<C> {
 
-    private final SearchablePreferenceScreenTreeDAO delegate;
+    private final SearchablePreferenceScreenTreeDao delegate;
     private final TreeProcessorManager<C> treeProcessorManager;
 
-    public SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenTreeDAO delegate,
+    public SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenTreeDao delegate,
                                                     final TreeProcessorManager<C> treeProcessorManager) {
         this.delegate = delegate;
         this.treeProcessorManager = treeProcessorManager;

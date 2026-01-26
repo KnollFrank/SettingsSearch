@@ -23,8 +23,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @Dao
-// FK-TODO: umbenennen in SearchablePreferenceEntityDao mit klein geschriebenem Dao. Dito alle anderen Dao-Klassen
-public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
+public abstract class SearchablePreferenceEntityDao implements SearchablePreferenceEntity.DbDataProvider {
 
     private final PreferencesRoomDatabase preferencesRoomDatabase;
     // FK-TODO: remove cache?
@@ -32,7 +31,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>> childrenByPreference = Optional.empty();
 
-    public SearchablePreferenceEntityDAO(final PreferencesRoomDatabase preferencesRoomDatabase) {
+    public SearchablePreferenceEntityDao(final PreferencesRoomDatabase preferencesRoomDatabase) {
         this.preferencesRoomDatabase = preferencesRoomDatabase;
     }
 
@@ -71,7 +70,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     @Override
     public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
         return preferencesRoomDatabase
-                .searchablePreferenceScreenEntityDAO()
+                .searchablePreferenceScreenEntityDao()
                 .getHost(preference);
     }
 

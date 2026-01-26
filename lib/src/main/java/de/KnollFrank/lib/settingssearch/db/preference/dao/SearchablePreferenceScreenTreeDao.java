@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
-public class SearchablePreferenceScreenTreeDAO {
+public class SearchablePreferenceScreenTreeDao {
 
     private final EntityTreePojoTreeConverter entityTreePojoTreeConverter;
-    private final SearchablePreferenceScreenTreeEntityDAO delegate;
+    private final SearchablePreferenceScreenTreeEntityDao delegate;
     private final Map<Locale, Optional<SearchablePreferenceScreenTree<PersistableBundle>>> graphById = new HashMap<>();
 
-    public SearchablePreferenceScreenTreeDAO(final EntityTreePojoTreeConverter entityTreePojoTreeConverter,
-                                             final SearchablePreferenceScreenTreeEntityDAO delegate) {
+    public SearchablePreferenceScreenTreeDao(final EntityTreePojoTreeConverter entityTreePojoTreeConverter,
+                                             final SearchablePreferenceScreenTreeEntityDao delegate) {
         this.entityTreePojoTreeConverter = entityTreePojoTreeConverter;
         this.delegate = delegate;
     }

@@ -22,12 +22,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Persistabl
 import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDatabaseTest {
+public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDatabaseTest {
 
     @Test
     public void shouldNotFindTreeById_emptyDb() {
         // Given
-        final SearchablePreferenceScreenTreeDAO dao = createGraphDAO();
+        final SearchablePreferenceScreenTreeDao dao = createGraphDao();
 
         // When
         final Optional<SearchablePreferenceScreenTree<PersistableBundle>> graphFromDb = dao.findTreeById(Locale.GERMAN);
@@ -39,7 +39,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
     @Test
     public void test_persistOrReplace_findTreeById() {
         // Given
-        final SearchablePreferenceScreenTreeDAO dao = createGraphDAO();
+        final SearchablePreferenceScreenTreeDao dao = createGraphDao();
         final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree =
                 new SearchablePreferenceScreenTree<>(
                         SearchablePreferenceScreenGraphTestFactory
@@ -68,7 +68,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
     @Test
     public void test_persistOrReplaceAndFindTreeById_twoGraphs_differentLocales() {
         // Given
-        final SearchablePreferenceScreenTreeDAO dao = createGraphDAO();
+        final SearchablePreferenceScreenTreeDao dao = createGraphDao();
 
         // When
         final SearchablePreferenceScreenTree<PersistableBundle> germanGraph =
@@ -114,7 +114,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
     @Test
     public void test_persistOrReplaceAndFindTreeById_twoGraphs_sameLocales() {
         // Given
-        final SearchablePreferenceScreenTreeDAO dao = createGraphDAO();
+        final SearchablePreferenceScreenTreeDao dao = createGraphDao();
         final Locale locale = Locale.GERMAN;
 
         // When
@@ -159,14 +159,14 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
         testFindTreeById(overwritingGraph, dao);
     }
 
-    private SearchablePreferenceScreenTreeDAO createGraphDAO() {
-        return new SearchablePreferenceScreenTreeDAO(
+    private SearchablePreferenceScreenTreeDao createGraphDao() {
+        return new SearchablePreferenceScreenTreeDao(
                 new EntityTreePojoTreeConverter(),
-                preferencesRoomDatabase.searchablePreferenceScreenTreeEntityDAO());
+                preferencesRoomDatabase.searchablePreferenceScreenTreeEntityDao());
     }
 
     private static void testFindTreeById(final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree,
-                                         final SearchablePreferenceScreenTreeDAO dao) {
+                                         final SearchablePreferenceScreenTreeDao dao) {
         final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTreeFromDb =
                 dao
                         .findTreeById(searchablePreferenceScreenTree.locale())

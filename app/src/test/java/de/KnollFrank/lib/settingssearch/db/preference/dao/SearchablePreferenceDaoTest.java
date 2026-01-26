@@ -21,12 +21,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEntityEquality;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceDAOTest extends PreferencesRoomDatabaseTest {
+public class SearchablePreferenceDaoTest extends PreferencesRoomDatabaseTest {
 
     @Test
     public void shouldPersistAndFindPreferenceById() {
         // Given
-        final SearchablePreferenceEntityDAO dao = preferencesRoomDatabase.searchablePreferenceEntityDAO();
+        final SearchablePreferenceEntityDao dao = preferencesRoomDatabase.searchablePreferenceEntityDao();
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
                         "1",
@@ -50,7 +50,7 @@ public class SearchablePreferenceDAOTest extends PreferencesRoomDatabaseTest {
     @Test
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
-        final SearchablePreferenceEntityDAO dao = preferencesRoomDatabase.searchablePreferenceEntityDAO();
+        final SearchablePreferenceEntityDao dao = preferencesRoomDatabase.searchablePreferenceEntityDao();
         final SearchablePreferenceEntity predecessor =
                 createSomeSearchablePreference(
                         "1",
@@ -81,7 +81,7 @@ public class SearchablePreferenceDAOTest extends PreferencesRoomDatabaseTest {
     @Test
     public void shouldGetChildrenOfPersistedPreference() {
         // Given
-        final SearchablePreferenceEntityDAO dao = preferencesRoomDatabase.searchablePreferenceEntityDAO();
+        final SearchablePreferenceEntityDao dao = preferencesRoomDatabase.searchablePreferenceEntityDao();
         final SearchablePreferenceEntity parent =
                 createSomeSearchablePreference(
                         "1",
@@ -114,7 +114,7 @@ public class SearchablePreferenceDAOTest extends PreferencesRoomDatabaseTest {
     @Test
     public void shouldRemovePreference() {
         // Given
-        final SearchablePreferenceEntityDAO dao = preferencesRoomDatabase.searchablePreferenceEntityDAO();
+        final SearchablePreferenceEntityDao dao = preferencesRoomDatabase.searchablePreferenceEntityDao();
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
                         "1",
