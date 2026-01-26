@@ -21,8 +21,8 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TestTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
@@ -57,7 +57,7 @@ public class DatabaseResetterTest {
                         Optional.of(
                                 new PrepackagedPreferencesDatabase<>(
                                         new File("database/searchable_preferences_prepackaged.db"),
-                                        TreeProcessorTestFactory.createTreeTransformer())),
+                                        new TestTreeTransformer<>())),
                         JournalMode.AUTOMATIC),
                 PersistableBundleTestFactory.createSomeConfiguration(),
                 locale,

@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorTestFactory.createTreeCreator;
-import static de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorTestFactory.createTreeTransformer;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -17,6 +15,8 @@ import de.KnollFrank.lib.settingssearch.common.Functions;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TestTreeCreator;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TestTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorDescriptionConverter;
@@ -41,7 +41,7 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
     public void shouldAddTreeCreator() {
         // Given
         final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
-        final SearchablePreferenceScreenTreeCreator<C> treeCreator = createTreeCreator();
+        final SearchablePreferenceScreenTreeCreator<C> treeCreator = new TestTreeCreator<>();
 
         // When
         treeProcessorDao.addTreeCreator(treeCreator);
@@ -56,7 +56,7 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
     public void shouldAddTreeTransformer() {
         // Given
         final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
-        final SearchablePreferenceScreenTreeTransformer<C> treeTransformer = createTreeTransformer();
+        final SearchablePreferenceScreenTreeTransformer<C> treeTransformer = new TestTreeTransformer<>();
 
         // When
         treeProcessorDao.addTreeTransformer(treeTransformer);
@@ -71,8 +71,8 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
     public void shouldRemoveAllTreeProcessors() {
         // Given
         final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
-        treeProcessorDao.addTreeCreator(createTreeCreator());
-        treeProcessorDao.addTreeTransformer(createTreeTransformer());
+        treeProcessorDao.addTreeCreator(new TestTreeCreator<>());
+        treeProcessorDao.addTreeTransformer(new TestTreeTransformer<>());
 
         // When
         treeProcessorDao.removeTreeProcessors();
@@ -88,7 +88,7 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
         assertFalse(treeProcessorDao.hasTreeProcessors());
 
         // When
-        treeProcessorDao.addTreeCreator(createTreeCreator());
+        treeProcessorDao.addTreeCreator(new TestTreeCreator<>());
 
         // Then
         assertTrue(treeProcessorDao.hasTreeProcessors());
@@ -110,8 +110,8 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
                             public Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> createTreeProcessor(final TreeProcessorDescription<C> treeProcessorDescription) {
                                 return treeProcessorDescription
                                         .treeProcessor()
-                                        .map(Functions.constant(createTreeCreator()),
-                                             Functions.constant(createTreeTransformer()));
+                                        .map(Functions.constant(new TestTreeCreator<C>()),
+                                             Functions.constant(new TestTreeTransformer<C>()));
 
                             }
                         }

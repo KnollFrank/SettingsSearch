@@ -7,7 +7,7 @@ import com.codepoetics.ambivalence.Either;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 
-// FK-TODO: add unit test and refactor
+// FK-TODO: refactor
 public class TreeProcessorClassConverter implements Converter<Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>>, String> {
 
     private static final String LEFT_PREFIX = "L:";
