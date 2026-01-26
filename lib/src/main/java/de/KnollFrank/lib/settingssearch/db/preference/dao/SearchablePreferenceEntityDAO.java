@@ -23,6 +23,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @Dao
+// FK-TODO: umbenennen in SearchablePreferenceEntityDao mit klein geschriebenem Dao. Dito alle anderen Dao-Klassen
 public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
 
     private final PreferencesRoomDatabase preferencesRoomDatabase;

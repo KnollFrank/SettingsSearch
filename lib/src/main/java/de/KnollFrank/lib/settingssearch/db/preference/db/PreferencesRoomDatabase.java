@@ -8,9 +8,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEn
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeEntityDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDescriptionEntityDao;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescriptionEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LazyPersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
@@ -18,13 +20,15 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIn
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorClassConverter;
 import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
 @Database(
         entities = {
                 SearchablePreferenceScreenTreeEntity.class,
                 SearchablePreferenceScreenEntity.class,
-                SearchablePreferenceEntity.class
+                SearchablePreferenceEntity.class,
+                TreeProcessorDescriptionEntity.class
         },
         version = 1,
         exportSchema = false)
@@ -36,7 +40,8 @@ import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
                 OptionalIntegerConverter.class,
                 LocaleConverter.class,
                 PersistableBundleConverter.class,
-                LazyPersistableBundleConverter.class
+                LazyPersistableBundleConverter.class,
+                TreeProcessorClassConverter.class
         })
 public abstract class PreferencesRoomDatabase extends RoomDatabase {
 
@@ -57,4 +62,6 @@ public abstract class PreferencesRoomDatabase extends RoomDatabase {
     public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 
     public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
+
+    public abstract TreeProcessorDescriptionEntityDao treeProcessorDescriptionEntityDao();
 }

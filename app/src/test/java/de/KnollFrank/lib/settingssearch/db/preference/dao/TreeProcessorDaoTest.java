@@ -1,0 +1,120 @@
+package de.KnollFrank.lib.settingssearch.db.preference.dao;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorTestFactory.createTreeCreator;
+import static de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorTestFactory.createTreeTransformer;
+
+import com.codepoetics.ambivalence.Either;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+
+import java.util.List;
+
+import de.KnollFrank.lib.settingssearch.common.Functions;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorDescriptionConverter;
+
+@RunWith(RobolectricTestRunner.class)
+// FK-TODO: refine tests
+public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
+
+    @Test
+    public void shouldReturnEmptyListWhenNoProcessorsAreAdded() {
+        // Given
+        final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
+
+        // When
+        final var treeProcessors = treeProcessorDao.getTreeProcessors();
+
+        // Then
+        assertTrue(treeProcessors.isEmpty());
+    }
+
+    @Test
+    public void shouldAddTreeCreator() {
+        // Given
+        final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
+        final SearchablePreferenceScreenTreeCreator<C> treeCreator = createTreeCreator();
+
+        // When
+        treeProcessorDao.addTreeCreator(treeCreator);
+
+        // Then
+        final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> processors = treeProcessorDao.getTreeProcessors();
+        assertFalse(processors.isEmpty());
+        assertTrue(processors.get(0).isLeft());
+    }
+
+    @Test
+    public void shouldAddTreeTransformer() {
+        // Given
+        final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
+        final SearchablePreferenceScreenTreeTransformer<C> treeTransformer = createTreeTransformer();
+
+        // When
+        treeProcessorDao.addTreeTransformer(treeTransformer);
+
+        // Then
+        final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> processors = treeProcessorDao.getTreeProcessors();
+        assertFalse(processors.isEmpty());
+        assertTrue(processors.get(0).isRight());
+    }
+
+    @Test
+    public void shouldRemoveAllTreeProcessors() {
+        // Given
+        final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
+        treeProcessorDao.addTreeCreator(createTreeCreator());
+        treeProcessorDao.addTreeTransformer(createTreeTransformer());
+
+        // When
+        treeProcessorDao.removeTreeProcessors();
+
+        // Then
+        assertTrue(treeProcessorDao.getTreeProcessors().isEmpty());
+    }
+
+    @Test
+    public void shouldIndicateWhetherItHasTreeProcessors() {
+        // Given
+        final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
+        assertFalse(treeProcessorDao.hasTreeProcessors());
+
+        // When
+        treeProcessorDao.addTreeCreator(createTreeCreator());
+
+        // Then
+        assertTrue(treeProcessorDao.hasTreeProcessors());
+
+        // When
+        treeProcessorDao.removeTreeProcessors();
+
+        // Then
+        assertFalse(treeProcessorDao.hasTreeProcessors());
+    }
+
+    private TreeProcessorDao<C> createTreeProcessorDao() {
+        return new TreeProcessorDao<>(
+                preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
+                new TreeProcessorDescriptionConverter<>(
+                        new TreeProcessorFactory<>() {
+
+                            @Override
+                            public Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> createTreeProcessor(final TreeProcessorDescription<C> treeProcessorDescription) {
+                                return treeProcessorDescription
+                                        .treeProcessor()
+                                        .map(Functions.constant(createTreeCreator()),
+                                             Functions.constant(createTreeTransformer()));
+
+                            }
+                        }
+                ));
+    }
+}

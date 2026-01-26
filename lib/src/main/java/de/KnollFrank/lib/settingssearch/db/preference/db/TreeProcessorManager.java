@@ -6,36 +6,36 @@ import androidx.fragment.app.FragmentActivity;
 
 import java.util.List;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDao;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 
 public class TreeProcessorManager<C> {
 
-    private final TreeProcessorDAO<C> treeProcessorDAO;
+    private final TreeProcessorDao<C> treeProcessorDao;
     private final TreeProcessorExecutor<C> treeProcessorExecutor;
 
-    public TreeProcessorManager(final TreeProcessorDAO<C> treeProcessorDAO,
+    public TreeProcessorManager(final TreeProcessorDao<C> treeProcessorDao,
                                 final TreeProcessorExecutor<C> treeProcessorExecutor) {
-        this.treeProcessorDAO = treeProcessorDAO;
+        this.treeProcessorDao = treeProcessorDao;
         this.treeProcessorExecutor = treeProcessorExecutor;
     }
 
     public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
-        treeProcessorDAO.addTreeCreator(treeCreator);
+        treeProcessorDao.addTreeCreator(treeCreator);
     }
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
-        treeProcessorDAO.addTreeTransformer(treeTransformer);
+        treeProcessorDao.addTreeTransformer(treeTransformer);
     }
 
     public void removeTreeProcessors() {
-        treeProcessorDAO.removeTreeProcessors();
+        treeProcessorDao.removeTreeProcessors();
     }
 
     public boolean hasTreeProcessors() {
-        return treeProcessorDAO.hasTreeProcessors();
+        return treeProcessorDao.hasTreeProcessors();
     }
 
     public List<SearchablePreferenceScreenTree<PersistableBundle>> applyTreeProcessorsToTrees(
@@ -44,11 +44,11 @@ public class TreeProcessorManager<C> {
             final FragmentActivity activityContext) {
         final var processedTrees =
                 treeProcessorExecutor.applyTreeProcessorsToTrees(
-                        treeProcessorDAO.getTreeProcessors(),
+                        treeProcessorDao.getTreeProcessors(),
                         trees,
                         configuration,
                         activityContext);
-        treeProcessorDAO.removeTreeProcessors();
+        treeProcessorDao.removeTreeProcessors();
         return processedTrees;
     }
 }

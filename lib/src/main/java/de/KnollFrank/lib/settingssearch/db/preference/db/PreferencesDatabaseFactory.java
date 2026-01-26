@@ -45,7 +45,10 @@ public class PreferencesDatabaseFactory {
             private final SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository =
                     new SearchablePreferenceScreenTreeRepository<>(
                             preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
-                            TreeProcessorManagerFactory.createTreeProcessorManager(treeProcessorFactory, configurationBundleConverter));
+                            TreeProcessorManagerFactory.createTreeProcessorManager(
+                                    preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
+                                    treeProcessorFactory,
+                                    configurationBundleConverter));
 
             @Override
             public SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository() {

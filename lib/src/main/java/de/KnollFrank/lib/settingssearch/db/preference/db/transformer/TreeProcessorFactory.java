@@ -6,5 +6,5 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescript
 
 public interface TreeProcessorFactory<C> {
 
-    Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> createTreeProcessor(final TreeProcessorDescription<C> treeProcessorDescription);
+    Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> createTreeProcessor(TreeProcessorDescription<C> treeProcessorDescription);
 }

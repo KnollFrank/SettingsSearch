@@ -855,6 +855,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         return new SearchablePreferenceScreenTreeRepository<>(
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
                 TreeProcessorManagerFactory.createTreeProcessorManager(
+                        preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
                         new TreeProcessorFactory<>() {
 
                             @Override

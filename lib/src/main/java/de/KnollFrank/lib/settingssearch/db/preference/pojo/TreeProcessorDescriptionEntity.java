@@ -11,10 +11,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchableP
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 
 @Entity
-public record TreeProcessorDescriptionEntity<C>(
+public record TreeProcessorDescriptionEntity(
         @PrimaryKey(autoGenerate = true)
         long id,
-        Either<Class<? extends SearchablePreferenceScreenTreeCreator<C>>, Class<? extends SearchablePreferenceScreenTreeTransformer<C>>> treeProcessor,
+        // FK-TODO: use "@Embedded TreeProcessorDescription<?> treeProcessorDescription"
+        Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> treeProcessor,
         PersistableBundle params) {
 }
 
