@@ -31,13 +31,17 @@ public class TreeProcessorClassConverter implements Converter<Either<Class<? ext
         if (string.startsWith(LEFT_PREFIX)) {
             return Either.ofLeft(
                     treeCreatorClassConverter.convertBackward(
-                            string.substring(LEFT_PREFIX.length())));
+                            getClassNameOfStringStringWithPrefix(string, LEFT_PREFIX)));
         } else if (string.startsWith(RIGHT_PREFIX)) {
             return Either.ofRight(
                     treeTransformerClassConverter.convertBackward(
-                            string.substring(RIGHT_PREFIX.length())));
+                            getClassNameOfStringStringWithPrefix(string, RIGHT_PREFIX)));
         } else {
             throw new IllegalArgumentException("Invalid value for TreeProcessorClassConverter: " + string);
         }
+    }
+
+    private static String getClassNameOfStringStringWithPrefix(final String string, final String prefix) {
+        return string.substring(prefix.length());
     }
 }
