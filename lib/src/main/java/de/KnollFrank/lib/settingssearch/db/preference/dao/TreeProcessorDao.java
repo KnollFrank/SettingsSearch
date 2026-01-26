@@ -34,14 +34,14 @@ public class TreeProcessorDao<C> {
 
     public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
         removeTreeProcessors();
-        treeProcessorDescriptionEntityDao.insertAll(
+        treeProcessorDescriptionEntityDao.persist(
                 TreeProcessorDescriptionEntity.of(
                         treeProcessorDescriptionConverter.convertBackward(
                                 Either.ofLeft(treeCreator))));
     }
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
-        treeProcessorDescriptionEntityDao.insertAll(
+        treeProcessorDescriptionEntityDao.persist(
                 TreeProcessorDescriptionEntity.of(
                         treeProcessorDescriptionConverter.convertBackward(
                                 Either.ofRight(treeTransformer))));

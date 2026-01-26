@@ -15,9 +15,8 @@ public interface TreeProcessorDescriptionEntityDao {
     @Query("SELECT * FROM TreeProcessorDescriptionEntity")
     List<TreeProcessorDescriptionEntity> getAll();
 
-    // FK-TODO: remove ... notation
     @Insert
-    void insertAll(TreeProcessorDescriptionEntity... treeProcessorDescriptionEntities);
+    void persist(TreeProcessorDescriptionEntity treeProcessorDescriptionEntity);
 
     @Query("DELETE FROM TreeProcessorDescriptionEntity")
     void deleteAll();
