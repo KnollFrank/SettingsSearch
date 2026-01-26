@@ -28,30 +28,23 @@ public class TreeProcessorDao<C> {
                 .stream()
                 .map(treeProcessorDescriptionEntity ->
                              treeProcessorDescriptionConverter.convertForward(
-                                     // FK-TODO: extract method
-                                     new TreeProcessorDescription<C>(
-                                             (Either) treeProcessorDescriptionEntity.treeProcessor(),
-                                             treeProcessorDescriptionEntity.params())))
+                                     treeProcessorDescriptionEntity.treeProcessorDescription()))
                 .collect(Collectors.toList());
     }
 
     public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
         removeTreeProcessors();
-        final TreeProcessorDescription<C> treeProcessorDescription = treeProcessorDescriptionConverter.convertBackward(Either.ofLeft(treeCreator));
         treeProcessorDescriptionEntityDao.insertAll(
-                // FK-TODO: extract method
-                new TreeProcessorDescriptionEntity(
-                        (Either) treeProcessorDescription.treeProcessor(),
-                        treeProcessorDescription.params()));
+                TreeProcessorDescriptionEntity.of(
+                        treeProcessorDescriptionConverter.convertBackward(
+                                Either.ofLeft(treeCreator))));
     }
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
-        final TreeProcessorDescription<C> treeProcessorDescription = treeProcessorDescriptionConverter.convertBackward(Either.ofRight(treeTransformer));
         treeProcessorDescriptionEntityDao.insertAll(
-                // FK-TODO: extract method
-                new TreeProcessorDescriptionEntity(
-                        (Either) treeProcessorDescription.treeProcessor(),
-                        treeProcessorDescription.params()));
+                TreeProcessorDescriptionEntity.of(
+                        treeProcessorDescriptionConverter.convertBackward(
+                                Either.ofRight(treeTransformer))));
     }
 
     public void removeTreeProcessors() {
