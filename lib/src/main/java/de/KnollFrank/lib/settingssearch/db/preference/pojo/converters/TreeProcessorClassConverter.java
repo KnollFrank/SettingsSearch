@@ -4,39 +4,38 @@ import androidx.room.TypeConverter;
 
 import com.codepoetics.ambivalence.Either;
 
-import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 
 // FK-TODO: refactor
 public class TreeProcessorClassConverter implements Converter<Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>>, String> {
 
+    private final Converter<Class<?>, String> classConverter = new ClassConverter();
+
     private static final String LEFT_PREFIX = "L:";
     private static final String RIGHT_PREFIX = "R:";
 
     @TypeConverter
     @Override
-    public String convertForward(final Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> classClassEither) {
-        return classClassEither.join(
-                clazz -> LEFT_PREFIX + clazz.getName(),
-                clazz -> RIGHT_PREFIX + clazz.getName());
+    public String convertForward(final Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> creatorClassOrTransformerClass) {
+        return creatorClassOrTransformerClass
+                .map(classConverter::convertForward,
+                     classConverter::convertForward)
+                .join(className -> LEFT_PREFIX + className,
+                      className -> RIGHT_PREFIX + className);
     }
 
     @TypeConverter
     @Override
-    public Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> convertBackward(final String s) {
-        if (s.startsWith(LEFT_PREFIX)) {
-            final String className = s.substring(LEFT_PREFIX.length());
-            final Class<?> clazz = Classes.getClass(className);
-            @SuppressWarnings("unchecked") final Class<? extends SearchablePreferenceScreenTreeCreator<?>> creatorClass = (Class<? extends SearchablePreferenceScreenTreeCreator<?>>) clazz;
-            return Either.ofLeft(creatorClass);
-        } else if (s.startsWith(RIGHT_PREFIX)) {
-            final String className = s.substring(RIGHT_PREFIX.length());
-            final Class<?> clazz = Classes.getClass(className);
-            @SuppressWarnings("unchecked") final Class<? extends SearchablePreferenceScreenTreeTransformer<?>> transformerClass = (Class<? extends SearchablePreferenceScreenTreeTransformer<?>>) clazz;
-            return Either.ofRight(transformerClass);
+    public Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> convertBackward(final String string) {
+        if (string.startsWith(LEFT_PREFIX)) {
+            final String className = string.substring(LEFT_PREFIX.length());
+            return Either.ofLeft((Class<? extends SearchablePreferenceScreenTreeCreator<?>>) classConverter.convertBackward(className));
+        } else if (string.startsWith(RIGHT_PREFIX)) {
+            final String className = string.substring(RIGHT_PREFIX.length());
+            return Either.ofRight((Class<? extends SearchablePreferenceScreenTreeTransformer<?>>) classConverter.convertBackward(className));
         } else {
-            throw new IllegalArgumentException("Invalid value for TreeProcessorClassConverter: " + s);
+            throw new IllegalArgumentException("Invalid value for TreeProcessorClassConverter: " + string);
         }
     }
 }

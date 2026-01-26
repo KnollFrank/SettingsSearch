@@ -5,6 +5,7 @@ import androidx.room.TypeConverter;
 
 import de.KnollFrank.lib.settingssearch.common.Classes;
 
+// FK-TODO: use ClassConverter
 public class PreferenceFragmentClassConverter implements Converter<Class<? extends PreferenceFragmentCompat>, String> {
 
     @TypeConverter
