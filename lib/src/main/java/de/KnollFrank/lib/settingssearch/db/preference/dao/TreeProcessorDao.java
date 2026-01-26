@@ -41,8 +41,6 @@ public class TreeProcessorDao<C> {
         treeProcessorDescriptionEntityDao.insertAll(
                 // FK-TODO: extract method
                 new TreeProcessorDescriptionEntity(
-                        // FK-FIXME: 0?
-                        0,
                         (Either) treeProcessorDescription.treeProcessor(),
                         treeProcessorDescription.params()));
     }
@@ -52,8 +50,6 @@ public class TreeProcessorDao<C> {
         treeProcessorDescriptionEntityDao.insertAll(
                 // FK-TODO: extract method
                 new TreeProcessorDescriptionEntity(
-                        // FK-FIXME: 0?
-                        0,
                         (Either) treeProcessorDescription.treeProcessor(),
                         treeProcessorDescription.params()));
     }

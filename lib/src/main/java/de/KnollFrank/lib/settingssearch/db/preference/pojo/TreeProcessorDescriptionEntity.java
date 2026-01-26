@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import android.os.PersistableBundle;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.codepoetics.ambivalence.Either;
@@ -17,5 +18,12 @@ public record TreeProcessorDescriptionEntity(
         // FK-TODO: use "@Embedded TreeProcessorDescription<?> treeProcessorDescription"
         Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> treeProcessor,
         PersistableBundle params) {
+
+    @Ignore
+    public TreeProcessorDescriptionEntity(
+            final Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> treeProcessor,
+            final PersistableBundle params) {
+        this(0, treeProcessor, params);
+    }
 }
 
