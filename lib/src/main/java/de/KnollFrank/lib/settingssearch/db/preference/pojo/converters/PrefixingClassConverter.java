@@ -14,7 +14,6 @@ class PrefixingClassConverter<T> implements Converter<Class<? extends T>, String
                 new ConverterComposition<>(
                         classConverter,
                         prefixingConverter));
-
     }
 
     @Override
