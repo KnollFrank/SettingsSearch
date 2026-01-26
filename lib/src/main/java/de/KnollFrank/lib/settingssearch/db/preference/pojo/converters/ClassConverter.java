@@ -4,17 +4,17 @@ import androidx.room.TypeConverter;
 
 import de.KnollFrank.lib.settingssearch.common.Classes;
 
-class ClassConverter implements Converter<Class<?>, String> {
+class ClassConverter<T> implements Converter<Class<? extends T>, String> {
 
     @TypeConverter
     @Override
-    public String convertForward(final Class<?> aClass) {
+    public String convertForward(final Class<? extends T> aClass) {
         return aClass.getName();
     }
 
     @TypeConverter
     @Override
-    public Class<?> convertBackward(final String className) {
+    public Class<? extends T> convertBackward(final String className) {
         return Classes.getClass(className);
     }
 }
