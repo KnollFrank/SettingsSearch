@@ -10,11 +10,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchableP
 public class TreeProcessorClassConverter implements Converter<Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>>, String> {
 
     private static final PrefixingClassConverter<SearchablePreferenceScreenTreeCreator<?>> TREE_CREATOR_CLASS_CONVERTER =
-            new PrefixingClassConverter<>(
+            PrefixingClassConverter.of(
                     new ClassConverter<>(),
                     new PrefixingConverter("L:"));
     private static final PrefixingClassConverter<SearchablePreferenceScreenTreeTransformer<?>> TREE_TRANSFORMER_CLASS_CONVERTER =
-            new PrefixingClassConverter<>(
+            PrefixingClassConverter.of(
                     new ClassConverter<>(),
                     new PrefixingConverter("R:"));
 

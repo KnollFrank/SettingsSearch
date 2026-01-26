@@ -2,13 +2,19 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
 class PrefixingClassConverter<T> implements Converter<Class<? extends T>, String> {
 
-    private final PrefixingConverter prefixingConverter;
-    private final ConverterComposition<Class<? extends T>, String, String> converterComposition;
+    private final ConverterComposition<Class<? extends T>, String, String, ClassConverter<T>, PrefixingConverter> converterComposition;
 
-    public PrefixingClassConverter(final ClassConverter<T> classConverter,
-                                   final PrefixingConverter prefixingConverter) {
-        this.converterComposition = new ConverterComposition<>(classConverter, prefixingConverter);
-        this.prefixingConverter = prefixingConverter;
+    private PrefixingClassConverter(final ConverterComposition<Class<? extends T>, String, String, ClassConverter<T>, PrefixingConverter> converterComposition) {
+        this.converterComposition = converterComposition;
+    }
+
+    public static <T> PrefixingClassConverter<T> of(final ClassConverter<T> classConverter,
+                                                    final PrefixingConverter prefixingConverter) {
+        return new PrefixingClassConverter<>(
+                new ConverterComposition<>(
+                        classConverter,
+                        prefixingConverter));
+
     }
 
     @Override
@@ -22,6 +28,6 @@ class PrefixingClassConverter<T> implements Converter<Class<? extends T>, String
     }
 
     public boolean canConvertBackward(final String string) {
-        return prefixingConverter.canConvertBackward(string);
+        return converterComposition.second.canConvertBackward(string);
     }
 }

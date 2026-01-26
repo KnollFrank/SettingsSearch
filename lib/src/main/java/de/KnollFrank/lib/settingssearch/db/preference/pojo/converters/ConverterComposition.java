@@ -1,11 +1,11 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
-class ConverterComposition<A, B, C> implements Converter<A, C> {
+class ConverterComposition<A, B, C, ABConverter extends Converter<A, B>, BCConverter extends Converter<B, C>> implements Converter<A, C> {
 
-    private final Converter<A, B> first;
-    private final Converter<B, C> second;
+    public final ABConverter first;
+    public final BCConverter second;
 
-    public ConverterComposition(final Converter<A, B> first, final Converter<B, C> second) {
+    public ConverterComposition(final ABConverter first, final BCConverter second) {
         this.first = first;
         this.second = second;
     }
