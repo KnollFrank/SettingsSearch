@@ -2,36 +2,26 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
 class PrefixingClassConverter<T> implements Converter<Class<? extends T>, String> {
 
-    private final Converter<Class<? extends T>, String> delegate;
-    private final String prefix;
+    private final PrefixingConverter prefixingConverter;
+    private final ConverterComposition<Class<? extends T>, String, String> converterComposition;
 
-    public PrefixingClassConverter(final Converter<Class<? extends T>, String> delegate,
-                                   final String prefix) {
-        this.delegate = delegate;
-        this.prefix = prefix;
+    public PrefixingClassConverter(final ClassConverter<T> classConverter,
+                                   final PrefixingConverter prefixingConverter) {
+        this.converterComposition = new ConverterComposition<>(classConverter, prefixingConverter);
+        this.prefixingConverter = prefixingConverter;
     }
 
     @Override
     public String convertForward(final Class<? extends T> aClass) {
-        final String className = delegate.convertForward(aClass);
-        return prefixClassName(className);
+        return converterComposition.convertForward(aClass);
     }
 
     @Override
-    public Class<? extends T> convertBackward(final String classNameStartingWithPrefix) {
-        final String className = getClassName(classNameStartingWithPrefix);
-        return delegate.convertBackward(className);
+    public Class<? extends T> convertBackward(final String s) {
+        return converterComposition.convertBackward(s);
     }
 
-    public boolean canConvertBackward(final String classNameStartingWithPrefix) {
-        return classNameStartingWithPrefix.startsWith(prefix);
-    }
-
-    private String prefixClassName(final String className) {
-        return prefix + className;
-    }
-
-    private String getClassName(final String classNameStartingWithPrefix) {
-        return classNameStartingWithPrefix.substring(prefix.length());
+    public boolean canConvertBackward(final String string) {
+        return prefixingConverter.canConvertBackward(string);
     }
 }

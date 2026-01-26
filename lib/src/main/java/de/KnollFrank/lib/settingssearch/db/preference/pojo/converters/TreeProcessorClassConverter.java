@@ -12,11 +12,11 @@ public class TreeProcessorClassConverter implements Converter<Either<Class<? ext
     private static final PrefixingClassConverter<SearchablePreferenceScreenTreeCreator<?>> TREE_CREATOR_CLASS_CONVERTER =
             new PrefixingClassConverter<>(
                     new ClassConverter<>(),
-                    "L:");
+                    new PrefixingConverter("L:"));
     private static final PrefixingClassConverter<SearchablePreferenceScreenTreeTransformer<?>> TREE_TRANSFORMER_CLASS_CONVERTER =
             new PrefixingClassConverter<>(
                     new ClassConverter<>(),
-                    "R:");
+                    new PrefixingConverter("R:"));
 
     @TypeConverter
     @Override
