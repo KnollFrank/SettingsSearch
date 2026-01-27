@@ -1,7 +1,11 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.EitherMatchers.isLeft;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.EitherMatchers.isRight;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -34,7 +38,7 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
         final var treeProcessors = treeProcessorDao.getTreeProcessors();
 
         // Then
-        assertTrue(treeProcessors.isEmpty());
+        assertThat(treeProcessors, is(empty()));
     }
 
     @Test
@@ -48,8 +52,8 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
 
         // Then
         final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> processors = treeProcessorDao.getTreeProcessors();
-        assertFalse(processors.isEmpty());
-        assertTrue(processors.get(0).isLeft());
+        assertThat(processors, is(not(empty())));
+        assertThat(processors.get(0), isLeft());
     }
 
     @Test
@@ -63,8 +67,8 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
 
         // Then
         final List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> processors = treeProcessorDao.getTreeProcessors();
-        assertFalse(processors.isEmpty());
-        assertTrue(processors.get(0).isRight());
+        assertThat(processors, is(not(empty())));
+        assertThat(processors.get(0), isRight());
     }
 
     @Test
@@ -78,26 +82,26 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
         treeProcessorDao.removeTreeProcessors();
 
         // Then
-        assertTrue(treeProcessorDao.getTreeProcessors().isEmpty());
+        assertThat(treeProcessorDao.getTreeProcessors(), is(empty()));
     }
 
     @Test
     public void shouldIndicateWhetherItHasTreeProcessors() {
         // Given
         final TreeProcessorDao<C> treeProcessorDao = createTreeProcessorDao();
-        assertFalse(treeProcessorDao.hasTreeProcessors());
+        assertThat(treeProcessorDao.hasTreeProcessors(), is(false));
 
         // When
         treeProcessorDao.addTreeCreator(new TestTreeCreator<>());
 
         // Then
-        assertTrue(treeProcessorDao.hasTreeProcessors());
+        assertThat(treeProcessorDao.hasTreeProcessors(), is(true));
 
         // When
         treeProcessorDao.removeTreeProcessors();
 
         // Then
-        assertFalse(treeProcessorDao.hasTreeProcessors());
+        assertThat(treeProcessorDao.hasTreeProcessors(), is(false));
     }
 
     private TreeProcessorDao<C> createTreeProcessorDao() {
