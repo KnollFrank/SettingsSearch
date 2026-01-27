@@ -9,7 +9,6 @@ import java.util.List;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescriptionEntity;
 
 @Dao
-// FK-TODO: add unit test
 public interface TreeProcessorDescriptionEntityDao {
 
     @Query("SELECT * FROM TreeProcessorDescriptionEntity")

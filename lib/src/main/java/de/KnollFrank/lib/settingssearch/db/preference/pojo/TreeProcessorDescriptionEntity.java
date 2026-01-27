@@ -17,7 +17,7 @@ public record TreeProcessorDescriptionEntity(
         Either<Class<? extends SearchablePreferenceScreenTreeCreator<?>>, Class<? extends SearchablePreferenceScreenTreeTransformer<?>>> treeProcessor,
         PersistableBundle params) {
 
-    public static <C> TreeProcessorDescriptionEntity of(final TreeProcessorDescription<C> treeProcessorDescription) {
+    public static TreeProcessorDescriptionEntity of(final TreeProcessorDescription<?> treeProcessorDescription) {
         return new TreeProcessorDescriptionEntity(
                 0,
                 (Either) treeProcessorDescription.treeProcessor(),
