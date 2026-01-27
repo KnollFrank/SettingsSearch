@@ -110,8 +110,8 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
                             public Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> createTreeProcessor(final TreeProcessorDescription<C> treeProcessorDescription) {
                                 return treeProcessorDescription
                                         .treeProcessor()
-                                        .map(Functions.constant(new TestTreeCreator<C>()),
-                                             Functions.constant(new TestTreeTransformer<C>()));
+                                        .map(Functions.constant(new TestTreeCreator<>()),
+                                             Functions.constant(new TestTreeTransformer<>()));
 
                             }
                         }
