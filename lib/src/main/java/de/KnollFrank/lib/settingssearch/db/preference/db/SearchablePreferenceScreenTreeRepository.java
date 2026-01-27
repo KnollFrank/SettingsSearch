@@ -29,6 +29,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
         this.treeProcessorManager = treeProcessorManager;
     }
 
+    // FK-TODO: runInTransaction
     public void persistOrReplace(final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree) {
         delegate.persistOrReplace(searchablePreferenceScreenTree);
         treeProcessorManager.removeTreeProcessors();
@@ -55,6 +56,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
         return delegate.loadAll();
     }
 
+    // FK-TODO: runInTransaction
     public void removeAll() {
         delegate.removeAll();
         treeProcessorManager.removeTreeProcessors();

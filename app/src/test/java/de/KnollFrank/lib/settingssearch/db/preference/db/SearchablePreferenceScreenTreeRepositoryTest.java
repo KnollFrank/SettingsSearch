@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.codepoetics.ambivalence.Either;
+import com.google.common.collect.Iterables;
 import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Before;
@@ -39,7 +40,6 @@ import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 
 @RunWith(RobolectricTestRunner.class)
-// FK-TODO: refine and refactor
 public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoomDatabaseTest {
 
     private SearchablePreferenceScreenTreeRepository<Configuration> repository;
@@ -47,99 +47,59 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
 
     @Before
     public void setUp() {
-        treeProcessorManager =
-                TreeProcessorManagerFactory.createTreeProcessorManager(
-                        preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
-                        new TreeProcessorFactory<Configuration>() {
-
-                            @Override
-                            public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
-                                return treeProcessorDescription
-                                        .treeProcessor()
-                                        .map(Functions.constant(new TestTreeCreator<>()),
-                                             treeTransformerClass -> {
-                                                 if (ExceptionThrowingTransformer.class.equals(treeTransformerClass)) {
-                                                     return new ExceptionThrowingTransformer();
-                                                 }
-                                                 if (TitleChangingTransformer.class.equals(treeTransformerClass)) {
-                                                     final String newTitle = treeProcessorDescription.params().getString("newTitle");
-                                                     return new TitleChangingTransformer(newTitle);
-                                                 }
-                                                 return new TestTreeTransformer<>();
-                                             });
-                            }
-                        },
-                        new ConfigurationBundleConverter());
+        treeProcessorManager = createTreeProcessorManager();
         repository = createTreeRepository(treeProcessorManager);
     }
 
     @Test
     public void whenTransactionSucceeds_databaseShouldBeUpdatedAndProcessorsRemoved() {
-        // Arrange: Define the transformation
+        // Given
         final String transformedTitle = "Transformed Title";
-
-        // Arrange: Persist an initial tree
-        final SearchablePreferenceScreenTree<PersistableBundle> initialTree = createInitialTree();
-        final Locale treeId = initialTree.locale();
-        preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(initialTree);
+        preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(createInitialTree());
         assertThat(preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size(), is(1));
-
-        // Arrange: Add a transformer that will perform the title change
         repository.addTreeTransformer(new TitleChangingTransformer(transformedTitle));
         assertThat(treeProcessorManager.hasTreeProcessors(), is(true));
 
-        // Act: Trigger the transaction
-        repository.loadAll(PersistableBundleTestFactory.createSomeConfiguration(), mock(FragmentActivity.class));
-
-        // Assert: The tree processors SHOULD have been removed, because the transaction succeeded.
-        assertThat(treeProcessorManager.hasTreeProcessors(), is(false));
-
-        // Assert: The tree should have been transformed.
+        // When
         final SearchablePreferenceScreenTree<PersistableBundle> transformedTree =
-                preferencesRoomDatabase
-                        .searchablePreferenceScreenTreeDao()
-                        .findTreeById(treeId)
-                        .orElseThrow();
+                Iterables.getOnlyElement(
+                        repository.loadAll(
+                                PersistableBundleTestFactory.createSomeConfiguration(),
+                                mock(FragmentActivity.class)));
+
+        // Then
         final String actualTitle = transformedTree.tree().rootNode().title().orElseThrow();
         assertThat(actualTitle, is(transformedTitle));
-
-        // Assert: The tree count remains the same (it's replaced).
         assertThat(preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size(), is(1));
+        assertThat(treeProcessorManager.hasTreeProcessors(), is(false));
     }
 
     @Test
     public void whenTransactionFails_databaseShouldRollback() {
-        // Arrange: Persist an initial tree and check it's there.
-        final SearchablePreferenceScreenTree<PersistableBundle> initialTree = createInitialTree();
-        preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(initialTree);
+        // Given
+        preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(createInitialTree());
         final int initialCount = preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size();
         assertThat(initialCount, is(1));
 
-        // Arrange: Add the misbehaving transformer and check it's there.
         repository.addTreeTransformer(new ExceptionThrowingTransformer());
         assertThat(treeProcessorManager.hasTreeProcessors(), is(true));
 
-        // Act: Trigger the transaction, which is expected to fail.
+        // When
         try {
             repository.loadAll(PersistableBundleTestFactory.createSomeConfiguration(), mock(FragmentActivity.class));
-            fail("Expected RuntimeException was not thrown.");
-        } catch (final MyException e) {
-            // Assert: Verify it's the exception we expect.
+            fail("Expected TransformerException was not thrown.");
+        } catch (final TransformerException e) {
+            // Then
             assertThat(e.getMessage(), is(ExceptionThrowingTransformer.EXCEPTION_MESSAGE));
         }
-
-        // Assert: Check if the database state is rolled back.
-        // The initial tree should still be there, and no new trees added.
         assertThat(preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size(), is(initialCount));
-
-        // The tree processors should NOT have been removed, because the transaction failed before commit.
         assertThat(treeProcessorManager.hasTreeProcessors(), is(true));
     }
 
     private SearchablePreferenceScreenTree<PersistableBundle> createInitialTree() {
         return new SearchablePreferenceScreenTree<>(
                 SearchablePreferenceScreenGraphTestFactory
-                        .createGraph(
+                        .createSingleNodeGraph(
                                 PreferenceFragmentCompat.class,
                                 Locale.GERMAN,
                                 new SearchablePreferenceScreenGraphTestFactory.Data(
@@ -157,6 +117,31 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                 PersistableBundleTestFactory.createSomePersistableBundle());
     }
 
+    private TreeProcessorManager<Configuration> createTreeProcessorManager() {
+        return TreeProcessorManagerFactory.createTreeProcessorManager(
+                preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
+                new TreeProcessorFactory<Configuration>() {
+
+                    @Override
+                    public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
+                        return treeProcessorDescription
+                                .treeProcessor()
+                                .map(Functions.constant(new TestTreeCreator<>()),
+                                     treeTransformerClass -> {
+                                         if (ExceptionThrowingTransformer.class.equals(treeTransformerClass)) {
+                                             return new ExceptionThrowingTransformer();
+                                         }
+                                         if (TitleChangingTransformer.class.equals(treeTransformerClass)) {
+                                             final String newTitle = treeProcessorDescription.params().getString("newTitle");
+                                             return new TitleChangingTransformer(newTitle);
+                                         }
+                                         return new TestTreeTransformer<>();
+                                     });
+                    }
+                },
+                new ConfigurationBundleConverter());
+    }
+
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository(
             final TreeProcessorManager<Configuration> treeProcessorManager) {
         return new SearchablePreferenceScreenTreeRepository<>(
@@ -165,12 +150,9 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                 treeProcessorManager);
     }
 
-    private static class MyException extends RuntimeException {
+    private static class TransformerException extends RuntimeException {
 
-        public MyException() {
-        }
-
-        public MyException(final String message) {
+        public TransformerException(final String message) {
             super(message);
         }
     }
@@ -185,7 +167,7 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                 final SearchablePreferenceScreenTree<Configuration> searchablePreferenceScreenTree,
                 final Configuration targetConfiguration,
                 final FragmentActivity activityContext) {
-            throw new MyException(EXCEPTION_MESSAGE);
+            throw new TransformerException(EXCEPTION_MESSAGE);
         }
 
         @Override
