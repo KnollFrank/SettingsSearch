@@ -43,7 +43,7 @@ import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoomDatabaseTest {
 
     @Test
-    public void whenTransactionSucceeds_databaseShouldBeUpdatedAndProcessorsRemoved() {
+    public void shouldApplyTreeProcessors() {
         // Given
         final SearchablePreferenceScreenTreeRepository<Configuration> repository = createTreeRepository();
         final SearchablePreferenceScreenTree<PersistableBundle> initialTree = createInitialTree();
