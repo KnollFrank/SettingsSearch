@@ -4,6 +4,8 @@ import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.codepoetics.ambivalence.Either;
+
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TreeProcessorDao;
@@ -28,6 +30,10 @@ public class TreeProcessorManager<C> {
 
     public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
         treeProcessorDao.addTreeTransformer(treeTransformer);
+    }
+
+    public List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> getTreeProcessors() {
+        return treeProcessorDao.getTreeProcessors();
     }
 
     public void removeTreeProcessors() {

@@ -4,7 +4,10 @@ import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.codepoetics.ambivalence.Either;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
@@ -43,6 +46,10 @@ public class SearchablePreferenceScreenTreeRepository<C> {
         treeProcessorManager.addTreeCreator(TreeCreator);
     }
 
+    public List<Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>>> getTreeProcessors() {
+        return treeProcessorManager.getTreeProcessors();
+    }
+
     public Optional<SearchablePreferenceScreenTree<PersistableBundle>> findTreeById(final Locale id,
                                                                                     final C actualConfiguration,
                                                                                     final FragmentActivity activityContext) {
@@ -65,6 +72,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
         if (treeProcessorManager.hasTreeProcessors()) {
             database.runInTransaction(
+                    // FK-TODO: falls eine Exception geworfen wird und dadurch die Transaktion gerollbackt wird, sollten auch die caches aller beteiligten Daos gelöscht bzw. zurückgesetzt werden. Schreibe einen Test, der das Löschen der beteiligten Caches erzwingt.
                     () -> treeProcessorManager
                             .applyTreeProcessorsToTrees(
                                     new ArrayList<>(delegate.loadAll()),
