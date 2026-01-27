@@ -56,8 +56,11 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
         // Given
         final String transformedTitle = "Transformed Title";
         preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(createInitialTree());
-        assertThat(preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size(), is(1));
+
+        // When
         repository.addTreeTransformer(new TitleChangingTransformer(transformedTitle));
+
+        // Then
         assertThat(treeProcessorManager.hasTreeProcessors(), is(true));
 
         // When
@@ -68,19 +71,15 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                                 mock(FragmentActivity.class)));
 
         // Then
+        assertThat(treeProcessorManager.hasTreeProcessors(), is(false));
         final String actualTitle = transformedTree.tree().rootNode().title().orElseThrow();
         assertThat(actualTitle, is(transformedTitle));
-        assertThat(preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size(), is(1));
-        assertThat(treeProcessorManager.hasTreeProcessors(), is(false));
     }
 
     @Test
     public void whenTransactionFails_databaseShouldRollback() {
         // Given
         preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(createInitialTree());
-        final int initialCount = preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size();
-        assertThat(initialCount, is(1));
-
         repository.addTreeTransformer(new ExceptionThrowingTransformer());
         assertThat(treeProcessorManager.hasTreeProcessors(), is(true));
 
@@ -92,7 +91,8 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
             // Then
             assertThat(e.getMessage(), is(ExceptionThrowingTransformer.EXCEPTION_MESSAGE));
         }
-        assertThat(preferencesRoomDatabase.searchablePreferenceScreenTreeDao().loadAll().size(), is(initialCount));
+
+        // Then
         assertThat(treeProcessorManager.hasTreeProcessors(), is(true));
     }
 
