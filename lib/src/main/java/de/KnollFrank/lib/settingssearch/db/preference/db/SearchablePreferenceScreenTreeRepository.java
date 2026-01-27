@@ -16,11 +16,15 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenTreeRepository<C> {
 
+    private final PreferencesRoomDatabase database;
     private final SearchablePreferenceScreenTreeDao delegate;
     private final TreeProcessorManager<C> treeProcessorManager;
 
-    public SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenTreeDao delegate,
+    public SearchablePreferenceScreenTreeRepository(final PreferencesRoomDatabase database,
+                                                    final SearchablePreferenceScreenTreeDao delegate,
                                                     final TreeProcessorManager<C> treeProcessorManager) {
+        // FK-TODO: nicht die ganze Datenbank übergeben, sondern nur database::runInTransaction
+        this.database = database;
         this.delegate = delegate;
         this.treeProcessorManager = treeProcessorManager;
     }
@@ -58,14 +62,13 @@ public class SearchablePreferenceScreenTreeRepository<C> {
 
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
         if (treeProcessorManager.hasTreeProcessors()) {
-            // FK-TODO: start transaction
-            treeProcessorManager
-                    .applyTreeProcessorsToTrees(
-                            new ArrayList<>(delegate.loadAll()),
-                            actualConfiguration,
-                            activityContext)
-                    .forEach(delegate::persistOrReplace);
-            // FK-TODO: commit transaction
+            database.runInTransaction(
+                    () -> treeProcessorManager
+                            .applyTreeProcessorsToTrees(
+                                    new ArrayList<>(delegate.loadAll()),
+                                    actualConfiguration,
+                                    activityContext)
+                            .forEach(delegate::persistOrReplace));
         }
     }
 }

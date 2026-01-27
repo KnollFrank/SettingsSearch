@@ -15,14 +15,12 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 
-import de.KnollFrank.lib.settingssearch.common.Functions;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TestTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TestTreeTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactoryTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorDescriptionConverter;
 
 @RunWith(RobolectricTestRunner.class)
@@ -107,18 +105,6 @@ public class TreeProcessorDaoTest<C> extends PreferencesRoomDatabaseTest {
     private TreeProcessorDao<C> createTreeProcessorDao() {
         return new TreeProcessorDao<>(
                 preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
-                new TreeProcessorDescriptionConverter<>(
-                        new TreeProcessorFactory<>() {
-
-                            @Override
-                            public Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> createTreeProcessor(final TreeProcessorDescription<C> treeProcessorDescription) {
-                                return treeProcessorDescription
-                                        .treeProcessor()
-                                        .map(Functions.constant(new TestTreeCreator<>()),
-                                             Functions.constant(new TestTreeTransformer<>()));
-
-                            }
-                        }
-                ));
+                new TreeProcessorDescriptionConverter<>(TreeProcessorFactoryTestFactory.createTreeProcessorFactory()));
     }
 }
