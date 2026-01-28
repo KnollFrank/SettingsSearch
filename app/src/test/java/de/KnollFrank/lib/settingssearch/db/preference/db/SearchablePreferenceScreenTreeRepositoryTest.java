@@ -11,7 +11,6 @@ import android.os.PersistableBundle;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.Iterables;
 import com.google.common.graph.ImmutableValueGraph;
 
@@ -22,7 +21,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.Functions;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
@@ -34,7 +32,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeCreatorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
@@ -124,23 +123,23 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDao(),
                 TreeProcessorManagerFactory.createTreeProcessorManager(
                         preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
-                        new TreeProcessorFactory<Configuration>() {
+                        new TreeProcessorFactory<>() {
 
                             @Override
-                            public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
-                                return treeProcessorDescription
-                                        .treeProcessor()
-                                        .map(Functions.constant(new TestTreeCreator<>()),
-                                             treeTransformerClass -> {
-                                                 if (ExceptionThrowingTransformer.class.equals(treeTransformerClass)) {
-                                                     return new ExceptionThrowingTransformer();
-                                                 }
-                                                 if (TitleChangingTransformer.class.equals(treeTransformerClass)) {
-                                                     final String newTitle = treeProcessorDescription.params().getString("newTitle");
-                                                     return new TitleChangingTransformer(newTitle);
-                                                 }
-                                                 return new TestTreeTransformer<>();
-                                             });
+                            public SearchablePreferenceScreenTreeCreator<Configuration> createTreeCreator(final TreeCreatorDescription<Configuration> treeCreatorDescription) {
+                                return new TestTreeCreator<>();
+                            }
+
+                            @Override
+                            public SearchablePreferenceScreenTreeTransformer<Configuration> createTreeTransformer(final TreeTransformerDescription<Configuration> treeTransformerDescription) {
+                                if (ExceptionThrowingTransformer.class.equals(treeTransformerDescription.treeTransformer())) {
+                                    return new ExceptionThrowingTransformer();
+                                }
+                                if (TitleChangingTransformer.class.equals(treeTransformerDescription.treeTransformer())) {
+                                    final String newTitle = treeTransformerDescription.params().getString("newTitle");
+                                    return new TitleChangingTransformer(newTitle);
+                                }
+                                return new TestTreeTransformer<>();
                             }
                         },
                         new ConfigurationBundleConverter()),

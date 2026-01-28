@@ -8,8 +8,6 @@ import static de.KnollFrank.lib.settingssearch.test.TestHelper.doWithFragmentAct
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.codepoetics.ambivalence.Either;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -25,7 +23,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TestTreeTra
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeCreatorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
@@ -64,8 +63,13 @@ public class DatabaseResetterTest {
                 new TreeProcessorFactory<>() {
 
                     @Override
-                    public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
-                        throw new IllegalArgumentException(treeProcessorDescription.toString());
+                    public SearchablePreferenceScreenTreeCreator<Configuration> createTreeCreator(final TreeCreatorDescription<Configuration> treeCreatorDescription) {
+                        throw new IllegalArgumentException(treeCreatorDescription.toString());
+                    }
+
+                    @Override
+                    public SearchablePreferenceScreenTreeTransformer<Configuration> createTreeTransformer(final TreeTransformerDescription<Configuration> treeTransformerDescription) {
+                        throw new IllegalArgumentException(treeTransformerDescription.toString());
                     }
                 },
                 new ConfigurationBundleConverter(),

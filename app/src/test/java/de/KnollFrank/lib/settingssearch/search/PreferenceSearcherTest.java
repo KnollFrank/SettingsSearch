@@ -24,7 +24,6 @@ import androidx.preference.SwitchPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
-import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.ImmutableBiMap;
 
 import org.junit.Test;
@@ -59,7 +58,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchableP
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeCreatorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -859,8 +859,13 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         new TreeProcessorFactory<>() {
 
                             @Override
-                            public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
-                                throw new IllegalArgumentException(treeProcessorDescription.toString());
+                            public SearchablePreferenceScreenTreeCreator<Configuration> createTreeCreator(final TreeCreatorDescription<Configuration> treeCreatorDescription) {
+                                throw new IllegalArgumentException(treeCreatorDescription.toString());
+                            }
+
+                            @Override
+                            public SearchablePreferenceScreenTreeTransformer<Configuration> createTreeTransformer(final TreeTransformerDescription<Configuration> treeTransformerDescription) {
+                                throw new IllegalArgumentException(treeTransformerDescription.toString());
                             }
                         },
                         new ConfigurationBundleConverter()),

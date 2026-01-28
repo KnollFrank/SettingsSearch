@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ImmutableValueGraph;
 
@@ -26,7 +25,8 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeCreatorDescription;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescription;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -61,19 +61,16 @@ public class SearchDatabaseConfigFactory {
                         new TreeProcessorFactory<Configuration>() {
 
                             @Override
-                            public Either<SearchablePreferenceScreenTreeCreator<Configuration>, SearchablePreferenceScreenTreeTransformer<Configuration>> createTreeProcessor(final TreeProcessorDescription<Configuration> treeProcessorDescription) {
-                                return treeProcessorDescription
-                                        .treeProcessor()
-                                        .map(
-                                                treeCreatorClass -> {
-                                                    throw new IllegalArgumentException(treeCreatorClass.toString());
-                                                },
-                                                treeTransformerClass -> {
-                                                    if (SearchDatabaseRootedAtPrefsFragmentFifthAdapter.class.equals(treeTransformerClass)) {
-                                                        return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter();
-                                                    }
-                                                    throw new IllegalArgumentException(treeTransformerClass.toString());
-                                                });
+                            public SearchablePreferenceScreenTreeCreator<Configuration> createTreeCreator(final TreeCreatorDescription<Configuration> treeCreatorDescription) {
+                                throw new IllegalArgumentException(treeCreatorDescription.toString());
+                            }
+
+                            @Override
+                            public SearchablePreferenceScreenTreeTransformer<Configuration> createTreeTransformer(final TreeTransformerDescription<Configuration> treeTransformerDescription) {
+                                if (SearchDatabaseRootedAtPrefsFragmentFifthAdapter.class.equals(treeTransformerDescription.treeTransformer())) {
+                                    return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter();
+                                }
+                                throw new IllegalArgumentException(treeTransformerDescription.toString());
                             }
                         })
                 .withFragmentFactory(

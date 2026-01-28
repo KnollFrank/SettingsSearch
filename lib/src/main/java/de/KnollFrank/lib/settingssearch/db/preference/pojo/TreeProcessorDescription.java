@@ -10,4 +10,16 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchableP
 public record TreeProcessorDescription<C>(
         Either<Class<? extends SearchablePreferenceScreenTreeCreator<C>>, Class<? extends SearchablePreferenceScreenTreeTransformer<C>>> treeProcessor,
         PersistableBundle params) {
+
+    public Either<TreeCreatorDescription<C>, TreeTransformerDescription<C>> getDescriptions() {
+        return treeProcessor
+                .map(treeCreatorClass ->
+                             new TreeCreatorDescription<>(
+                                     treeCreatorClass,
+                                     params),
+                     treeTransformerClass ->
+                             new TreeTransformerDescription<>(
+                                     treeTransformerClass,
+                                     params));
+    }
 }

@@ -17,7 +17,9 @@ public class TreeProcessorDescriptionConverter<C> implements Converter<TreeProce
 
     @Override
     public Either<SearchablePreferenceScreenTreeCreator<C>, SearchablePreferenceScreenTreeTransformer<C>> convertForward(final TreeProcessorDescription<C> treeProcessorDescription) {
-        return treeProcessorFactory.createTreeProcessor(treeProcessorDescription);
+        return treeProcessorDescription
+                .getDescriptions()
+                .map(treeProcessorFactory::createTreeCreator, treeProcessorFactory::createTreeTransformer);
     }
 
     @Override
