@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDao;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
@@ -19,21 +20,20 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenTreeRepository<C> {
 
-    private final PreferencesRoomDatabase database;
     private final SearchablePreferenceScreenTreeDao delegate;
     private final TreeProcessorManager<C> treeProcessorManager;
+    private final Consumer<Runnable> runInTransaction;
 
-    public SearchablePreferenceScreenTreeRepository(final PreferencesRoomDatabase database,
-                                                    final SearchablePreferenceScreenTreeDao delegate,
-                                                    final TreeProcessorManager<C> treeProcessorManager) {
-        // FK-TODO: nicht die ganze Datenbank übergeben, sondern nur database::runInTransaction
-        this.database = database;
+    public SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenTreeDao delegate,
+                                                    final TreeProcessorManager<C> treeProcessorManager,
+                                                    final Consumer<Runnable> runInTransaction) {
         this.delegate = delegate;
         this.treeProcessorManager = treeProcessorManager;
+        this.runInTransaction = runInTransaction;
     }
 
     public void persistOrReplace(final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree) {
-        database.runInTransaction(() -> {
+        runInTransaction.accept(() -> {
             delegate.persistOrReplace(searchablePreferenceScreenTree);
             treeProcessorManager.removeTreeProcessors();
         });
@@ -65,7 +65,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
     }
 
     public void removeAll() {
-        database.runInTransaction(() -> {
+        runInTransaction.accept(() -> {
             delegate.removeAll();
             treeProcessorManager.removeTreeProcessors();
         });
@@ -73,7 +73,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
 
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
         if (treeProcessorManager.hasTreeProcessors()) {
-            database.runInTransaction(
+            runInTransaction.accept(
                     // FK-TODO: falls eine Exception geworfen wird und dadurch die Transaktion gerollbackt wird, sollten auch die caches aller beteiligten Daos gelöscht bzw. zurückgesetzt werden. Schreibe einen Test, der das Löschen der beteiligten Caches erzwingt.
                     () -> treeProcessorManager
                             .applyTreeProcessorsToTrees(

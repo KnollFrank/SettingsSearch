@@ -121,7 +121,6 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
 
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
         return new SearchablePreferenceScreenTreeRepository<>(
-                preferencesRoomDatabase,
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDao(),
                 TreeProcessorManagerFactory.createTreeProcessorManager(
                         preferencesRoomDatabase.treeProcessorDescriptionEntityDao(),
@@ -144,7 +143,8 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                                              });
                             }
                         },
-                        new ConfigurationBundleConverter()));
+                        new ConfigurationBundleConverter()),
+                preferencesRoomDatabase::runInTransaction);
     }
 
     private static class TransformerException extends RuntimeException {
