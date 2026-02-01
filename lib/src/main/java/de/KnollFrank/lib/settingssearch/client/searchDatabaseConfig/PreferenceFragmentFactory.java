@@ -38,6 +38,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
             final Context context,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final P preferenceFragment = createPreferenceFragment(src, context, instantiateAndInitializeFragment);
+        // FK-FIXME: an dieser Stelle wurde instantiateAndInitializeFragment() schon ausgeführt, also auch onCreate() weswegen das "BeforeOnCreate" in initializePreferenceFragmentWithFragmentBeforeOnCreate() eine falsche Aussage ist?
         preferenceFragment.initializePreferenceFragmentWithFragmentBeforeOnCreate(getFragment(instantiateAndInitializeFragment, src));
         return preferenceFragment;
     }
