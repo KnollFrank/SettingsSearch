@@ -28,6 +28,6 @@ class ArgumentsFactory {
 	}
 
 	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
-		return preferenceWithHost.map(PreferenceWithHost::host);
+		return preferenceWithHost.map(PreferenceWithHost::hostOfPreference);
 	}
 }

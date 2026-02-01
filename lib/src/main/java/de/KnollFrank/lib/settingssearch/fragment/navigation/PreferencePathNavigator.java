@@ -57,7 +57,7 @@ public class PreferencePathNavigator {
 
     private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceWithHost> preferenceWithHost) {
         return preferenceWithHost
-                .flatMap(preferenceWithProxy -> principalProvider.getPrincipal(preferenceWithProxy.host(), preferenceWithHost))
-                .or(() -> preferenceWithHost.map(PreferenceWithHost::host));
+                .flatMap(preferenceWithProxy -> principalProvider.getPrincipal(preferenceWithProxy.hostOfPreference(), preferenceWithHost))
+                .or(() -> preferenceWithHost.map(PreferenceWithHost::hostOfPreference));
     }
 }

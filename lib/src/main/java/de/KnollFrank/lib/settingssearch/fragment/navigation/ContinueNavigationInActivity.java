@@ -42,7 +42,7 @@ class ContinueNavigationInActivity {
                         preferencePath.getStart(),
                         src);
         if (tailPreferencePath.isPresent()) {
-            continueNavigationInActivity(activity, preferenceWithHost.host(), tailPreferencePath.orElseThrow());
+            continueNavigationInActivity(activity, preferenceWithHost.hostOfPreference(), tailPreferencePath.orElseThrow());
             return Optional.empty();
         }
         return Optional.of(preferenceWithHost);

@@ -92,7 +92,7 @@ public class SearchDatabaseConfigFactory {
                                     PrefsFragmentFirst
                                             .markExtrasOfPreferenceConnectingSrcWithDst(
                                                     preference,
-                                                    src.orElseThrow().host(),
+                                                    src.orElseThrow().hostOfPreference(),
                                                     fragmentClass);
                                     return Classes.instantiateFragmentClass(
                                             fragmentClass,
