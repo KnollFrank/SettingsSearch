@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
@@ -23,7 +23,7 @@ public class FragmentFactoryAndInitializerRegistry {
 
     @SuppressWarnings("unchecked")
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
-                                                                   final Optional<PreferenceWithHost> src,
+                                                                   final Optional<PreferenceOfHost> src,
                                                                    final Context context,
                                                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final Arguments arguments = ArgumentsFactory.createArguments(fragmentClass, src);

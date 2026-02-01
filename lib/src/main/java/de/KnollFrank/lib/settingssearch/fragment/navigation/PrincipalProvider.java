@@ -5,7 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
@@ -20,7 +20,7 @@ class PrincipalProvider {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
     }
 
-    public Optional<Fragment> getPrincipal(final PreferenceFragmentCompat proxy, final Optional<PreferenceWithHost> src) {
+    public Optional<Fragment> getPrincipal(final PreferenceFragmentCompat proxy, final Optional<PreferenceOfHost> src) {
         return principalAndProxyProvider
                 .getPrincipal(proxy.getClass())
                 .map(principal -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(principal, src));

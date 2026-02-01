@@ -39,9 +39,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
@@ -727,7 +727,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
             @Override
             public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
-                                                      final Optional<PreferenceWithHost> src,
+                                                      final Optional<PreferenceOfHost> src,
                                                       final Context context,
                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                 return preferenceFragment.getClass().equals(fragmentClass) ?

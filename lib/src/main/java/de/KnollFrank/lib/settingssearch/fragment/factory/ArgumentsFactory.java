@@ -6,7 +6,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 
 class ArgumentsFactory {
 
@@ -14,20 +14,20 @@ class ArgumentsFactory {
     }
 
     public static Arguments createArguments(final Class<? extends Fragment> fragmentClass,
-											final Optional<PreferenceWithHost> preferenceWithHost) {
+											final Optional<PreferenceOfHost> preferenceWithHost) {
 		return new Arguments(
 				fragmentClass,
 				getKeyOfPreference(preferenceWithHost),
 				getHostOfPreference(preferenceWithHost));
 	}
 
-	private static Optional<String> getKeyOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
+	private static Optional<String> getKeyOfPreference(final Optional<PreferenceOfHost> preferenceWithHost) {
 		return preferenceWithHost
-				.map(PreferenceWithHost::preference)
+				.map(PreferenceOfHost::preference)
 				.map(Preference::getKey);
 	}
 
-	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
-		return preferenceWithHost.map(PreferenceWithHost::hostOfPreference);
+	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceOfHost> preferenceWithHost) {
+		return preferenceWithHost.map(PreferenceOfHost::hostOfPreference);
 	}
 }

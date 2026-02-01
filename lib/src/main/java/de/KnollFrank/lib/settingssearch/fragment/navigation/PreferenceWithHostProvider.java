@@ -6,7 +6,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -26,20 +26,20 @@ class PreferenceWithHostProvider {
         this.context = context;
     }
 
-    public PreferenceWithHost getPreferenceWithHost(final SearchablePreferenceOfHostWithinTree preference,
-                                                    final Optional<PreferenceWithHost> src) {
+    public PreferenceOfHost getPreferenceWithHost(final SearchablePreferenceOfHostWithinTree preference,
+                                                  final Optional<PreferenceOfHost> src) {
         final PreferenceFragmentCompat hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
                         preference.hostOfPreference().host(),
                         src);
-        return new PreferenceWithHost(
+        return new PreferenceOfHost(
                 Preferences.findPreferenceByKeyOrElseThrow(hostOfPreference, preference.searchablePreference().getKey()),
                 hostOfPreference);
     }
 
     private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(
             final Class<? extends PreferenceFragmentCompat> preferenceFragment,
-            final Optional<PreferenceWithHost> src) {
+            final Optional<PreferenceOfHost> src) {
         return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
                 preferenceFragment,
                 src,

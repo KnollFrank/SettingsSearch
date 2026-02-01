@@ -20,7 +20,7 @@ public class PreferenceScreenWithHostProvider {
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenWithHostOfFragment(
             final Class<? extends Fragment> fragmentClass,
-            final Optional<PreferenceWithHost> src) {
+            final Optional<PreferenceOfHost> src) {
         return this
                 .getPreferenceFragment(fragmentClass, src)
                 .map(this::getPreferenceScreenWithHost);
@@ -28,7 +28,7 @@ public class PreferenceScreenWithHostProvider {
 
     private Optional<? extends PreferenceFragmentCompat> getPreferenceFragment(
             final Class<? extends Fragment> fragmentClass,
-            final Optional<PreferenceWithHost> src) {
+            final Optional<PreferenceOfHost> src) {
         final Fragment fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
         return fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :

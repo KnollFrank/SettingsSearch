@@ -15,8 +15,8 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
@@ -78,7 +78,7 @@ public class SearchDatabaseConfigFactory {
 
                             @Override
                             public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
-                                                                      final Optional<PreferenceWithHost> src,
+                                                                      final Optional<PreferenceOfHost> src,
                                                                       final Context context,
                                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&

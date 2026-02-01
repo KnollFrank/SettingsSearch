@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 
 public class Fragments implements InstantiateAndInitializeFragment {
@@ -28,7 +28,7 @@ public class Fragments implements InstantiateAndInitializeFragment {
 
     @Override
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
-                                                                   final Optional<PreferenceWithHost> src) {
+                                                                   final Optional<PreferenceOfHost> src) {
         return fragmentFactoryAndInitializerRegistry.instantiateAndInitializeFragment(fragmentClass, src, context, this);
     }
 
