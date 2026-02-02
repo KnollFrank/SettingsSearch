@@ -10,7 +10,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.common.HeadAndTail;
 import de.KnollFrank.lib.settingssearch.common.Lists;
@@ -30,7 +30,7 @@ public class TreePathInstantiator {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
-    public TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> instantiate(final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
+    public TreePath<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> instantiate(final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
         return instantiateTreePath(
                 Lists
                         .asHeadAndTail(treePath.nodes())
@@ -38,46 +38,50 @@ public class TreePathInstantiator {
                 treePath.tree());
     }
 
-    private TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> instantiateTreePath(
+    private TreePath<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> instantiateTreePath(
             final HeadAndTail<SearchablePreferenceScreen> treePath,
             final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
-        final ImmutableValueGraph.Builder<PreferenceScreenWithHost, Preference> graphBuilder = Graphs.directedImmutableValueGraphBuilder();
-        final ImmutableList.Builder<PreferenceScreenWithHost> nodesBuilder = ImmutableList.builder();
+        final ImmutableValueGraph.Builder<PreferenceScreenOfHostOfActivity, Preference> graphBuilder = Graphs.directedImmutableValueGraphBuilder();
+        final ImmutableList.Builder<PreferenceScreenOfHostOfActivity> nodesBuilder = ImmutableList.builder();
         SearchablePreferenceScreen searchablePreferenceScreenPrevious = treePath.head();
-        PreferenceScreenWithHost preferenceScreenWithHostPrevious =
+        PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivityPrevious =
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
-                                searchablePreferenceScreenPrevious.host(),
+                                searchablePreferenceScreenPrevious
+                                        .host()
+                                        .asFragmentClassOfActivity(),
                                 Optional.empty())
                         .orElseThrow();
-        graphBuilder.addNode(preferenceScreenWithHostPrevious);
-        nodesBuilder.add(preferenceScreenWithHostPrevious);
+        graphBuilder.addNode(preferenceScreenOfHostOfActivityPrevious);
+        nodesBuilder.add(preferenceScreenOfHostOfActivityPrevious);
         for (final SearchablePreferenceScreen searchablePreferenceScreenActual : treePath.tail()) {
             final Preference preferencePrevious =
                     getInstanceOfSearchablePreference(
-                            preferenceScreenWithHostPrevious.host(),
+                            preferenceScreenOfHostOfActivityPrevious.hostOfPreferenceScreen(),
                             getSearchablePreferenceOnEdge(
                                     tree,
                                     EndpointPair.ordered(
                                             searchablePreferenceScreenPrevious,
                                             searchablePreferenceScreenActual)));
-            final PreferenceScreenWithHost preferenceScreenWithHostActual =
+            final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivityActual =
                     preferenceScreenWithHostProvider
                             .getPreferenceScreenWithHostOfFragment(
-                                    searchablePreferenceScreenActual.host(),
+                                    searchablePreferenceScreenActual
+                                            .host()
+                                            .asFragmentClassOfActivity(),
                                     Optional.of(
                                             new PreferenceOfHost(
                                                     preferencePrevious,
-                                                    preferenceScreenWithHostPrevious.host())))
+                                                    preferenceScreenOfHostOfActivityPrevious.hostOfPreferenceScreen())))
                             .orElseThrow();
-            graphBuilder.addNode(preferenceScreenWithHostActual);
-            nodesBuilder.add(preferenceScreenWithHostActual);
+            graphBuilder.addNode(preferenceScreenOfHostOfActivityActual);
+            nodesBuilder.add(preferenceScreenOfHostOfActivityActual);
             graphBuilder.putEdgeValue(
-                    preferenceScreenWithHostPrevious,
-                    preferenceScreenWithHostActual,
+                    preferenceScreenOfHostOfActivityPrevious,
+                    preferenceScreenOfHostOfActivityActual,
                     preferencePrevious);
             searchablePreferenceScreenPrevious = searchablePreferenceScreenActual;
-            preferenceScreenWithHostPrevious = preferenceScreenWithHostActual;
+            preferenceScreenOfHostOfActivityPrevious = preferenceScreenOfHostOfActivityActual;
         }
         return new TreePath<>(
                 new Tree<>(graphBuilder.build()),

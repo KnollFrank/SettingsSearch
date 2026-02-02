@@ -45,7 +45,7 @@ public class SearchableTreeBuilder2Test {
         final Set<SearchablePreferenceScreen> preferenceScreens =
                 result
                         .searchablePreferenceScreenTreeProvider()
-                        .getSearchablePreferenceScreenTree(result.preferenceScreenWithHost())
+                        .getSearchablePreferenceScreenTree(result.preferenceScreenOfHostOfActivity())
                         .graph()
                         .nodes();
 

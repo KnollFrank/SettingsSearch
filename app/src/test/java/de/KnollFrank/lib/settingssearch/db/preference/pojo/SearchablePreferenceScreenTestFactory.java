@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import androidx.preference.PreferenceFragmentCompat;
+import static de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivityTestFactory.createSomePreferenceFragmentClassOfActivity;
 
 import java.util.Optional;
 import java.util.Set;
@@ -14,7 +14,7 @@ public class SearchablePreferenceScreenTestFactory {
                                                           final Set<SearchablePreference> allPreferencesOfPreferenceHierarchy) {
         return new SearchablePreferenceScreen(
                 id,
-                PreferenceFragmentCompat.class,
+                createSomePreferenceFragmentClassOfActivity(),
                 Optional.of("Screen " + id),
                 Optional.empty(),
                 allPreferencesOfPreferenceHierarchy);

@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -49,11 +49,11 @@ public class TreePathInstantiatorTest {
                         new TreePath<>(pojoGraphSingleNode, List.of(searchablePreferenceScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
+                final TreePath<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
 
                 // Then
                 assertSameSize(treePathInstantiated, treePath);
-                assertThat(treePathInstantiated.endNode().host(), is(instanceOf(searchablePreferenceScreen.host())));
+                assertThat(treePathInstantiated.endNode().hostOfPreferenceScreen(), is(instanceOf(searchablePreferenceScreen.host().preferenceFragmentClass())));
             });
         }
     }
@@ -73,12 +73,12 @@ public class TreePathInstantiatorTest {
                                 List.of(thirdScreen, fourthScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
+                final TreePath<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
 
                 // Then
                 assertSameSize(treePathInstantiated, treePath);
-                assertThat(treePathInstantiated.startNode().host(), is(instanceOf(thirdScreen.host())));
-                assertThat(treePathInstantiated.endNode().host(), is(instanceOf(fourthScreen.host())));
+                assertThat(treePathInstantiated.startNode().hostOfPreferenceScreen(), is(instanceOf(thirdScreen.host().preferenceFragmentClass())));
+                assertThat(treePathInstantiated.endNode().hostOfPreferenceScreen(), is(instanceOf(fourthScreen.host().preferenceFragmentClass())));
             });
         }
     }
@@ -92,7 +92,7 @@ public class TreePathInstantiatorTest {
                         fragmentActivity);
         return result
                 .searchablePreferenceScreenTreeProvider()
-                .getSearchablePreferenceScreenTree(result.preferenceScreenWithHost());
+                .getSearchablePreferenceScreenTree(result.preferenceScreenOfHostOfActivity());
     }
 
     private static void assertSameSize(final TreePath<?, ?, ?> actual, final TreePath<?, ?, ?> expected) {

@@ -5,6 +5,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 
 public record PreferenceFragmentOfActivity(
-        Class<? extends PreferenceFragmentCompat> preferenceFragment,
+        PreferenceFragmentCompat preferenceFragment,
         ActivityDescription activityOfPreferenceFragment) {
 }

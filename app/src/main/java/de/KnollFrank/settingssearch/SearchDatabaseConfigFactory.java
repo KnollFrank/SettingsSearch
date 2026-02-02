@@ -15,9 +15,9 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
@@ -59,11 +59,11 @@ public class SearchDatabaseConfigFactory {
     public static SearchDatabaseConfig<Configuration> createSearchDatabaseConfig() {
         return SearchDatabaseConfig
                 .builder(
-                        new PreferenceFragmentOfActivity(
+                        new PreferenceFragmentClassOfActivity(
                                 PrefsFragmentFirst.class,
                                 new ActivityDescription(
-                                        PreferenceSearchExample.class,
-                                        new Bundle())),
+                                        PreferenceSearchExample.class
+                                        /*new Bundle()*/)),
                         new TreeProcessorFactory<Configuration>() {
 
                             @Override
@@ -168,21 +168,21 @@ public class SearchDatabaseConfigFactory {
                         new TreeBuilderListener<>() {
 
                             @Override
-                            public void onStartBuildTree(final PreferenceScreenWithHost treeRoot) {
+                            public void onStartBuildTree(final PreferenceScreenOfHostOfActivity treeRoot) {
                                 Log.i(this.getClass().getSimpleName(), "onStartComputePreferences");
                             }
 
                             @Override
-                            public void onStartBuildSubtree(final PreferenceScreenWithHost subtreeRoot) {
+                            public void onStartBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
                             }
 
                             @Override
-                            public void onFinishBuildSubtree(final PreferenceScreenWithHost subtreeRoot) {
+                            public void onFinishBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
                             }
 
                             @Override
                             @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-                            public void onFinishBuildTree(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
+                            public void onFinishBuildTree(final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> preferenceScreenTree) {
                                 Log.i(this.getClass().getSimpleName(), "onFinishComputePreferences");
                                 Log.i(
                                         this.getClass().getSimpleName(),

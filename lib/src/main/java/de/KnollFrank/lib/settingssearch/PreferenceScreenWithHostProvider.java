@@ -18,12 +18,16 @@ public class PreferenceScreenWithHostProvider {
         this.principalAndProxyProvider = principalAndProxyProvider;
     }
 
-    public Optional<PreferenceScreenWithHost> getPreferenceScreenWithHostOfFragment(
-            final Class<? extends Fragment> fragmentClass,
+    public Optional<PreferenceScreenOfHostOfActivity> getPreferenceScreenWithHostOfFragment(
+            final FragmentClassOfActivity fragmentClass,
             final Optional<PreferenceOfHost> src) {
         return this
-                .getPreferenceFragment(fragmentClass, src)
-                .map(this::getPreferenceScreenWithHost);
+                .getPreferenceFragment(fragmentClass.fragment(), src)
+                .map(preferenceFragment ->
+                             new PreferenceScreenOfHostOfActivity(
+                                     preferenceFragment.getPreferenceScreen(),
+                                     preferenceFragment,
+                                     fragmentClass.activityOFragment()));
     }
 
     private Optional<? extends PreferenceFragmentCompat> getPreferenceFragment(
@@ -35,11 +39,5 @@ public class PreferenceScreenWithHostProvider {
                 principalAndProxyProvider
                         .getProxy(fragment.getClass())
                         .map(preferenceFragment -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(preferenceFragment, Optional.empty()));
-    }
-
-    private PreferenceScreenWithHost getPreferenceScreenWithHost(final PreferenceFragmentCompat preferenceFragment) {
-        return new PreferenceScreenWithHost(
-                preferenceFragment.getPreferenceScreen(),
-                preferenceFragment);
     }
 }

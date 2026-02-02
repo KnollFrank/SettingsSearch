@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
 class PreferenceScreenGraph2DOTConverter {
@@ -25,35 +25,35 @@ class PreferenceScreenGraph2DOTConverter {
     private PreferenceScreenGraph2DOTConverter() {
     }
 
-    public static String graph2DOT(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
+    public static String graph2DOT(final Graph<PreferenceScreenOfHostOfActivity, PreferenceEdge> preferenceScreenGraph) throws ExportException {
         final Writer writer = new StringWriter();
         getDOTExporter().exportGraph(preferenceScreenGraph, writer);
         return writer.toString();
     }
 
-    private static DOTExporter<PreferenceScreenWithHost, PreferenceEdge> getDOTExporter() {
-        final DOTExporter<PreferenceScreenWithHost, PreferenceEdge> exporter =
+    private static DOTExporter<PreferenceScreenOfHostOfActivity, PreferenceEdge> getDOTExporter() {
+        final DOTExporter<PreferenceScreenOfHostOfActivity, PreferenceEdge> exporter =
                 new DOTExporter<>(PreferenceScreenGraph2DOTConverter::getVertexId);
         exporter.setVertexAttributeProvider(PreferenceScreenGraph2DOTConverter::getVertexAttribute);
         exporter.setEdgeAttributeProvider(PreferenceScreenGraph2DOTConverter::getEdgeAttribute);
         return exporter;
     }
 
-    private static String getVertexId(final PreferenceScreenWithHost preferenceScreenWithHost) {
-        return preferenceScreenWithHost
+    private static String getVertexId(final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivity) {
+        return preferenceScreenOfHostOfActivity
                 .preferenceScreen()
                 .toString()
                 .concat("_")
-                .concat(Integer.toHexString(preferenceScreenWithHost.preferenceScreen().hashCode()))
+                .concat(Integer.toHexString(preferenceScreenOfHostOfActivity.preferenceScreen().hashCode()))
                 .replace(' ', '_');
     }
 
-    private static Map<String, Attribute> getVertexAttribute(final PreferenceScreenWithHost preferenceScreenWithHost) {
+    private static Map<String, Attribute> getVertexAttribute(final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivity) {
         return ImmutableMap
                 .<String, Attribute>builder()
                 .put(
                         "label",
-                        DefaultAttribute.createAttribute(getLabel(preferenceScreenWithHost.preferenceScreen())))
+                        DefaultAttribute.createAttribute(getLabel(preferenceScreenOfHostOfActivity.preferenceScreen())))
                 .put("shape", DefaultAttribute.createAttribute("box"))
                 .build();
     }

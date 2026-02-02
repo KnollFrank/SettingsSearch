@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIn
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassOfActivityConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorClassConverter;
 import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
@@ -41,7 +42,8 @@ import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
                 LocaleConverter.class,
                 PersistableBundleConverter.class,
                 LazyPersistableBundleConverter.class,
-                TreeProcessorClassConverter.class
+                TreeProcessorClassConverter.class,
+                PreferenceFragmentClassOfActivityConverter.class
         })
 public abstract class PreferencesRoomDatabase extends RoomDatabase {
 

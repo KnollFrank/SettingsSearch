@@ -5,11 +5,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+import static de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivityTestFactory.createSomePreferenceFragmentClassOfActivity;
 
 import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.Iterables;
 import com.google.common.graph.ImmutableValueGraph;
@@ -101,7 +101,7 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
         return new SearchablePreferenceScreenTree<>(
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(
-                                PreferenceFragmentCompat.class,
+                                createSomePreferenceFragmentClassOfActivity(),
                                 Locale.GERMAN,
                                 new SearchablePreferenceScreenGraphTestFactory.Data(
                                         "5",

@@ -23,6 +23,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -52,12 +55,14 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                 final String id = "some unique id";
 
                 // When
+                final PreferenceScreenOfHostOfActivity preferenceScreen =
+                        new PreferenceScreenOfHostOfActivity(
+                                getPreferenceScreen(preferenceFragment, activity),
+                                preferenceFragment,
+                                new ActivityDescription(activity.getClass()));
                 final SearchablePreferenceScreen pojo =
                         preferenceScreenToSearchablePreferenceScreenConverter
-                                .convertPreferenceScreen(
-                                        getPreferenceScreen(preferenceFragment, activity),
-                                        preferenceFragment,
-                                        id)
+                                .convertPreferenceScreen(preferenceScreen, id)
                                 .searchablePreferenceScreen();
 
                 // Then
@@ -71,7 +76,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                                 keyOfChild1,
                                 keyOfChild2,
                                 layoutResIdOfEachChild,
-                                preferenceFragment.getClass()));
+                                preferenceScreen.asPreferenceFragmentClassOfActivity()));
             });
         }
     }
@@ -127,7 +132,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
             final String keyOfChild1,
             final String keyOfChild2,
             final @LayoutRes int layoutResIdOfEachChild,
-            final Class<? extends PreferenceFragmentCompat> host) {
+            final PreferenceFragmentClassOfActivity host) {
         final SearchablePreference child1 =
                 new SearchablePreference(
                         id + "-0-0",

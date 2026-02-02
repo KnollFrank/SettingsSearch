@@ -29,7 +29,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -56,9 +59,13 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
             scenario.onActivity(activity -> {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
-                final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityGraph =
-                        PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
+                final PreferenceFragmentClassOfActivity preferenceFragmentClassOfActivity =
+                        new PreferenceFragmentClassOfActivity(
                                 preferenceFragment.getClass(),
+                                new ActivityDescription(activity.getClass()));
+                final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> entityGraph =
+                        PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
+                                preferenceFragmentClassOfActivity.asFragmentClassOfActivity(),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
                 final Locale locale = Locale.GERMAN;
@@ -104,10 +111,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                         pojoGraph,
                         is(
                                 SearchablePreferenceScreenGraphTestFactory
-                                        .createGraph(
-                                                preferenceFragment.getClass(),
-                                                locale,
-                                                _data)
+                                        .createGraph(preferenceFragmentClassOfActivity, locale, _data)
                                         .pojoTree()));
                 {
                     final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph, _data);
@@ -151,9 +155,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
             scenario.onActivity(activity -> {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
-                final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityGraph =
+                final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> entityGraph =
                         PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
-                                preferenceFragment.getClass(),
+                                new FragmentClassOfActivity(
+                                        preferenceFragment.getClass(),
+                                        new ActivityDescription(activity.getClass())),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
                 final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
@@ -190,7 +196,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
     }
 
     private static SearchablePreferenceScreenTree<PersistableBundle> transformTreeToPojoTree(
-            final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityGraph,
+            final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> entityGraph,
             final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
             final Locale locale) {
         return new SearchablePreferenceScreenTree<>(
@@ -284,10 +290,12 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                 .orElseThrow();
     }
 
-    private static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createSomeEntityGraph(final FragmentActivity activity) {
+    private static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createSomeEntityGraph(final FragmentActivity activity) {
         final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
         return PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
-                preferenceFragment.getClass(),
+                new FragmentClassOfActivity(
+                        preferenceFragment.getClass(),
+                        new ActivityDescription(activity.getClass())),
                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                 activity);
     }

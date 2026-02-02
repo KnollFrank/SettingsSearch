@@ -3,10 +3,10 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivityTestFactory.createSomePreferenceFragmentClassOfActivity;
 import static de.KnollFrank.lib.settingssearch.test.TestHelper.doWithFragmentActivity;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.PreferenceFragmentCompat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +80,7 @@ public class DatabaseResetterTest {
                                    final Locale locale) {
         final var singleNodeGraph =
                 SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
-                        PreferenceFragmentCompat.class,
+                        createSomePreferenceFragmentClassOfActivity(),
                         locale,
                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                 "5",

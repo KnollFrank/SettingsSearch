@@ -6,7 +6,7 @@ import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
@@ -28,26 +28,26 @@ public class TreeToPojoTreeTransformer {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public Tree<SearchablePreferenceScreenWithMap, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreenWithMap, SearchablePreference>> transformTreeToPojoTree(
-            final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenGraph,
+            final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> preferenceScreenGraph,
             final Locale locale) {
         return TreeTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 createTreeTransformer(locale));
     }
 
-    private TreeTransformer<PreferenceScreenWithHost, Preference, SearchablePreferenceScreenWithMap, SearchablePreference> createTreeTransformer(
+    private TreeTransformer<PreferenceScreenOfHostOfActivity, Preference, SearchablePreferenceScreenWithMap, SearchablePreference> createTreeTransformer(
             final Locale locale) {
         final PreferenceFragmentIdProvider preferenceFragmentIdProvider = createPreferenceFragmentUniqueLocalizedIdProvider(locale);
         return new TreeTransformer<>() {
 
             @Override
-            public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
+            public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenOfHostOfActivity rootNode) {
                 return convertToPojo(rootNode);
             }
 
             @Override
             public SearchablePreferenceScreenWithMap transformInnerNode(
-                    final PreferenceScreenWithHost innerNode,
+                    final PreferenceScreenOfHostOfActivity innerNode,
                     final ContextOfInnerNode<Preference, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
                 return convertToPojo(innerNode);
             }
@@ -58,11 +58,10 @@ public class TreeToPojoTreeTransformer {
                 return getTransformedPreference(edgeValue, transformedParentNode);
             }
 
-            private SearchablePreferenceScreenWithMap convertToPojo(final PreferenceScreenWithHost node) {
+            private SearchablePreferenceScreenWithMap convertToPojo(final PreferenceScreenOfHostOfActivity node) {
                 return preferenceScreenToSearchablePreferenceScreenConverter.convertPreferenceScreen(
-                        node.preferenceScreen(),
-                        node.host(),
-                        preferenceFragmentIdProvider.getId(node.host()));
+                        node,
+                        preferenceFragmentIdProvider.getId(node.hostOfPreferenceScreen()));
             }
 
             private static SearchablePreference getTransformedPreference(

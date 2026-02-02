@@ -30,9 +30,11 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
@@ -77,7 +79,11 @@ public class TreeMergerTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final var pojoTree = transformToPojoTree(createEntityTree(rootOfGraph, List.of(), activity));
+                final FragmentClassOfActivity root =
+                        new FragmentClassOfActivity(
+                                rootOfGraph,
+                                new ActivityDescription(activity.getClass()));
+                final var pojoTree = transformToPojoTree(createEntityTree(root, List.of(), activity));
                 final List<String> preferenceKeys = List.of("key1");
                 final SearchablePreferenceScreen mergePointOfTree =
                         SearchablePreferenceScreens
@@ -97,7 +103,7 @@ public class TreeMergerTest {
                                 new TreeNode<>(mergePointOfTree, pojoTree));
 
                 // Then
-                final var mergedTreeExpected = transformToPojoTree(createEntityTree(rootOfGraph, preferenceKeys, activity));
+                final var mergedTreeExpected = transformToPojoTree(createEntityTree(root, preferenceKeys, activity));
                 System.out.println(
                         DotGraphDifference.between(
                                 GraphConverterFactory
@@ -141,8 +147,8 @@ public class TreeMergerTest {
                 .contains(searchablePreference);
     }
 
-    private static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityTree(
-            final Class<? extends PreferenceFragmentCompat> root,
+    private static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createEntityTree(
+            final FragmentClassOfActivity root,
             final List<String> preferenceKeys,
             final TestActivity activity) {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
@@ -158,7 +164,7 @@ public class TreeMergerTest {
                 activity);
     }
 
-    private static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createPartialEntityTree(
+    private static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createPartialEntityTree(
             final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTree,
             final List<String> preferenceKeys,
             final SearchablePreferenceScreen rootOfPartialPojoTree,
@@ -173,7 +179,7 @@ public class TreeMergerTest {
                 new AddEdgeToTreePredicate<>() {
 
                     @Override
-                    public boolean shallAddEdgeToTree(final Edge<PreferenceScreenWithHost, Preference> edge) {
+                    public boolean shallAddEdgeToTree(final Edge<PreferenceScreenOfHostOfActivity, Preference> edge) {
                         return !"some preference key".equals(edge.value().getKey());
                     }
                 },
@@ -188,7 +194,7 @@ public class TreeMergerTest {
     }
 
     private static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformToPojoTree(
-            final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityTree) {
+            final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> entityTree) {
         return removeMapFromPojoNodes(
                 createGraphToPojoGraphTransformer().transformTreeToPojoTree(
                         entityTree,

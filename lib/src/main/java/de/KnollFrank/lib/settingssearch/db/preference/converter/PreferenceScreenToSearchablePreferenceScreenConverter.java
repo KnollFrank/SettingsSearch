@@ -1,14 +1,13 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.BiMap;
 
 import java.util.List;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -23,21 +22,20 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
     }
 
     public SearchablePreferenceScreenWithMap convertPreferenceScreen(
-            final PreferenceScreen preferenceScreen,
-            final PreferenceFragmentCompat hostOfPreferenceScreen,
+            final PreferenceScreenOfHostOfActivity preferenceScreen,
             final String id) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preferenceToSearchablePreferenceConverter.convertPreferences(
-                        Preferences.getImmediateChildren(preferenceScreen),
+                        Preferences.getImmediateChildren(preferenceScreen.preferenceScreen()),
                         List.of(),
                         id,
-                        hostOfPreferenceScreen);
+                        preferenceScreen.hostOfPreferenceScreen());
         return new SearchablePreferenceScreenWithMap(
                 new SearchablePreferenceScreen(
                         id,
-                        hostOfPreferenceScreen.getClass(),
-                        Strings.toString(Optional.ofNullable(preferenceScreen.getTitle())),
-                        Strings.toString(Optional.ofNullable(preferenceScreen.getSummary())),
+                        preferenceScreen.asPreferenceFragmentClassOfActivity(),
+                        Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getTitle())),
+                        Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getSummary())),
                         searchablePreferences.keySet()),
                 searchablePreferences);
     }

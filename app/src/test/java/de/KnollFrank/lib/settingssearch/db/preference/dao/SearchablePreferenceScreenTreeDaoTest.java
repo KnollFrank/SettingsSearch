@@ -2,11 +2,10 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivityTestFactory.createSomePreferenceFragmentClassOfActivity;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Trees;
 
 import android.os.PersistableBundle;
-
-import androidx.preference.PreferenceFragmentCompat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +14,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -44,7 +44,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
                 new SearchablePreferenceScreenTree<>(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(
-                                        PreferenceFragmentCompat.class,
+                                        createSomePreferenceFragmentClassOfActivity(),
                                         Locale.GERMAN,
                                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                                 "5",
@@ -69,12 +69,13 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
     public void test_persistOrReplaceAndFindTreeById_twoGraphs_differentLocales() {
         // Given
         final SearchablePreferenceScreenTreeDao dao = createGraphDao();
+        final PreferenceFragmentClassOfActivity host = createSomePreferenceFragmentClassOfActivity();
 
         // When
         final SearchablePreferenceScreenTree<PersistableBundle> germanGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
-                                PreferenceFragmentCompat.class,
+                                host,
                                 Locale.GERMAN,
                                 new SearchablePreferenceScreenGraphTestFactory.Data(
                                         "5",
@@ -92,7 +93,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
         final SearchablePreferenceScreenTree<PersistableBundle> chineseGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createGraph(
-                                PreferenceFragmentCompat.class,
+                                host,
                                 Locale.CHINESE,
                                 new SearchablePreferenceScreenGraphTestFactory.Data(
                                         "50",
@@ -116,13 +117,14 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
         // Given
         final SearchablePreferenceScreenTreeDao dao = createGraphDao();
         final Locale locale = Locale.GERMAN;
+        final PreferenceFragmentClassOfActivity host = createSomePreferenceFragmentClassOfActivity();
 
         // When
         final SearchablePreferenceScreenTree<PersistableBundle> graphToBeOverwritten =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createSingleNodeGraph(
-                                        PreferenceFragmentCompat.class,
+                                        host,
                                         locale,
                                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                                 "5",
@@ -141,7 +143,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(
-                                        PreferenceFragmentCompat.class,
+                                        host,
                                         locale,
                                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                                 "50",

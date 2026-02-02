@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import androidx.preference.PreferenceFragmentCompat;
+import static de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivityTestFactory.createSomePreferenceFragmentClassOfActivity;
 
 import java.util.Locale;
 
@@ -20,7 +20,7 @@ public class SearchablePreferenceScreenEntityTestFactory {
         final TreeAndDbDataProvider entityTreeAndDbDataProvider =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(
-                                PreferenceFragmentCompat.class,
+                                createSomePreferenceFragmentClassOfActivity(),
                                 Locale.GERMAN,
                                 data)
                         .entityTreeAndDbDataProvider();

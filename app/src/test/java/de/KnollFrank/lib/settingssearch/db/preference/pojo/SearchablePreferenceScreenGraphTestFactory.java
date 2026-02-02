@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import android.os.PersistableBundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ImmutableValueGraph;
@@ -14,12 +13,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest.PreferenceFragmentWithSinglePreference;
+import de.KnollFrank.settingssearch.test.TestActivity;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchablePreferenceScreenGraphTestFactory {
@@ -47,7 +49,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
             Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTree) {
     }
 
-    public static Trees createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host,
+    public static Trees createSingleNodeGraph(final PreferenceFragmentClassOfActivity host,
                                               final Locale locale,
                                               final Data data) {
         final String screenId = data.singleNodeScreenId();
@@ -124,7 +126,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 .build()));
     }
 
-    public static Trees createGraph(final Class<? extends PreferenceFragmentCompat> host,
+    public static Trees createGraph(final PreferenceFragmentClassOfActivity host,
                                     final Locale locale,
                                     final Data data) {
         final String screenId = data.twoNodeScreen1Id();
@@ -217,7 +219,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
             final String screenId,
             final SearchablePreferenceEntity preferenceConnectingSrcToDst,
             final SearchablePreference preferencePojoConnectingSrcToDst,
-            final Class<? extends PreferenceFragmentCompat> host,
+            final PreferenceFragmentClassOfActivity host,
             final Locale graphId,
             final Data data) {
         final SearchablePreferenceEntity parent =
@@ -399,10 +401,14 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         new PersistableBundle(),
                         Optional.empty(),
                         Set.of());
+        final PreferenceFragmentClassOfActivity host =
+                new PreferenceFragmentClassOfActivity(
+                        PreferenceFragmentWithSinglePreference.class,
+                        new ActivityDescription(TestActivity.class));
         final SearchablePreferenceScreenEntity searchablePreferenceScreen =
                 new SearchablePreferenceScreenEntity(
                         screenId,
-                        PreferenceFragmentWithSinglePreference.class,
+                        host,
                         Optional.of("screen title"),
                         Optional.of("screen summary"),
                         graphId);
@@ -429,7 +435,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 .build()),
                 new SearchablePreferenceScreen(
                         screenId,
-                        TreeToPojoTreeTransformerTest.PreferenceFragmentWithSinglePreference.class,
+                        host,
                         Optional.of("screen title"),
                         Optional.of("screen summary"),
                         Set.of(searchablePreferencePojo)));

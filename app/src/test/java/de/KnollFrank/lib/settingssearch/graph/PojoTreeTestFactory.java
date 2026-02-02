@@ -3,14 +3,14 @@ package de.KnollFrank.lib.settingssearch.graph;
 import android.content.Context;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -22,8 +22,8 @@ public class PojoTreeTestFactory {
     private PojoTreeTestFactory() {
     }
 
-    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
-            final Class<? extends PreferenceFragmentCompat> root,
+    public static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createEntityPreferenceScreenTreeRootedAt(
+            final FragmentClassOfActivity root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
         return createEntityPreferenceScreenTreeRootedAt(
@@ -37,8 +37,8 @@ public class PojoTreeTestFactory {
                 context);
     }
 
-    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
-            final PreferenceScreenWithHost root,
+    public static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createEntityPreferenceScreenTreeRootedAt(
+            final PreferenceScreenOfHostOfActivity root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
         return createEntityPreferenceScreenTreeRootedAt(
@@ -48,10 +48,10 @@ public class PojoTreeTestFactory {
                 context);
     }
 
-    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
-            final PreferenceScreenWithHost root,
+    public static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createEntityPreferenceScreenTreeRootedAt(
+            final PreferenceScreenOfHostOfActivity root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate,
+            final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate,
             final Context context) {
         return PreferenceScreenTreeBuilderFactory
                 .createPreferenceScreenTreeBuilder(

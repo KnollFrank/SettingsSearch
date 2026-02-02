@@ -2,10 +2,9 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivityTestFactory.createSomePreferenceFragmentClassOfActivity;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createGraph;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph;
-
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.graph.ImmutableValueGraph;
 
@@ -30,7 +29,7 @@ public class EntityTreeToPojoTreeTransformerTest {
     public void test_toPojoGraph_singleNodeGraph() {
         final Trees trees =
                 createSingleNodeGraph(
-                        PreferenceFragmentCompat.class,
+                        createSomePreferenceFragmentClassOfActivity(),
                         Locale.GERMAN,
                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                 "5",
@@ -51,7 +50,7 @@ public class EntityTreeToPojoTreeTransformerTest {
     public void test_toPojoGraph_multiNodeGraph() {
         final Trees trees =
                 createGraph(
-                        PreferenceFragmentCompat.class,
+                        createSomePreferenceFragmentClassOfActivity(),
                         Locale.GERMAN,
                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                 "5",

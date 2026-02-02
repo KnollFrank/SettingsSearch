@@ -11,7 +11,7 @@ import androidx.preference.Preference;
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
@@ -32,7 +32,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final @IdRes int containerViewId,
             final SearchDatabaseConfig<?> searchDatabaseConfig,
             final Locale locale,
-            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
+            final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate) {
         return createSearchablePreferenceScreenTreeProvider(
                 containerViewId,
                 (ViewGroup) fragment.requireView(),
@@ -52,7 +52,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final Context context,
             final SearchDatabaseConfig<?> searchDatabaseConfig,
             final Locale locale,
-            final AddEdgeToTreePredicate<PreferenceScreenWithHost, Preference> addEdgeToTreePredicate) {
+            final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,
                 containerViewId);

@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -28,19 +28,19 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchDatabaseConfigBuilder<C> {
 
-    private final PreferenceFragmentOfActivity rootPreferenceFragment;
+    private final PreferenceFragmentClassOfActivity rootPreferenceFragment;
     private final TreeProcessorFactory<C> treeProcessorFactory;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
-    private TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener = TreeBuilderListeners.emptyTreeBuilderListener();
+    private TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener = TreeBuilderListeners.emptyTreeBuilderListener();
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
     private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
 
-    SearchDatabaseConfigBuilder(final PreferenceFragmentOfActivity rootPreferenceFragment,
+    SearchDatabaseConfigBuilder(final PreferenceFragmentClassOfActivity rootPreferenceFragment,
                                 final TreeProcessorFactory<C> treeProcessorFactory) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.treeProcessorFactory = treeProcessorFactory;
@@ -78,7 +78,7 @@ public class SearchDatabaseConfigBuilder<C> {
 
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder<C> withPreferenceScreenTreeBuilderListener(final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener) {
+    public SearchDatabaseConfigBuilder<C> withPreferenceScreenTreeBuilderListener(final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener) {
         this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
         return this;
     }

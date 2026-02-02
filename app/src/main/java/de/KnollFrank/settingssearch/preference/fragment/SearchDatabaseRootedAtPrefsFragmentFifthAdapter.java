@@ -10,7 +10,7 @@ import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Views;
@@ -83,7 +83,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getPojoGraphRootedAt(
-            final PreferenceScreenWithHost root,
+            final PreferenceScreenOfHostOfActivity root,
             final Locale locale,
             final FragmentActivity activityContext,
             final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
@@ -108,7 +108,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 .orElseThrow();
     }
 
-    private PreferenceScreenWithHost instantiateSearchablePreferenceScreen(
+    private PreferenceScreenOfHostOfActivity instantiateSearchablePreferenceScreen(
             final SearchablePreferenceScreen searchablePreferenceScreen,
             @SuppressWarnings({"UnstableApiUsage", "NullableProblems"}) final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
             final TreePathInstantiator treePathInstantiator,

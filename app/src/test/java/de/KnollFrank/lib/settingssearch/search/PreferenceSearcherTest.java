@@ -38,11 +38,13 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -86,6 +88,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoPro
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
+import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.SettingsActivity;
 import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
 import de.KnollFrank.settingssearch.SettingsActivity2;
@@ -146,7 +149,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
                         return keyOfPreferenceToIncludeInSearchResults.equals(preference.searchablePreference().getKey()) &&
-                                preferenceFragment.getClass().equals(preference.hostOfPreference().host());
+                                preferenceFragment.getClass().equals(preference.hostOfPreference().host().preferenceFragmentClass());
                     }
                 },
                 keyword,
@@ -180,7 +183,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
-                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.hostOfPreference().host()));
+                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.hostOfPreference().host().preferenceFragmentClass()));
                     }
                 },
                 keyword,
@@ -686,7 +689,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                            final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
                            final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
-                           final TreeBuilderListener<PreferenceScreenWithHost, Preference> treeBuilderListener) {
+                           final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> treeBuilderListener) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(
                     fragmentActivity -> {
@@ -746,7 +749,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
-            final TreeBuilderListener<PreferenceScreenWithHost, Preference> treeBuilderListener,
+            final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> treeBuilderListener,
             final Locale locale,
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
@@ -804,7 +807,9 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(
-                                                preferenceFragment.getClass(),
+                                                new FragmentClassOfActivity(
+                                                        preferenceFragment.getClass(),
+                                                        new ActivityDescription(PreferenceSearchExample.class)),
                                                 Optional.empty())
                                         .orElseThrow()),
                         locale,

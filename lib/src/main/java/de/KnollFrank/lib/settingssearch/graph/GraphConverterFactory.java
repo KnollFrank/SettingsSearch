@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import androidx.preference.Preference;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphConverter;
 import de.KnollFrank.lib.settingssearch.common.graph.ToGuavaGraphConverter;
 import de.KnollFrank.lib.settingssearch.common.graph.ToJGraphTConverter;
@@ -24,7 +24,7 @@ public class GraphConverterFactory {
                 new ToGuavaGraphConverter<>(searchablePreferenceEdge -> searchablePreferenceEdge.preference));
     }
 
-    public static GraphConverter<PreferenceScreenWithHost, PreferenceEdge, Preference> createPreferenceScreenWithHostGraphConverter() {
+    public static GraphConverter<PreferenceScreenOfHostOfActivity, PreferenceEdge, Preference> createPreferenceScreenWithHostGraphConverter() {
         return new GraphConverter<>(
                 new ToJGraphTConverter<>(
                         PreferenceEdge.class,

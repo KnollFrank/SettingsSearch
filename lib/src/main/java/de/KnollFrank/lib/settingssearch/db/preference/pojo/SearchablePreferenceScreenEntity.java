@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import androidx.annotation.NonNull;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -10,9 +9,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+
 @Entity
 public record SearchablePreferenceScreenEntity(@PrimaryKey @NonNull String id,
-                                               Class<? extends PreferenceFragmentCompat> host,
+                                               PreferenceFragmentClassOfActivity host,
                                                Optional<String> title,
                                                Optional<String> summary,
                                                Locale graphId) {
