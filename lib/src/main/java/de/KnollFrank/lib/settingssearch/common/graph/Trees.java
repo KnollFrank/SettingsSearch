@@ -30,8 +30,14 @@ public class Trees {
         return Lists
                 .getConsecutivePairs(path.nodes())
                 .stream()
-                .map(consecutiveNodePair -> EndpointPair.ordered(consecutiveNodePair.first, consecutiveNodePair.second))
-                .map(edge -> Edge.of(edge, path.tree().graph()))
+                .map(consecutiveNodePair ->
+                             EndpointPair.ordered(
+                                     consecutiveNodePair.first,
+                                     consecutiveNodePair.second))
+                .map(edge ->
+                             Edge.of(
+                                     edge,
+                                     path.tree().graph()))
                 .toList();
     }
 }
