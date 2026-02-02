@@ -3,10 +3,10 @@ package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 import android.app.Activity;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
@@ -27,7 +27,7 @@ public class SearchDatabaseConfig<C> {
     public final SearchableInfoProvider searchableInfoProvider;
     public final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     public final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
-    public final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
+    public final PreferenceFragmentOfActivity rootPreferenceFragment;
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
@@ -41,7 +41,7 @@ public class SearchDatabaseConfig<C> {
                          final SearchableInfoProvider searchableInfoProvider,
                          final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                          final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
-                         final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+                         final PreferenceFragmentOfActivity rootPreferenceFragment,
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final TreeBuilderListener<PreferenceScreenWithHost, Preference> preferenceScreenTreeBuilderListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
@@ -64,7 +64,7 @@ public class SearchDatabaseConfig<C> {
         this.treeProcessorFactory = treeProcessorFactory;
     }
 
-    public static <C> SearchDatabaseConfigBuilder<C> builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+    public static <C> SearchDatabaseConfigBuilder<C> builder(final PreferenceFragmentOfActivity rootPreferenceFragment,
                                                              final TreeProcessorFactory<C> treeProcessorFactory) {
         return new SearchDatabaseConfigBuilder<>(rootPreferenceFragment, treeProcessorFactory);
     }

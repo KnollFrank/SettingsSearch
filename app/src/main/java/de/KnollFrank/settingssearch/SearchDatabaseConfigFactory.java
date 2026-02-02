@@ -15,6 +15,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
@@ -57,7 +58,9 @@ public class SearchDatabaseConfigFactory {
     public static SearchDatabaseConfig<Configuration> createSearchDatabaseConfig() {
         return SearchDatabaseConfig
                 .builder(
-                        PrefsFragmentFirst.class,
+                        new PreferenceFragmentOfActivity(
+                                PrefsFragmentFirst.class,
+                                PreferenceSearchExample.class),
                         new TreeProcessorFactory<Configuration>() {
 
                             @Override
