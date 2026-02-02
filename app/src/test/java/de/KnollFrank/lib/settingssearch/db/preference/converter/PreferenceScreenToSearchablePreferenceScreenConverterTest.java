@@ -59,7 +59,9 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                         new PreferenceScreenOfHostOfActivity(
                                 getPreferenceScreen(preferenceFragment, activity),
                                 preferenceFragment,
-                                new ActivityDescription(activity.getClass()));
+                                new ActivityDescription(
+                                        activity.getClass(),
+                                        new PersistableBundle()));
                 final SearchablePreferenceScreen pojo =
                         preferenceScreenToSearchablePreferenceScreenConverter
                                 .convertPreferenceScreen(preferenceScreen, id)

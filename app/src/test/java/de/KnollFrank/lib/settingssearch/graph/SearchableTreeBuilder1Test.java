@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByTitle;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -244,7 +245,9 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                         .getPreferenceScreenWithHostOfFragment(
                                 new FragmentClassOfActivity(
                                         root,
-                                        new ActivityDescription(activity.getClass())),
+                                        new ActivityDescription(
+                                                activity.getClass(),
+                                                new PersistableBundle())),
                                 Optional.empty())
                         .orElseThrow());
     }

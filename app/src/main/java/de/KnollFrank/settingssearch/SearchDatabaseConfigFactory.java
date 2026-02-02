@@ -3,6 +3,7 @@ package de.KnollFrank.settingssearch;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
@@ -62,8 +63,8 @@ public class SearchDatabaseConfigFactory {
                         new PreferenceFragmentClassOfActivity(
                                 PrefsFragmentFirst.class,
                                 new ActivityDescription(
-                                        PreferenceSearchExample.class
-                                        /*new Bundle()*/)),
+                                        PreferenceSearchExample.class,
+                                        new PersistableBundle())),
                         new TreeProcessorFactory<Configuration>() {
 
                             @Override

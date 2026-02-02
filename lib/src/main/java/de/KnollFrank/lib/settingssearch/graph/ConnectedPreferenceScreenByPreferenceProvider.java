@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PersistableBundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
@@ -23,6 +24,7 @@ import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
@@ -106,8 +108,8 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
                 .flatMap(this::asActivityClass)
                 .map(activityClass ->
                              new ActivityDescription(
-                                     activityClass
-                                     /*intent.getExtras()*/))
+                                     activityClass,
+                                     getPersistableExtras(intent)))
                 .flatMap(activityDescription ->
                                  rootPreferenceFragmentOfActivityProvider
                                          .getRootPreferenceFragmentOfActivity(activityDescription.activity())
@@ -119,5 +121,12 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
 
     private Optional<Class<? extends Activity>> asActivityClass(final String className) {
         return Classes.classNameAsSubclassOfClazz(className, Activity.class, context);
+    }
+
+    private static PersistableBundle getPersistableExtras(final Intent intent) {
+        return Optional
+                .ofNullable(intent.getExtras())
+                .map(BundleConverter::toPersistableBundle)
+                .orElseGet(PersistableBundle::new);
     }
 }

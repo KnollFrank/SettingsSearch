@@ -404,7 +404,9 @@ public class SearchablePreferenceScreenGraphTestFactory {
         final PreferenceFragmentClassOfActivity host =
                 new PreferenceFragmentClassOfActivity(
                         PreferenceFragmentWithSinglePreference.class,
-                        new ActivityDescription(TestActivity.class));
+                        new ActivityDescription(
+                                TestActivity.class,
+                                new PersistableBundle()));
         final SearchablePreferenceScreenEntity searchablePreferenceScreen =
                 new SearchablePreferenceScreenEntity(
                         screenId,

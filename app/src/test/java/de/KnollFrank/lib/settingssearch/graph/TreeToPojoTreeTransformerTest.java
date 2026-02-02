@@ -62,7 +62,9 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                 final PreferenceFragmentClassOfActivity preferenceFragmentClassOfActivity =
                         new PreferenceFragmentClassOfActivity(
                                 preferenceFragment.getClass(),
-                                new ActivityDescription(activity.getClass()));
+                                new ActivityDescription(
+                                        activity.getClass(),
+                                        new PersistableBundle()));
                 final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> entityGraph =
                         PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
                                 preferenceFragmentClassOfActivity.asFragmentClassOfActivity(),
@@ -159,7 +161,9 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                         PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
                                 new FragmentClassOfActivity(
                                         preferenceFragment.getClass(),
-                                        new ActivityDescription(activity.getClass())),
+                                        new ActivityDescription(
+                                                activity.getClass(),
+                                                new PersistableBundle())),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
                 final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
@@ -295,7 +299,9 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
         return PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
                 new FragmentClassOfActivity(
                         preferenceFragment.getClass(),
-                        new ActivityDescription(activity.getClass())),
+                        new ActivityDescription(
+                                activity.getClass(),
+                                new PersistableBundle())),
                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                 activity);
     }

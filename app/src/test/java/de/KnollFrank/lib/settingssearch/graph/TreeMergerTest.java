@@ -8,6 +8,7 @@ import static de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTe
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markExtrasOfPreferenceConnectingSrcWithDst;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -82,7 +83,9 @@ public class TreeMergerTest {
                 final FragmentClassOfActivity root =
                         new FragmentClassOfActivity(
                                 rootOfGraph,
-                                new ActivityDescription(activity.getClass()));
+                                new ActivityDescription(
+                                        activity.getClass(),
+                                        new PersistableBundle()));
                 final var pojoTree = transformToPojoTree(createEntityTree(root, List.of(), activity));
                 final List<String> preferenceKeys = List.of("key1");
                 final SearchablePreferenceScreen mergePointOfTree =

@@ -10,6 +10,7 @@ import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirs
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.PersistableBundle;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -809,7 +810,9 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         .getPreferenceScreenWithHostOfFragment(
                                                 new FragmentClassOfActivity(
                                                         preferenceFragment.getClass(),
-                                                        new ActivityDescription(PreferenceSearchExample.class)),
+                                                        new ActivityDescription(
+                                                                PreferenceSearchExample.class,
+                                                                new PersistableBundle())),
                                                 Optional.empty())
                                         .orElseThrow()),
                         locale,
