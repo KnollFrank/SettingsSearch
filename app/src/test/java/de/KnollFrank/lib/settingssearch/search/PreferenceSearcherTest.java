@@ -101,7 +101,6 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
     @Test
@@ -553,6 +552,26 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
+                createTreeRepository(),
+                emptyTreeBuilderListener());
+    }
+
+    @Test
+    public void shouldSearchAndFindPreferenceHavingTitleFromExtrasOfIntentOfActivity() {
+        final String keyword = PrefsFragmentFirst.DYNAMIC_TITLE;
+        final String keyOfPreference = SettingsActivity.PREFERENCE_WITH_DYNAMIC_TITLE_KEY;
+        testSearch(
+                new PrefsFragmentFirst(),
+                (preference, hostOfPreference) -> true,
+                preference -> true,
+                keyword,
+                (preference, hostOfPreference) -> Optional.empty(),
+                new PreferenceDialogAndSearchableInfoProvider(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
+                preferenceMatches ->
+                        assertThat(
+                                getKeySet(preferenceMatches),
+                                hasItem(keyOfPreference)),
                 createTreeRepository(),
                 emptyTreeBuilderListener());
     }

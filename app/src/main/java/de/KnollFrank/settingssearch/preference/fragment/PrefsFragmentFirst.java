@@ -47,6 +47,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     public static final String NON_STANDARD_LINK_TO_SECOND_FRAGMENT = "non_standard_link_to_second_fragment";
     public static final String KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER = "keyOfPreferenceWithOnPreferenceClickListener";
     public static final String SUMMARY_CHANGING_PREFERENCE_KEY = "summaryChangingPreference";
+    public static final String DYNAMIC_TITLE = "concrete dynamic title";
 
     private final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
@@ -163,6 +164,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     public static Bundle createExtrasForSettingsActivity() {
         final Bundle bundle = new Bundle();
         bundle.putString(SettingsActivity.SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY, "some mandatory dummy value");
+        bundle.putString(SettingsActivity.PREFERENCE_WITH_DYNAMIC_TITLE_KEY, DYNAMIC_TITLE);
         return bundle;
     }
 

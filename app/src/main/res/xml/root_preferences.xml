@@ -38,6 +38,11 @@
     </PreferenceCategory>
 
     <Preference
+        android:key="preferenceWithDynamicTitle"
+        android:persistent="false"
+        android:title="no title set" />
+
+    <Preference
         android:key="preferenceWithIntent"
         android:persistent="false"
         android:title="Preference with Intent" />
