@@ -18,6 +18,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
@@ -60,7 +61,9 @@ public class SearchDatabaseConfigFactory {
                 .builder(
                         new PreferenceFragmentOfActivity(
                                 PrefsFragmentFirst.class,
-                                PreferenceSearchExample.class),
+                                new ActivityDescription(
+                                        PreferenceSearchExample.class,
+                                        new Bundle())),
                         new TreeProcessorFactory<Configuration>() {
 
                             @Override
