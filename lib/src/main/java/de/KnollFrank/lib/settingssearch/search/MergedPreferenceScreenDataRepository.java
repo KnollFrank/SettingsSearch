@@ -83,7 +83,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                         .getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(
-                                                searchDatabaseConfig.rootPreferenceFragment.asFragmentClassOfActivity(),
+                                                searchDatabaseConfig.rootPreferenceFragment,
                                                 Optional.empty())
                                         .orElseThrow());
         progressUpdateListener.onProgressUpdate("preparing search database");

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
@@ -28,7 +28,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchDatabaseConfigBuilder<C> {
 
-    private final PreferenceFragmentClassOfActivity rootPreferenceFragment;
+    private final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final TreeProcessorFactory<C> treeProcessorFactory;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
@@ -40,7 +40,7 @@ public class SearchDatabaseConfigBuilder<C> {
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
     private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
 
-    SearchDatabaseConfigBuilder(final PreferenceFragmentClassOfActivity rootPreferenceFragment,
+    SearchDatabaseConfigBuilder(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment,
                                 final TreeProcessorFactory<C> treeProcessorFactory) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.treeProcessorFactory = treeProcessorFactory;

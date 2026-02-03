@@ -208,7 +208,7 @@ public class DotGraphDifference {
         // Zeile 4: HOST (Neu hinzugefügt)
         sb.append("<tr>")
                 .append("<td align='left' bgcolor='#F0F0F0'><b>Host</b></td>")
-                .append("<td align='left' colspan='2' bgcolor='#F0F0F0'>").append(escapeHtml(screen.host().preferenceFragmentClass().getName())).append("</td>")
+                .append("<td align='left' colspan='2' bgcolor='#F0F0F0'>").append(escapeHtml(screen.host().fragment().getName())).append("</td>")
                 .append("</tr>");
 
         // Trenner / Sektions-Header

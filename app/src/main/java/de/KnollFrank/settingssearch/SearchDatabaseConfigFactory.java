@@ -16,7 +16,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
@@ -60,7 +60,7 @@ public class SearchDatabaseConfigFactory {
     public static SearchDatabaseConfig<Configuration> createSearchDatabaseConfig() {
         return SearchDatabaseConfig
                 .builder(
-                        new PreferenceFragmentClassOfActivity(
+                        new FragmentClassOfActivity<>(
                                 PrefsFragmentFirst.class,
                                 new ActivityDescription(
                                         PreferenceSearchExample.class,

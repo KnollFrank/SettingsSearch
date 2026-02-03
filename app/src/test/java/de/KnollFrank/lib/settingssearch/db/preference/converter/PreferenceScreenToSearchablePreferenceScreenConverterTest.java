@@ -22,8 +22,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -134,7 +134,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
             final String keyOfChild1,
             final String keyOfChild2,
             final @LayoutRes int layoutResIdOfEachChild,
-            final PreferenceFragmentClassOfActivity host) {
+            final FragmentClassOfActivity<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference child1 =
                 new SearchablePreference(
                         id + "-0-0",

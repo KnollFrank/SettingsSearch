@@ -149,7 +149,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
                         return keyOfPreferenceToIncludeInSearchResults.equals(preference.searchablePreference().getKey()) &&
-                                preferenceFragment.getClass().equals(preference.hostOfPreference().host().preferenceFragmentClass());
+                                preferenceFragment.getClass().equals(preference.hostOfPreference().host().fragment());
                     }
                 },
                 keyword,
@@ -183,7 +183,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
-                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.hostOfPreference().host().preferenceFragmentClass()));
+                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.hostOfPreference().host().fragment()));
                     }
                 },
                 keyword,
@@ -827,7 +827,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(
-                                                new FragmentClassOfActivity(
+                                                new FragmentClassOfActivity<>(
                                                         preferenceFragment.getClass(),
                                                         new ActivityDescription(
                                                                 PreferenceSearchExample.class,

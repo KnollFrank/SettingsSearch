@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import android.os.PersistableBundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ImmutableValueGraph;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
@@ -49,7 +50,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
             Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTree) {
     }
 
-    public static Trees createSingleNodeGraph(final PreferenceFragmentClassOfActivity host,
+    public static Trees createSingleNodeGraph(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> host,
                                               final Locale locale,
                                               final Data data) {
         final String screenId = data.singleNodeScreenId();
@@ -126,7 +127,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 .build()));
     }
 
-    public static Trees createGraph(final PreferenceFragmentClassOfActivity host,
+    public static Trees createGraph(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> host,
                                     final Locale locale,
                                     final Data data) {
         final String screenId = data.twoNodeScreen1Id();
@@ -219,7 +220,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
             final String screenId,
             final SearchablePreferenceEntity preferenceConnectingSrcToDst,
             final SearchablePreference preferencePojoConnectingSrcToDst,
-            final PreferenceFragmentClassOfActivity host,
+            final FragmentClassOfActivity<? extends PreferenceFragmentCompat> host,
             final Locale graphId,
             final Data data) {
         final SearchablePreferenceEntity parent =
@@ -401,8 +402,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         new PersistableBundle(),
                         Optional.empty(),
                         Set.of());
-        final PreferenceFragmentClassOfActivity host =
-                new PreferenceFragmentClassOfActivity(
+        final FragmentClassOfActivity<PreferenceFragmentWithSinglePreference> host =
+                new FragmentClassOfActivity<>(
                         PreferenceFragmentWithSinglePreference.class,
                         new ActivityDescription(
                                 TestActivity.class,

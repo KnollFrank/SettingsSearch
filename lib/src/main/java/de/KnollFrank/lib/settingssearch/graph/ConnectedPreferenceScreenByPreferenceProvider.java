@@ -7,6 +7,7 @@ import android.os.PersistableBundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 import java.util.Optional;
@@ -14,7 +15,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
@@ -31,16 +31,16 @@ import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivit
 class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeValueProvider<PreferenceScreenOfHostOfActivity, Preference> {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
-    private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
+    private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final Context context;
 
     public ConnectedPreferenceScreenByPreferenceProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-                                                         final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+                                                         final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
                                                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                                                          final Context context) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
-        this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
+        this.preferenceFragmentConnectedToPreferenceProvider = preferenceFragmentConnectedToPreferenceProvider;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.context = context;
     }
@@ -64,45 +64,66 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
     private Optional<PreferenceScreenOfHostOfActivity> getConnectedPreferenceScreen(final Preference preference,
                                                                                     final PreferenceFragmentOfActivity hostOfPreference) {
         return this
-                .getConnectedPreferenceFragment(preference, hostOfPreference)
+                .getConnectedFragmentClass(preference, hostOfPreference)
                 .flatMap(
-                        fragmentConnectedToPreference ->
+                        fragmentClassConnectedToPreference ->
                                 preferenceScreenWithHostProvider.getPreferenceScreenWithHostOfFragment(
-                                        fragmentConnectedToPreference,
+                                        fragmentClassConnectedToPreference,
                                         Optional.of(new PreferenceOfHost(preference, hostOfPreference.preferenceFragment()))));
     }
 
-    private Optional<FragmentClassOfActivity> getConnectedPreferenceFragment(final Preference preference,
-                                                                             final PreferenceFragmentOfActivity hostOfPreference) {
-        return ConnectedPreferenceScreenByPreferenceProvider
-                .loadFragmentClass(preference, context)
-                .map(fragmentClass -> new FragmentClassOfActivity(fragmentClass, hostOfPreference.activityOfPreferenceFragment()))
-                .or(() ->
-                            this
-                                    .getRootPreferenceFragment(Optional.ofNullable(preference.getIntent()))
-                                    .map(PreferenceFragmentClassOfActivity::asFragmentClassOfActivity))
-                .or(() ->
-                            preferenceFragmentConnected2PreferenceProvider
-                                    .getPreferenceFragmentConnected2Preference(
-                                            preference,
-                                            hostOfPreference.preferenceFragment())
-                                    .map(preferenceFragmentConnected2Preference ->
-                                                 new FragmentClassOfActivity(
-                                                         preferenceFragmentConnected2Preference,
-                                                         hostOfPreference.activityOfPreferenceFragment())));
+    private Optional<? extends FragmentClassOfActivity<? extends Fragment>> getConnectedFragmentClass(
+            final Preference preference,
+            final PreferenceFragmentOfActivity hostOfPreference) {
+        {
+            final var fragmentClassFromFragmentClassName =
+                    getFragmentClassFromFragmentClassName(
+                            Optional.ofNullable(preference.getFragment()),
+                            hostOfPreference.activityOfPreferenceFragment());
+            if (fragmentClassFromFragmentClassName.isPresent()) {
+                return fragmentClassFromFragmentClassName;
+            }
+        }
+        {
+            final var fragmentClassFromIntent =
+                    getFragmentClassFromIntent(
+                            Optional.ofNullable(preference.getIntent()));
+            if (fragmentClassFromIntent.isPresent()) {
+                return fragmentClassFromIntent;
+            }
+        }
+        return getPreferenceFragmentClassConnectedToPreference(preference, hostOfPreference);
     }
 
-    private static Optional<Class<? extends Fragment>> loadFragmentClass(final Preference preference, final Context context) {
-        return Optional
-                .ofNullable(preference.getFragment())
-                .map(fragmentClassName -> Classes.loadFragmentClass(fragmentClassName, context));
+    private Optional<? extends FragmentClassOfActivity<? extends PreferenceFragmentCompat>> getPreferenceFragmentClassConnectedToPreference(
+            final Preference preference,
+            final PreferenceFragmentOfActivity hostOfPreference) {
+        return preferenceFragmentConnectedToPreferenceProvider
+                .getPreferenceFragmentConnected2Preference(
+                        preference,
+                        hostOfPreference.preferenceFragment())
+                .map(preferenceFragmentConnectedToPreference ->
+                             new FragmentClassOfActivity<>(
+                                     preferenceFragmentConnectedToPreference,
+                                     hostOfPreference.activityOfPreferenceFragment()));
     }
 
-    private Optional<PreferenceFragmentClassOfActivity> getRootPreferenceFragment(final Optional<Intent> intent) {
-        return intent.flatMap(this::getRootPreferenceFragment);
+    private Optional<? extends FragmentClassOfActivity<? extends Fragment>> getFragmentClassFromFragmentClassName(
+            final Optional<String> fragmentClassName,
+            final ActivityDescription activityOFragment) {
+        return fragmentClassName
+                .<Class<? extends Fragment>>map(_fragmentClassName -> Classes.loadFragmentClass(_fragmentClassName, context))
+                .map(fragmentClass ->
+                             new FragmentClassOfActivity<>(
+                                     fragmentClass,
+                                     activityOFragment));
     }
 
-    private Optional<PreferenceFragmentClassOfActivity> getRootPreferenceFragment(final Intent intent) {
+    private Optional<? extends FragmentClassOfActivity<? extends PreferenceFragmentCompat>> getFragmentClassFromIntent(final Optional<Intent> intent) {
+        return intent.flatMap(this::getFragmentClassFromIntent);
+    }
+
+    private Optional<? extends FragmentClassOfActivity<? extends PreferenceFragmentCompat>> getFragmentClassFromIntent(final Intent intent) {
         return Intents
                 .getClassName(intent)
                 .flatMap(this::asActivityClass)
@@ -114,7 +135,7 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
                                  rootPreferenceFragmentOfActivityProvider
                                          .getRootPreferenceFragmentOfActivity(activityDescription.activity())
                                          .map(rootPreferenceFragmentOfActivity ->
-                                                      new PreferenceFragmentClassOfActivity(
+                                                      new FragmentClassOfActivity<>(
                                                               rootPreferenceFragmentOfActivity,
                                                               activityDescription)));
     }

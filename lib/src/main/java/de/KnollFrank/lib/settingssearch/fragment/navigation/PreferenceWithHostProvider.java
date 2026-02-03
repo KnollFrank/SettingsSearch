@@ -33,7 +33,7 @@ class PreferenceWithHostProvider {
                         preference
                                 .hostOfPreference()
                                 .host()
-                                .preferenceFragmentClass(),
+                                .fragment(),
                         src);
         return new PreferenceOfHost(
                 Preferences.findPreferenceByKeyOrElseThrow(hostOfPreference, preference.searchablePreference().getKey()),

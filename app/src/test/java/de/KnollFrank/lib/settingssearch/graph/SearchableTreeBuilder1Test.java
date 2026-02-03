@@ -204,7 +204,7 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
         return getPreference(
                 preferenceScreenWithHostSet,
                 searchablePreferenceWithinGraph ->
-                        hostOfPreference.equals(searchablePreferenceWithinGraph.hostOfPreference().host().preferenceFragmentClass()) &&
+                        hostOfPreference.equals(searchablePreferenceWithinGraph.hostOfPreference().host().fragment()) &&
                                 searchablePreferenceWithinGraph.searchablePreference().getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
@@ -243,7 +243,7 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                         addEdgeToTreePredicate),
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
-                                new FragmentClassOfActivity(
+                                new FragmentClassOfActivity<>(
                                         root,
                                         new ActivityDescription(
                                                 activity.getClass(),

@@ -19,7 +19,7 @@ public class PreferenceScreenWithHostProvider {
     }
 
     public Optional<PreferenceScreenOfHostOfActivity> getPreferenceScreenWithHostOfFragment(
-            final FragmentClassOfActivity fragmentClass,
+            final FragmentClassOfActivity<? extends Fragment> fragmentClass,
             final Optional<PreferenceOfHost> src) {
         return this
                 .getPreferenceFragment(fragmentClass.fragment(), src)

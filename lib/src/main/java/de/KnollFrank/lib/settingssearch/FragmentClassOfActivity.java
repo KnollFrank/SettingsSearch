@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 
-public record FragmentClassOfActivity(
-        Class<? extends Fragment> fragment,
+public record FragmentClassOfActivity<T extends Fragment>(
+        Class<T> fragment,
         ActivityDescription activityOFragment) {
 }

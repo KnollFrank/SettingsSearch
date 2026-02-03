@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import android.content.Context;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.graph.ImmutableValueGraph;
@@ -23,7 +24,7 @@ public class PojoTreeTestFactory {
     }
 
     public static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createEntityPreferenceScreenTreeRootedAt(
-            final FragmentClassOfActivity root,
+            final FragmentClassOfActivity<? extends PreferenceFragmentCompat> root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
         return createEntityPreferenceScreenTreeRootedAt(

@@ -9,8 +9,8 @@ public record PreferenceScreenOfHostOfActivity(PreferenceScreen preferenceScreen
                                                PreferenceFragmentCompat hostOfPreferenceScreen,
                                                ActivityDescription activityOfHost) {
 
-    public PreferenceFragmentClassOfActivity asPreferenceFragmentClassOfActivity() {
-        return new PreferenceFragmentClassOfActivity(
+    public FragmentClassOfActivity<? extends PreferenceFragmentCompat> asPreferenceFragmentClassOfActivity() {
+        return new FragmentClassOfActivity<>(
                 hostOfPreferenceScreen.getClass(),
                 activityOfHost);
     }

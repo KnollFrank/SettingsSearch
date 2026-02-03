@@ -7,6 +7,8 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 
 import android.os.PersistableBundle;
 
+import androidx.preference.PreferenceFragmentCompat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -14,7 +16,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -69,7 +71,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
     public void test_persistOrReplaceAndFindTreeById_twoGraphs_differentLocales() {
         // Given
         final SearchablePreferenceScreenTreeDao dao = createGraphDao();
-        final PreferenceFragmentClassOfActivity host = createSomePreferenceFragmentClassOfActivity();
+        final FragmentClassOfActivity<PreferenceFragmentCompat> host = createSomePreferenceFragmentClassOfActivity();
 
         // When
         final SearchablePreferenceScreenTree<PersistableBundle> germanGraph =
@@ -117,7 +119,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
         // Given
         final SearchablePreferenceScreenTreeDao dao = createGraphDao();
         final Locale locale = Locale.GERMAN;
-        final PreferenceFragmentClassOfActivity host = createSomePreferenceFragmentClassOfActivity();
+        final FragmentClassOfActivity<PreferenceFragmentCompat> host = createSomePreferenceFragmentClassOfActivity();
 
         // When
         final SearchablePreferenceScreenTree<PersistableBundle> graphToBeOverwritten =

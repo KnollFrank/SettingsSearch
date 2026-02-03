@@ -53,7 +53,7 @@ public class TreePathInstantiatorTest {
 
                 // Then
                 assertSameSize(treePathInstantiated, treePath);
-                assertThat(treePathInstantiated.endNode().hostOfPreferenceScreen(), is(instanceOf(searchablePreferenceScreen.host().preferenceFragmentClass())));
+                assertThat(treePathInstantiated.endNode().hostOfPreferenceScreen(), is(instanceOf(searchablePreferenceScreen.host().fragment())));
             });
         }
     }
@@ -77,8 +77,8 @@ public class TreePathInstantiatorTest {
 
                 // Then
                 assertSameSize(treePathInstantiated, treePath);
-                assertThat(treePathInstantiated.startNode().hostOfPreferenceScreen(), is(instanceOf(thirdScreen.host().preferenceFragmentClass())));
-                assertThat(treePathInstantiated.endNode().hostOfPreferenceScreen(), is(instanceOf(fourthScreen.host().preferenceFragmentClass())));
+                assertThat(treePathInstantiated.startNode().hostOfPreferenceScreen(), is(instanceOf(thirdScreen.host().fragment())));
+                assertThat(treePathInstantiated.endNode().hostOfPreferenceScreen(), is(instanceOf(fourthScreen.host().fragment())));
             });
         }
     }

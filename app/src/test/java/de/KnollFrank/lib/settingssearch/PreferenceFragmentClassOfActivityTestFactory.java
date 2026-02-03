@@ -12,8 +12,8 @@ public class PreferenceFragmentClassOfActivityTestFactory {
     private PreferenceFragmentClassOfActivityTestFactory() {
     }
 
-    public static PreferenceFragmentClassOfActivity createSomePreferenceFragmentClassOfActivity() {
-        return new PreferenceFragmentClassOfActivity(
+    public static FragmentClassOfActivity<PreferenceFragmentCompat> createSomePreferenceFragmentClassOfActivity() {
+        return new FragmentClassOfActivity<>(
                 PreferenceFragmentCompat.class,
                 new ActivityDescription(
                         TestActivity.class,

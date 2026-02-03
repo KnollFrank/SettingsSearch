@@ -47,9 +47,7 @@ public class TreePathInstantiator {
         PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivityPrevious =
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
-                                searchablePreferenceScreenPrevious
-                                        .host()
-                                        .asFragmentClassOfActivity(),
+                                searchablePreferenceScreenPrevious.host(),
                                 Optional.empty())
                         .orElseThrow();
         graphBuilder.addNode(preferenceScreenOfHostOfActivityPrevious);
@@ -66,9 +64,7 @@ public class TreePathInstantiator {
             final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivityActual =
                     preferenceScreenWithHostProvider
                             .getPreferenceScreenWithHostOfFragment(
-                                    searchablePreferenceScreenActual
-                                            .host()
-                                            .asFragmentClassOfActivity(),
+                                    searchablePreferenceScreenActual.host(),
                                     Optional.of(
                                             new PreferenceOfHost(
                                                     preferencePrevious,

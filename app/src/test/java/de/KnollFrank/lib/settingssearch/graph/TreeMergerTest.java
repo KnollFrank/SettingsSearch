@@ -80,8 +80,8 @@ public class TreeMergerTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final FragmentClassOfActivity root =
-                        new FragmentClassOfActivity(
+                final FragmentClassOfActivity<? extends PreferenceFragmentCompat> root =
+                        new FragmentClassOfActivity<>(
                                 rootOfGraph,
                                 new ActivityDescription(
                                         activity.getClass(),
@@ -151,7 +151,7 @@ public class TreeMergerTest {
     }
 
     private static Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> createEntityTree(
-            final FragmentClassOfActivity root,
+            final FragmentClassOfActivity<? extends PreferenceFragmentCompat> root,
             final List<String> preferenceKeys,
             final TestActivity activity) {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
