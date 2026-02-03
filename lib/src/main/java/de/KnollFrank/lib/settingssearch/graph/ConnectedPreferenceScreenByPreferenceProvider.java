@@ -25,18 +25,18 @@ import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
 class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeValueProvider<PreferenceScreenOfHostOfActivity, Preference> {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
-    private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
+    private final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final Context context;
 
     public ConnectedPreferenceScreenByPreferenceProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-                                                         final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
+                                                         final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
                                                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                                                          final Context context) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
@@ -99,7 +99,7 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
             final Preference preference,
             final PreferenceFragmentOfActivity hostOfPreference) {
         return preferenceFragmentConnectedToPreferenceProvider
-                .getPreferenceFragmentConnected2Preference(
+                .getPreferenceFragmentConnectedToPreference(
                         preference,
                         hostOfPreference.preferenceFragment())
                 .map(preferenceFragmentConnectedToPreference ->

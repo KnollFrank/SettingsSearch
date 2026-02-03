@@ -77,7 +77,7 @@ import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProv
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
@@ -704,7 +704,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                            final PreferenceSearchablePredicate preferenceSearchablePredicate,
                            final SearchResultsFilter searchResultsFilter,
                            final String keyword,
-                           final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+                           final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                            final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
@@ -721,7 +721,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         preferenceSearchablePredicate,
                                         fragmentActivity,
                                         createFragmentFactoryReturning(preferenceFragment),
-                                        preferenceFragmentConnected2PreferenceProvider,
+                                        preferenceFragmentConnectedToPreferenceProvider,
                                         preferenceDialogAndSearchableInfoProvider,
                                         principalAndProxyProvider,
                                         treeRepository,
@@ -765,7 +765,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             final PreferenceSearchablePredicate preferenceSearchablePredicate,
             final FragmentActivity fragmentActivity,
             final FragmentFactory fragmentFactory,
-            final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+            final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
@@ -804,7 +804,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 preferenceFragmentIdProvider),
                         PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                                 preferenceScreenWithHostProvider,
-                                preferenceFragmentConnected2PreferenceProvider,
+                                preferenceFragmentConnectedToPreferenceProvider,
                                 new RootPreferenceFragmentOfActivityProvider() {
 
                                     @Override

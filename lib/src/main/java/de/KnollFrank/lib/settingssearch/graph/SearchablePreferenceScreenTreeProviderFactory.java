@@ -74,7 +74,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                                                 searchDatabaseConfig.preferenceSearchablePredicate),
                                         context),
                                 searchDatabaseConfig.principalAndProxyProvider),
-                        searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
+                        searchDatabaseConfig.preferenceFragmentConnectedToPreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         addEdgeToTreePredicate,
                         searchDatabaseConfig.preferenceScreenTreeBuilderListener,

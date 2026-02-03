@@ -100,7 +100,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                         searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         preferenceScreenWithHostProvider,
-                        searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
+                        searchDatabaseConfig.preferenceFragmentConnectedToPreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         edge -> true,
                         new ProgressUpdatingTreeBuilderListener(searchDatabaseConfig.preferenceScreenTreeBuilderListener, progressUpdateListener),

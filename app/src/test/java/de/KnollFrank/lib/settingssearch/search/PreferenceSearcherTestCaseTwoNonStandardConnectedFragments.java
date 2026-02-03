@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.settingssearch.Configuration;
 
 class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
@@ -80,7 +80,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
     }
 
     private static void testSearch(final FragmentWithNonStandardConnection fragmentWithNonStandardConnection,
-                                   final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+                                   final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
                                    final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository) {
@@ -89,7 +89,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 (preference, hostOfPreference) -> true,
                 preference -> true,
                 keyword,
-                preferenceFragmentConnected2PreferenceProvider,
+                preferenceFragmentConnectedToPreferenceProvider,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 checkPreferenceMatches,

@@ -38,7 +38,7 @@ import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
 import de.KnollFrank.settingssearch.SettingsActivity2.SettingsFragment2;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -138,11 +138,11 @@ public class SearchDatabaseConfigFactory {
                                         })
                                 .build())
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
-                .withPreferenceFragmentConnected2PreferenceProvider(
-                        new PreferenceFragmentConnected2PreferenceProvider() {
+                .withPreferenceFragmentConnectedToPreferenceProvider(
+                        new PreferenceFragmentConnectedToPreferenceProvider() {
 
                             @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnectedToPreference(
                                     final Preference preference,
                                     final PreferenceFragmentCompat hostOfPreference) {
                                 return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?

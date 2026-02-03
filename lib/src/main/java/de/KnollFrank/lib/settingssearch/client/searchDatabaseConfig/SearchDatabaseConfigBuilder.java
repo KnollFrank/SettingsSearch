@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
@@ -33,7 +33,7 @@ public class SearchDatabaseConfigBuilder<C> {
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
-    private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
+    private PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
     private TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener = TreeBuilderListeners.emptyTreeBuilderListener();
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
@@ -71,8 +71,8 @@ public class SearchDatabaseConfigBuilder<C> {
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder<C> withPreferenceFragmentConnected2PreferenceProvider(final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider) {
-        this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
+    public SearchDatabaseConfigBuilder<C> withPreferenceFragmentConnectedToPreferenceProvider(final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider) {
+        this.preferenceFragmentConnectedToPreferenceProvider = preferenceFragmentConnectedToPreferenceProvider;
         return this;
     }
 
@@ -107,7 +107,7 @@ public class SearchDatabaseConfigBuilder<C> {
                 new ReflectionIconResourceIdProvider(),
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
-                preferenceFragmentConnected2PreferenceProvider,
+                preferenceFragmentConnectedToPreferenceProvider,
                 rootPreferenceFragment,
                 new RootPreferenceFragmentOfActivityProvider() {
 

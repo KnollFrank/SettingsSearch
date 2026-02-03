@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
@@ -27,7 +27,7 @@ public class SearchDatabaseConfig<C> {
     public final IconResourceIdProvider iconResourceIdProvider;
     public final SearchableInfoProvider searchableInfoProvider;
     public final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
-    public final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
+    public final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
     public final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener;
@@ -41,7 +41,7 @@ public class SearchDatabaseConfig<C> {
                          final IconResourceIdProvider iconResourceIdProvider,
                          final SearchableInfoProvider searchableInfoProvider,
                          final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                         final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+                         final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
                          final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment,
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener,
@@ -54,7 +54,7 @@ public class SearchDatabaseConfig<C> {
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
-        this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
+        this.preferenceFragmentConnectedToPreferenceProvider = preferenceFragmentConnectedToPreferenceProvider;
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
