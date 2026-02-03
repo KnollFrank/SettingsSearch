@@ -24,10 +24,10 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     @Override
     public void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity,
                                                         final Fragment settingsFragment,
-                                                        final SearchablePreferenceOfHostWithinTree setting2Highlight) {
+                                                        final SearchablePreferenceOfHostWithinTree settingToHighlight) {
         showFragment(
                 settingsFragment,
-                _settingsFragment -> highlightSetting(_settingsFragment, asSetting(setting2Highlight)),
+                _settingsFragment -> highlightSetting(_settingsFragment, asSetting(settingToHighlight)),
                 true,
                 fragmentContainerViewId,
                 Optional.empty(),
@@ -65,10 +65,10 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     }
 
     private static void highlightSetting(final Fragment settingsFragment,
-                                         final Setting setting2Highlight,
+                                         final Setting settingToHighlight,
                                          final SettingHighlighter settingHighlighter) {
-        settingHighlighter.highlightSetting(settingsFragment, setting2Highlight);
-        // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
+        settingHighlighter.highlightSetting(settingsFragment, settingToHighlight);
+        // showDialog(_settingsFragment.findPreference(keyOfSettingToHighlight), settingToHighlight);
     }
 
     private static void showDialog(final Preference preference, final boolean hasPreferenceMatchWithinSearchableInfo) {

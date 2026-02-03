@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBitmapConverter.drawable2Bitmap;
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBitmapConverter.drawableToBitmap;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTestFactory.createSomePreferenceFragment;
 
 import android.content.Context;
@@ -39,7 +39,7 @@ public class PreferenceToSearchablePreferenceConverterIntegrationTest {
 
                 // When
                 final SearchablePreference pojo =
-                        convertPreference2SearchablePreference(
+                        convertPreferenceToSearchablePreference(
                                 preference,
                                 createSomePreferenceFragment(activity));
 
@@ -57,8 +57,8 @@ public class PreferenceToSearchablePreferenceConverterIntegrationTest {
         return preference;
     }
 
-    private static SearchablePreference convertPreference2SearchablePreference(final Preference preference,
-                                                                               final PreferenceFragmentCompat hostOfPreference) {
+    private static SearchablePreference convertPreferenceToSearchablePreference(final Preference preference,
+                                                                                final PreferenceFragmentCompat hostOfPreference) {
         final PreferenceToSearchablePreferenceConverter preferenceToSearchablePreferenceConverter =
                 new PreferenceToSearchablePreferenceConverter(
                         (_preference, _hostOfPreference) ->
@@ -78,6 +78,6 @@ public class PreferenceToSearchablePreferenceConverterIntegrationTest {
     }
 
     private static boolean equals(final Drawable drawable1, final Drawable drawable2) {
-        return drawable2Bitmap(drawable1).sameAs(drawable2Bitmap(drawable2));
+        return drawableToBitmap(drawable1).sameAs(drawableToBitmap(drawable2));
     }
 }

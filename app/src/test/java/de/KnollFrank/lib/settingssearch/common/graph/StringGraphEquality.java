@@ -22,7 +22,7 @@ class StringGraphEquality {
 
     private static void assertActualEqualsExpected(final Set<StringNode> nodesActual, final Set<StringNode> nodesExpected) {
         assertThat(
-                "Vertex sets should be equal. Expected: [" + nodes2String(nodesExpected) + "], Actual: [" + nodes2String(nodesActual) + "]",
+                "Vertex sets should be equal. Expected: [" + nodesToString(nodesExpected) + "], Actual: [" + nodesToString(nodesActual) + "]",
                 nodesActual,
                 is(equalTo(nodesExpected)));
     }
@@ -36,7 +36,7 @@ class StringGraphEquality {
                 is(equalTo(expectedEdgesRepr)));
     }
 
-    private static String nodes2String(final Set<StringNode> nodes) {
+    private static String nodesToString(final Set<StringNode> nodes) {
         return nodes
                 .stream()
                 .map(StringNode::label)

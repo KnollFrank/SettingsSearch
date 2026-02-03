@@ -13,8 +13,8 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -94,7 +94,7 @@ public class MergedPreferenceScreenDataRepository<C> {
         return new SearchablePreferenceScreenTreeProvider(
                 new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
-                                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
+                                PreferenceToSearchablePreferenceConverterFactory.createPreferenceToSearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         preferenceDialogs)),
                         searchDatabaseConfig.preferenceFragmentIdProvider),

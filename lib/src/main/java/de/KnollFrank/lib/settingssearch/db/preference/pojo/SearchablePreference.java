@@ -202,7 +202,7 @@ public final class SearchablePreference {
                              iconResourceIdOrIconPixelData.join(
                                      iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
                                      iconPixelData ->
-                                             DrawableAndStringConverter.string2Drawable(
+                                             DrawableAndStringConverter.stringToDrawable(
                                                      iconPixelData,
                                                      context.getResources())));
     }

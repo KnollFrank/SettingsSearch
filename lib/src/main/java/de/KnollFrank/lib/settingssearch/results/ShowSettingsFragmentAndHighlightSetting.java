@@ -8,5 +8,5 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 @FunctionalInterface
 public interface ShowSettingsFragmentAndHighlightSetting {
 
-    void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity, final Fragment settingsFragment, final SearchablePreferenceOfHostWithinTree setting2Highlight);
+    void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity, final Fragment settingsFragment, final SearchablePreferenceOfHostWithinTree settingToHighlight);
 }

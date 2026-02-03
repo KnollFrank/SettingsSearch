@@ -187,7 +187,7 @@ public class SearchDatabaseConfigFactory {
                                 Log.i(this.getClass().getSimpleName(), "onFinishComputePreferences");
                                 Log.i(
                                         this.getClass().getSimpleName(),
-                                        PreferenceScreenGraph2DOTConverter.graph2DOT(
+                                        PreferenceScreenGraphToDOTConverter.graphToDOT(
                                                 GraphConverterFactory
                                                         .createPreferenceScreenWithHostGraphConverter()
                                                         .toJGraphT(preferenceScreenTree.graph())));

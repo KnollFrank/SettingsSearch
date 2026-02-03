@@ -50,7 +50,7 @@ class ViewsAdder {
                         new LinearLayout.LayoutParams(
                                 LayoutParams.MATCH_PARENT,
                                 LayoutParams.WRAP_CONTENT));
-        ViewAdder.addViews2LinearLayout(children, container);
+        ViewAdder.addViewsToLinearLayout(children, container);
         return container;
     }
 }

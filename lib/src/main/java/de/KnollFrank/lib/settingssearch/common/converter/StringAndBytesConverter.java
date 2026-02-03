@@ -10,11 +10,11 @@ class StringAndBytesConverter {
     private StringAndBytesConverter() {
     }
 
-    public static byte[] string2Bytes(final String string) {
+    public static byte[] stringToBytes(final String string) {
         return string.getBytes(CHARSET);
     }
 
-    public static String bytes2String(final byte[] bytes) {
+    public static String bytesToString(final byte[] bytes) {
         return new String(bytes, CHARSET);
     }
 }

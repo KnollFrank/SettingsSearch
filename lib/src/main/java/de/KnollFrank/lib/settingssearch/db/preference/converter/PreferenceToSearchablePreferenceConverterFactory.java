@@ -6,12 +6,12 @@ import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.IconProvider;
 
-public class Preference2SearchablePreferenceConverterFactory {
+public class PreferenceToSearchablePreferenceConverterFactory {
 
-    private Preference2SearchablePreferenceConverterFactory() {
+    private PreferenceToSearchablePreferenceConverterFactory() {
     }
 
-    public static PreferenceToSearchablePreferenceConverter createPreference2SearchablePreferenceConverter(
+    public static PreferenceToSearchablePreferenceConverter createPreferenceToSearchablePreferenceConverter(
             final SearchDatabaseConfig<?> searchDatabaseConfig,
             final PreferenceDialogs preferenceDialogs) {
         return new PreferenceToSearchablePreferenceConverter(

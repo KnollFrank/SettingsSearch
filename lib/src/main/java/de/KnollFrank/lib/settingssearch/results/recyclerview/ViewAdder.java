@@ -18,16 +18,16 @@ class ViewAdder {
                                             final Context context) {
         final LinearLayout container = createLinearLayout(context, viewToReplace.getLayoutParams());
         replaceView(viewToReplace, container);
-        addViews2LinearLayout(replacingViews, container);
+        addViewsToLinearLayout(replacingViews, container);
     }
 
-    public static void addViews2LinearLayout(final List<View> children, final LinearLayout linearLayout) {
+    public static void addViewsToLinearLayout(final List<View> children, final LinearLayout linearLayout) {
         for (final View child : children) {
-            addView2LinearLayout(child, linearLayout);
+            addViewToLinearLayout(child, linearLayout);
         }
     }
 
-    public static void addView2LinearLayout(final View view, final LinearLayout linearLayout) {
+    public static void addViewToLinearLayout(final View view, final LinearLayout linearLayout) {
         view.setLayoutParams(
                 new LinearLayout.LayoutParams(
                         LayoutParams.WRAP_CONTENT,

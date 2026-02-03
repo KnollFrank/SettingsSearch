@@ -20,12 +20,12 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
-class PreferenceScreenGraph2DOTConverter {
+class PreferenceScreenGraphToDOTConverter {
 
-    private PreferenceScreenGraph2DOTConverter() {
+    private PreferenceScreenGraphToDOTConverter() {
     }
 
-    public static String graph2DOT(final Graph<PreferenceScreenOfHostOfActivity, PreferenceEdge> preferenceScreenGraph) throws ExportException {
+    public static String graphToDOT(final Graph<PreferenceScreenOfHostOfActivity, PreferenceEdge> preferenceScreenGraph) throws ExportException {
         final Writer writer = new StringWriter();
         getDOTExporter().exportGraph(preferenceScreenGraph, writer);
         return writer.toString();
@@ -33,9 +33,9 @@ class PreferenceScreenGraph2DOTConverter {
 
     private static DOTExporter<PreferenceScreenOfHostOfActivity, PreferenceEdge> getDOTExporter() {
         final DOTExporter<PreferenceScreenOfHostOfActivity, PreferenceEdge> exporter =
-                new DOTExporter<>(PreferenceScreenGraph2DOTConverter::getVertexId);
-        exporter.setVertexAttributeProvider(PreferenceScreenGraph2DOTConverter::getVertexAttribute);
-        exporter.setEdgeAttributeProvider(PreferenceScreenGraph2DOTConverter::getEdgeAttribute);
+                new DOTExporter<>(PreferenceScreenGraphToDOTConverter::getVertexId);
+        exporter.setVertexAttributeProvider(PreferenceScreenGraphToDOTConverter::getVertexAttribute);
+        exporter.setEdgeAttributeProvider(PreferenceScreenGraphToDOTConverter::getEdgeAttribute);
         return exporter;
     }
 

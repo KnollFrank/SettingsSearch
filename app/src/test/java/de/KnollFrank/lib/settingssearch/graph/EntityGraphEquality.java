@@ -56,8 +56,8 @@ class EntityGraphEquality {
     private static void assertActualEqualsExpected(final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> actual,
                                                    final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> expected) {
         assertThat(
-                nodes2String(actual.first(), actual.second()),
-                is(nodes2String(expected.first(), expected.second())));
+                nodesToString(actual.first(), actual.second()),
+                is(nodesToString(expected.first(), expected.second())));
     }
 
     private static void assertActualEdgesEqualsExpectedEdges(final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>>, SearchablePreferenceEntity.DbDataProvider> actual,
@@ -67,8 +67,8 @@ class EntityGraphEquality {
                 is(edgesAsStrings(expected.first().graph(), expected.second())));
     }
 
-    private static String nodes2String(final Set<SearchablePreferenceScreenEntity> nodes,
-                                       final DbDataProvider dbDataProvider) {
+    private static String nodesToString(final Set<SearchablePreferenceScreenEntity> nodes,
+                                        final DbDataProvider dbDataProvider) {
         return nodes
                 .stream()
                 .sorted(Comparator.comparing(SearchablePreferenceScreenEntity::id))

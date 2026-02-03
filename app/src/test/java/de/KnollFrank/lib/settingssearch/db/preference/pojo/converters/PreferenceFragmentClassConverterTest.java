@@ -9,7 +9,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 public class PreferenceFragmentClassConverterTest {
 
     @Test
-    public void shouldConvertFromClass2StringAndBack() {
+    public void shouldConvertFromClassToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(PrefsFragmentFirst.class, new PreferenceFragmentClassConverter());
     }
 }

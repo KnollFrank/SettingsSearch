@@ -15,7 +15,7 @@ public class DrawableAndBitmapConverter {
     }
 
     // adapted from https://stackoverflow.com/a/10600736
-    public static Bitmap drawable2Bitmap(final Drawable drawable) {
+    public static Bitmap drawableToBitmap(final Drawable drawable) {
         if (drawable instanceof final BitmapDrawable bitmapDrawable) {
             if (bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
@@ -30,7 +30,7 @@ public class DrawableAndBitmapConverter {
         return bitmap;
     }
 
-    public static Drawable bitmap2Drawable(final Bitmap bitmap, final Resources resources) {
+    public static Drawable bitmapToDrawable(final Bitmap bitmap, final Resources resources) {
         return new BitmapDrawable(resources, bitmap);
     }
 

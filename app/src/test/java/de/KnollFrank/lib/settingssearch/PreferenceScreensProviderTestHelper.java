@@ -28,7 +28,7 @@ public class PreferenceScreensProviderTestHelper {
         screen.setTitle(title);
         connectedFragments
                 .stream()
-                .map(connectedFragment -> createPreferenceConnectingSrc2Dst(fragment, connectedFragment, context))
+                .map(connectedFragment -> createPreferenceConnectingSrcToDst(fragment, connectedFragment, context))
                 .forEach(screen::addPreference);
         fragment.setPreferenceScreen(screen);
     }
@@ -43,9 +43,9 @@ public class PreferenceScreensProviderTestHelper {
                 .orElseThrow();
     }
 
-    private static Preference createPreferenceConnectingSrc2Dst(final PreferenceFragmentCompat src,
-                                                                final Class<? extends Fragment> dst,
-                                                                final Context context) {
+    private static Preference createPreferenceConnectingSrcToDst(final PreferenceFragmentCompat src,
+                                                                 final Class<? extends Fragment> dst,
+                                                                 final Context context) {
         final Preference preference = new Preference(context);
         preference.setFragment(dst.getName());
         preference.setTitle("preference connected to " + dst.getSimpleName());

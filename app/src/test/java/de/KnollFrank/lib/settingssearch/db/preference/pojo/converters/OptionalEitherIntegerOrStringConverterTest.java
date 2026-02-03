@@ -13,17 +13,17 @@ public class OptionalEitherIntegerOrStringConverterTest {
     private final OptionalEitherIntegerOrStringConverter converter = new OptionalEitherIntegerOrStringConverter();
 
     @Test
-    public void shouldConvertFromPresentLeft2StringAndBack() {
+    public void shouldConvertFromPresentLeftToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Optional.of(Either.ofLeft(4711)), converter);
     }
 
     @Test
-    public void shouldConvertFromPresentRight2StringAndBack() {
+    public void shouldConvertFromPresentRightToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Optional.of(Either.ofRight("some str")), converter);
     }
 
     @Test
-    public void shouldConvertFromEmpty2StringAndBack() {
+    public void shouldConvertFromEmptyToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Optional.empty(), converter);
     }
 }

@@ -17,11 +17,11 @@ public class PrefsFragmentSecond extends PreferenceFragmentCompat {
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         addPreferencesFromResource(R.xml.preferences2);
         final Preference preference = getPreferenceScreen().findPreference("link_to_third_fragment");
-        copySrc2Dst(Optional.ofNullable(getArguments()), preference.getExtras());
+        copySrcToDst(Optional.ofNullable(getArguments()), preference.getExtras());
         markExtrasOfPreferenceConnectingSrcWithDst(preference, this, PrefsFragmentThird.class);
     }
 
-    private static void copySrc2Dst(final Optional<Bundle> src, final Bundle dst) {
+    private static void copySrcToDst(final Optional<Bundle> src, final Bundle dst) {
         src.ifPresent(dst::putAll);
     }
 }

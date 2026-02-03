@@ -33,7 +33,6 @@ public class SearchableTreeBuilder2Test {
         }
     }
 
-    @SuppressWarnings({"UnstableApiUsage"})
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
         final var result =

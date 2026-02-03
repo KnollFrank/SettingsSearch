@@ -11,12 +11,12 @@ public class OptionalIntegerConverterTest {
     private final OptionalIntegerConverter converter = new OptionalIntegerConverter();
 
     @Test
-    public void shouldConvertFromPresentInteger2StringAndBack() {
+    public void shouldConvertFromPresentIntegerToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Optional.of(4711), converter);
     }
 
     @Test
-    public void shouldConvertFromEmptyInteger2StringAndBack() {
+    public void shouldConvertFromEmptyIntegerToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Optional.empty(), converter);
     }
 }

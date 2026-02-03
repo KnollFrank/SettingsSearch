@@ -40,25 +40,25 @@ public class PreferenceScreenAdapterTest {
     @Test
     public void test_getPreferenceScreen_nestedSearchablePreference() {
         test_getPreferenceScreen(
-                PreferenceScreenAdapterTest::addNestedPreference2Screen,
+                PreferenceScreenAdapterTest::addNestedPreferenceToScreen,
                 true);
     }
 
     @Test
     public void test_getPreferenceScreen_nestedNonSearchablePreference() {
         test_getPreferenceScreen(
-                PreferenceScreenAdapterTest::addNestedPreference2Screen,
+                PreferenceScreenAdapterTest::addNestedPreferenceToScreen,
                 false);
     }
 
-    private interface AddPreferences2Screen {
+    private interface AddPreferencesToScreen {
 
-        void addPreferences2Screen(final String keyOfSearchableOrNonSearchablePreference,
-                                   final PreferenceScreen screen,
-                                   final Context context);
+        void addPreferencesToScreen(final String keyOfSearchableOrNonSearchablePreference,
+                                    final PreferenceScreen screen,
+                                    final Context context);
     }
 
-    private void test_getPreferenceScreen(final AddPreferences2Screen addPreferences2Screen,
+    private void test_getPreferenceScreen(final AddPreferencesToScreen addPreferencesToScreen,
                                           final boolean preferenceSearchable) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
@@ -68,7 +68,7 @@ public class PreferenceScreenAdapterTest {
                         (PreferenceFragmentCompat) initializeFragment(
                                 new PreferenceFragmentTemplate(
                                         (screen, context) ->
-                                                addPreferences2Screen.addPreferences2Screen(
+                                                addPreferencesToScreen.addPreferencesToScreen(
                                                         keyOfSearchableOrNonSearchablePreference,
                                                         screen,
                                                         context)),
@@ -99,7 +99,9 @@ public class PreferenceScreenAdapterTest {
         screen.addPreference(preference);
     }
 
-    private static void addNestedPreference2Screen(final String keyOfSearchableOrNonSearchablePreference, final PreferenceScreen screen, final Context context) {
+    private static void addNestedPreferenceToScreen(final String keyOfSearchableOrNonSearchablePreference,
+                                                    final PreferenceScreen screen,
+                                                    final Context context) {
         final PreferenceCategory parent = new PreferenceCategory(context);
         screen.addPreference(parent);
 

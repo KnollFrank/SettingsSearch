@@ -30,11 +30,11 @@ public class SearchableInfoAndDialogInfoProvider {
 
     private static Optional<String> join(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
         return str1.isPresent() || str2.isPresent() ?
-                Optional.of(join2Str(str1, str2, delimiter)) :
+                Optional.of(joinToStr(str1, str2, delimiter)) :
                 Optional.empty();
     }
 
-    private static String join2Str(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
+    private static String joinToStr(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
         return Optionals
                 .streamOfPresentElements(str1, str2)
                 .collect(Collectors.joining(delimiter));

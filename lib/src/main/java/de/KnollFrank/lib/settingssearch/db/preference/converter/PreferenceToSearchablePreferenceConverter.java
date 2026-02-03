@@ -115,7 +115,7 @@ public class PreferenceToSearchablePreferenceConverter {
                 .map(iconResourceIdOrIconDrawable ->
                              iconResourceIdOrIconDrawable.map(
                                      Function.identity(),
-                                     DrawableAndStringConverter::drawable2String));
+                                     DrawableAndStringConverter::drawableToString));
     }
 
     private static BiMap<SearchablePreference, Preference> getPojoEntityMap(final List<SearchablePreferenceWithMap> pojoWithMapList) {

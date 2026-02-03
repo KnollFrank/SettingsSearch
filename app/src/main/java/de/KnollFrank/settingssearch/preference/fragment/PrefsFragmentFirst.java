@@ -200,23 +200,23 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     // adapted from PreferenceFragmentCompat.onPreferenceTreeClick()
-    public static void show(final String classNameOfFragment2Show,
+    public static void show(final String classNameOfFragmentToShow,
                             final Bundle arguments,
                             final Fragment targetFragment) {
         final FragmentManager fragmentManager = targetFragment.getParentFragmentManager();
-        final Fragment fragment2Show =
+        final Fragment fragmentToShow =
                 fragmentManager
                         .getFragmentFactory()
                         .instantiate(
                                 targetFragment.requireActivity().getClassLoader(),
-                                classNameOfFragment2Show);
-        fragment2Show.setArguments(arguments);
-        fragment2Show.setTargetFragment(targetFragment, 0);
+                                classNameOfFragmentToShow);
+        fragmentToShow.setArguments(arguments);
+        fragmentToShow.setTargetFragment(targetFragment, 0);
         fragmentManager.beginTransaction()
                 // Attempt to replace this fragment in its root view - developers should
                 // implement onPreferenceStartFragment in their activity so that they can
                 // customize this behaviour and handle any transitions between fragments
-                .replace(((View) targetFragment.requireView().getParent()).getId(), fragment2Show)
+                .replace(((View) targetFragment.requireView().getParent()).getId(), fragmentToShow)
                 .addToBackStack(null)
                 .commit();
     }

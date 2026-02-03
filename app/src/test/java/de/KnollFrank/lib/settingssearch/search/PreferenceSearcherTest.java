@@ -860,7 +860,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 instantiateAndInitializeFragment,
                 Map.of(),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
-                (activity, settingsFragment, setting2Highlight) -> {
+                (activity, settingsFragment, settingToHighlight) -> {
                 },
                 fragmentActivity);
     }

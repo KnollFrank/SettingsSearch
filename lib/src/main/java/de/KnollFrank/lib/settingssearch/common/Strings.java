@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common;
 
-import static de.KnollFrank.lib.settingssearch.common.IndexSearchResultConverter.minusOne2Empty;
+import static de.KnollFrank.lib.settingssearch.common.IndexSearchResultConverter.minusOneToEmpty;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -12,7 +12,7 @@ public class Strings {
     }
 
     public static OptionalInt indexOf(final String haystack, final String needle, final int fromIndex) {
-        return minusOne2Empty(haystack.indexOf(needle, fromIndex));
+        return minusOneToEmpty(haystack.indexOf(needle, fromIndex));
     }
 
     public static Optional<String> toString(final Optional<CharSequence> charSequence) {

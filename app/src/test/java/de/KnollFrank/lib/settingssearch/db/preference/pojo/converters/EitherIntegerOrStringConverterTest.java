@@ -11,12 +11,12 @@ public class EitherIntegerOrStringConverterTest {
     private final EitherIntegerOrStringConverter converter = new EitherIntegerOrStringConverter();
 
     @Test
-    public void shouldConvertFromLeft2StringAndBack() {
+    public void shouldConvertFromLeftToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Either.ofLeft(815), converter);
     }
 
     @Test
-    public void shouldConvertFromRight2StringAndBack() {
+    public void shouldConvertFromRightToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Either.ofRight("some string"), converter);
     }
 }

@@ -17,10 +17,10 @@ import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 
 public class PreferenceFragmentTemplate extends PreferenceFragmentCompat {
 
-    private final BiConsumer<PreferenceScreen, Context> addPreferences2Screen;
+    private final BiConsumer<PreferenceScreen, Context> addPreferencesToScreen;
 
-    public PreferenceFragmentTemplate(final BiConsumer<PreferenceScreen, Context> addPreferences2Screen) {
-        this.addPreferences2Screen = addPreferences2Screen;
+    public PreferenceFragmentTemplate(final BiConsumer<PreferenceScreen, Context> addPreferencesToScreen) {
+        this.addPreferencesToScreen = addPreferencesToScreen;
     }
 
     public PreferenceFragmentTemplate(final Function<Context, List<Preference>> preferencesProvider) {
@@ -35,7 +35,7 @@ public class PreferenceFragmentTemplate extends PreferenceFragmentCompat {
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
         screen.setTitle("screen title");
         screen.setSummary("screen summary");
-        addPreferences2Screen.accept(screen, requireContext());
+        addPreferencesToScreen.accept(screen, requireContext());
         setPreferenceScreen(screen);
     }
 

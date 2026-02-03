@@ -37,8 +37,8 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     }
 
     private void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment,
-                                                         final SearchablePreferenceOfHostWithinTree setting2Highlight) {
+                                                         final SearchablePreferenceOfHostWithinTree settingToHighlight) {
         prepareShow.prepareShow(settingsFragment);
-        showSettingsFragmentAndHighlightSetting.showSettingsFragmentAndHighlightSetting(activity, settingsFragment, setting2Highlight);
+        showSettingsFragmentAndHighlightSetting.showSettingsFragmentAndHighlightSetting(activity, settingsFragment, settingToHighlight);
     }
 }

@@ -268,7 +268,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
         final Set<SearchablePreferenceOfHostWithinTree> searchablePreferences = getPreferences(pojoGraphExpected);
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences, data.DST_PREFERENCE_ID()),
-                getPreferenceConnectingSrc2Dst(searchablePreferences, data.PREFERENCE_CONNECTING_SRC_TO_DST_ID()));
+                getPreferenceConnectingSrcToDst(searchablePreferences, data.PREFERENCE_CONNECTING_SRC_TO_DST_ID()));
     }
 
     private record PreferenceAndExpectedPredecessorOfPreference(
@@ -276,8 +276,8 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
             SearchablePreferenceOfHostWithinTree expectedPredecessorOfPreference) {
     }
 
-    private static SearchablePreferenceOfHostWithinTree getPreferenceConnectingSrc2Dst(final Set<SearchablePreferenceOfHostWithinTree> searchablePreferences,
-                                                                                       final String PREFERENCE_CONNECTING_SRC_2_DST_ID) {
+    private static SearchablePreferenceOfHostWithinTree getPreferenceConnectingSrcToDst(final Set<SearchablePreferenceOfHostWithinTree> searchablePreferences,
+                                                                                        final String PREFERENCE_CONNECTING_SRC_2_DST_ID) {
         return getPreferenceById(searchablePreferences, PREFERENCE_CONNECTING_SRC_2_DST_ID);
     }
 
