@@ -78,7 +78,9 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                                 keyOfChild1,
                                 keyOfChild2,
                                 layoutResIdOfEachChild,
-                                preferenceScreen.asPreferenceFragmentClassOfActivity()));
+                                preferenceScreen
+                                        .asPreferenceFragmentOfActivity()
+                                        .asPreferenceFragmentClassOfActivity()));
             });
         }
     }
