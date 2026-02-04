@@ -21,18 +21,18 @@ public class PreferencePathNavigatorFactory {
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
             final PrincipalAndProxyProvider principalAndProxyProvider) {
-        final PreferenceWithHostProvider preferenceWithHostProvider =
-                new PreferenceWithHostProvider(
+        final PreferenceOfHostOfActivityProvider preferenceOfHostOfActivityProvider =
+                new PreferenceOfHostOfActivityProvider(
                         fragmentFactoryAndInitializer,
                         instantiateAndInitializeFragment,
                         context);
         return new PreferencePathNavigator(
                 context,
-                preferenceWithHostProvider,
+                preferenceOfHostOfActivityProvider,
                 new ContinueNavigationInActivity(
                         context,
                         activityInitializerByActivity,
-                        preferenceWithHostProvider),
+                        preferenceOfHostOfActivityProvider),
                 new PrincipalProvider(
                         principalAndProxyProvider,
                         instantiateAndInitializeFragment));

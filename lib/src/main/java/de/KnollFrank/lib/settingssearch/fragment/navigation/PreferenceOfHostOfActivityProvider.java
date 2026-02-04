@@ -12,23 +12,22 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
-// FK-TODO: rename to PreferenceOfHostOfActivityProvider
-class PreferenceWithHostProvider {
+class PreferenceOfHostOfActivityProvider {
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
     private final Context context;
 
-    public PreferenceWithHostProvider(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
-                                      final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-                                      final Context context) {
+    public PreferenceOfHostOfActivityProvider(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
+                                              final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+                                              final Context context) {
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.context = context;
     }
 
-    public PreferenceOfHostOfActivity getPreferenceWithHost(final SearchablePreferenceOfHostWithinTree preference,
-                                                            final Optional<PreferenceOfHostOfActivity> src) {
+    public PreferenceOfHostOfActivity getPreferenceOfHostOfActivity(final SearchablePreferenceOfHostWithinTree preference,
+                                                                    final Optional<PreferenceOfHostOfActivity> src) {
         final PreferenceFragmentCompat hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
                         preference

@@ -23,14 +23,14 @@ class ContinueNavigationInActivity {
 
     private final Context context;
     private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
-    private final PreferenceWithHostProvider preferenceWithHostProvider;
+    private final PreferenceOfHostOfActivityProvider preferenceOfHostOfActivityProvider;
 
     public ContinueNavigationInActivity(final Context context,
                                         final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-                                        final PreferenceWithHostProvider preferenceWithHostProvider) {
+                                        final PreferenceOfHostOfActivityProvider preferenceOfHostOfActivityProvider) {
         this.context = context;
         this.activityInitializerByActivity = activityInitializerByActivity;
-        this.preferenceWithHostProvider = preferenceWithHostProvider;
+        this.preferenceOfHostOfActivityProvider = preferenceOfHostOfActivityProvider;
     }
 
     public Optional<PreferenceOfHostOfActivity> continueNavigationInActivity(final Class<? extends Activity> activity,
@@ -38,7 +38,7 @@ class ContinueNavigationInActivity {
                                                                              final Optional<PreferenceOfHostOfActivity> src) {
         final Optional<PreferencePath> tailPreferencePath = preferencePath.getTail();
         final PreferenceOfHostOfActivity preferenceOfHostOfActivity =
-                preferenceWithHostProvider.getPreferenceWithHost(
+                preferenceOfHostOfActivityProvider.getPreferenceOfHostOfActivity(
                         preferencePath.getStart(),
                         src);
         if (tailPreferencePath.isPresent()) {

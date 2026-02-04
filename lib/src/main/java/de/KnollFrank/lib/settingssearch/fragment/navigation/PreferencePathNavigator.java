@@ -13,16 +13,16 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 public class PreferencePathNavigator {
 
     private final Context context;
-    private final PreferenceWithHostProvider preferenceWithHostProvider;
+    private final PreferenceOfHostOfActivityProvider preferenceOfHostOfActivityProvider;
     private final ContinueNavigationInActivity continueNavigationInActivity;
     private final PrincipalProvider principalProvider;
 
     public PreferencePathNavigator(final Context context,
-                                   final PreferenceWithHostProvider preferenceWithHostProvider,
+                                   final PreferenceOfHostOfActivityProvider preferenceOfHostOfActivityProvider,
                                    final ContinueNavigationInActivity continueNavigationInActivity,
                                    final PrincipalProvider principalProvider) {
         this.context = context;
-        this.preferenceWithHostProvider = preferenceWithHostProvider;
+        this.preferenceOfHostOfActivityProvider = preferenceOfHostOfActivityProvider;
         this.continueNavigationInActivity = continueNavigationInActivity;
         this.principalProvider = principalProvider;
     }
@@ -45,7 +45,7 @@ public class PreferencePathNavigator {
                         src) :
                 navigatePreferences(
                         preferencePath.getTail(),
-                        preferenceWithHostProvider.getPreferenceWithHost(preferencePath.getStart(), src));
+                        preferenceOfHostOfActivityProvider.getPreferenceOfHostOfActivity(preferencePath.getStart(), src));
     }
 
     private Optional<PreferenceOfHostOfActivity> navigatePreferences(final Optional<PreferencePath> preferencePath,
