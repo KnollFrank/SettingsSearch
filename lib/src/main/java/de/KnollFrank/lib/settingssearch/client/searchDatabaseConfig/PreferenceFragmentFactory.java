@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
@@ -21,7 +21,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
 
     public <T extends Fragment> Optional<T> createPreferenceFragmentForClass(
             final Class<T> clazz,
-            final Optional<PreferenceOfHost> src,
+            final Optional<PreferenceOfHostOfActivity> src,
             final Context context,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return canCreatePreferenceFragmentHavingClass(clazz) ?
@@ -34,7 +34,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
     }
 
     private P createPreferenceFragmentAndInitializeWithFragment(
-            final Optional<PreferenceOfHost> src,
+            final Optional<PreferenceOfHostOfActivity> src,
             final Context context,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final P preferenceFragment = createPreferenceFragment(src, context, instantiateAndInitializeFragment);
@@ -43,7 +43,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
         return preferenceFragment;
     }
 
-    private P createPreferenceFragment(final Optional<PreferenceOfHost> src,
+    private P createPreferenceFragment(final Optional<PreferenceOfHostOfActivity> src,
                                        final Context context,
                                        final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         // FK-TODO: warum DefaultFragmentFactory? Ist das nicht zu speziell?
@@ -55,7 +55,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
     }
 
     private F getFragment(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-                          final Optional<PreferenceOfHost> src) {
+                          final Optional<PreferenceOfHostOfActivity> src) {
         return instantiateAndInitializeFragment.instantiateAndInitializeFragment(
                 principalAndProxy.principal(),
                 src);

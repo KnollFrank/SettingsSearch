@@ -49,7 +49,7 @@ public class InstantiateAndInitializeFragmentFactory {
 
             @Override
             public <T extends Fragment> T instantiate(final Class<T> fragmentClassName,
-                                                      final Optional<PreferenceOfHost> src,
+                                                      final Optional<PreferenceOfHostOfActivity> src,
                                                       final Context context,
                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                 return fragment.getClass().equals(fragmentClassName) ?

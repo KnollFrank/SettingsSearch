@@ -4,10 +4,10 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 
 @FunctionalInterface
 public interface InstantiateAndInitializeFragment {
 
-    <T extends Fragment> T instantiateAndInitializeFragment(Class<T> fragmentClass, Optional<PreferenceOfHost> src);
+    <T extends Fragment> T instantiateAndInitializeFragment(Class<T> fragmentClass, Optional<PreferenceOfHostOfActivity> src);
 }

@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 
 public class FragmentFactoryAndInitializer {
 
@@ -20,7 +20,7 @@ public class FragmentFactoryAndInitializer {
     }
 
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
-                                                                   final Optional<PreferenceOfHost> src,
+                                                                   final Optional<PreferenceOfHostOfActivity> src,
                                                                    final Context context,
                                                                    // FK-TODO: make InstantiateAndInitializeFragment an instance variable?
                                                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {

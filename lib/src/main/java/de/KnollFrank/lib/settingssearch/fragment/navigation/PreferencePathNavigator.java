@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
 public class PreferencePathNavigator {
@@ -31,8 +31,8 @@ public class PreferencePathNavigator {
         return tryGetPrincipalOfHost(navigatePreferences(preferencePath, Optional.empty()));
     }
 
-    private Optional<PreferenceOfHost> navigatePreferences(final PreferencePath preferencePath,
-                                                           final Optional<PreferenceOfHost> src) {
+    private Optional<PreferenceOfHostOfActivity> navigatePreferences(final PreferencePath preferencePath,
+                                                                     final Optional<PreferenceOfHostOfActivity> src) {
         final Optional<Class<? extends Activity>> activity =
                 preferencePath
                         .getStart()
@@ -48,16 +48,16 @@ public class PreferencePathNavigator {
                         preferenceWithHostProvider.getPreferenceWithHost(preferencePath.getStart(), src));
     }
 
-    private Optional<PreferenceOfHost> navigatePreferences(final Optional<PreferencePath> preferencePath,
-                                                           final PreferenceOfHost src) {
+    private Optional<PreferenceOfHostOfActivity> navigatePreferences(final Optional<PreferencePath> preferencePath,
+                                                                     final PreferenceOfHostOfActivity src) {
         return preferencePath.isEmpty() ?
                 Optional.of(src) :
                 navigatePreferences(preferencePath.orElseThrow(), Optional.of(src));
     }
 
-    private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceOfHost> preferenceWithHost) {
+    private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceOfHostOfActivity> preferenceWithHost) {
         return preferenceWithHost
                 .flatMap(preferenceWithProxy -> principalProvider.getPrincipal(preferenceWithProxy.hostOfPreference(), preferenceWithHost))
-                .or(() -> preferenceWithHost.map(PreferenceOfHost::hostOfPreference));
+                .or(() -> preferenceWithHost.map(PreferenceOfHostOfActivity::hostOfPreference));
     }
 }

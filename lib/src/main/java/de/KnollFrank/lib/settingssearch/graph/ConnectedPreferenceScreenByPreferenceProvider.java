@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.common.Classes;
@@ -69,7 +69,11 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
                         fragmentClassConnectedToPreference ->
                                 preferenceScreenWithHostProvider.getPreferenceScreenWithHostOfFragment(
                                         fragmentClassConnectedToPreference,
-                                        Optional.of(new PreferenceOfHost(preference, hostOfPreference.preferenceFragment()))));
+                                        Optional.of(
+                                                new PreferenceOfHostOfActivity(
+                                                        preference,
+                                                        hostOfPreference.preferenceFragment(),
+                                                        hostOfPreference.activityOfPreferenceFragment()))));
     }
 
     private Optional<? extends FragmentClassOfActivity<? extends Fragment>> getConnectedFragmentClass(

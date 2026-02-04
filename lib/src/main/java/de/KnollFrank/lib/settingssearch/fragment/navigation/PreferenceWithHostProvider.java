@@ -6,12 +6,13 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
+// FK-TODO: rename to PreferenceOfHostOfActivityProvider
 class PreferenceWithHostProvider {
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
@@ -26,8 +27,8 @@ class PreferenceWithHostProvider {
         this.context = context;
     }
 
-    public PreferenceOfHost getPreferenceWithHost(final SearchablePreferenceOfHostWithinTree preference,
-                                                  final Optional<PreferenceOfHost> src) {
+    public PreferenceOfHostOfActivity getPreferenceWithHost(final SearchablePreferenceOfHostWithinTree preference,
+                                                            final Optional<PreferenceOfHostOfActivity> src) {
         final PreferenceFragmentCompat hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
                         preference
@@ -35,14 +36,15 @@ class PreferenceWithHostProvider {
                                 .host()
                                 .fragment(),
                         src);
-        return new PreferenceOfHost(
+        return new PreferenceOfHostOfActivity(
                 Preferences.findPreferenceByKeyOrElseThrow(hostOfPreference, preference.searchablePreference().getKey()),
-                hostOfPreference);
+                hostOfPreference,
+                preference.hostOfPreference().host().activityOFragment());
     }
 
     private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(
             final Class<? extends PreferenceFragmentCompat> preferenceFragment,
-            final Optional<PreferenceOfHost> src) {
+            final Optional<PreferenceOfHostOfActivity> src) {
         return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
                 preferenceFragment,
                 src,

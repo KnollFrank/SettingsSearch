@@ -42,7 +42,7 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
@@ -750,7 +750,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
             @Override
             public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
-                                                      final Optional<PreferenceOfHost> src,
+                                                      final Optional<PreferenceOfHostOfActivity> src,
                                                       final Context context,
                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                 return preferenceFragment.getClass().equals(fragmentClass) ?

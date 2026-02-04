@@ -18,7 +18,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
@@ -85,7 +85,7 @@ public class SearchDatabaseConfigFactory {
 
                             @Override
                             public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
-                                                                      final Optional<PreferenceOfHost> src,
+                                                                      final Optional<PreferenceOfHostOfActivity> src,
                                                                       final Context context,
                                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&

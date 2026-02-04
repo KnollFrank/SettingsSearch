@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Bundles;
 import de.KnollFrank.lib.settingssearch.common.Maps;
@@ -33,19 +33,19 @@ class ContinueNavigationInActivity {
         this.preferenceWithHostProvider = preferenceWithHostProvider;
     }
 
-    public Optional<PreferenceOfHost> continueNavigationInActivity(final Class<? extends Activity> activity,
-                                                                   final PreferencePath preferencePath,
-                                                                   final Optional<PreferenceOfHost> src) {
+    public Optional<PreferenceOfHostOfActivity> continueNavigationInActivity(final Class<? extends Activity> activity,
+                                                                             final PreferencePath preferencePath,
+                                                                             final Optional<PreferenceOfHostOfActivity> src) {
         final Optional<PreferencePath> tailPreferencePath = preferencePath.getTail();
-        final PreferenceOfHost preferenceOfHost =
+        final PreferenceOfHostOfActivity preferenceOfHostOfActivity =
                 preferenceWithHostProvider.getPreferenceWithHost(
                         preferencePath.getStart(),
                         src);
         if (tailPreferencePath.isPresent()) {
-            continueNavigationInActivity(activity, preferenceOfHost.hostOfPreference(), tailPreferencePath.orElseThrow());
+            continueNavigationInActivity(activity, preferenceOfHostOfActivity.hostOfPreference(), tailPreferencePath.orElseThrow());
             return Optional.empty();
         }
-        return Optional.of(preferenceOfHost);
+        return Optional.of(preferenceOfHostOfActivity);
     }
 
     private void continueNavigationInActivity(final Class<? extends Activity> activity,

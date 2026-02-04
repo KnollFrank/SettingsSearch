@@ -9,7 +9,7 @@ import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
+import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.common.HeadAndTail;
@@ -66,9 +66,10 @@ public class TreePathInstantiator {
                             .getPreferenceScreenWithHostOfFragment(
                                     searchablePreferenceScreenActual.host(),
                                     Optional.of(
-                                            new PreferenceOfHost(
+                                            new PreferenceOfHostOfActivity(
                                                     preferencePrevious,
-                                                    preferenceScreenOfHostOfActivityPrevious.hostOfPreferenceScreen())))
+                                                    preferenceScreenOfHostOfActivityPrevious.hostOfPreferenceScreen(),
+                                                    preferenceScreenOfHostOfActivityPrevious.activityOfHost())))
                             .orElseThrow();
             graphBuilder.addNode(preferenceScreenOfHostOfActivityActual);
             nodesBuilder.add(preferenceScreenOfHostOfActivityActual);
