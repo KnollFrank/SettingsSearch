@@ -48,13 +48,13 @@ public class InstantiateAndInitializeFragmentFactory {
         return new FragmentFactory() {
 
             @Override
-            public <T extends Fragment> T instantiate(final Class<T> fragmentClassName,
+            public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
                                                       final Optional<PreferenceOfHostOfActivity> src,
                                                       final Context context,
                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-                return fragment.getClass().equals(fragmentClassName) ?
+                return fragment.getClass().equals(fragmentClass.fragment()) ?
                         (T) fragment :
-                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, instantiateAndInitializeFragment);
+                        defaultFragmentFactory.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
             }
         };
     }

@@ -6,6 +6,7 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphTestFactory.createSearchablePreferenceWithinGraph;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,6 +23,8 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.ActivityDescription;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -115,7 +118,11 @@ public class SearchResultsDisplayerTest extends PreferencesRoomDatabaseTest {
                             }
                         });
         PreferenceScreenToSearchablePreferenceScreenConverterTest.initializeFragment(
-                searchResultsFragment,
+                new FragmentClassOfActivity<>(
+                        searchResultsFragment.getClass(),
+                        new ActivityDescription(
+                                activity.getClass(),
+                                new PersistableBundle())),
                 createInstantiateAndInitializeFragment(searchResultsFragment, activity));
         return searchResultsFragment;
     }

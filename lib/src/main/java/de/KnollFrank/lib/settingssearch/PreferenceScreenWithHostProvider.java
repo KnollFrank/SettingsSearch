@@ -22,7 +22,7 @@ public class PreferenceScreenWithHostProvider {
             final FragmentClassOfActivity<? extends Fragment> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src) {
         return this
-                .getPreferenceFragment(fragmentClass.fragment(), src)
+                .getPreferenceFragment(fragmentClass, src)
                 .map(preferenceFragment ->
                              new PreferenceScreenOfHostOfActivity(
                                      preferenceFragment.getPreferenceScreen(),
@@ -31,13 +31,29 @@ public class PreferenceScreenWithHostProvider {
     }
 
     private Optional<? extends PreferenceFragmentCompat> getPreferenceFragment(
-            final Class<? extends Fragment> fragmentClass,
+            final FragmentClassOfActivity<? extends Fragment> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src) {
         final Fragment fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
         return fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :
-                principalAndProxyProvider
-                        .getProxy(fragment.getClass())
-                        .map(preferenceFragment -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(preferenceFragment, Optional.empty()));
+                instantiateProxyOfPrincipal(
+                        new FragmentClassOfActivity<>(
+                                fragment.getClass(),
+                                fragmentClass.activityOFragment()));
+    }
+
+    private Optional<? extends PreferenceFragmentCompat> instantiateProxyOfPrincipal(final FragmentClassOfActivity<? extends Fragment> principal) {
+        return this
+                .getProxy(principal)
+                .map(proxy -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(proxy, Optional.empty()));
+    }
+
+    private Optional<? extends FragmentClassOfActivity<? extends PreferenceFragmentCompat>> getProxy(final FragmentClassOfActivity<? extends Fragment> principal) {
+        return principalAndProxyProvider
+                .getProxy(principal.fragment())
+                .map(proxy ->
+                             new FragmentClassOfActivity<>(
+                                     proxy,
+                                     principal.activityOFragment()));
     }
 }

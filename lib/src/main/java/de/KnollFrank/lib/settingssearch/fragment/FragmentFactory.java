@@ -6,11 +6,15 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 
 @FunctionalInterface
 public interface FragmentFactory {
 
-    // instantiate fragmentClass, where fragmentClass.getName().equals(src.orElseThrow().preference.getFragment()) if src.isPresent()
-    <T extends Fragment> T instantiate(Class<T> fragmentClass, Optional<PreferenceOfHostOfActivity> src, Context context, InstantiateAndInitializeFragment instantiateAndInitializeFragment);
+    // instantiate fragmentClass, where fragmentClass.fragment().getName().equals(src.orElseThrow().preference.getFragment()) if src.isPresent()
+    <T extends Fragment> T instantiate(FragmentClassOfActivity<T> fragmentClass,
+                                       Optional<PreferenceOfHostOfActivity> src,
+                                       Context context,
+                                       InstantiateAndInitializeFragment instantiateAndInitializeFragment);
 }

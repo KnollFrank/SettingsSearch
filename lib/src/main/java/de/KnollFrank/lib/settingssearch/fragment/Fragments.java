@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 
@@ -27,7 +28,7 @@ public class Fragments implements InstantiateAndInitializeFragment {
     }
 
     @Override
-    public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
+    public <T extends Fragment> T instantiateAndInitializeFragment(final FragmentClassOfActivity<T> fragmentClass,
                                                                    final Optional<PreferenceOfHostOfActivity> src) {
         return fragmentFactoryAndInitializerRegistry.instantiateAndInitializeFragment(fragmentClass, src, context, this);
     }

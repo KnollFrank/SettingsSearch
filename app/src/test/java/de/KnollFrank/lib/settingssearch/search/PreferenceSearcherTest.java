@@ -749,11 +749,11 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         return new FragmentFactory() {
 
             @Override
-            public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
+            public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
                                                       final Optional<PreferenceOfHostOfActivity> src,
                                                       final Context context,
                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-                return preferenceFragment.getClass().equals(fragmentClass) ?
+                return preferenceFragment.getClass().equals(fragmentClass.fragment()) ?
                         (T) preferenceFragment :
                         defaultFragmentFactory.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
             }

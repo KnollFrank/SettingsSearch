@@ -197,12 +197,19 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
 
     public static Fragment initializeFragment(final Fragment preferenceFragment,
                                               final FragmentActivity activity) {
-        return initializeFragment(preferenceFragment, InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(preferenceFragment, activity));
+        return initializeFragment(
+                new FragmentClassOfActivity<>(
+                        preferenceFragment.getClass(),
+                        new ActivityDescription(
+                                activity.getClass(),
+                                new PersistableBundle())),
+                InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(preferenceFragment, activity));
     }
 
-    public static Fragment initializeFragment(final Fragment fragment, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+    public static Fragment initializeFragment(final FragmentClassOfActivity<? extends Fragment> fragment,
+                                              final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return instantiateAndInitializeFragment.instantiateAndInitializeFragment(
-                fragment.getClass(),
+                fragment,
                 Optional.empty());
     }
 }

@@ -84,25 +84,25 @@ public class SearchDatabaseConfigFactory {
                         new FragmentFactory() {
 
                             @Override
-                            public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
+                            public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
                                                                       final Optional<PreferenceOfHostOfActivity> src,
                                                                       final Context context,
                                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-                                if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
+                                if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass.fragment()) &&
                                         src.isPresent() &&
                                         PrefsFragmentFifth.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.orElseThrow().preference().getKey())) {
                                     return Classes.instantiateFragmentClass(
-                                            fragmentClass,
+                                            fragmentClass.fragment(),
                                             Optional.of(PrefsFragmentFifth.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context)));
-                                } else if (ItemFragment3.class.equals(fragmentClass) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
+                                } else if (ItemFragment3.class.equals(fragmentClass.fragment()) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
                                     final Preference preference = src.orElseThrow().preference();
                                     PrefsFragmentFirst
                                             .markExtrasOfPreferenceConnectingSrcWithDst(
                                                     preference,
                                                     src.orElseThrow().hostOfPreference(),
-                                                    fragmentClass);
+                                                    fragmentClass.fragment());
                                     return Classes.instantiateFragmentClass(
-                                            fragmentClass,
+                                            fragmentClass.fragment(),
                                             Optional.of(preference.getExtras()));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);

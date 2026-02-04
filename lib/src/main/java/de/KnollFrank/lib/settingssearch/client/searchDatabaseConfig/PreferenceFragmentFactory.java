@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -19,45 +20,77 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
         this.principalAndProxy = principalAndProxy;
     }
 
-    public <T extends Fragment> Optional<T> createPreferenceFragmentForClass(
-            final Class<T> clazz,
+    public <T extends Fragment> Optional<T> createPreferenceFragmentForFragmentClass(
+            final FragmentClassOfActivity<T> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src,
             final Context context,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return canCreatePreferenceFragmentHavingClass(clazz) ?
-                Optional.of((T) createPreferenceFragmentAndInitializeWithFragment(src, context, instantiateAndInitializeFragment)) :
-                Optional.empty();
+        final PreferenceFragmentFactoryWorker<F, P> preferenceFragmentFactoryWorker =
+                new PreferenceFragmentFactoryWorker<>(
+                        getPrincipal(fragmentClass),
+                        getProxy(fragmentClass),
+                        src,
+                        context,
+                        instantiateAndInitializeFragment);
+        return preferenceFragmentFactoryWorker.createPreferenceFragmentForFragmentClass(fragmentClass.fragment());
     }
 
-    private boolean canCreatePreferenceFragmentHavingClass(final Class<? extends Fragment> clazz) {
-        return principalAndProxy.proxy().equals(clazz);
-    }
-
-    private P createPreferenceFragmentAndInitializeWithFragment(
-            final Optional<PreferenceOfHostOfActivity> src,
-            final Context context,
-            final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        final P preferenceFragment = createPreferenceFragment(src, context, instantiateAndInitializeFragment);
-        // FK-FIXME: an dieser Stelle wurde instantiateAndInitializeFragment() schon ausgeführt, also auch onCreate() weswegen das "BeforeOnCreate" in initializePreferenceFragmentWithFragmentBeforeOnCreate() eine falsche Aussage ist?
-        preferenceFragment.initializePreferenceFragmentWithFragmentBeforeOnCreate(getFragment(instantiateAndInitializeFragment, src));
-        return preferenceFragment;
-    }
-
-    private P createPreferenceFragment(final Optional<PreferenceOfHostOfActivity> src,
-                                       final Context context,
-                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        // FK-TODO: warum DefaultFragmentFactory? Ist das nicht zu speziell?
-        return new DefaultFragmentFactory().instantiate(
-                principalAndProxy.proxy(),
-                src,
-                context,
-                instantiateAndInitializeFragment);
-    }
-
-    private F getFragment(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-                          final Optional<PreferenceOfHostOfActivity> src) {
-        return instantiateAndInitializeFragment.instantiateAndInitializeFragment(
+    private <T extends Fragment> FragmentClassOfActivity<F> getPrincipal(final FragmentClassOfActivity<T> fragmentClass) {
+        return new FragmentClassOfActivity<>(
                 principalAndProxy.principal(),
-                src);
+                fragmentClass.activityOFragment());
+    }
+
+    private <T extends Fragment> FragmentClassOfActivity<P> getProxy(final FragmentClassOfActivity<T> fragmentClass) {
+        return new FragmentClassOfActivity<>(
+                principalAndProxy.proxy(),
+                fragmentClass.activityOFragment());
+    }
+
+    private static class PreferenceFragmentFactoryWorker<F extends Fragment, P extends PreferenceFragmentCompat & InitializePreferenceFragmentWithFragmentBeforeOnCreate<F>> {
+
+        private final FragmentClassOfActivity<F> principal;
+        private final FragmentClassOfActivity<P> proxy;
+        private final Optional<PreferenceOfHostOfActivity> src;
+        private final Context context;
+        private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
+
+        private PreferenceFragmentFactoryWorker(final FragmentClassOfActivity<F> principal,
+                                                final FragmentClassOfActivity<P> proxy,
+                                                final Optional<PreferenceOfHostOfActivity> src,
+                                                final Context context,
+                                                final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+            this.principal = principal;
+            this.proxy = proxy;
+            this.src = src;
+            this.context = context;
+            this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
+        }
+
+        public <T extends Fragment> Optional<T> createPreferenceFragmentForFragmentClass(final Class<T> fragmentClass) {
+            return canCreatePreferenceFragmentHavingClass(fragmentClass) ?
+                    Optional.of((T) instantiateProxyAndInitializeWithPrincipal()) :
+                    Optional.empty();
+        }
+
+        private boolean canCreatePreferenceFragmentHavingClass(final Class<? extends Fragment> clazz) {
+            return proxy.fragment().equals(clazz);
+        }
+
+        private P instantiateProxyAndInitializeWithPrincipal() {
+            final P proxy = instantiateProxy();
+            // FK-FIXME: an dieser Stelle wurde instantiateAndInitializeFragment() schon ausgeführt, also auch onCreate() weswegen das "BeforeOnCreate" in initializePreferenceFragmentWithFragmentBeforeOnCreate() eine falsche Aussage ist?
+            proxy.initializePreferenceFragmentWithFragmentBeforeOnCreate(instantiatePrincipal());
+            return proxy;
+        }
+
+        private P instantiateProxy() {
+            // FK-TODO: warum DefaultFragmentFactory? Ist das nicht zu speziell?
+            return new DefaultFragmentFactory().instantiate(proxy, src, context, instantiateAndInitializeFragment);
+        }
+
+        private F instantiatePrincipal() {
+            return instantiateAndInitializeFragment.instantiateAndInitializeFragment(principal, src);
+        }
     }
 }

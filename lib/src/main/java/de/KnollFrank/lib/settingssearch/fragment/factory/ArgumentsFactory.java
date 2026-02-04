@@ -14,20 +14,20 @@ class ArgumentsFactory {
     }
 
     public static Arguments createArguments(final Class<? extends Fragment> fragmentClass,
-											final Optional<PreferenceOfHostOfActivity> preferenceWithHost) {
+											final Optional<PreferenceOfHostOfActivity> preference) {
 		return new Arguments(
 				fragmentClass,
-				getKeyOfPreference(preferenceWithHost),
-				getHostOfPreference(preferenceWithHost));
+				getKeyOfPreference(preference),
+				getHostOfPreference(preference));
 	}
 
-	private static Optional<String> getKeyOfPreference(final Optional<PreferenceOfHostOfActivity> preferenceWithHost) {
-		return preferenceWithHost
+	private static Optional<String> getKeyOfPreference(final Optional<PreferenceOfHostOfActivity> preference) {
+		return preference
 				.map(PreferenceOfHostOfActivity::preference)
 				.map(Preference::getKey);
 	}
 
-	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceOfHostOfActivity> preferenceWithHost) {
-		return preferenceWithHost.map(PreferenceOfHostOfActivity::hostOfPreference);
+	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceOfHostOfActivity> preference) {
+		return preference.map(PreferenceOfHostOfActivity::hostOfPreference);
 	}
 }

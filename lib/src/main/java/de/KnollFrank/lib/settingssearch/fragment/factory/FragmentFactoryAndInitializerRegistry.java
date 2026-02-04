@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -22,11 +23,11 @@ public class FragmentFactoryAndInitializerRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
+    public <T extends Fragment> T instantiateAndInitializeFragment(final FragmentClassOfActivity<T> fragmentClass,
                                                                    final Optional<PreferenceOfHostOfActivity> src,
                                                                    final Context context,
                                                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        final Arguments arguments = ArgumentsFactory.createArguments(fragmentClass, src);
+        final Arguments arguments = ArgumentsFactory.createArguments(fragmentClass.fragment(), src);
         if (!registry.containsKey(arguments)) {
             final T fragment = delegate.instantiateAndInitializeFragment(fragmentClass, src, context, instantiateAndInitializeFragment);
             registry.put(arguments, fragment);

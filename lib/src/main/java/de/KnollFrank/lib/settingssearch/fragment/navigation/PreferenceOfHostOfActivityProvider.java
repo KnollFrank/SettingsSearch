@@ -6,6 +6,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
@@ -30,10 +31,7 @@ class PreferenceOfHostOfActivityProvider {
                                                                     final Optional<PreferenceOfHostOfActivity> src) {
         final PreferenceFragmentCompat hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
-                        preference
-                                .hostOfPreference()
-                                .host()
-                                .fragment(),
+                        preference.hostOfPreference().host(),
                         src);
         return new PreferenceOfHostOfActivity(
                 Preferences.findPreferenceByKeyOrElseThrow(hostOfPreference, preference.searchablePreference().getKey()),
@@ -42,7 +40,7 @@ class PreferenceOfHostOfActivityProvider {
     }
 
     private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(
-            final Class<? extends PreferenceFragmentCompat> preferenceFragment,
+            final FragmentClassOfActivity<? extends PreferenceFragmentCompat> preferenceFragment,
             final Optional<PreferenceOfHostOfActivity> src) {
         return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
                 preferenceFragment,

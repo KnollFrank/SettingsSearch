@@ -8,6 +8,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
@@ -23,20 +24,23 @@ class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.Fragm
     }
 
     @Override
-    public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceOfHostOfActivity> src, final Context context, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+    public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
+                                              final Optional<PreferenceOfHostOfActivity> src,
+                                              final Context context,
+                                              final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return this
                 .createPreferenceFragment(fragmentClass, src, context, instantiateAndInitializeFragment)
                 .orElseGet(() -> delegate.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment));
     }
 
     private <T extends Fragment> Optional<T> createPreferenceFragment(
-            final Class<T> fragmentClass,
+            final FragmentClassOfActivity<T> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src,
             final Context context,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return preferenceFragmentFactories
                 .stream()
-                .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForClass(fragmentClass, src, context, instantiateAndInitializeFragment))
+                .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForFragmentClass(fragmentClass, src, context, instantiateAndInitializeFragment))
                 .flatMap(Optional::stream)
                 .findFirst();
     }

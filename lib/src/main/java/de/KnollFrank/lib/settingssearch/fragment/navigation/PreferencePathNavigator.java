@@ -55,9 +55,13 @@ public class PreferencePathNavigator {
                 navigatePreferences(preferencePath.orElseThrow(), Optional.of(src));
     }
 
-    private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceOfHostOfActivity> preferenceWithHost) {
-        return preferenceWithHost
-                .flatMap(preferenceWithProxy -> principalProvider.getPrincipal(preferenceWithProxy.hostOfPreference(), preferenceWithHost))
-                .or(() -> preferenceWithHost.map(PreferenceOfHostOfActivity::hostOfPreference));
+    private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceOfHostOfActivity> preferenceOfHostOfActivity) {
+        return preferenceOfHostOfActivity
+                .map(PreferenceOfHostOfActivity::asPreferenceFragmentOfActivity)
+                .flatMap(preferenceFragmentOfActivity ->
+                                 principalProvider.getPrincipal(
+                                         preferenceFragmentOfActivity,
+                                         preferenceOfHostOfActivity))
+                .or(() -> preferenceOfHostOfActivity.map(PreferenceOfHostOfActivity::hostOfPreference));
     }
 }
