@@ -5,8 +5,8 @@ import android.app.Activity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.TypeConverter;
 
+import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 
 // FK-TODO: use @Embedded
 // FK-TODO: add unit test

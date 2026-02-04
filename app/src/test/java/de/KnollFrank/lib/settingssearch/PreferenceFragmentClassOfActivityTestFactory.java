@@ -4,7 +4,6 @@ import android.os.PersistableBundle;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class PreferenceFragmentClassOfActivityTestFactory {

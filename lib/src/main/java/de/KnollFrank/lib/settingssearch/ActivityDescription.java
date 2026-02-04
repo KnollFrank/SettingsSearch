@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
+package de.KnollFrank.lib.settingssearch;
 
 import android.app.Activity;
 import android.os.PersistableBundle;

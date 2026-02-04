@@ -3,8 +3,6 @@ package de.KnollFrank.lib.settingssearch;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
-
 public record PreferenceScreenOfHostOfActivity(PreferenceScreen preferenceScreen,
                                                PreferenceFragmentCompat hostOfPreferenceScreen,
                                                ActivityDescription activityOfHost) {

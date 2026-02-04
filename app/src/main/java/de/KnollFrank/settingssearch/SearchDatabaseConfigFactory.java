@@ -16,10 +16,10 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
