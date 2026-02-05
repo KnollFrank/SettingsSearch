@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
@@ -24,16 +25,17 @@ class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.Fragm
     }
 
     @Override
-    public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
-                                              final Optional<PreferenceOfHostOfActivity> src,
-                                              final Context context,
-                                              final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+    public <T extends Fragment> FragmentOfActivity<T> instantiate(
+            final FragmentClassOfActivity<T> fragmentClass,
+            final Optional<PreferenceOfHostOfActivity> src,
+            final Context context,
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return this
                 .createPreferenceFragment(fragmentClass, src, context, instantiateAndInitializeFragment)
                 .orElseGet(() -> delegate.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment));
     }
 
-    private <T extends Fragment> Optional<T> createPreferenceFragment(
+    private <T extends Fragment> Optional<FragmentOfActivity<T>> createPreferenceFragment(
             final FragmentClassOfActivity<T> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src,
             final Context context,

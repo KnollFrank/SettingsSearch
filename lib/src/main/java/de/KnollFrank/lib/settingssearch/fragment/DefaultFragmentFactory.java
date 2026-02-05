@@ -9,19 +9,23 @@ import androidx.preference.Preference;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 
 public class DefaultFragmentFactory implements FragmentFactory {
 
     @Override
-    public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
-                                              final Optional<PreferenceOfHostOfActivity> src,
-                                              final Context context,
-                                              final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return Classes.instantiateFragmentClass(
-                fragmentClass.fragment(),
-                peekExtrasOfPreference(src));
+    public <T extends Fragment> FragmentOfActivity<T> instantiate(
+            final FragmentClassOfActivity<T> fragmentClass,
+            final Optional<PreferenceOfHostOfActivity> src,
+            final Context context,
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+        return new FragmentOfActivity<>(
+                Classes.instantiateFragmentClass(
+                        fragmentClass.fragment(),
+                        peekExtrasOfPreference(src)),
+                fragmentClass.activityOFragment());
     }
 
     private static Optional<Bundle> peekExtrasOfPreference(final Optional<PreferenceOfHostOfActivity> preference) {

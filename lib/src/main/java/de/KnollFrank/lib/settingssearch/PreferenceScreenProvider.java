@@ -7,48 +7,48 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
-public class PreferenceScreenWithHostProvider {
+public class PreferenceScreenProvider {
 
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
 
-    public PreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-                                            final PrincipalAndProxyProvider principalAndProxyProvider) {
+    public PreferenceScreenProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+                                    final PrincipalAndProxyProvider principalAndProxyProvider) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.principalAndProxyProvider = principalAndProxyProvider;
     }
 
-    public Optional<PreferenceScreenOfHostOfActivity> getPreferenceScreenWithHostOfFragment(
+    public Optional<PreferenceScreenOfHostOfActivity> getPreferenceScreen(
             final FragmentClassOfActivity<? extends Fragment> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src) {
         return this
                 .getPreferenceFragment(fragmentClass, src)
                 .map(preferenceFragment ->
                              new PreferenceScreenOfHostOfActivity(
-                                     preferenceFragment.getPreferenceScreen(),
-                                     preferenceFragment,
+                                     preferenceFragment.fragment().getPreferenceScreen(),
+                                     preferenceFragment.fragment(),
                                      fragmentClass.activityOFragment()));
     }
 
-    private Optional<? extends PreferenceFragmentCompat> getPreferenceFragment(
+    private Optional<FragmentOfActivity<? extends PreferenceFragmentCompat>> getPreferenceFragment(
             final FragmentClassOfActivity<? extends Fragment> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src) {
-        final Fragment fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
-        return fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
-                Optional.of(preferenceFragment) :
-                instantiateProxyOfPrincipal(
-                        new FragmentClassOfActivity<>(
-                                fragment.getClass(),
-                                fragmentClass.activityOFragment()));
+        final FragmentOfActivity<? extends Fragment> fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
+        return fragment.fragment() instanceof final PreferenceFragmentCompat preferenceFragment ?
+                Optional.of(
+                        new FragmentOfActivity<>(
+                                preferenceFragment,
+                                fragment.activityOfFragment())) :
+                instantiateProxyOfPrincipal(fragmentClass);
     }
 
-    private Optional<? extends PreferenceFragmentCompat> instantiateProxyOfPrincipal(final FragmentClassOfActivity<? extends Fragment> principal) {
+    private Optional<FragmentOfActivity<? extends PreferenceFragmentCompat>> instantiateProxyOfPrincipal(final FragmentClassOfActivity<? extends Fragment> principal) {
         return this
                 .getProxy(principal)
                 .map(proxy -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(proxy, Optional.empty()));
     }
 
-    private Optional<? extends FragmentClassOfActivity<? extends PreferenceFragmentCompat>> getProxy(final FragmentClassOfActivity<? extends Fragment> principal) {
+    private Optional<FragmentClassOfActivity<? extends PreferenceFragmentCompat>> getProxy(final FragmentClassOfActivity<? extends Fragment> principal) {
         return principalAndProxyProvider
                 .getProxy(principal.fragment())
                 .map(proxy ->

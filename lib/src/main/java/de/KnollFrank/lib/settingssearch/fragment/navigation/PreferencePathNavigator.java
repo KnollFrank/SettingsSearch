@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
@@ -55,13 +56,18 @@ public class PreferencePathNavigator {
                 navigatePreferences(preferencePath.orElseThrow(), Optional.of(src));
     }
 
-    private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceOfHostOfActivity> preferenceOfHostOfActivity) {
-        return preferenceOfHostOfActivity
-                .map(PreferenceOfHostOfActivity::asPreferenceFragmentOfActivity)
-                .flatMap(preferenceFragmentOfActivity ->
-                                 principalProvider.getPrincipal(
-                                         preferenceFragmentOfActivity,
-                                         preferenceOfHostOfActivity))
-                .or(() -> preferenceOfHostOfActivity.map(PreferenceOfHostOfActivity::hostOfPreference));
+    private Optional<? extends Fragment> tryGetPrincipalOfHost(final Optional<PreferenceOfHostOfActivity> preferenceOfHostOfActivity) {
+        final Optional<? extends Fragment> principalOfHost =
+                preferenceOfHostOfActivity
+                        .map(PreferenceOfHostOfActivity::asPreferenceFragmentOfActivity)
+                        .flatMap(preferenceFragmentOfActivity ->
+                                         principalProvider
+                                                 .getPrincipal(
+                                                         preferenceFragmentOfActivity,
+                                                         preferenceOfHostOfActivity)
+                                                 .map(FragmentOfActivity::fragment));
+        return principalOfHost.isPresent() ?
+                principalOfHost :
+                preferenceOfHostOfActivity.map(PreferenceOfHostOfActivity::hostOfPreference);
     }
 }

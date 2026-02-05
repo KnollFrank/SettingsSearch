@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
@@ -30,16 +30,16 @@ import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivit
 
 class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeValueProvider<PreferenceScreenOfHostOfActivity, Preference> {
 
-    private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
+    private final PreferenceScreenProvider preferenceScreenProvider;
     private final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final Context context;
 
-    public ConnectedPreferenceScreenByPreferenceProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
+    public ConnectedPreferenceScreenByPreferenceProvider(final PreferenceScreenProvider preferenceScreenProvider,
                                                          final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
                                                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                                                          final Context context) {
-        this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
+        this.preferenceScreenProvider = preferenceScreenProvider;
         this.preferenceFragmentConnectedToPreferenceProvider = preferenceFragmentConnectedToPreferenceProvider;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.context = context;
@@ -67,7 +67,7 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
                 .getConnectedFragmentClass(preference, hostOfPreference)
                 .flatMap(
                         fragmentClassConnectedToPreference ->
-                                preferenceScreenWithHostProvider.getPreferenceScreenWithHostOfFragment(
+                                preferenceScreenProvider.getPreferenceScreen(
                                         fragmentClassConnectedToPreference,
                                         Optional.of(
                                                 new PreferenceOfHostOfActivity(

@@ -208,8 +208,10 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
 
     public static Fragment initializeFragment(final FragmentClassOfActivity<? extends Fragment> fragment,
                                               final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return instantiateAndInitializeFragment.instantiateAndInitializeFragment(
-                fragment,
-                Optional.empty());
+        return instantiateAndInitializeFragment
+                .instantiateAndInitializeFragment(
+                        fragment,
+                        Optional.empty())
+                .fragment();
     }
 }

@@ -12,7 +12,7 @@ import androidx.preference.Preference;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
@@ -64,7 +64,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                                         PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId, searchDatabaseConfig.preferenceSearchablePredicate))),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
-                        new PreferenceScreenWithHostProvider(
+                        new PreferenceScreenProvider(
                                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                                         searchDatabaseConfig.fragmentFactory,
                                         FragmentInitializerFactory.createFragmentInitializer(

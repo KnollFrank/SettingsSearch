@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.HeadAndTail;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
@@ -24,10 +24,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreePathInstantiator {
 
-    private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
+    private final PreferenceScreenProvider preferenceScreenProvider;
 
-    public TreePathInstantiator(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
-        this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
+    public TreePathInstantiator(final PreferenceScreenProvider preferenceScreenProvider) {
+        this.preferenceScreenProvider = preferenceScreenProvider;
     }
 
     public TreePath<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> instantiate(final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
@@ -45,8 +45,8 @@ public class TreePathInstantiator {
         final ImmutableList.Builder<PreferenceScreenOfHostOfActivity> nodesBuilder = ImmutableList.builder();
         SearchablePreferenceScreen searchablePreferenceScreenPrevious = treePath.head();
         PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivityPrevious =
-                preferenceScreenWithHostProvider
-                        .getPreferenceScreenWithHostOfFragment(
+                preferenceScreenProvider
+                        .getPreferenceScreen(
                                 searchablePreferenceScreenPrevious.host(),
                                 Optional.empty())
                         .orElseThrow();
@@ -62,8 +62,8 @@ public class TreePathInstantiator {
                                             searchablePreferenceScreenPrevious,
                                             searchablePreferenceScreenActual)));
             final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivityActual =
-                    preferenceScreenWithHostProvider
-                            .getPreferenceScreenWithHostOfFragment(
+                    preferenceScreenProvider
+                            .getPreferenceScreen(
                                     searchablePreferenceScreenActual.host(),
                                     Optional.of(
                                             new PreferenceOfHostOfActivity(

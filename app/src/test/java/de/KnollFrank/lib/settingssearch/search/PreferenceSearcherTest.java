@@ -42,9 +42,8 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
@@ -64,7 +63,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeCreatorDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactories;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -720,7 +719,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         preferenceFragment,
                                         preferenceSearchablePredicate,
                                         fragmentActivity,
-                                        createFragmentFactoryReturning(preferenceFragment),
+                                        FragmentFactories.createFragmentFactoryReturning(preferenceFragment),
                                         preferenceFragmentConnectedToPreferenceProvider,
                                         preferenceDialogAndSearchableInfoProvider,
                                         principalAndProxyProvider,
@@ -742,22 +741,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         checkPreferenceMatches.accept(preferenceMatches);
                     });
         }
-    }
-
-    public static FragmentFactory createFragmentFactoryReturning(final Fragment preferenceFragment) {
-        final FragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
-        return new FragmentFactory() {
-
-            @Override
-            public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
-                                                      final Optional<PreferenceOfHostOfActivity> src,
-                                                      final Context context,
-                                                      final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-                return preferenceFragment.getClass().equals(fragmentClass.fragment()) ?
-                        (T) preferenceFragment :
-                        defaultFragmentFactory.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
-            }
-        };
     }
 
     private static MergedPreferenceScreen<Configuration> getMergedPreferenceScreen(
@@ -783,8 +766,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new Fragments(
                         new FragmentFactoryAndInitializerRegistry(fragmentFactoryAndInitializer),
                         fragmentActivity);
-        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
-                new PreferenceScreenWithHostProvider(
+        final PreferenceScreenProvider preferenceScreenProvider =
+                new PreferenceScreenProvider(
                         instantiateAndInitializeFragment,
                         principalAndProxyProvider);
         final SearchablePreferenceScreenTreeProvider searchablePreferenceScreenTreeProvider =
@@ -803,7 +786,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                                                 preferenceDialogAndSearchableInfoProvider)))),
                                 preferenceFragmentIdProvider),
                         PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
-                                preferenceScreenWithHostProvider,
+                                preferenceScreenProvider,
                                 preferenceFragmentConnectedToPreferenceProvider,
                                 new RootPreferenceFragmentOfActivityProvider() {
 
@@ -825,8 +808,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         treeRepository.persistOrReplace(
                 new SearchablePreferenceScreenTree<>(
                         searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
-                                preferenceScreenWithHostProvider
-                                        .getPreferenceScreenWithHostOfFragment(
+                                preferenceScreenProvider
+                                        .getPreferenceScreen(
                                                 new FragmentClassOfActivity<>(
                                                         preferenceFragment.getClass(),
                                                         new ActivityDescription(

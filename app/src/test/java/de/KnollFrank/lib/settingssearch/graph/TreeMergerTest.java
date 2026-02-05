@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
@@ -159,7 +159,7 @@ public class TreeMergerTest {
         return PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
                 TreeMergerTest
                         .createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment)
-                        .getPreferenceScreenWithHostOfFragment(
+                        .getPreferenceScreen(
                                 root,
                                 Optional.empty())
                         .orElseThrow(),
@@ -189,9 +189,9 @@ public class TreeMergerTest {
                 activity);
     }
 
-    private static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(
+    private static PreferenceScreenProvider createPreferenceScreenWithHostProvider(
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return new PreferenceScreenWithHostProvider(
+        return new PreferenceScreenProvider(
                 instantiateAndInitializeFragment,
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }

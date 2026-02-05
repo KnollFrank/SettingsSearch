@@ -11,7 +11,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
@@ -122,7 +122,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     private TreePathInstantiator createTreePathInstantiator(final SearchDatabaseConfig<Configuration> searchDatabaseConfig,
                                                             final FragmentActivity activityContext) {
         return new TreePathInstantiator(
-                new PreferenceScreenWithHostProvider(
+                new PreferenceScreenProvider(
                         InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                                 searchDatabaseConfig.fragmentFactory,
                                 FragmentInitializerFactory.createFragmentInitializer(

@@ -35,7 +35,7 @@ import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
@@ -176,7 +176,7 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
 
     private static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
             final FragmentActivity activity,
-            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
+            final PreferenceScreenProvider preferenceScreenProvider,
             final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate) {
         return new SearchablePreferenceScreenTreeProvider(
                 new TreeToPojoTreeTransformer(
@@ -188,7 +188,7 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                                                 (preference, hostOfPreference) -> Optional.empty()))),
                         new DefaultPreferenceFragmentIdProvider()),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
-                        preferenceScreenWithHostProvider,
+                        preferenceScreenProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         addEdgeToTreePredicate,
@@ -235,14 +235,14 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
             final Class<? extends Fragment> root,
             final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate,
             final FragmentActivity activity) {
-        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(activity);
+        final PreferenceScreenProvider preferenceScreenProvider = createPreferenceScreenWithHostProvider(activity);
         return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(
                 createSearchablePreferenceScreenGraphProvider(
                         activity,
-                        preferenceScreenWithHostProvider,
+                        preferenceScreenProvider,
                         addEdgeToTreePredicate),
-                preferenceScreenWithHostProvider
-                        .getPreferenceScreenWithHostOfFragment(
+                preferenceScreenProvider
+                        .getPreferenceScreen(
                                 new FragmentClassOfActivity<>(
                                         root,
                                         new ActivityDescription(
@@ -252,8 +252,8 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                         .orElseThrow());
     }
 
-    public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final FragmentActivity activity) {
-        return new PreferenceScreenWithHostProvider(
+    public static PreferenceScreenProvider createPreferenceScreenWithHostProvider(final FragmentActivity activity) {
+        return new PreferenceScreenProvider(
                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }

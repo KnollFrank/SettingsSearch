@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
@@ -21,7 +22,7 @@ class PrincipalProvider {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
     }
 
-    public Optional<Fragment> getPrincipal(final PreferenceFragmentOfActivity proxy, final Optional<PreferenceOfHostOfActivity> src) {
+    public Optional<FragmentOfActivity<? extends Fragment>> getPrincipal(final PreferenceFragmentOfActivity proxy, final Optional<PreferenceOfHostOfActivity> src) {
         return principalAndProxyProvider
                 .getPrincipal(proxy.preferenceFragment().getClass())
                 .map(principal ->

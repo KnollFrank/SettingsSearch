@@ -18,6 +18,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
@@ -84,16 +85,19 @@ public class SearchDatabaseConfigFactory {
                         new FragmentFactory() {
 
                             @Override
-                            public <T extends Fragment> T instantiate(final FragmentClassOfActivity<T> fragmentClass,
-                                                                      final Optional<PreferenceOfHostOfActivity> src,
-                                                                      final Context context,
-                                                                      final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+                            public <T extends Fragment> FragmentOfActivity<T> instantiate(
+                                    final FragmentClassOfActivity<T> fragmentClass,
+                                    final Optional<PreferenceOfHostOfActivity> src,
+                                    final Context context,
+                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass.fragment()) &&
                                         src.isPresent() &&
                                         PrefsFragmentFifth.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.orElseThrow().preference().getKey())) {
-                                    return Classes.instantiateFragmentClass(
-                                            fragmentClass.fragment(),
-                                            Optional.of(PrefsFragmentFifth.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context)));
+                                    return new FragmentOfActivity<>(
+                                            Classes.instantiateFragmentClass(
+                                                    fragmentClass.fragment(),
+                                                    Optional.of(PrefsFragmentFifth.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context))),
+                                            fragmentClass.activityOFragment());
                                 } else if (ItemFragment3.class.equals(fragmentClass.fragment()) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
                                     final Preference preference = src.orElseThrow().preference();
                                     PrefsFragmentFirst
@@ -101,9 +105,11 @@ public class SearchDatabaseConfigFactory {
                                                     preference,
                                                     src.orElseThrow().hostOfPreference(),
                                                     fragmentClass.fragment());
-                                    return Classes.instantiateFragmentClass(
-                                            fragmentClass.fragment(),
-                                            Optional.of(preference.getExtras()));
+                                    return new FragmentOfActivity<>(
+                                            Classes.instantiateFragmentClass(
+                                                    fragmentClass.fragment(),
+                                                    Optional.of(preference.getExtras())),
+                                            fragmentClass.activityOFragment());
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
                             }

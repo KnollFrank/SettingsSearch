@@ -9,7 +9,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -29,7 +29,7 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class MergedPreferenceScreenDataRepository<C> {
 
-    private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
+    private final PreferenceScreenProvider preferenceScreenProvider;
     private final PreferenceDialogs preferenceDialogs;
     private final SearchDatabaseConfig<C> searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
@@ -39,7 +39,7 @@ public class MergedPreferenceScreenDataRepository<C> {
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
     MergedPreferenceScreenDataRepository(
-            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
+            final PreferenceScreenProvider preferenceScreenProvider,
             final PreferenceDialogs preferenceDialogs,
             final SearchDatabaseConfig<C> searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
@@ -47,7 +47,7 @@ public class MergedPreferenceScreenDataRepository<C> {
             final PreferencesDatabase<C> preferencesDatabase,
             final Locale locale,
             final ConfigurationBundleConverter<C> configurationBundleConverter) {
-        this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
+        this.preferenceScreenProvider = preferenceScreenProvider;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
@@ -81,8 +81,8 @@ public class MergedPreferenceScreenDataRepository<C> {
                 this
                         .getSearchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenTree(
-                                preferenceScreenWithHostProvider
-                                        .getPreferenceScreenWithHostOfFragment(
+                                preferenceScreenProvider
+                                        .getPreferenceScreen(
                                                 searchDatabaseConfig.rootPreferenceFragment,
                                                 Optional.empty())
                                         .orElseThrow());
@@ -99,7 +99,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                                         preferenceDialogs)),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
-                        preferenceScreenWithHostProvider,
+                        preferenceScreenProvider,
                         searchDatabaseConfig.preferenceFragmentConnectedToPreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         edge -> true,

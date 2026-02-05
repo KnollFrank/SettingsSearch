@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
@@ -29,17 +30,19 @@ class PreferenceOfHostOfActivityProvider {
 
     public PreferenceOfHostOfActivity getPreferenceOfHostOfActivity(final SearchablePreferenceOfHostWithinTree preference,
                                                                     final Optional<PreferenceOfHostOfActivity> src) {
-        final PreferenceFragmentCompat hostOfPreference =
+        final FragmentOfActivity<? extends PreferenceFragmentCompat> hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
                         preference.hostOfPreference().host(),
                         src);
         return new PreferenceOfHostOfActivity(
-                Preferences.findPreferenceByKeyOrElseThrow(hostOfPreference, preference.searchablePreference().getKey()),
-                hostOfPreference,
-                preference.hostOfPreference().host().activityOFragment());
+                Preferences.findPreferenceByKeyOrElseThrow(
+                        hostOfPreference.fragment(),
+                        preference.searchablePreference().getKey()),
+                hostOfPreference.fragment(),
+                hostOfPreference.activityOfFragment());
     }
 
-    private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(
+    private FragmentOfActivity<? extends PreferenceFragmentCompat> instantiateAndInitializePreferenceFragment(
             final FragmentClassOfActivity<? extends PreferenceFragmentCompat> preferenceFragment,
             final Optional<PreferenceOfHostOfActivity> src) {
         return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(

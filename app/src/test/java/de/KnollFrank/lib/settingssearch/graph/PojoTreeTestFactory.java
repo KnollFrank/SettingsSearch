@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -30,7 +30,7 @@ public class PojoTreeTestFactory {
         return createEntityPreferenceScreenTreeRootedAt(
                 PojoTreeTestFactory
                         .getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment)
-                        .getPreferenceScreenWithHostOfFragment(
+                        .getPreferenceScreen(
                                 root,
                                 Optional.empty())
                         .orElseThrow(),
@@ -65,8 +65,8 @@ public class PojoTreeTestFactory {
                 .buildTreeWithRoot(root);
     }
 
-    private static PreferenceScreenWithHostProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return new PreferenceScreenWithHostProvider(
+    private static PreferenceScreenProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+        return new PreferenceScreenProvider(
                 instantiateAndInitializeFragment,
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }

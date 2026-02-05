@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
@@ -27,7 +27,7 @@ public class MergedPreferenceScreenDataRepositoryFactory {
             final Locale locale,
             final ConfigurationBundleConverter<C> configurationBundleConverter) {
         return new MergedPreferenceScreenDataRepository<>(
-                new PreferenceScreenWithHostProvider(
+                new PreferenceScreenProvider(
                         instantiateAndInitializeFragment,
                         searchDatabaseConfig.principalAndProxyProvider),
                 preferenceDialogs,
