@@ -25,7 +25,7 @@ public class DefaultFragmentFactory implements FragmentFactory {
                 Classes.instantiateFragmentClass(
                         fragmentClass.fragment(),
                         peekExtrasOfPreference(src)),
-                fragmentClass.activityOFragment());
+                fragmentClass.activityOfFragment());
     }
 
     private static Optional<Bundle> peekExtrasOfPreference(final Optional<PreferenceOfHostOfActivity> preference) {

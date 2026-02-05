@@ -27,7 +27,7 @@ public class PreferenceScreenProvider {
                              new PreferenceScreenOfHostOfActivity(
                                      preferenceFragment.fragment().getPreferenceScreen(),
                                      preferenceFragment.fragment(),
-                                     fragmentClass.activityOFragment()));
+                                     fragmentClass.activityOfFragment()));
     }
 
     private Optional<FragmentOfActivity<? extends PreferenceFragmentCompat>> getPreferenceFragment(
@@ -54,6 +54,6 @@ public class PreferenceScreenProvider {
                 .map(proxy ->
                              new FragmentClassOfActivity<>(
                                      proxy,
-                                     principal.activityOFragment()));
+                                     principal.activityOfFragment()));
     }
 }

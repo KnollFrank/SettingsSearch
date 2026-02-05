@@ -22,9 +22,9 @@ public class PreferenceFragmentClassOfActivityConverter implements Converter<Fra
     public String convertForward(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> preferenceFragmentClassOfActivity) {
         return preferenceFragmentCompatClassConverter.convertForward(preferenceFragmentClassOfActivity.fragment()) +
                 SEPARATOR +
-                activityClassConverter.convertForward(preferenceFragmentClassOfActivity.activityOFragment().activity()) +
+                activityClassConverter.convertForward(preferenceFragmentClassOfActivity.activityOfFragment().activity()) +
                 SEPARATOR +
-                bundleConverter.convertForward(preferenceFragmentClassOfActivity.activityOFragment().arguments());
+                bundleConverter.convertForward(preferenceFragmentClassOfActivity.activityOfFragment().arguments());
     }
 
     @TypeConverter

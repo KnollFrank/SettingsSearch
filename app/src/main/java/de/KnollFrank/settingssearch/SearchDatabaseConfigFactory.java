@@ -97,7 +97,7 @@ public class SearchDatabaseConfigFactory {
                                             Classes.instantiateFragmentClass(
                                                     fragmentClass.fragment(),
                                                     Optional.of(PrefsFragmentFifth.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context))),
-                                            fragmentClass.activityOFragment());
+                                            fragmentClass.activityOfFragment());
                                 } else if (ItemFragment3.class.equals(fragmentClass.fragment()) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
                                     final Preference preference = src.orElseThrow().preference();
                                     PrefsFragmentFirst
@@ -109,7 +109,7 @@ public class SearchDatabaseConfigFactory {
                                             Classes.instantiateFragmentClass(
                                                     fragmentClass.fragment(),
                                                     Optional.of(preference.getExtras())),
-                                            fragmentClass.activityOFragment());
+                                            fragmentClass.activityOfFragment());
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
                             }

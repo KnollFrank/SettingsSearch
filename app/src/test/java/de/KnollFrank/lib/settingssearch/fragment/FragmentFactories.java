@@ -26,7 +26,7 @@ public class FragmentFactories {
                 return fragment.getClass().equals(fragmentClass.fragment()) ?
                         new FragmentOfActivity<>(
                                 (T) fragment,
-                                fragmentClass.activityOFragment()) :
+                                fragmentClass.activityOfFragment()) :
                         delegate.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
             }
         };

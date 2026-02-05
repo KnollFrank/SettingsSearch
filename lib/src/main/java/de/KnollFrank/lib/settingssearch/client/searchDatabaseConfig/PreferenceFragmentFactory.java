@@ -39,13 +39,13 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
     private <T extends Fragment> FragmentClassOfActivity<F> getPrincipal(final FragmentClassOfActivity<T> fragmentClass) {
         return new FragmentClassOfActivity<>(
                 principalAndProxy.principal(),
-                fragmentClass.activityOFragment());
+                fragmentClass.activityOfFragment());
     }
 
     private <T extends Fragment> FragmentClassOfActivity<P> getProxy(final FragmentClassOfActivity<T> fragmentClass) {
         return new FragmentClassOfActivity<>(
                 principalAndProxy.proxy(),
-                fragmentClass.activityOFragment());
+                fragmentClass.activityOfFragment());
     }
 
     private static class PreferenceFragmentFactoryWorker<F extends Fragment, P extends PreferenceFragmentCompat & InitializePreferenceFragmentWithFragmentBeforeOnCreate<F>> {
