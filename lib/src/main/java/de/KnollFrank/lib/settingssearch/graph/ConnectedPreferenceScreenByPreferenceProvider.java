@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
+import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
@@ -61,8 +61,10 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
                                         preference -> getConnectedPreferenceScreen(preference, preferenceScreenOfHostOfActivity.asPreferenceFragmentOfActivity()))));
     }
 
-    private Optional<PreferenceScreenOfHostOfActivity> getConnectedPreferenceScreen(final Preference preference,
-                                                                                    final PreferenceFragmentOfActivity hostOfPreference) {
+    // FK-TODO: use PreferenceOfHostOfActivity as single param
+    private Optional<PreferenceScreenOfHostOfActivity> getConnectedPreferenceScreen(
+            final Preference preference,
+            final FragmentOfActivity<? extends PreferenceFragmentCompat> hostOfPreference) {
         return this
                 .getConnectedFragmentClass(preference, hostOfPreference)
                 .flatMap(
@@ -72,18 +74,19 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
                                         Optional.of(
                                                 new PreferenceOfHostOfActivity(
                                                         preference,
-                                                        hostOfPreference.preferenceFragment(),
-                                                        hostOfPreference.activityOfPreferenceFragment()))));
+                                                        hostOfPreference.fragment(),
+                                                        hostOfPreference.activityOfFragment()))));
     }
 
+    // FK-TODO: use PreferenceOfHostOfActivity as single param
     private Optional<? extends FragmentClassOfActivity<? extends Fragment>> getConnectedFragmentClass(
             final Preference preference,
-            final PreferenceFragmentOfActivity hostOfPreference) {
+            final FragmentOfActivity<? extends PreferenceFragmentCompat> hostOfPreference) {
         {
             final var fragmentClassFromFragmentClassName =
                     getFragmentClassFromFragmentClassName(
                             Optional.ofNullable(preference.getFragment()),
-                            hostOfPreference.activityOfPreferenceFragment());
+                            hostOfPreference.activityOfFragment());
             if (fragmentClassFromFragmentClassName.isPresent()) {
                 return fragmentClassFromFragmentClassName;
             }
@@ -99,17 +102,18 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
         return getPreferenceFragmentClassConnectedToPreference(preference, hostOfPreference);
     }
 
+    // FK-TODO: use PreferenceOfHostOfActivity as single param
     private Optional<? extends FragmentClassOfActivity<? extends PreferenceFragmentCompat>> getPreferenceFragmentClassConnectedToPreference(
             final Preference preference,
-            final PreferenceFragmentOfActivity hostOfPreference) {
+            final FragmentOfActivity<? extends PreferenceFragmentCompat> hostOfPreference) {
         return preferenceFragmentConnectedToPreferenceProvider
                 .getPreferenceFragmentConnectedToPreference(
                         preference,
-                        hostOfPreference.preferenceFragment())
+                        hostOfPreference.fragment())
                 .map(preferenceFragmentConnectedToPreference ->
                              new FragmentClassOfActivity<>(
                                      preferenceFragmentConnectedToPreference,
-                                     hostOfPreference.activityOfPreferenceFragment()));
+                                     hostOfPreference.activityOfFragment()));
     }
 
     private Optional<? extends FragmentClassOfActivity<? extends Fragment>> getFragmentClassFromFragmentClassName(

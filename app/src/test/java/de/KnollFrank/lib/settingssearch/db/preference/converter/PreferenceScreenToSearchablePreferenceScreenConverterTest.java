@@ -80,7 +80,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                                 layoutResIdOfEachChild,
                                 preferenceScreen
                                         .asPreferenceFragmentOfActivity()
-                                        .asPreferenceFragmentClassOfActivity()));
+                                        .asFragmentClassOfActivity()));
             });
         }
     }

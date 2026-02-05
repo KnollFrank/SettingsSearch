@@ -35,7 +35,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
                         id,
                         preferenceScreen
                                 .asPreferenceFragmentOfActivity()
-                                .asPreferenceFragmentClassOfActivity(),
+                                .asFragmentClassOfActivity(),
                         Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getTitle())),
                         Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getSummary())),
                         searchablePreferences.keySet()),

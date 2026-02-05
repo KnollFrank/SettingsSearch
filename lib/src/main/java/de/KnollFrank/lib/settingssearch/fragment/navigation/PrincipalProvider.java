@@ -1,12 +1,12 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceFragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -22,13 +22,15 @@ class PrincipalProvider {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
     }
 
-    public Optional<FragmentOfActivity<? extends Fragment>> getPrincipal(final PreferenceFragmentOfActivity proxy, final Optional<PreferenceOfHostOfActivity> src) {
+    public Optional<FragmentOfActivity<? extends Fragment>> getPrincipal(
+            final FragmentOfActivity<? extends PreferenceFragmentCompat> proxy,
+            final Optional<PreferenceOfHostOfActivity> src) {
         return principalAndProxyProvider
-                .getPrincipal(proxy.preferenceFragment().getClass())
+                .getPrincipal(proxy.fragment().getClass())
                 .map(principal ->
                              new FragmentClassOfActivity<>(
                                      principal,
-                                     proxy.activityOfPreferenceFragment()))
+                                     proxy.activityOfFragment()))
                 .map(principal -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(principal, src));
     }
 }

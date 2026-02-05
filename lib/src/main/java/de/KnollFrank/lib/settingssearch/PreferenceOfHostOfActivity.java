@@ -7,7 +7,7 @@ public record PreferenceOfHostOfActivity(Preference preference,
                                          PreferenceFragmentCompat hostOfPreference,
                                          ActivityDescription activityOfHost) {
 
-    public PreferenceFragmentOfActivity asPreferenceFragmentOfActivity() {
-        return new PreferenceFragmentOfActivity(hostOfPreference, activityOfHost);
+    public FragmentOfActivity<? extends PreferenceFragmentCompat> asPreferenceFragmentOfActivity() {
+        return new FragmentOfActivity<>(hostOfPreference, activityOfHost);
     }
 }
