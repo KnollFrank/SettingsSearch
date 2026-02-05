@@ -63,9 +63,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeCreatorDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactories;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -719,7 +719,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         preferenceFragment,
                                         preferenceSearchablePredicate,
                                         fragmentActivity,
-                                        FragmentFactories.createFragmentFactoryReturning(preferenceFragment),
+                                        FragmentFactoryTestFactory.createFragmentFactoryReturning(preferenceFragment),
                                         preferenceFragmentConnectedToPreferenceProvider,
                                         preferenceDialogAndSearchableInfoProvider,
                                         principalAndProxyProvider,

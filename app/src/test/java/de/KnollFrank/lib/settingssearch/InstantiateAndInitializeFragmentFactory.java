@@ -1,11 +1,11 @@
 package de.KnollFrank.lib.settingssearch;
 
-import static de.KnollFrank.lib.settingssearch.fragment.FragmentFactories.createFragmentFactoryReturning;
+import static de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryTestFactory.createFragmentFactoryReturning;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactories;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -20,12 +20,16 @@ public class InstantiateAndInitializeFragmentFactory {
     }
 
     public static InstantiateAndInitializeFragment createInstantiateAndInitializeFragment(final FragmentActivity activity) {
-        return createInstantiateAndInitializeFragment(activity, new DefaultFragmentFactory());
+        return createInstantiateAndInitializeFragment(
+                activity,
+                FragmentFactories.createWrappedDefaultFragmentFactory());
     }
 
     public static InstantiateAndInitializeFragment createInstantiateAndInitializeFragment(final Fragment fragment,
                                                                                           final FragmentActivity activity) {
-        return createInstantiateAndInitializeFragment(activity, createFragmentFactoryReturning(fragment));
+        return createInstantiateAndInitializeFragment(
+                activity,
+                createFragmentFactoryReturning(fragment));
     }
 
     public static Fragments createInstantiateAndInitializeFragment(final FragmentActivity activity,

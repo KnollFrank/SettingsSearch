@@ -10,12 +10,12 @@ import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 
-public class FragmentFactories {
+public class FragmentFactoryTestFactory {
 
     public static FragmentFactory createFragmentFactoryReturning(final Fragment fragment) {
         return new FragmentFactory() {
 
-            private final FragmentFactory delegate = new DefaultFragmentFactory();
+            private final FragmentFactory delegate = FragmentFactories.createWrappedDefaultFragmentFactory();
 
             @Override
             public <T extends Fragment> FragmentOfActivity<T> instantiate(

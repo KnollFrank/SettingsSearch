@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactories;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners;
@@ -30,7 +30,7 @@ public class SearchDatabaseConfigBuilder<C> {
 
     private final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final TreeProcessorFactory<C> treeProcessorFactory;
-    private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
+    private FragmentFactory fragmentFactory = FragmentFactories.createWrappedDefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -53,8 +53,8 @@ public class SearchDatabaseConfigBuilder<C> {
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder<C> withFragmentFactory(final FragmentFactory fragmentFactory) {
-        this.fragmentFactory = fragmentFactory;
+    public SearchDatabaseConfigBuilder<C> withFragmentFactory(final de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory fragmentFactory) {
+        this.fragmentFactory = FragmentFactories.wrap(fragmentFactory);
         return this;
     }
 

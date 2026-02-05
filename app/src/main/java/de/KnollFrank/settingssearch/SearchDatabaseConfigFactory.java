@@ -18,10 +18,10 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
-import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
@@ -32,7 +32,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcess
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeCreatorDescription;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescription;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
@@ -85,7 +84,7 @@ public class SearchDatabaseConfigFactory {
                         new FragmentFactory() {
 
                             @Override
-                            public <T extends Fragment> FragmentOfActivity<T> instantiate(
+                            public <T extends Fragment> T instantiate(
                                     final FragmentClassOfActivity<T> fragmentClass,
                                     final Optional<PreferenceOfHostOfActivity> src,
                                     final Context context,
@@ -93,11 +92,12 @@ public class SearchDatabaseConfigFactory {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass.fragment()) &&
                                         src.isPresent() &&
                                         PrefsFragmentFifth.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.orElseThrow().preference().getKey())) {
-                                    return new FragmentOfActivity<>(
-                                            Classes.instantiateFragmentClass(
-                                                    fragmentClass.fragment(),
-                                                    Optional.of(PrefsFragmentFifth.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context))),
-                                            fragmentClass.activityOfFragment());
+                                    return Classes.instantiateFragmentClass(
+                                            fragmentClass.fragment(),
+                                            Optional.of(
+                                                    PrefsFragmentFifth.createArguments4PreferenceWithoutExtras(
+                                                            src.orElseThrow().preference(),
+                                                            context)));
                                 } else if (ItemFragment3.class.equals(fragmentClass.fragment()) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
                                     final Preference preference = src.orElseThrow().preference();
                                     PrefsFragmentFirst
@@ -105,11 +105,9 @@ public class SearchDatabaseConfigFactory {
                                                     preference,
                                                     src.orElseThrow().hostOfPreference(),
                                                     fragmentClass.fragment());
-                                    return new FragmentOfActivity<>(
-                                            Classes.instantiateFragmentClass(
-                                                    fragmentClass.fragment(),
-                                                    Optional.of(preference.getExtras())),
-                                            fragmentClass.activityOfFragment());
+                                    return Classes.instantiateFragmentClass(
+                                            fragmentClass.fragment(),
+                                            Optional.of(preference.getExtras()));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
                             }

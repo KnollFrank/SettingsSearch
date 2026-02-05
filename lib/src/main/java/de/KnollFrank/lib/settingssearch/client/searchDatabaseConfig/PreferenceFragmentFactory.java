@@ -10,7 +10,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactories;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceFragmentCompat & InitializePreferenceFragmentWithFragmentBeforeOnCreate<F>> {
@@ -87,7 +87,9 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
 
         private FragmentOfActivity<P> instantiateProxy() {
             // FK-TODO: warum DefaultFragmentFactory? Ist das nicht zu speziell?
-            return new DefaultFragmentFactory().instantiate(proxy, src, context, instantiateAndInitializeFragment);
+            return FragmentFactories
+                    .createWrappedDefaultFragmentFactory()
+                    .instantiate(proxy, src, context, instantiateAndInitializeFragment);
         }
 
         private FragmentOfActivity<F> instantiatePrincipal() {

@@ -16,7 +16,7 @@ class FragmentFactoryFactory {
     public static FragmentFactory createFragmentFactory(
             final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies,
             final FragmentFactory delegate) {
-        return new de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory(
+        return new PreferenceFragmentFactoriesWrapper(
                 createPreferenceFragmentFactories(principalAndProxies),
                 delegate);
     }
