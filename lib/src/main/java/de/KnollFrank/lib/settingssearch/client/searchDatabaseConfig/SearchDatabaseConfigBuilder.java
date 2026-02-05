@@ -109,18 +109,22 @@ public class SearchDatabaseConfigBuilder<C> {
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnectedToPreferenceProvider,
                 rootPreferenceFragment,
-                new RootPreferenceFragmentOfActivityProvider() {
-
-                    @Override
-                    public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
-                        return Maps.get(activitySearchDatabaseConfigs.rootPreferenceFragmentByActivity(), activityClass);
-                    }
-                },
+                createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs.rootPreferenceFragmentByActivity()),
                 preferenceScreenTreeBuilderListener,
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
                 activityInitializerByActivity,
                 preferenceFragmentIdProvider,
                 treeProcessorFactory);
+    }
+
+    private static RootPreferenceFragmentOfActivityProvider createRootPreferenceFragmentOfActivityProvider(final Map<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>> rootPreferenceFragmentByActivity) {
+        return new RootPreferenceFragmentOfActivityProvider() {
+
+            @Override
+            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
+                return Maps.get(rootPreferenceFragmentByActivity, activityClass);
+            }
+        };
     }
 }
