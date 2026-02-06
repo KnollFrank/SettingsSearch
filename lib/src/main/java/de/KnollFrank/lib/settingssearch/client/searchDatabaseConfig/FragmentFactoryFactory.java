@@ -16,15 +16,28 @@ public class FragmentFactoryFactory {
     public static FragmentFactory createFragmentFactory(
             final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies,
             final FragmentFactory delegate) {
-        return new PreferenceFragmentFactoriesWrapper(
-                createPreferenceFragmentFactories(principalAndProxies),
+        return _createFragmentFactory(
+                principalAndProxies,
                 new FragmentFactoryInitializingPreferenceFragmentWithActivityDescriptionBeforeOnCreate(delegate));
     }
 
-    private static Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> createPreferenceFragmentFactories(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
+    private static PreferenceFragmentFactoriesWrapper _createFragmentFactory(
+            final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies,
+            final FragmentFactory delegate) {
+        return new PreferenceFragmentFactoriesWrapper(
+                createPreferenceFragmentFactories(principalAndProxies, delegate),
+                delegate);
+    }
+
+    private static Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> createPreferenceFragmentFactories(
+            final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies,
+            final FragmentFactory delegate) {
         return principalAndProxies
                 .stream()
-                .map(PreferenceFragmentFactory::new)
+                .map(principalAndProxy ->
+                             new PreferenceFragmentFactory<>(
+                                     principalAndProxy,
+                                     delegate))
                 .collect(Collectors.toSet());
     }
 }

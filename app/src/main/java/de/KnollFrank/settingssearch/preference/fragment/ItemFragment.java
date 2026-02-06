@@ -86,7 +86,7 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
         return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this, Duration.ofSeconds(1));
     }
 
-    public static class PreferenceFragment extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment> {
+    public static class ItemFragmentProxy extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment> {
 
         private List<PlaceholderContent.PlaceholderItem> items;
 
@@ -100,7 +100,7 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
             screen.setTitle("screen title PreferenceFragment");
             screen.setSummary("screen summary");
-            PreferenceFragment
+            ItemFragmentProxy
                     .asPreferences(items, requireContext())
                     .forEach(screen::addPreference);
             setPreferenceScreen(screen);

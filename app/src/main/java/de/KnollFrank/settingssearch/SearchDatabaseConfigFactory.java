@@ -60,11 +60,7 @@ public class SearchDatabaseConfigFactory {
     public static SearchDatabaseConfig<Configuration> createSearchDatabaseConfig() {
         return SearchDatabaseConfig
                 .builder(
-                        new FragmentClassOfActivity<>(
-                                PrefsFragmentFirst.class,
-                                new ActivityDescription(
-                                        PreferenceSearchExample.class,
-                                        new PersistableBundle())),
+                        getRootPreferenceFragment(),
                         new TreeProcessorFactory<Configuration>() {
 
                             @Override
@@ -118,11 +114,11 @@ public class SearchDatabaseConfigFactory {
                                         .<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>>builder()
                                         .put(SettingsActivity.class, SettingsFragment.class)
                                         .put(SettingsActivity2.class, SettingsFragment2.class)
-                                        .put(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class)
+                                        .put(SettingsActivity3.class, ItemFragment3.ItemFragment3Proxy.class)
                                         .build(),
                                 Set.of(
-                                        new PrincipalAndProxy<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
-                                        new PrincipalAndProxy<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))
+                                        new PrincipalAndProxy<>(ItemFragment.class, ItemFragment.ItemFragmentProxy.class),
+                                        new PrincipalAndProxy<>(ItemFragment3.class, ItemFragment3.ItemFragment3Proxy.class))))
                 .withActivityInitializerByActivity(
                         ImmutableMap
                                 .<Class<? extends Activity>, ActivityInitializer<?>>builder()
@@ -198,5 +194,13 @@ public class SearchDatabaseConfigFactory {
                             }
                         })
                 .build();
+    }
+
+    private static FragmentClassOfActivity<PrefsFragmentFirst> getRootPreferenceFragment() {
+        return new FragmentClassOfActivity<>(
+                PrefsFragmentFirst.class,
+                new ActivityDescription(
+                        PreferenceSearchExample.class,
+                        new PersistableBundle()));
     }
 }

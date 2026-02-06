@@ -10,15 +10,18 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactories;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceFragmentCompat & InitializePreferenceFragmentWithFragmentBeforeOnCreate<F>> {
 
     private final PrincipalAndProxy<F, P> principalAndProxy;
+    private final FragmentFactory delegate;
 
-    public PreferenceFragmentFactory(final PrincipalAndProxy<F, P> principalAndProxy) {
+    public PreferenceFragmentFactory(final PrincipalAndProxy<F, P> principalAndProxy,
+                                     final FragmentFactory delegate) {
         this.principalAndProxy = principalAndProxy;
+        this.delegate = delegate;
     }
 
     public <T extends Fragment> Optional<FragmentOfActivity<T>> createPreferenceFragmentForFragmentClass(
@@ -30,6 +33,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
                 new PreferenceFragmentFactoryWorker<>(
                         getPrincipal(fragmentClass),
                         getProxy(fragmentClass),
+                        delegate,
                         src,
                         context,
                         instantiateAndInitializeFragment);
@@ -52,17 +56,20 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
 
         private final FragmentClassOfActivity<F> principal;
         private final FragmentClassOfActivity<P> proxy;
+        private final FragmentFactory delegate;
         private final Optional<PreferenceOfHostOfActivity> src;
         private final Context context;
         private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
 
         private PreferenceFragmentFactoryWorker(final FragmentClassOfActivity<F> principal,
                                                 final FragmentClassOfActivity<P> proxy,
+                                                final FragmentFactory delegate,
                                                 final Optional<PreferenceOfHostOfActivity> src,
                                                 final Context context,
                                                 final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
             this.principal = principal;
             this.proxy = proxy;
+            this.delegate = delegate;
             this.src = src;
             this.context = context;
             this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
@@ -85,10 +92,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
         }
 
         private FragmentOfActivity<P> instantiateProxy() {
-            // FK-TODO: warum DefaultFragmentFactory? Ist das nicht zu speziell?
-            return FragmentFactories
-                    .createWrappedDefaultFragmentFactory()
-                    .instantiate(proxy, src, context, instantiateAndInitializeFragment);
+            return delegate.instantiate(proxy, src, context, instantiateAndInitializeFragment);
         }
 
         private FragmentOfActivity<F> instantiatePrincipal() {
