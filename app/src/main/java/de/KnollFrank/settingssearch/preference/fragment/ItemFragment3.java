@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.base.Preconditions;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.ActivityDescription;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
 import de.KnollFrank.lib.settingssearch.results.PositionOfSettingProvider;
@@ -87,18 +91,27 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
         return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this, Duration.ofSeconds(1));
     }
 
-    public static class ItemFragment3Proxy extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment3> {
+    public static class ItemFragment3Proxy extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment3>, InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate {
 
         private List<PlaceholderContent.PlaceholderItem> items;
+        private boolean initializePreferenceFragmentWithFragmentBeforeOnCreateCalled = false;
+        private boolean initializePreferenceFragmentWithActivityDescriptionBeforeOnCreateCalled = false;
 
         @Override
         public void initializePreferenceFragmentWithFragmentBeforeOnCreate(final ItemFragment3 itemFragment3) {
             items = itemFragment3.getItems();
             setArguments(itemFragment3.getArguments());
+            initializePreferenceFragmentWithFragmentBeforeOnCreateCalled = true;
+        }
+
+        @Override
+        public void initializePreferenceFragmentWithActivityDescriptionBeforeOnCreate(final ActivityDescription activityDescription) {
+            initializePreferenceFragmentWithActivityDescriptionBeforeOnCreateCalled = true;
         }
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            Preconditions.checkState(initializePreferenceFragmentWithFragmentBeforeOnCreateCalled == initializePreferenceFragmentWithActivityDescriptionBeforeOnCreateCalled);
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
             screen.setTitle("screen title PreferenceFragment3");
             screen.setSummary("screen summary");
