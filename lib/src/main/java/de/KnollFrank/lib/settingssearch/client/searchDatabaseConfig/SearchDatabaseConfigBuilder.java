@@ -103,7 +103,9 @@ public class SearchDatabaseConfigBuilder<C> {
 
     public SearchDatabaseConfig<C> build() {
         return new SearchDatabaseConfig<>(
-                FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs.principalAndProxies(), fragmentFactory),
+                FragmentFactoryFactory.createFragmentFactory(
+                        activitySearchDatabaseConfigs.principalAndProxies(),
+                        fragmentFactory),
                 new ReflectionIconResourceIdProvider(),
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,

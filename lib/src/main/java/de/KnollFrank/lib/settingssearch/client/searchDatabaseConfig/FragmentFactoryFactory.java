@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 
-class FragmentFactoryFactory {
+public class FragmentFactoryFactory {
 
     private FragmentFactoryFactory() {
     }
@@ -18,7 +18,7 @@ class FragmentFactoryFactory {
             final FragmentFactory delegate) {
         return new PreferenceFragmentFactoriesWrapper(
                 createPreferenceFragmentFactories(principalAndProxies),
-                delegate);
+                new FragmentFactoryInitializingPreferenceFragmentWithActivityDescriptionBeforeOnCreate(delegate));
     }
 
     private static Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> createPreferenceFragmentFactories(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {

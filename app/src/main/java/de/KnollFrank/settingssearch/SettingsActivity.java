@@ -4,6 +4,7 @@ import static de.KnollFrank.lib.settingssearch.fragment.navigation.ContinueWithP
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.BaseBundle;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,13 +18,12 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithIntentOfActivityBeforeOnCreate;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 
-// FK-TODO: entspricht MapActivity von OsmAnd
-//          gebe an das rootPreferenceFragment SettingsFragment den Intent (bzw. das darin befindliche Bundle) weiter, der ganz konkret in PrefsFragmentFirst in einer Preference gesetzt wurde.
 public class SettingsActivity extends AppCompatActivity {
 
     private static final @IdRes int fragmentContainerViewId = View.generateViewId();
@@ -82,26 +82,25 @@ public class SettingsActivity extends AppCompatActivity {
                 SearchDatabaseConfigFactory.createSearchDatabaseConfig());
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithIntentOfActivityBeforeOnCreate {
+    public static class SettingsFragment extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate {
 
         private Optional<String> dynamicTitle = Optional.empty();
 
         @Override
-        public void initializePreferenceFragmentWithIntentOfActivityBeforeOnCreate(final Intent intentOfActivity) {
-            dynamicTitle =
-                    Optional
-                            .ofNullable(intentOfActivity.getExtras())
-                            .flatMap(this::getDynamicTitle);
+        public void initializePreferenceFragmentWithActivityDescriptionBeforeOnCreate(final ActivityDescription activityDescription) {
+            dynamicTitle = getDynamicTitle(activityDescription.arguments());
         }
 
         @Override
         public void onCreate(@Nullable final Bundle savedInstanceState) {
-            dynamicTitle =
-                    Optional
-                            .ofNullable(getActivity())
-                            .map(Activity::getIntent)
-                            .map(Intent::getExtras)
-                            .flatMap(this::getDynamicTitle);
+            final Activity activity = getActivity();
+            if (activity instanceof SettingsActivity) {
+                dynamicTitle =
+                        Optional
+                                .ofNullable(activity.getIntent())
+                                .map(Intent::getExtras)
+                                .flatMap(this::getDynamicTitle);
+            }
             super.onCreate(savedInstanceState);
         }
 
@@ -117,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     .setTitle(_dynamicTitle));
         }
 
-        private Optional<String> getDynamicTitle(final Bundle bundle) {
+        private Optional<String> getDynamicTitle(final BaseBundle bundle) {
             return Optional.ofNullable(bundle.getString(SettingsActivity.PREFERENCE_WITH_DYNAMIC_TITLE_KEY));
         }
     }

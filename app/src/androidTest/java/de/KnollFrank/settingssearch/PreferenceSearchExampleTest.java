@@ -83,6 +83,16 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceHavingTitleFromExtrasOfIntentOfActivity() {
+        final String query = PrefsFragmentFirst.DYNAMIC_TITLE;
+        try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
+            onView(searchButton()).perform(click());
+            onView(searchView()).perform(replaceText(query), closeSoftKeyboard());
+            onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(query)));
+        }
+    }
+
+    @Test
     public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult_srcIsPreferenceWithExtras() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             searchForQueryThenClickSearchResultAtPosition(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS, 0);
