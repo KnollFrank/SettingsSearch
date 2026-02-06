@@ -28,7 +28,6 @@ class FragmentFactoryInitializingPreferenceFragmentWithActivityDescriptionBefore
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final FragmentOfActivity<T> fragment = delegate.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
         if (fragment.fragment() instanceof final InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate initializePreferenceFragmentWithActivityDescriptionBeforeOnCreate) {
-            // FK-FIXME: an dieser Stelle wurde instantiateAndInitializeFragment() schon ausgeführt, also auch onCreate() weswegen das "BeforeOnCreate" in initializePreferenceFragmentWithIntentOfActivityBeforeOnCreate() eine falsche Aussage ist?
             initializePreferenceFragmentWithActivityDescriptionBeforeOnCreate.initializePreferenceFragmentWithActivityDescriptionBeforeOnCreate(fragment.activityOfFragment());
         }
         return fragment;

@@ -80,7 +80,6 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
 
         private FragmentOfActivity<P> instantiateProxyAndInitializeWithPrincipal() {
             final FragmentOfActivity<P> proxy = instantiateProxy();
-            // FK-FIXME: an dieser Stelle wurde instantiateAndInitializeFragment() schon ausgeführt, also auch onCreate() weswegen das "BeforeOnCreate" in initializePreferenceFragmentWithFragmentBeforeOnCreate() eine falsche Aussage ist?
             proxy.fragment().initializePreferenceFragmentWithFragmentBeforeOnCreate(instantiatePrincipal().fragment());
             return proxy;
         }
