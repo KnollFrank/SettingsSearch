@@ -13,7 +13,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.ViewMatchers;
+import de.KnollFrank.lib.settingssearch.matcher.ViewMatchers;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreesTest {

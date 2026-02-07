@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.TreeProcessorDescriptionEntityMatchers.hasSameContentAs;
+import static de.KnollFrank.lib.settingssearch.matcher.TreeProcessorDescriptionEntityMatchers.hasSameContentAs;
 
 import android.os.PersistableBundle;
 

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher;
+package de.KnollFrank.lib.settingssearch.matcher;
 
 import static org.hamcrest.Matchers.is;
 

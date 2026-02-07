@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.BundleMatchers;
+import de.KnollFrank.lib.settingssearch.matcher.BundleMatchers;
 
 @RunWith(RobolectricTestRunner.class)
 public class PersistableBundleConverterTest {
