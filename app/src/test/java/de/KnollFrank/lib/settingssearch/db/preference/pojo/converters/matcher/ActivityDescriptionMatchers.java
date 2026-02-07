@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher;
 
 import static org.hamcrest.Matchers.allOf;
 
@@ -11,8 +11,10 @@ import org.hamcrest.Matchers;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 
-// FK-TODO: alle Matchers in ein und demselben package unterbringen
 public class ActivityDescriptionMatchers {
+
+    private ActivityDescriptionMatchers() {
+    }
 
     public static Matcher<ActivityDescription> isEqualTo(final ActivityDescription expected) {
         return allOf(

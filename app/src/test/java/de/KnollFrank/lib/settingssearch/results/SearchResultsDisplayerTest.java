@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphTestFactory.createSearchablePreferenceWithinGraph;
-import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.ViewMatchers.recyclerViewHasItem;
 
 import android.os.PersistableBundle;
 import android.view.View;

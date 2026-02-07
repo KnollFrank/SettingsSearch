@@ -15,9 +15,9 @@ import org.hamcrest.TypeSafeMatcher;
 
 import java.util.Objects;
 
-class Matchers {
+class ViewMatchers {
 
-    private Matchers() {
+    private ViewMatchers() {
     }
 
     // adapted from https://stackoverflow.com/a/53289078/12982352

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -7,6 +7,9 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 public class EitherMatchers {
+
+    private EitherMatchers() {
+    }
 
     public static <L, R> Matcher<Either<L, R>> isLeft() {
         return new TypeSafeMatcher<>() {

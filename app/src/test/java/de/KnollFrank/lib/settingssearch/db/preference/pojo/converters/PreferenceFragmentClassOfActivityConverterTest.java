@@ -10,6 +10,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.FragmentClassOfActivityMatchers;
 
 @RunWith(RobolectricTestRunner.class)
 public class PreferenceFragmentClassOfActivityConverterTest {

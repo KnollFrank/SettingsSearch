@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher;
 
 import android.os.PersistableBundle;
 
@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 
-class PersistableBundleEquality {
+public class PersistableBundleEquality {
 
     private PersistableBundleEquality() {
     }

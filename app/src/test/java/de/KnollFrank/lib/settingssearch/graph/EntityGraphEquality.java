@@ -18,8 +18,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleMatchers;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.BundleMatchers;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class EntityGraphEquality {

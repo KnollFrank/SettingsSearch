@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher;
 
 import static org.hamcrest.Matchers.allOf;
 
@@ -12,6 +12,9 @@ import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 
 public class FragmentClassOfActivityMatchers {
+
+    private FragmentClassOfActivityMatchers() {
+    }
 
     public static Matcher<FragmentClassOfActivity<?>> isEqualTo(final FragmentClassOfActivity<?> expected) {
         return allOf(

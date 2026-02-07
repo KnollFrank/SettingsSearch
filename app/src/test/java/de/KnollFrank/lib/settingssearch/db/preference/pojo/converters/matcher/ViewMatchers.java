@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.test;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isIn;
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class Matchers {
+public class ViewMatchers {
 
-    private Matchers() {
+    private ViewMatchers() {
     }
 
     public static Matcher<View> recyclerViewHasItemCount(final Matcher<Integer> itemCountMatcher) {

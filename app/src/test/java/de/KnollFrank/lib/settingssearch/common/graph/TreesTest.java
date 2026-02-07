@@ -13,7 +13,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.test.Matchers;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.ViewMatchers;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreesTest {
@@ -56,7 +56,7 @@ public class TreesTest {
         assertThat(path.startNode(), is(ROOT));
         assertThat(path.endNode(), is(GRAND_CHILD_1));
         assertThat(path.tree(), is(testTree));
-        Matchers.assertIsSubset(path.nodes(), path.tree().graph().nodes());
+        ViewMatchers.assertIsSubset(path.nodes(), path.tree().graph().nodes());
     }
 
     @Test

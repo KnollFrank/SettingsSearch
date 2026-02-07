@@ -4,8 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.EitherMatchers.isLeft;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.EitherMatchers.isRight;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.EitherMatchers.isLeft;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.EitherMatchers.isRight;
 
 import com.codepoetics.ambivalence.Either;
 

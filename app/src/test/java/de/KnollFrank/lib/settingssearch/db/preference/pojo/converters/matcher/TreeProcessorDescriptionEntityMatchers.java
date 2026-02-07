@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher;
 
 import static org.hamcrest.Matchers.is;
 
@@ -13,9 +13,11 @@ import org.hamcrest.Matchers;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescriptionEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleMatchers;
 
-class TreeProcessorDescriptionEntityMatchers {
+public class TreeProcessorDescriptionEntityMatchers {
+
+    private TreeProcessorDescriptionEntityMatchers() {
+    }
 
     public static Matcher<TreeProcessorDescriptionEntity> hasSameContentAs(final TreeProcessorDescriptionEntity expected) {
         return Matchers.allOf(

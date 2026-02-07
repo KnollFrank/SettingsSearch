@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.matcher.PersistableBundleEquality;
+
 @RunWith(RobolectricTestRunner.class)
 public class PersistableBundleEqualityTest {
 
