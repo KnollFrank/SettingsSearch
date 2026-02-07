@@ -13,6 +13,7 @@ public class PersistableBundleConverterTest {
 
     @Test
     public void shouldConvertPersistableBundleAndBack() {
+        // FK-TODO: use test_a_convertForward_convertBackward_equals_a
         // Given
         final PersistableBundleConverter converter = new PersistableBundleConverter();
         final PersistableBundle bundle = PersistableBundleTestFactory.createSomePersistableBundle();

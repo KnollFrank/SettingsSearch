@@ -11,12 +11,12 @@ public class OptionalStringConverterTest {
     private final OptionalStringConverter converter = new OptionalStringConverter();
 
     @Test
-    public void shouldConvertFromPresentStringToStringAndBack() {
+    public void shouldConvertPresentStringToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Optional.of("some string"), converter);
     }
 
     @Test
-    public void shouldConvertFromEmptyStringToStringAndBack() {
+    public void shouldConvertEmptyStringToStringAndBack() {
         test_a_convertForward_convertBackward_equals_a(Optional.empty(), converter);
     }
 }

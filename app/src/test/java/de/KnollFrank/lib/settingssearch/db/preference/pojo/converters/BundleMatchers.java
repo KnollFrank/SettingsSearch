@@ -21,7 +21,7 @@ public class BundleMatchers {
 
             @Override
             public void describeTo(final Description description) {
-                description.appendText("ein Bundle inhaltlich gleich wie ").appendValue(expectedBundle);
+                description.appendText("a bundle with the same content as ").appendValue(expectedBundle);
             }
 
             @Override

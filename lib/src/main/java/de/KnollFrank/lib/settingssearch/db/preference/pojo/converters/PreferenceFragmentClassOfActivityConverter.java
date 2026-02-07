@@ -9,7 +9,6 @@ import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 
 // FK-TODO: use @Embedded
-// FK-TODO: add unit test
 public class PreferenceFragmentClassOfActivityConverter implements Converter<FragmentClassOfActivity<? extends PreferenceFragmentCompat>, String> {
 
     private static final String SEPARATOR = "@@@";
