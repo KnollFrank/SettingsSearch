@@ -100,7 +100,7 @@ public class TreeMergerTest {
                                 activity);
 
                 // When
-                final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedGraph =
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedTree =
                         TreeMerger.mergeTreeIntoTreeNode(
                                 transformToPojoTree(partialEntityTree),
                                 new TreeNode<>(mergePointOfTree, pojoTree));
@@ -111,26 +111,26 @@ public class TreeMergerTest {
                         DotGraphDifference.between(
                                 GraphConverterFactory
                                         .createSearchablePreferenceScreenGraphConverter()
-                                        .toJGraphT(mergedGraph.graph()),
+                                        .toJGraphT(mergedTree.graph()),
                                 GraphConverterFactory
                                         .createSearchablePreferenceScreenGraphConverter()
                                         .toJGraphT(mergedTreeExpected.graph())));
-                final GraphDifference graphDifference = GraphDifference.between(mergedGraph.graph(), mergedTreeExpected.graph());
+                final GraphDifference graphDifference = GraphDifference.between(mergedTree.graph(), mergedTreeExpected.graph());
                 assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
-                assertIntegrity(mergedGraph);
+                assertIntegrity(mergedTree);
             });
         }
     }
 
-    private static void assertIntegrity(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> graph) {
-        for (final EndpointPair<SearchablePreferenceScreen> edge : graph.graph().edges()) {
-            assertPreferenceOfEdgeExistsInSourceScreen(edge, graph);
+    private static void assertIntegrity(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
+        for (final EndpointPair<SearchablePreferenceScreen> edge : tree.graph().edges()) {
+            assertPreferenceOfEdgeExistsInSourceScreen(edge, tree);
         }
     }
 
     private static void assertPreferenceOfEdgeExistsInSourceScreen(final EndpointPair<SearchablePreferenceScreen> edge,
-                                                                   final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> graph) {
-        final SearchablePreference searchablePreference = Graphs.getEdgeValue(edge, graph.graph());
+                                                                   final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
+        final SearchablePreference searchablePreference = Graphs.getEdgeValue(edge, tree.graph());
         final SearchablePreferenceScreen sourceScreen = edge.source();
         assertThat(
                 String.format(
