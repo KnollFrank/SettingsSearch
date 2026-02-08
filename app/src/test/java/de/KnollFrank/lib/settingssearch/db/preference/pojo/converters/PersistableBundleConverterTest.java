@@ -1,8 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import android.os.PersistableBundle;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConverterTest.test_a_convertForward_convertBackward;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +13,9 @@ public class PersistableBundleConverterTest {
 
     @Test
     public void shouldConvertPersistableBundleAndBack() {
-        // FK-TODO: use test_a_convertForward_convertBackward_equals_a
-        // Given
-        final PersistableBundleConverter converter = new PersistableBundleConverter();
-        final PersistableBundle bundle = PersistableBundleTestFactory.createSomePersistableBundle();
-
-        // When
-        final PersistableBundle bundleActual = converter.convertBackward(converter.convertForward(bundle));
-
-        // Then
-        assertThat(bundleActual, BundleMatchers.isEqualTo(bundle));
+        test_a_convertForward_convertBackward(
+                PersistableBundleTestFactory.createSomePersistableBundle(),
+                new PersistableBundleConverter(),
+                BundleMatchers::isEqualTo);
     }
 }
