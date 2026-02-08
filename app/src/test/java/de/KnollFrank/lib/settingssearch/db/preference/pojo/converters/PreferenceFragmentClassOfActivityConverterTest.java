@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConverterTest.test_a_convertForward_convertBackward;
+
 import android.app.Activity;
 
 import androidx.preference.PreferenceFragmentCompat;
@@ -17,7 +19,7 @@ public class PreferenceFragmentClassOfActivityConverterTest {
 
     @Test
     public void shouldConvertFragmentClassOfActivityToStringAndBack() {
-        ConverterTest.test_a_convertForward_convertBackward(
+        test_a_convertForward_convertBackward(
                 createSomeFragmentClassOfActivity(),
                 new PreferenceFragmentClassOfActivityConverter(),
                 FragmentClassOfActivityMatchers::isEqualTo);
