@@ -26,7 +26,6 @@ public class TreeMerger {
             final TreeNode<N, V, ImmutableValueGraph<N, V>> treeNode) {
         assertRootNodeMatchesTreeNode(tree, treeNode);
         assertNodesDoNotOverlap(tree, treeNode);
-
         final MutableValueGraph<N, V> mergedGraph = createEmptyGraph(treeNode);
         mergeTreeIntoTreeNode(tree, treeNode, mergedGraph);
         return new Tree<>(ImmutableValueGraph.copyOf(mergedGraph));
