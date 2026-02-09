@@ -17,6 +17,7 @@ public record TreePath<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, Lis
         if (!tree.graph().nodes().containsAll(nodes)) {
             throw new IllegalArgumentException("All nodes of the TreePath must be part of the tree.");
         }
+        // FK-TODO: add assertion that nodes form a real path of the tree?
     }
 
     public TreePath<N, V, G> add(final N node) {
