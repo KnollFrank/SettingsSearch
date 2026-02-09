@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
-import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public record SearchablePreferenceScreenWithinTree(
@@ -16,7 +15,7 @@ public record SearchablePreferenceScreenWithinTree(
         Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treeContainingScreen) {
 
     public TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getTreePath() {
-        return Trees.getPathFromRootNodeToTarget(treeContainingScreen, searchablePreferenceScreen);
+        return treeContainingScreen.getPathFromRootNodeToTarget(searchablePreferenceScreen);
     }
 
     public Set<SearchablePreferenceOfHostWithinTree> getAllPreferencesOfPreferenceHierarchy() {
@@ -24,10 +23,10 @@ public record SearchablePreferenceScreenWithinTree(
                 .allPreferencesOfPreferenceHierarchy()
                 .stream()
                 .map(searchablePreference ->
-                        new SearchablePreferenceOfHostWithinTree(
-                                searchablePreference,
-                                searchablePreferenceScreen,
-                                treeContainingScreen))
+                             new SearchablePreferenceOfHostWithinTree(
+                                     searchablePreference,
+                                     searchablePreferenceScreen,
+                                     treeContainingScreen))
                 .collect(Collectors.toSet());
     }
 

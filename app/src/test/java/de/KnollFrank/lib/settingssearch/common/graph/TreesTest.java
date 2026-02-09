@@ -43,13 +43,12 @@ public class TreesTest {
                             .putEdgeValue(CHILD_1, GRAND_CHILD_1, EDGE_3)
                             .build());
 
+    // FK-TODO: move all getPathFromRootNodeToTarget-Testmethods to TreeTest
     @Test
     public void getPathFromRootNodeToTarget_shouldReturnCorrectPathToLeaf() {
         // When
         final TreePath<String, String, ImmutableValueGraph<String, String>> path =
-                Trees.getPathFromRootNodeToTarget(
-                        testTree,
-                        GRAND_CHILD_1);
+                testTree.getPathFromRootNodeToTarget(GRAND_CHILD_1);
 
         // Then
         assertThat(path.nodes(), contains(ROOT, CHILD_1, GRAND_CHILD_1));
@@ -63,9 +62,7 @@ public class TreesTest {
     public void getEdgesOnPath_shouldReturnCorrectEdges() {
         // Given
         final TreePath<String, String, ImmutableValueGraph<String, String>> path =
-                Trees.getPathFromRootNodeToTarget(
-                        testTree,
-                        GRAND_CHILD_1);
+                testTree.getPathFromRootNodeToTarget(GRAND_CHILD_1);
 
         // When
         final List<Edge<String, String>> edgesOnPath = Trees.getEdgesOnPath(path);
@@ -86,9 +83,7 @@ public class TreesTest {
     public void getEdgesOnPath_whenPathIsOnlyRoot_shouldReturnEmptyList() {
         // Given
         final TreePath<String, String, ImmutableValueGraph<String, String>> path =
-                Trees.getPathFromRootNodeToTarget(
-                        testTree,
-                        ROOT);
+                testTree.getPathFromRootNodeToTarget(ROOT);
 
         // When
         final List<Edge<String, String>> edgesOnPath = Trees.getEdgesOnPath(path);
@@ -97,14 +92,11 @@ public class TreesTest {
         assertThat(edgesOnPath, is(empty()));
     }
 
-
     @Test
     public void getPathFromRootNodeToTarget_shouldReturnSingleNodePathWhenTargetIsRootNode() {
         // When
         final TreePath<String, String, ImmutableValueGraph<String, String>> path =
-                Trees.getPathFromRootNodeToTarget(
-                        testTree,
-                        ROOT);
+                testTree.getPathFromRootNodeToTarget(ROOT);
 
         // Then
         assertThat(path.nodes(), contains(ROOT));
@@ -114,9 +106,7 @@ public class TreesTest {
     public void getPathFromRootNodeToTarget_shouldReturnPathToIntermediateNode() {
         // When
         final TreePath<String, String, ImmutableValueGraph<String, String>> path =
-                Trees.getPathFromRootNodeToTarget(
-                        testTree,
-                        CHILD_1);
+                testTree.getPathFromRootNodeToTarget(CHILD_1);
 
         // Assert
         assertThat(path.nodes(), contains(ROOT, CHILD_1));
@@ -125,6 +115,6 @@ public class TreesTest {
     @Test(expected = IllegalArgumentException.class)
     public void getPathFromRootNodeToTarget_shouldThrowExceptionWhenNodeIsNotFound() {
         // When
-        Trees.getPathFromRootNodeToTarget(testTree, "UnknownNode");
+        testTree.getPathFromRootNodeToTarget("UnknownNode");
     }
 }
