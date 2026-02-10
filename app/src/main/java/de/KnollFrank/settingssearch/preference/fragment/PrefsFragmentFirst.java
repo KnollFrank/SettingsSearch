@@ -85,7 +85,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     private SearchablePreferenceScreenTree<PersistableBundle> getPojoGraph(final Locale locale) {
         return getPreferencesDatabase()
                 .searchablePreferenceScreenTreeRepository()
-                .findTreeById(locale, null, requireActivity())
+                .findTreeById(locale, ConfigurationProvider.getActualConfiguration(requireContext()), requireActivity())
                 .orElseThrow();
     }
 

@@ -21,12 +21,13 @@ class PreferencePathFactory {
     public static <C> PreferencePath createPreferencePath(final PreferencePathData preferencePathData,
                                                           final SearchablePreferenceScreenTreeRepository<C> treeRepository,
                                                           final Locale locale,
+                                                          final C actualConfiguration,
                                                           final FragmentActivity activityContext) {
         return createPreferencePath(
                 preferencePathData,
                 PojoTrees.getPreferences(
                         treeRepository
-                                .findTreeById(locale, null, activityContext)
+                                .findTreeById(locale, actualConfiguration, activityContext)
                                 .orElseThrow()
                                 .tree()));
     }

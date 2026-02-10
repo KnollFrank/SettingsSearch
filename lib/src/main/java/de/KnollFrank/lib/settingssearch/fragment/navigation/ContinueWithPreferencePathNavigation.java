@@ -21,17 +21,20 @@ public class ContinueWithPreferencePathNavigation<C> {
     private final @IdRes int fragmentContainerViewId;
     private final Function<Consumer<MergedPreferenceScreen<C>>, SearchPreferenceFragments<C>> createSearchPreferenceFragments;
     private final Locale locale;
+    private final C actualConfiguration;
 
     private ContinueWithPreferencePathNavigation(final FragmentActivity activity,
                                                  final ViewGroup parent,
                                                  final @IdRes int fragmentContainerViewId,
                                                  final Function<Consumer<MergedPreferenceScreen<C>>, SearchPreferenceFragments<C>> createSearchPreferenceFragments,
-                                                 final Locale locale) {
+                                                 final Locale locale,
+                                                 final C actualConfiguration) {
         this.activity = activity;
         this.parent = parent;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.createSearchPreferenceFragments = createSearchPreferenceFragments;
         this.locale = locale;
+        this.actualConfiguration = actualConfiguration;
     }
 
     public static <C> void continueWithPreferencePathNavigation(
@@ -39,14 +42,16 @@ public class ContinueWithPreferencePathNavigation<C> {
             final ViewGroup parent,
             final @IdRes int fragmentContainerViewId,
             final Function<Consumer<MergedPreferenceScreen<C>>, SearchPreferenceFragments<C>> createSearchPreferenceFragments,
-            final Locale locale) {
+            final Locale locale,
+            final C actualConfiguration) {
         final var continueWithPreferencePathNavigation =
                 new ContinueWithPreferencePathNavigation<>(
                         activity,
                         parent,
                         fragmentContainerViewId,
                         createSearchPreferenceFragments,
-                        locale);
+                        locale,
+                        actualConfiguration);
         continueWithPreferencePathNavigation.continueWithPreferencePathNavigation();
     }
 
@@ -92,6 +97,7 @@ public class ContinueWithPreferencePathNavigation<C> {
                                 preferencePathData,
                                 mergedPreferenceScreen.treeRepository(),
                                 locale,
+                                actualConfiguration,
                                 activity));
     }
 }
