@@ -15,7 +15,6 @@ public interface SearchablePreferenceScreenTreeCreator<C> extends TreeProcessor 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> createTree(
             Locale locale,
-            // FK-FIXME: für targetConfiguration wird manchmal null übergeben, was bei mir verboten ist.
             C targetConfiguration,
             FragmentActivity activityContext);
 }
