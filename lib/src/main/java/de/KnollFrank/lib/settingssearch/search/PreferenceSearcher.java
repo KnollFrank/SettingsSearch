@@ -48,6 +48,7 @@ class PreferenceSearcher<C> {
 
     private Set<SearchablePreferenceOfHostWithinTree> getHaystack(final Locale locale) {
         return this
+                // FK-FIXME: "actualConfiguration := null" is not allowed
                 .getPreferences(treeRepository.findTreeById(locale, null, activityContext))
                 .stream()
                 .filter(searchablePreferenceWithinGraph -> searchablePreferenceWithinGraph.searchablePreference().isVisible())
