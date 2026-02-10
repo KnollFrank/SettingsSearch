@@ -98,7 +98,8 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                         searchConfig.searchPreferenceFragmentUI,
                         onMergedPreferenceScreenAvailable,
                         locale,
-                        configuration),
+                        configuration,
+                        configurationBundleConverter),
                 searchPreferenceFragment -> {
                 },
                 true,

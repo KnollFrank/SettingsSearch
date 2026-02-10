@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory.createSomeConfiguration;
 import static de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners.emptyTreeBuilderListener;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER;
@@ -735,7 +736,11 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         fragmentActivity);
 
                         // When
-                        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword, locale);
+                        final Set<PreferenceMatch> preferenceMatches =
+                                preferenceSearcher.searchFor(
+                                        keyword,
+                                        locale,
+                                        createSomeConfiguration());
 
                         // Then
                         checkPreferenceMatches.accept(preferenceMatches);

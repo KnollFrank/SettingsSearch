@@ -16,8 +16,8 @@ class SearchAndDisplay<C> {
         this.searchResultsDisplayer = searchResultsDisplayer;
     }
 
-    public void searchForQueryAndDisplayResults(final String query, final Locale locale) {
-        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query, locale);
+    public void searchForQueryAndDisplayResults(final String query, final Locale locale, final C actualConfiguration) {
+        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query, locale, actualConfiguration);
         searchResultsDisplayer.displaySearchResults(preferenceMatches);
     }
 }

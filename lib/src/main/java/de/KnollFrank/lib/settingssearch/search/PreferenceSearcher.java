@@ -34,8 +34,8 @@ class PreferenceSearcher<C> {
         this.activityContext = activityContext;
     }
 
-    public Set<PreferenceMatch> searchFor(final String needle, final Locale locale) {
-        return searchFor(needle, getHaystack(locale));
+    public Set<PreferenceMatch> searchFor(final String needle, final Locale locale, final C actualConfiguration) {
+        return searchFor(needle, getHaystack(locale, actualConfiguration));
     }
 
     private Set<PreferenceMatch> searchFor(final String needle, final Set<SearchablePreferenceOfHostWithinTree> haystack) {
@@ -46,10 +46,9 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreferenceOfHostWithinTree> getHaystack(final Locale locale) {
+    private Set<SearchablePreferenceOfHostWithinTree> getHaystack(final Locale locale, final C actualConfiguration) {
         return this
-                // FK-FIXME: "actualConfiguration := null" is not allowed
-                .getPreferences(treeRepository.findTreeById(locale, null, activityContext))
+                .getPreferences(treeRepository.findTreeById(locale, actualConfiguration, activityContext))
                 .stream()
                 .filter(searchablePreferenceWithinGraph -> searchablePreferenceWithinGraph.searchablePreference().isVisible())
                 .filter(searchResultsFilter::includePreferenceInSearchResults)

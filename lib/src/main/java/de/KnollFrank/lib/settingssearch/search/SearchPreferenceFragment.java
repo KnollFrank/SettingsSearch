@@ -26,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -50,6 +51,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
     private final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable;
     private final Locale locale;
     private final PersistableBundle configuration;
+    private final ConfigurationBundleConverter<C> configurationBundleConverter;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<PreferencesDatabase<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask;
 
@@ -62,7 +64,8 @@ public class SearchPreferenceFragment<C> extends Fragment {
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
                                     final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable,
                                     final Locale locale,
-                                    final PersistableBundle configuration) {
+                                    final PersistableBundle configuration,
+                                    final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.queryHint = queryHint;
         this.searchResultsFilter = searchResultsFilter;
         this.preferenceMatcher = preferenceMatcher;
@@ -73,6 +76,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
         this.locale = locale;
         this.configuration = configuration;
+        this.configurationBundleConverter = configurationBundleConverter;
     }
 
     @Nullable
@@ -164,15 +168,21 @@ public class SearchPreferenceFragment<C> extends Fragment {
                                 preferenceMatcher,
                                 requireActivity()),
                         mergedPreferenceScreen.searchResultsDisplayer());
-        SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay, locale);
+        SearchViewConfigurer.configureSearchView(
+                searchView,
+                queryHint,
+                searchAndDisplay,
+                locale,
+                configurationBundleConverter.convertBackward(configuration));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
         searchPreferenceFragmentUI.onSearchReady(
                 getView(),
-                new SearchForQueryAndDisplayResultsCommand(
+                new SearchForQueryAndDisplayResultsCommand<>(
                         searchAndDisplay,
                         searchView,
-                        locale));
+                        locale,
+                        configurationBundleConverter.convertBackward(configuration)));
     }
 
     private void selectSearchView(final SearchView searchView) {
