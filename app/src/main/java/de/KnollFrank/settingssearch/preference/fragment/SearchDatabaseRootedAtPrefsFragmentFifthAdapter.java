@@ -13,6 +13,7 @@ import java.util.Locale;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
@@ -104,7 +105,11 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         treeToSearchIn.tree().graph().nodes(),
-                        "en-de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth Bundle[{some_string_extra=hello world, some_boolean_extra=true}]") // Strings.prefixIdWithLanguage(PrefsFragmentFifth.class.getName(), graphToSearchIn.locale()))
+                        Strings.prefixIdWithLanguage(
+                                String.format(
+                                        "%s Bundle[{some_string_extra=hello world, some_boolean_extra=true}]",
+                                        PrefsFragmentFifth.class.getName()),
+                                treeToSearchIn.locale()))
                 .orElseThrow();
     }
 
