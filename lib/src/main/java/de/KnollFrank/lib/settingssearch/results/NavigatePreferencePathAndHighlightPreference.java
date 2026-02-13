@@ -25,6 +25,7 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
         this.activity = activity;
     }
 
+    // FK-TODO: add unit test which tries to navigate a preferencePath to a non existing SearchablePreferenceOfHostWithinTree (because the search database is not synchronized with the app's reality)
     @Override
     public void navigatePreferencePathAndHighlightPreference(final PreferencePath preferencePath) {
         preferencePathNavigator
