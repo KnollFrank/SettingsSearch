@@ -6,6 +6,7 @@ import java.util.Optional;
 
 class OptionalConverter<T> implements Converter<Optional<T>, String> {
 
+    // FK-TODO: statt "__emptyOptional__" einfach null? Um wie viel kleiner wäre dann die OsmAnd-Suchdatenbank?
     private final static String EMPTY_OPTIONAL = "__emptyOptional__";
     private final Converter<T, String> delegate;
 
