@@ -6,8 +6,6 @@ import java.util.Optional;
 
 class OptionalConverter<T> implements Converter<Optional<T>, String> {
 
-    // FK-TODO: statt "__emptyOptional__" einfach null? Um wie viel kleiner wäre dann die OsmAnd-Suchdatenbank?
-    private final static String EMPTY_OPTIONAL = "__emptyOptional__";
     private final Converter<T, String> delegate;
 
     public OptionalConverter(final Converter<T, String> delegate) {
@@ -19,13 +17,13 @@ class OptionalConverter<T> implements Converter<Optional<T>, String> {
     public String convertForward(final Optional<T> value) {
         return value
                 .map(delegate::convertForward)
-                .orElse(EMPTY_OPTIONAL);
+                .orElse(null);
     }
 
     @TypeConverter
     @Override
     public Optional<T> convertBackward(final String string) {
-        return EMPTY_OPTIONAL.equals(string) ?
+        return string == null ?
                 Optional.empty() :
                 Optional.of(delegate.convertBackward(string));
     }
