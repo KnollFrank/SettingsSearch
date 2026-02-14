@@ -50,7 +50,7 @@ class PreferenceSearcher<C> {
         return this
                 .getPreferences(treeRepository.findTreeById(locale, actualConfiguration, activityContext))
                 .stream()
-                .filter(searchablePreferenceOfHostWithinTree -> searchablePreferenceOfHostWithinTree.searchablePreference().isVisible())
+                .filter(PreferenceSearcher::isVisible)
                 .filter(searchResultsFilter::includePreferenceInSearchResults)
                 .collect(Collectors.toSet());
     }
@@ -60,5 +60,9 @@ class PreferenceSearcher<C> {
                 .map(SearchablePreferenceScreenTree::tree)
                 .map(PojoTrees::getPreferences)
                 .orElseGet(Collections::emptySet);
+    }
+
+    private static boolean isVisible(final SearchablePreferenceOfHostWithinTree searchablePreferenceOfHostWithinTree) {
+        return searchablePreferenceOfHostWithinTree.searchablePreference().isVisible();
     }
 }
