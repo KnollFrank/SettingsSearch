@@ -50,7 +50,7 @@ class PreferenceSearcher<C> {
         return this
                 .getPreferences(treeRepository.findTreeById(locale, actualConfiguration, activityContext))
                 .stream()
-                .filter(searchablePreferenceWithinGraph -> searchablePreferenceWithinGraph.searchablePreference().isVisible())
+                .filter(searchablePreferenceOfHostWithinTree -> searchablePreferenceOfHostWithinTree.searchablePreference().isVisible())
                 .filter(searchResultsFilter::includePreferenceInSearchResults)
                 .collect(Collectors.toSet());
     }
