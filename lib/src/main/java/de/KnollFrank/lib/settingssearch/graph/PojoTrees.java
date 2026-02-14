@@ -18,16 +18,16 @@ public class PojoTrees {
     }
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
+    public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
         return getPreferences(
-                pojoGraph
+                tree
                         .graph()
                         .nodes()
                         .stream()
                         .map(searchablePreferenceScreen ->
                                 new SearchablePreferenceScreenWithinTree(
                                         searchablePreferenceScreen,
-                                        pojoGraph))
+                                        tree))
                         .collect(Collectors.toSet()));
     }
 

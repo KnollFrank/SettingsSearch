@@ -55,8 +55,8 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenTree<PersistableBundle>> graph) {
-        return graph
+    private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenTree<PersistableBundle>> tree) {
+        return tree
                 .map(SearchablePreferenceScreenTree::tree)
                 .map(PojoTrees::getPreferences)
                 .orElseGet(Collections::emptySet);
