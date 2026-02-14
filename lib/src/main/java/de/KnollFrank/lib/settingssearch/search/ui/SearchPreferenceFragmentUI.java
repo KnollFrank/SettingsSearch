@@ -19,5 +19,5 @@ public interface SearchPreferenceFragmentUI {
 
     ProgressContainerUI getProgressContainerUI(View rootView);
 
-    void onSearchReady(View rootView, SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand);
+    void onSearchReady(View rootView, SearchForQueryAndDisplayResultsCommand<?> searchForQueryAndDisplayResultsCommand);
 }

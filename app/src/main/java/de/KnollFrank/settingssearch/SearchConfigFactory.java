@@ -70,13 +70,13 @@ class SearchConfigFactory {
                             }
 
                             @Override
-                            public void onSearchReady(final View rootView, final SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand) {
+                            public void onSearchReady(final View rootView, final SearchForQueryAndDisplayResultsCommand<?> searchForQueryAndDisplayResultsCommand) {
                                 configureCheckbox(
                                         rootView.findViewById(R.id.ignoreSearchResultsCheckBox),
                                         searchForQueryAndDisplayResultsCommand);
                             }
 
-                            private void configureCheckbox(final CheckBox ignoreSearchResultsCheckBox, final SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand) {
+                            private void configureCheckbox(final CheckBox ignoreSearchResultsCheckBox, final SearchForQueryAndDisplayResultsCommand<?> searchForQueryAndDisplayResultsCommand) {
                                 ignoreSearchResultsCheckBox.setChecked(ignoreSearchResultsFilter.isIgnoreSearchResults());
                                 ignoreSearchResultsCheckBox.setOnCheckedChangeListener(
                                         (_checkBox, isChecked) -> {

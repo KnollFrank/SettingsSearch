@@ -18,7 +18,7 @@ public class DefaultSearchPreferenceFragmentUI implements SearchPreferenceFragme
     }
 
     @Override
-    public void onSearchReady(final View rootView, final SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand) {
+    public void onSearchReady(final View rootView, final SearchForQueryAndDisplayResultsCommand<?> searchForQueryAndDisplayResultsCommand) {
     }
 
     @Override
