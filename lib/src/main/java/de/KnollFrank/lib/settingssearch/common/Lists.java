@@ -67,7 +67,10 @@ public class Lists {
         return IntStream
                 .range(0, elements.size() - 1)
                 .mapToObj(index -> Pair.create(index, index + 1))
-                .map(consecutiveIndexPair -> Pair.create(elements.get(consecutiveIndexPair.first), elements.get(consecutiveIndexPair.second)))
+                .map(consecutiveIndexPair ->
+                             Pair.create(
+                                     elements.get(consecutiveIndexPair.first),
+                                     elements.get(consecutiveIndexPair.second)))
                 .toList();
     }
 }
