@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescriptionEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ActivityClassConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LazyPersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
@@ -20,7 +21,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIn
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassOfActivityConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorClassConverter;
 import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
@@ -36,14 +36,14 @@ import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 @TypeConverters(
         {
                 PreferenceFragmentClassConverter.class,
+                ActivityClassConverter.class,
                 OptionalEitherIntegerOrStringConverter.class,
                 OptionalStringConverter.class,
                 OptionalIntegerConverter.class,
                 LocaleConverter.class,
                 PersistableBundleConverter.class,
                 LazyPersistableBundleConverter.class,
-                TreeProcessorClassConverter.class,
-                PreferenceFragmentClassOfActivityConverter.class
+                TreeProcessorClassConverter.class
         })
 public abstract class PreferencesRoomDatabase extends RoomDatabase {
 

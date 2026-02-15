@@ -22,7 +22,7 @@ public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConvert
         final Set<SearchablePreferenceEntity> searchablePreferenceEntities = entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider);
         return new SearchablePreferenceScreen(
                 entity.id(),
-                entity.host(),
+                entity.host().asFragmentClassOfActivity(),
                 entity.title(),
                 entity.summary(),
                 preferenceConverter.fromEntities(searchablePreferenceEntities));

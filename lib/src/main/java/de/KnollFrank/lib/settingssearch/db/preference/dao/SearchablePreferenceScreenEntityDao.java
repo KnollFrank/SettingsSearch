@@ -104,7 +104,9 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
 
     @Query("SELECT " +
             "screen.id AS " + SCREEN_PREFIX + "id, " +
-            "screen.host AS " + SCREEN_PREFIX + "host, " +
+            "screen.host_preferenceFragment AS " + SCREEN_PREFIX + "host_preferenceFragment, " +
+            "screen.host_activity AS " + SCREEN_PREFIX + "host_activity, " +
+            "screen.host_arguments AS " + SCREEN_PREFIX + "host_arguments, " +
             "screen.title AS " + SCREEN_PREFIX + "title, " +
             "screen.summary AS " + SCREEN_PREFIX + "summary, " +
             "screen.graphId AS " + SCREEN_PREFIX + "graphId, " +
