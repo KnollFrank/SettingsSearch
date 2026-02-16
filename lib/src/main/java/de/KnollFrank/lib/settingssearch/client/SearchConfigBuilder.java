@@ -33,7 +33,7 @@ public class SearchConfigBuilder {
     private PrepareShow prepareShow = fragment -> {
     };
     private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
-    private SearchResultsFilter searchResultsFilter = preference -> true;
+    private SearchResultsFilter searchResultsFilter = (preference, locale) -> true;
     private SearchResultsSorter searchResultsSorter;
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();

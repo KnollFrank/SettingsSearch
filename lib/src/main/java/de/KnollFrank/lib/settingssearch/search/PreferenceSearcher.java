@@ -51,7 +51,7 @@ class PreferenceSearcher<C> {
                 .getPreferences(treeRepository.findTreeById(locale, actualConfiguration, activityContext))
                 .stream()
                 .filter(PreferenceSearcher::isVisible)
-                .filter(searchResultsFilter::includePreferenceInSearchResults)
+                .filter(preference -> searchResultsFilter.includePreferenceInSearchResults(preference, locale))
                 .collect(Collectors.toSet());
     }
 

@@ -67,7 +67,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
         PreferenceSearcherTest.testSearch(
                 nonPreferenceFragment,
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),

@@ -116,7 +116,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -147,7 +147,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final Locale locale) {
                         return keyOfPreferenceToIncludeInSearchResults.equals(preference.searchablePreference().getKey()) &&
                                 preferenceFragment.getClass().equals(preference.hostOfPreference().host().fragment());
                     }
@@ -182,7 +182,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final Locale locale) {
                         return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.hostOfPreference().host().fragment()));
                     }
                 },
@@ -211,7 +211,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -242,7 +242,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             category.addPreference(nestedPreference);
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -268,7 +268,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> !(preference instanceof CheckBoxPreference && keyOfPreference.equals(preference.getKey())),
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -294,7 +294,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -323,7 +323,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -353,7 +353,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -381,7 +381,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 summaryOff,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -409,7 +409,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 summaryOn,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -438,7 +438,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -465,7 +465,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -503,7 +503,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             }
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -523,7 +523,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         testSearch(
                 new PrefsFragmentFirst(),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -543,7 +543,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         testSearch(
                 new PrefsFragmentFirst(),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -563,7 +563,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         testSearch(
                 new PrefsFragmentFirst(),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -583,7 +583,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         testSearch(
                 new PrefsFragmentFirst(),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -612,7 +612,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -642,7 +642,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -669,7 +669,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                preference -> true,
+                (preference, locale) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
