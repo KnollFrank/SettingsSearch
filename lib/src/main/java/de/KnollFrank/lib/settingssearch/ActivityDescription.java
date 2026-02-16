@@ -7,7 +7,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.ActivityDescriptionSu
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.LazyPersistableBundleFactory;
 
 public record ActivityDescription(Class<? extends Activity> activity,
-                                  // FK-TODO: change to Optional<PersistableBundle>
                                   PersistableBundle arguments) {
 
     public ActivityDescriptionSurrogate asActivityDescriptionSurrogate() {
