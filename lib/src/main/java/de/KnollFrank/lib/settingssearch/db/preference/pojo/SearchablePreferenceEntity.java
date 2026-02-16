@@ -22,7 +22,6 @@ public record SearchablePreferenceEntity(@PrimaryKey @NonNull String id,
                                          Optional<String> fragment,
                                          Optional<String> classNameOfReferencedActivity,
                                          boolean visible,
-                                         // FK-TODO: change to Optional<LazyPersistableBundle>
                                          LazyPersistableBundle extras,
                                          Optional<String> searchableInfo,
                                          Optional<String> parentId,

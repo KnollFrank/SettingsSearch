@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.PersistableBundle;
 
+import androidx.annotation.Nullable;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
@@ -10,10 +12,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Persistabl
 
 public class LazyPersistableBundle {
 
+    @Nullable
     private final String xmlString;
     private Optional<PersistableBundle> bundleCache = Optional.empty();
 
-    public LazyPersistableBundle(final String xmlString) {
+    public LazyPersistableBundle(@Nullable final String xmlString) {
         this.xmlString = xmlString;
     }
 
@@ -24,6 +27,7 @@ public class LazyPersistableBundle {
         return bundleCache.orElseThrow();
     }
 
+    @Nullable
     public String getXmlString() {
         return xmlString;
     }
