@@ -14,7 +14,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceFragmentClassOfActivitySurrogate;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -43,9 +42,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
             final Locale graphId) {
         return new SearchablePreferenceScreenEntity(
                 screenToConvertToEntity.id(),
-                new PreferenceFragmentClassOfActivitySurrogate(
-                        screenToConvertToEntity.host().fragment(),
-                        screenToConvertToEntity.host().activityOfFragment()),
+                screenToConvertToEntity.host().asPreferenceFragmentClassOfActivitySurrogate(),
                 screenToConvertToEntity.title(),
                 screenToConvertToEntity.summary(),
                 graphId);
