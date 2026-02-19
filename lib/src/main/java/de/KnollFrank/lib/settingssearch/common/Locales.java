@@ -9,6 +9,7 @@ public class Locales {
     private Locales() {
     }
 
+    // FK-TODO: für LanguageLocale eine neue Klasse einführen.
     public static Locale getLanguageLocale(final Locale locale) {
         return new Locale(locale.getLanguage());
     }
