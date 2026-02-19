@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.common;
 import java.util.Locale;
 import java.util.Set;
 
-// FK-TODO: unit test, dass z.B. LanguageCode.from("he").equals(LanguageCode.from("iw")) gilt
 public record LanguageCode(String code) {
 
     private static final Set<String> ISO_LANGUAGES = Set.of(Locale.getISOLanguages());
