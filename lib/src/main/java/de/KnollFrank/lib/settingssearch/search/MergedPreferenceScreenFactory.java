@@ -9,11 +9,11 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
-import java.util.Locale;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
@@ -45,7 +45,7 @@ public class MergedPreferenceScreenFactory<C> {
     private final FragmentFactory fragmentFactory;
     private final MarkupsFactory markupsFactory;
     private final FragmentActivity activity;
-    private final Locale locale;
+    private final LanguageCode languageCode;
     private final OnUiThreadRunner onUiThreadRunner;
     private final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
@@ -63,7 +63,7 @@ public class MergedPreferenceScreenFactory<C> {
             final FragmentFactory fragmentFactory,
             final MarkupsFactory markupsFactory,
             final FragmentActivity activity,
-            final Locale locale,
+            final LanguageCode languageCode,
             final OnUiThreadRunner onUiThreadRunner,
             final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider,
             final SearchResultsFragmentUI searchResultsFragmentUI,
@@ -79,7 +79,7 @@ public class MergedPreferenceScreenFactory<C> {
         this.fragmentFactory = fragmentFactory;
         this.markupsFactory = markupsFactory;
         this.activity = activity;
-        this.locale = locale;
+        this.languageCode = languageCode;
         this.onUiThreadRunner = onUiThreadRunner;
         this.mergedPreferenceScreenDataRepositoryProvider = mergedPreferenceScreenDataRepositoryProvider;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
@@ -120,7 +120,7 @@ public class MergedPreferenceScreenFactory<C> {
                         preferencesDatabase,
                         progressUpdateListener,
                         instantiateAndInitializeFragment)
-                .fillSearchDatabaseWithPreferences(locale, configuration);
+                .fillSearchDatabaseWithPreferences(languageCode, configuration);
         return createMergedPreferenceScreen(
                 prepareShow,
                 showPreferencePathPredicate,

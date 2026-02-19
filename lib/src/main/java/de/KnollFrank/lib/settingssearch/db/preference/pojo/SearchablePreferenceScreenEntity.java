@@ -5,17 +5,18 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 
 @Entity
 public record SearchablePreferenceScreenEntity(@PrimaryKey @NonNull String id,
                                                @Embedded(prefix = "host_") PreferenceFragmentClassOfActivitySurrogate host,
                                                Optional<String> title,
                                                Optional<String> summary,
-                                               Locale graphId) {
+                                               LanguageCode graphId) {
 
     public interface DbDataProvider {
 

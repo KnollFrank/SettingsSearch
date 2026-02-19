@@ -7,6 +7,7 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
@@ -71,7 +72,7 @@ public class CreateSearchDatabaseTaskProvider {
                         preferencesDatabase,
                         progressUpdateListener)
                 .fillSearchDatabaseWithPreferences(
-                        Locales.getCurrentLanguageLocale(activity.getResources()),
+                        LanguageCode.from(Locales.getCurrentLocale(activity.getResources())),
                         configuration);
     }
 }

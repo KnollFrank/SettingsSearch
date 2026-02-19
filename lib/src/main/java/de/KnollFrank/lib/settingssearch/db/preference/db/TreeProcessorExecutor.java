@@ -83,7 +83,7 @@ class TreeProcessorExecutor<C> {
                 final SearchablePreferenceScreenTree<PersistableBundle> tree) {
             return new SearchablePreferenceScreenTree<>(
                     _applyTreeProcessorToTree(treeProcessor, tree),
-                    tree.locale(),
+                    tree.languageCode(),
                     configurationBundleConverter.convertForward(configuration));
         }
 
@@ -94,7 +94,7 @@ class TreeProcessorExecutor<C> {
             return treeProcessor.join(
                     treeCreator ->
                             treeCreator.createTree(
-                                    tree.locale(),
+                                    tree.languageCode(),
                                     configuration,
                                     activityContext),
                     treeTransformer ->

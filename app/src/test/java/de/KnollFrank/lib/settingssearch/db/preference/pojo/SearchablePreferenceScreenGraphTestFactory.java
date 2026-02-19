@@ -9,13 +9,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -51,7 +51,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
     }
 
     public static Trees createSingleNodeGraph(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> host,
-                                              final Locale locale,
+                                              final LanguageCode languageCode,
                                               final Data data) {
         final String screenId = data.singleNodeScreenId();
         final SearchablePreferenceEntity preferenceConnectingSrcToDst =
@@ -88,7 +88,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Set.of());
         final SearchablePreferenceScreenTreeEntity treeEntity =
                 new SearchablePreferenceScreenTreeEntity(
-                        locale,
+                        languageCode,
                         PersistableBundleTestFactory.createSomePersistableBundle());
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
@@ -128,7 +128,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
     }
 
     public static Trees createGraph(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> host,
-                                    final Locale locale,
+                                    final LanguageCode languageCode,
                                     final Data data) {
         final String screenId = data.twoNodeScreen1Id();
         final Class<? extends Fragment> fragment = PreferenceFragmentWithSinglePreference.class;
@@ -166,7 +166,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Set.of());
         final SearchablePreferenceScreenTreeEntity treeEntity =
                 new SearchablePreferenceScreenTreeEntity(
-                        locale,
+                        languageCode,
                         PersistableBundleTestFactory.createSomePersistableBundle());
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
@@ -221,7 +221,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
             final SearchablePreferenceEntity preferenceConnectingSrcToDst,
             final SearchablePreference preferencePojoConnectingSrcToDst,
             final FragmentClassOfActivity<? extends PreferenceFragmentCompat> host,
-            final Locale graphId,
+            final LanguageCode graphId,
             final Data data) {
         final SearchablePreferenceEntity parent =
                 new SearchablePreferenceEntity(
@@ -367,7 +367,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
 
     private static Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> createDst(
             final SearchablePreferenceEntity predecessor,
-            final Locale graphId,
+            final LanguageCode graphId,
             final Data data) {
         final String screenId = data.twoNodeScreen2Id();
         final SearchablePreferenceEntity searchablePreference =

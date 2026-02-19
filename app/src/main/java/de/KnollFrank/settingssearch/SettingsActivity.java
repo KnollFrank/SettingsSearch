@@ -22,6 +22,7 @@ import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -62,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                Locales.getCurrentLanguageLocale(getResources()),
+                LanguageCode.from(Locales.getCurrentLocale(getResources())),
                 ConfigurationProvider.getActualConfiguration(this));
     }
 

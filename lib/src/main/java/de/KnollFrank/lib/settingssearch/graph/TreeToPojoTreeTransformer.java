@@ -4,10 +4,9 @@ import androidx.preference.Preference;
 
 import com.google.common.graph.ImmutableValueGraph;
 
-import java.util.Locale;
-
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformerAlgorithm;
@@ -29,15 +28,15 @@ public class TreeToPojoTreeTransformer {
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public Tree<SearchablePreferenceScreenWithMap, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreenWithMap, SearchablePreference>> transformTreeToPojoTree(
             final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> preferenceScreenGraph,
-            final Locale locale) {
+            final LanguageCode languageCode) {
         return TreeTransformerAlgorithm.transform(
                 preferenceScreenGraph,
-                createTreeTransformer(locale));
+                createTreeTransformer(languageCode));
     }
 
     private TreeTransformer<PreferenceScreenOfHostOfActivity, Preference, SearchablePreferenceScreenWithMap, SearchablePreference> createTreeTransformer(
-            final Locale locale) {
-        final PreferenceFragmentIdProvider preferenceFragmentIdProvider = createPreferenceFragmentUniqueLocalizedIdProvider(locale);
+            final LanguageCode languageCode) {
+        final PreferenceFragmentIdProvider preferenceFragmentIdProvider = createPreferenceFragmentUniqueLocalizedIdProvider(languageCode);
         return new TreeTransformer<>() {
 
             @Override
@@ -75,9 +74,9 @@ public class TreeToPojoTreeTransformer {
         };
     }
 
-    private PreferenceFragmentLocalizedIdProvider createPreferenceFragmentUniqueLocalizedIdProvider(final Locale locale) {
+    private PreferenceFragmentLocalizedIdProvider createPreferenceFragmentUniqueLocalizedIdProvider(final LanguageCode languageCode) {
         return new PreferenceFragmentLocalizedIdProvider(
-                locale,
+                languageCode,
                 new UniqueIdCheckingPreferenceFragmentIdProvider(preferenceFragmentIdProvider));
     }
 }

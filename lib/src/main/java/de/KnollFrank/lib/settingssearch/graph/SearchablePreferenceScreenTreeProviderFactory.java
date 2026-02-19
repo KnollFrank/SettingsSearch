@@ -9,11 +9,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
-import java.util.Locale;
-
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverterFactory;
@@ -31,7 +30,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final Fragment fragment,
             final @IdRes int containerViewId,
             final SearchDatabaseConfig<?> searchDatabaseConfig,
-            final Locale locale,
+            final LanguageCode languageCode,
             final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate) {
         return createSearchablePreferenceScreenTreeProvider(
                 containerViewId,
@@ -40,7 +39,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                 fragment.getChildFragmentManager(),
                 fragment.requireContext(),
                 searchDatabaseConfig,
-                locale,
+                languageCode,
                 addEdgeToTreePredicate);
     }
 
@@ -51,7 +50,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final FragmentManager childFragmentManager,
             final Context context,
             final SearchDatabaseConfig<?> searchDatabaseConfig,
-            final Locale locale,
+            final LanguageCode languageCode,
             final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,
@@ -79,6 +78,6 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                         addEdgeToTreePredicate,
                         searchDatabaseConfig.preferenceScreenTreeBuilderListener,
                         context),
-                locale);
+                languageCode);
     }
 }

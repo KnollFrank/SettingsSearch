@@ -7,11 +7,11 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
@@ -36,7 +36,7 @@ public abstract class SearchablePreferenceScreenTreeEntityDao implements Searcha
         return removedDatabaseState.combine(persistedDatabaseState);
     }
 
-    public Optional<TreeAndDbDataProvider> findTreeById(final Locale id) {
+    public Optional<TreeAndDbDataProvider> findTreeById(final LanguageCode id) {
         return this
                 ._findTreeById(id)
                 .map(this::createTreeAndDbDataProvider);
@@ -73,7 +73,7 @@ public abstract class SearchablePreferenceScreenTreeEntityDao implements Searcha
     protected abstract int removeAllAndReturnNumberOfDeletedRows();
 
     @Query("SELECT * FROM SearchablePreferenceScreenTreeEntity WHERE id = :id")
-    protected abstract Optional<SearchablePreferenceScreenTreeEntity> _findTreeById(Locale id);
+    protected abstract Optional<SearchablePreferenceScreenTreeEntity> _findTreeById(LanguageCode id);
 
     @Query("SELECT * FROM SearchablePreferenceScreenTreeEntity")
     protected abstract List<SearchablePreferenceScreenTreeEntity> _loadAll();

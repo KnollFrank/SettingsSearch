@@ -12,9 +12,8 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Locale;
-
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
@@ -108,7 +107,7 @@ class SearchConfigFactory {
         private boolean ignoreSearchResults = false;
 
         @Override
-        public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final Locale locale) {
+        public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final LanguageCode languageCode) {
             return !ignoreSearchResults;
         }
 

@@ -8,11 +8,11 @@ import com.codepoetics.ambivalence.Either;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDao;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
@@ -51,7 +51,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
         return treeProcessorManager.getTreeProcessors();
     }
 
-    public Optional<SearchablePreferenceScreenTree<PersistableBundle>> findTreeById(final Locale id,
+    public Optional<SearchablePreferenceScreenTree<PersistableBundle>> findTreeById(final LanguageCode id,
                                                                                     final C actualConfiguration,
                                                                                     final FragmentActivity activityContext) {
         updateSearchDatabase(actualConfiguration, activityContext);

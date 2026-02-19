@@ -2,29 +2,29 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import android.widget.SearchView;
 
-import java.util.Locale;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 
 public class SearchForQueryAndDisplayResultsCommand<C> {
 
     private final SearchAndDisplay<C> searchAndDisplay;
     private final SearchView searchView;
-    private final Locale locale;
+    private final LanguageCode languageCode;
     private final C actualConfiguration;
 
     public SearchForQueryAndDisplayResultsCommand(final SearchAndDisplay<C> searchAndDisplay,
                                                   final SearchView searchView,
-                                                  final Locale locale,
+                                                  final LanguageCode languageCode,
                                                   final C actualConfiguration) {
         this.searchAndDisplay = searchAndDisplay;
         this.searchView = searchView;
-        this.locale = locale;
+        this.languageCode = languageCode;
         this.actualConfiguration = actualConfiguration;
     }
 
     public void searchForQueryAndDisplayResults() {
         searchAndDisplay.searchForQueryAndDisplayResults(
                 searchView.getQuery().toString(),
-                locale,
+                languageCode,
                 actualConfiguration);
     }
 }

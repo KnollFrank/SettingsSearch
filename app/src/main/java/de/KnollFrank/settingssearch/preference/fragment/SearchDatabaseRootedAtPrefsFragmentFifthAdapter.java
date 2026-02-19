@@ -8,11 +8,10 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.common.graph.ImmutableValueGraph;
 
-import java.util.Locale;
-
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
@@ -77,7 +76,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                                 searchablePreferenceScreenTree.tree(),
                                 createTreePathInstantiator(searchDatabaseConfig, activityContext),
                                 onUiThreadRunner),
-                        searchablePreferenceScreenTree.locale(),
+                        searchablePreferenceScreenTree.languageCode(),
                         activityContext,
                         searchDatabaseConfig));
     }
@@ -85,7 +84,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getPojoGraphRootedAt(
             final PreferenceScreenOfHostOfActivity root,
-            final Locale locale,
+            final LanguageCode languageCode,
             final FragmentActivity activityContext,
             final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
         return SearchablePreferenceScreenTreeProviderFactory
@@ -96,7 +95,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                         activityContext.getSupportFragmentManager(),
                         activityContext,
                         searchDatabaseConfig,
-                        locale,
+                        languageCode,
                         edge -> true)
                 .getSearchablePreferenceScreenTree(root);
     }
@@ -109,7 +108,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                                 String.format(
                                         "%s Bundle[{some_string_extra=hello world, some_boolean_extra=true}]",
                                         PrefsFragmentFifth.class.getName()),
-                                treeToSearchIn.locale()))
+                                treeToSearchIn.languageCode()))
                 .orElseThrow();
     }
 

@@ -3,12 +3,12 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import android.os.PersistableBundle;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
@@ -16,7 +16,7 @@ public class SearchablePreferenceScreenTreeDao {
 
     private final EntityTreePojoTreeConverter entityTreePojoTreeConverter;
     private final SearchablePreferenceScreenTreeEntityDao delegate;
-    private final Map<Locale, Optional<SearchablePreferenceScreenTree<PersistableBundle>>> treeById = new HashMap<>();
+    private final Map<LanguageCode, Optional<SearchablePreferenceScreenTree<PersistableBundle>>> treeById = new HashMap<>();
 
     public SearchablePreferenceScreenTreeDao(final EntityTreePojoTreeConverter entityTreePojoTreeConverter,
                                              final SearchablePreferenceScreenTreeEntityDao delegate) {
@@ -26,10 +26,10 @@ public class SearchablePreferenceScreenTreeDao {
 
     public void persistOrReplace(final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTree) {
         delegate.persistOrReplace(entityTreePojoTreeConverter.convertBackward(searchablePreferenceScreenTree));
-        treeById.put(searchablePreferenceScreenTree.locale(), Optional.of(searchablePreferenceScreenTree));
+        treeById.put(searchablePreferenceScreenTree.languageCode(), Optional.of(searchablePreferenceScreenTree));
     }
 
-    public Optional<SearchablePreferenceScreenTree<PersistableBundle>> findTreeById(final Locale id) {
+    public Optional<SearchablePreferenceScreenTree<PersistableBundle>> findTreeById(final LanguageCode id) {
         if (!treeById.containsKey(id)) {
             treeById.put(id, _findTreeById(id));
         }
@@ -49,7 +49,7 @@ public class SearchablePreferenceScreenTreeDao {
         }
     }
 
-    private Optional<SearchablePreferenceScreenTree<PersistableBundle>> _findTreeById(final Locale id) {
+    private Optional<SearchablePreferenceScreenTree<PersistableBundle>> _findTreeById(final LanguageCode id) {
         return delegate
                 .findTreeById(id)
                 .map(entityTreePojoTreeConverter::convertForward);
@@ -65,7 +65,7 @@ public class SearchablePreferenceScreenTreeDao {
 
     private void cache(final Set<SearchablePreferenceScreenTree<PersistableBundle>> graphs) {
         for (final SearchablePreferenceScreenTree<PersistableBundle> graph : graphs) {
-            treeById.put(graph.locale(), Optional.of(graph));
+            treeById.put(graph.languageCode(), Optional.of(graph));
         }
     }
 

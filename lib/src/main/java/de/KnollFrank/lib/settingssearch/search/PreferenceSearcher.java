@@ -5,11 +5,11 @@ import android.os.PersistableBundle;
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
@@ -34,11 +34,14 @@ class PreferenceSearcher<C> {
         this.activityContext = activityContext;
     }
 
-    public Set<PreferenceMatch> searchFor(final String needle, final Locale locale, final C actualConfiguration) {
-        return searchFor(needle, getHaystack(locale, actualConfiguration));
+    public Set<PreferenceMatch> searchFor(final String needle,
+                                          final LanguageCode languageCode,
+                                          final C actualConfiguration) {
+        return searchFor(needle, getHaystack(languageCode, actualConfiguration));
     }
 
-    private Set<PreferenceMatch> searchFor(final String needle, final Set<SearchablePreferenceOfHostWithinTree> haystack) {
+    private Set<PreferenceMatch> searchFor(final String needle,
+                                           final Set<SearchablePreferenceOfHostWithinTree> haystack) {
         return haystack
                 .stream()
                 .map(searchablePreference -> preferenceMatcher.getPreferenceMatch(searchablePreference, needle))
@@ -46,12 +49,13 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreferenceOfHostWithinTree> getHaystack(final Locale locale, final C actualConfiguration) {
+    private Set<SearchablePreferenceOfHostWithinTree> getHaystack(final LanguageCode languageCode,
+                                                                  final C actualConfiguration) {
         return this
-                .getPreferences(treeRepository.findTreeById(locale, actualConfiguration, activityContext))
+                .getPreferences(treeRepository.findTreeById(languageCode, actualConfiguration, activityContext))
                 .stream()
                 .filter(PreferenceSearcher::isVisible)
-                .filter(preference -> searchResultsFilter.includePreferenceInSearchResults(preference, locale))
+                .filter(preference -> searchResultsFilter.includePreferenceInSearchResults(preference, languageCode))
                 .collect(Collectors.toSet());
     }
 

@@ -2,13 +2,13 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import com.google.common.collect.ImmutableSet;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderDatas;
@@ -27,7 +27,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
     public static DetachedSearchablePreferenceScreenEntity toEntity(
             final SearchablePreferenceScreen screenToConvertToEntity,
             final Optional<SearchablePreferenceEntity> predecessorEntity,
-            final Locale graphId) {
+            final LanguageCode graphId) {
         final SearchablePreferenceScreenEntity entity = toEntity(screenToConvertToEntity, graphId);
         return new DetachedSearchablePreferenceScreenEntity(
                 entity,
@@ -39,7 +39,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
 
     private static SearchablePreferenceScreenEntity toEntity(
             final SearchablePreferenceScreen screenToConvertToEntity,
-            final Locale graphId) {
+            final LanguageCode graphId) {
         return new SearchablePreferenceScreenEntity(
                 screenToConvertToEntity.id(),
                 screenToConvertToEntity.host().asPreferenceFragmentClassOfActivitySurrogate(),

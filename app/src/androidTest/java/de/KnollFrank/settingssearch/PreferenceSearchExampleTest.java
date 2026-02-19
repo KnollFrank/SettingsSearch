@@ -51,6 +51,7 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
@@ -420,7 +421,11 @@ public class PreferenceSearchExampleTest {
                 .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
                 .commit();
         try (final ActivityScenario<LocalePreferenceSearchExample> scenario = ActivityScenario.launch(LocalePreferenceSearchExample.class)) {
-            scenario.onActivity(activity -> LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase()));
+            scenario.onActivity(
+                    activity -> {
+                        final Locale locale = new Locale(getSomeLanguageCodeFromPrepackagedDatabase().code());
+                        LocalePreferenceSearchExample.setLocale(locale);
+                    });
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             if (shallFindAdditionalPreference) {
@@ -431,7 +436,7 @@ public class PreferenceSearchExampleTest {
         }
     }
 
-    private static Locale getSomeLocaleFromPrepackagedDatabase() {
+    private static LanguageCode getSomeLanguageCodeFromPrepackagedDatabase() {
         final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
         final PreferencesRoomDatabase preferencesRoomDatabase =
                 getPreferencesRoomDatabase(
@@ -440,16 +445,16 @@ public class PreferenceSearchExampleTest {
                                 .prepackagedPreferencesDatabase()
                                 .orElseThrow()
                                 .databaseAssetFile());
-        final Locale locale =
+        final LanguageCode languageCode =
                 preferencesRoomDatabase
                         .searchablePreferenceScreenTreeDao()
                         .loadAll()
                         .stream()
                         .findAny()
                         .orElseThrow()
-                        .locale();
+                        .languageCode();
         preferencesRoomDatabase.close();
-        return locale;
+        return languageCode;
     }
 
     private static PreferencesRoomDatabase getPreferencesRoomDatabase(final String databaseFileName,

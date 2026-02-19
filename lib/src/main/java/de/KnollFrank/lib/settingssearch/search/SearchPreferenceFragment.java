@@ -14,13 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListenersAndProgressContainer;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
@@ -49,7 +49,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier;
     private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
     private final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable;
-    private final Locale locale;
+    private final LanguageCode languageCode;
     private final PersistableBundle configuration;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
@@ -63,7 +63,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
                                     final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier,
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
                                     final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable,
-                                    final Locale locale,
+                                    final LanguageCode languageCode,
                                     final PersistableBundle configuration,
                                     final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.queryHint = queryHint;
@@ -74,7 +74,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
-        this.locale = locale;
+        this.languageCode = languageCode;
         this.configuration = configuration;
         this.configurationBundleConverter = configurationBundleConverter;
     }
@@ -172,7 +172,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
                 searchView,
                 queryHint,
                 searchAndDisplay,
-                locale,
+                languageCode,
                 configurationBundleConverter.convertBackward(configuration));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
@@ -181,7 +181,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
                 new SearchForQueryAndDisplayResultsCommand<>(
                         searchAndDisplay,
                         searchView,
-                        locale,
+                        languageCode,
                         configurationBundleConverter.convertBackward(configuration)));
     }
 

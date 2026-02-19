@@ -22,7 +22,7 @@ public class EntityTreePojoTreeConverter implements Converter<TreeAndDbDataProvi
     public TreeAndDbDataProvider convertBackward(final SearchablePreferenceScreenTree<PersistableBundle> pojoTree) {
         return PojoGraphToEntityGraphTransformer.toEntityGraph(
                 pojoTree.tree(),
-                pojoTree.locale(),
+                pojoTree.languageCode(),
                 pojoTree.configuration());
     }
 }

@@ -10,12 +10,12 @@ import androidx.room.Transaction;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
@@ -52,7 +52,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
         return databaseState;
     }
 
-    public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByGraphId(final Locale graphId) {
+    public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByGraphId(final LanguageCode graphId) {
         // FK-TODO: add cache? -> Ja, das wäre eine gute Idee für eine weitere Optimierung.
         return new HashSet<>(_findSearchablePreferenceScreensByGraphId(graphId));
     }
@@ -97,7 +97,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
     protected abstract int removeByIdsInBatchAndReturnNumberOfDeletedRows(Set<String> ids);
 
     @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE graphId = :graphId")
-    protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
+    protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final LanguageCode graphId);
 
     @Insert
     protected abstract /* List<Long> degrades performance */ void persistInBatch(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);

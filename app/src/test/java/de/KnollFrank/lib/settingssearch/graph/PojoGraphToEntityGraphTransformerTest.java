@@ -12,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -28,7 +29,7 @@ public class PojoGraphToEntityGraphTransformerTest {
         final Trees trees =
                 createSingleNodeGraph(
                         createSomePreferenceFragmentClassOfActivity(),
-                        Locale.GERMAN,
+                        LanguageCode.from(Locale.GERMAN),
                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                 "5",
                                 "4",
@@ -49,7 +50,7 @@ public class PojoGraphToEntityGraphTransformerTest {
         final Trees trees =
                 createGraph(
                         createSomePreferenceFragmentClassOfActivity(),
-                        Locale.GERMAN,
+                        LanguageCode.from(Locale.GERMAN),
                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                 "5",
                                 "4",
@@ -71,7 +72,7 @@ public class PojoGraphToEntityGraphTransformerTest {
         final TreeAndDbDataProvider entityTreeAndDbDataProviderActual =
                 PojoGraphToEntityGraphTransformer.toEntityGraph(
                         pojoGraph,
-                        Locale.GERMAN,
+                        LanguageCode.from(Locale.GERMAN),
                         PersistableBundleTestFactory.createSomePersistableBundle());
 
         // Then

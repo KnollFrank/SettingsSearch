@@ -6,11 +6,11 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.common.graph.ImmutableValueGraph;
 
-import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
@@ -35,7 +35,7 @@ public class MergedPreferenceScreenDataRepository<C> {
     private final ProgressUpdateListener progressUpdateListener;
     private final FragmentActivity activityContext;
     private final PreferencesDatabase<C> preferencesDatabase;
-    private final Locale locale;
+    private final LanguageCode languageCode;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
     MergedPreferenceScreenDataRepository(
@@ -45,7 +45,7 @@ public class MergedPreferenceScreenDataRepository<C> {
             final ProgressUpdateListener progressUpdateListener,
             final FragmentActivity activityContext,
             final PreferencesDatabase<C> preferencesDatabase,
-            final Locale locale,
+            final LanguageCode languageCode,
             final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.preferenceScreenProvider = preferenceScreenProvider;
         this.preferenceDialogs = preferenceDialogs;
@@ -53,15 +53,15 @@ public class MergedPreferenceScreenDataRepository<C> {
         this.progressUpdateListener = progressUpdateListener;
         this.activityContext = activityContext;
         this.preferencesDatabase = preferencesDatabase;
-        this.locale = locale;
+        this.languageCode = languageCode;
         this.configurationBundleConverter = configurationBundleConverter;
     }
 
-    public void fillSearchDatabaseWithPreferences(final Locale locale, final PersistableBundle configuration) {
+    public void fillSearchDatabaseWithPreferences(final LanguageCode languageCode, final PersistableBundle configuration) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final SearchablePreferenceScreenTreeRepository<C> treeRepository = preferencesDatabase.searchablePreferenceScreenTreeRepository();
             if (treeRepository
-                    .findTreeById(locale, configurationBundleConverter.convertBackward(configuration), activityContext)
+                    .findTreeById(languageCode, configurationBundleConverter.convertBackward(configuration), activityContext)
                     .isEmpty()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
@@ -69,7 +69,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                 treeRepository.persistOrReplace(
                         new SearchablePreferenceScreenTree<>(
                                 searchablePreferenceScreenGraph,
-                                locale,
+                                languageCode,
                                 configuration));
             }
         }
@@ -105,6 +105,6 @@ public class MergedPreferenceScreenDataRepository<C> {
                         edge -> true,
                         new ProgressUpdatingTreeBuilderListener(searchDatabaseConfig.preferenceScreenTreeBuilderListener, progressUpdateListener),
                         activityContext),
-                locale);
+                languageCode);
     }
 }

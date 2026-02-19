@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LanguageCodeConverter;
 import de.KnollFrank.lib.settingssearch.matcher.BundleMatchers;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
@@ -92,7 +92,7 @@ class EntityGraphEquality {
                 .add("host=" + entity.host())
                 .add("title=" + entity.title())
                 .add("summary=" + entity.summary())
-                .add("graphId=" + new LocaleConverter().convertBackward(entity.graphId()))
+                .add("graphId=" + new LanguageCodeConverter().convertForward(entity.graphId()))
                 .add("allPreferencesOfPreferenceHierarchy=" +
                              toString(
                                      entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider),

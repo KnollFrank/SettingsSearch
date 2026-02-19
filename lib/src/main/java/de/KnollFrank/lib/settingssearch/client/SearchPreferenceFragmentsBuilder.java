@@ -4,13 +4,13 @@ import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
 
-import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 public class SearchPreferenceFragmentsBuilder<C> {
 
     private final SearchDatabaseConfig<C> searchDatabaseConfig;
-    private final Locale locale;
+    private final LanguageCode languageCode;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
     private final PreferencesDatabase<C> preferencesDatabase;
@@ -32,7 +32,7 @@ public class SearchPreferenceFragmentsBuilder<C> {
 
     protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig<C> searchDatabaseConfig,
                                                final SearchConfig searchConfig,
-                                               final Locale locale,
+                                               final LanguageCode languageCode,
                                                final OnUiThreadRunner onUiThreadRunner,
                                                final FragmentActivity activity,
                                                final PreferencesDatabase<C> preferencesDatabase,
@@ -40,7 +40,7 @@ public class SearchPreferenceFragmentsBuilder<C> {
                                                final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
-        this.locale = locale;
+        this.languageCode = languageCode;
         this.onUiThreadRunner = onUiThreadRunner;
         this.activity = activity;
         this.preferencesDatabase = preferencesDatabase;
@@ -62,7 +62,7 @@ public class SearchPreferenceFragmentsBuilder<C> {
         return new SearchPreferenceFragments<>(
                 searchDatabaseConfig,
                 searchConfig,
-                locale,
+                languageCode,
                 onUiThreadRunner,
                 activity,
                 createSearchDatabaseTaskSupplier,

@@ -5,12 +5,12 @@ import android.os.PersistableBundle;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.ImmutableValueGraph;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformerAlgorithm;
@@ -35,7 +35,7 @@ public class PojoGraphToEntityGraphTransformer {
 
     public static TreeAndDbDataProvider toEntityGraph(
             final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
-            final Locale graphId,
+            final LanguageCode graphId,
             final PersistableBundle configuration) {
         final Tree<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity>> transformedGraph =
                 TreeTransformerAlgorithm.transform(
@@ -67,7 +67,7 @@ public class PojoGraphToEntityGraphTransformer {
                 .collect(Collectors.toSet());
     }
 
-    private static TreeTransformer<SearchablePreferenceScreen, SearchablePreference, DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity> createGraphTransformer(final Locale graphId) {
+    private static TreeTransformer<SearchablePreferenceScreen, SearchablePreference, DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity> createGraphTransformer(final LanguageCode graphId) {
         return new TreeTransformer<>() {
 
             @Override

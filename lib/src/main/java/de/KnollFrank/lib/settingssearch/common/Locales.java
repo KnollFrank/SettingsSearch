@@ -9,16 +9,7 @@ public class Locales {
     private Locales() {
     }
 
-    // FK-TODO: für LanguageLocale eine neue Klasse einführen.
-    public static Locale getLanguageLocale(final Locale locale) {
-        return new Locale(locale.getLanguage());
-    }
-
-    public static Locale getCurrentLanguageLocale(final Resources resources) {
-        return getLanguageLocale(getCurrentLocale(resources));
-    }
-
-    private static Locale getCurrentLocale(final Resources resources) {
+    public static Locale getCurrentLocale(final Resources resources) {
         return resources.getConfiguration().getLocales().get(0);
     }
 }

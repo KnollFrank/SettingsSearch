@@ -4,9 +4,9 @@ import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
 
-import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDao;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
@@ -21,7 +21,7 @@ public class PreferencesDatabaseFactory {
     public static <C> PreferencesDatabase<C> createPreferencesDatabase(
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
             final C configuration,
-            final Locale locale,
+            final LanguageCode languageCode,
             final TreeProcessorFactory<C> treeProcessorFactory,
             final ConfigurationBundleConverter<C> configurationBundleConverter,
             final FragmentActivity activityContext) {
@@ -32,7 +32,7 @@ public class PreferencesDatabaseFactory {
         processAndPersistTree(
                 preferencesRoomDatabase
                         .searchablePreferenceScreenTreeDao()
-                        .findTreeById(locale),
+                        .findTreeById(languageCode),
                 preferencesDatabaseConfig
                         .prepackagedPreferencesDatabase()
                         .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenTreeTransformer),

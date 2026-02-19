@@ -21,6 +21,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
@@ -91,7 +92,7 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
         assertThat(
                 preferencesRoomDatabase
                         .searchablePreferenceScreenTreeDao()
-                        .findTreeById(initialTree.locale())
+                        .findTreeById(initialTree.languageCode())
                         .orElseThrow()
                         .tree(),
                 is(initialTree.tree()));
@@ -102,7 +103,7 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(
                                 createSomePreferenceFragmentClassOfActivity(),
-                                Locale.GERMAN,
+                                LanguageCode.from(Locale.GERMAN),
                                 new SearchablePreferenceScreenGraphTestFactory.Data(
                                         "5",
                                         "4",
@@ -114,7 +115,7 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                                         "tree-screen1",
                                         "tree-screen2"))
                         .pojoTree(),
-                Locale.GERMAN,
+                LanguageCode.from(Locale.GERMAN),
                 PersistableBundleTestFactory.createSomePersistableBundle());
     }
 
