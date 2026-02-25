@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+final String generatePrepackagedDatabaseTaskName = 'generatePrepackagedDatabase'
+def isDbGenerationRequested = gradle.startParameter.taskNames.any {
+    it == generatePrepackagedDatabaseTaskName || it.endsWith(":${generatePrepackagedDatabaseTaskName}")
+}
+
 android {
     namespace "de.KnollFrank.settingssearch"
     compileSdk 34
@@ -11,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "boolean", "GENERATE_DATABASE_FOR_ASSET", "false"
+        buildConfigField "boolean", "GENERATE_DATABASE_FOR_ASSET", isDbGenerationRequested.toString()
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -53,12 +58,12 @@ tasks.register('installForDbGeneration') {
     dependsOn 'installDebug', 'installDebugAndroidTest'
 }
 
-// FK-TODO: remove parameter -PgenerateDb
-// execute this task using: ./gradlew generatePrepackagedDatabase -PgenerateDb=true
-tasks.register('generatePrepackagedDatabase', Exec) {
+// execute this task using: ./gradlew generatePrepackagedDatabase
+tasks.register(generatePrepackagedDatabaseTaskName, Exec) {
     group = "Database"
     description = "Runs the test, copies the database, and cleans up. Must be called with '-PgenerateDb=true'."
     dependsOn tasks.named('installForDbGeneration')
+    onlyIf { isDbGenerationRequested }
     ext {
         // dbNameOnDevice MUST match PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile().databaseFileName()
         dbNameOnDevice = "searchable_preferences.db"
