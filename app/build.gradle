@@ -61,7 +61,7 @@ tasks.register('installForDbGeneration') {
 // execute this task using: ./gradlew generatePrepackagedDatabase
 tasks.register(generatePrepackagedDatabaseTaskName, Exec) {
     group = "Database"
-    description = "Runs the test, copies the database, and cleans up. Must be called with '-PgenerateDb=true'."
+    description = "Runs the test, copies the database, and cleans up."
     dependsOn tasks.named('installForDbGeneration')
     onlyIf { isDbGenerationRequested }
     ext {
