@@ -3,9 +3,9 @@ package de.KnollFrank.lib.settingssearch.db.preference.db.source;
 import android.content.res.AssetManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-
-import de.KnollFrank.lib.settingssearch.common.AssetsUtils;
+import java.util.Optional;
 
 public class AssetDatabaseSourceProvider implements DatabaseSourceProvider {
 
@@ -18,7 +18,11 @@ public class AssetDatabaseSourceProvider implements DatabaseSourceProvider {
     }
 
     @Override
-    public InputStream getDatabaseSource() {
-        return AssetsUtils.open(assetFile, assetManager);
+    public Optional<InputStream> getDatabaseSource() {
+        try {
+            return Optional.of(assetManager.open(assetFile.getPath()));
+        } catch (final IOException e) {
+            return Optional.empty();
+        }
     }
 }

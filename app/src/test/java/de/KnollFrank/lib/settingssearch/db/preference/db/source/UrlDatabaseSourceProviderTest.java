@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Optional;
 
 public class UrlDatabaseSourceProviderTest {
 
@@ -20,17 +21,30 @@ public class UrlDatabaseSourceProviderTest {
     public final TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
-    public void shouldReadFromUrl() throws IOException {
+    public void shouldGetDatabaseSource() throws IOException {
         // Given
         final String content = "Content created dynamically within the test.";
         final URL url = createUrlProvidingContent(content);
         final DatabaseSourceProvider provider = new UrlDatabaseSourceProvider(url);
 
         // When
-        final InputStream databaseSource = provider.getDatabaseSource();
+        final InputStream databaseSource = provider.getDatabaseSource().orElseThrow();
 
         // Then
         assertThat(read(databaseSource), is(content));
+    }
+
+    @Test
+    public void shouldNotGetDatabaseSource_nonExistingUrl() throws IOException {
+        // Given
+        final URL url = new URL("file://non-existing-file");
+        final DatabaseSourceProvider provider = new UrlDatabaseSourceProvider(url);
+
+        // When
+        final Optional<InputStream> databaseSource = provider.getDatabaseSource();
+
+        // Then
+        assertThat(databaseSource, is(Optional.empty()));
     }
 
     private URL createUrlProvidingContent(final String content) throws IOException {

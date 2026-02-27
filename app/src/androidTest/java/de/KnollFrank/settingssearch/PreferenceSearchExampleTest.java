@@ -469,7 +469,7 @@ public class PreferenceSearchExampleTest {
                         ApplicationProvider.getApplicationContext(),
                         PreferencesRoomDatabase.class,
                         databaseFileName)
-                .createFromInputStream(databaseSourceProvider::getDatabaseSource)
+                .createFromInputStream(() -> databaseSourceProvider.getDatabaseSource().orElseThrow())
                 .allowMainThreadQueries()
                 .build();
     }

@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import de.KnollFrank.lib.settingssearch.db.preference.db.source.DatabaseSourceProvider;
+
 class PreferencesRoomDatabaseFactory {
 
     private PreferencesRoomDatabaseFactory() {
@@ -70,7 +72,11 @@ class PreferencesRoomDatabaseFactory {
             return preferencesDatabaseConfig
                     .prepackagedPreferencesDatabase()
                     .map(PrepackagedPreferencesDatabase::databaseSourceProvider)
-                    .map(databaseSourceProvider -> databaseSourceProvider::getDatabaseSource);
+                    .map(PreferencesRoomDatabaseFactoryWorker::asInputStreamCallable);
+        }
+
+        private static Callable<InputStream> asInputStreamCallable(final DatabaseSourceProvider databaseSourceProvider) {
+            return () -> databaseSourceProvider.getDatabaseSource().orElseThrow();
         }
     }
 }
