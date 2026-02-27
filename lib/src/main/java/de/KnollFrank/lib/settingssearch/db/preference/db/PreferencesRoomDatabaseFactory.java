@@ -40,7 +40,9 @@ class PreferencesRoomDatabaseFactory {
 
         public PreferencesRoomDatabase createPreferencesRoomDatabase() {
             final RoomDatabase.Builder<PreferencesRoomDatabase> databaseBuilder = createPreferencesRoomDatabaseBuilder();
-            maybeCreateFromInputStreamCallable(databaseBuilder);
+            if (!getDatabaseFile().exists()) {
+                getInputStreamCallable().ifPresent(databaseBuilder::createFromInputStream);
+            }
             return databaseBuilder.build();
         }
 
@@ -61,12 +63,6 @@ class PreferencesRoomDatabaseFactory {
                 case TRUNCATE -> RoomDatabase.JournalMode.TRUNCATE;
                 case WRITE_AHEAD_LOGGING -> RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING;
             };
-        }
-
-        private void maybeCreateFromInputStreamCallable(final RoomDatabase.Builder<PreferencesRoomDatabase> databaseBuilder) {
-            if (!getDatabaseFile().exists()) {
-                getInputStreamCallable().ifPresent(databaseBuilder::createFromInputStream);
-            }
         }
 
         private File getDatabaseFile() {
