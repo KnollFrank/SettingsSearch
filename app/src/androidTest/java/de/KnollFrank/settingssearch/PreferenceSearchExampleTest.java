@@ -53,9 +53,9 @@ import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Views;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DatabaseSourceProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.source.DatabaseSourceProvider;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;

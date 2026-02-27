@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedPreferencesDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.source.AssetDatabaseSourceProvider;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
 class PreferencesDatabaseConfigFactory {
@@ -28,7 +29,7 @@ class PreferencesDatabaseConfigFactory {
                 SEARCHABLE_PREFERENCES_DB,
                 Optional.of(
                         new PrepackagedPreferencesDatabase<>(
-                                new de.KnollFrank.lib.settingssearch.db.preference.db.AssetDatabaseSourceProvider(
+                                new AssetDatabaseSourceProvider(
                                         new File("database/searchable_preferences_prepackaged.db"),
                                         assetManager),
                                 new SearchDatabaseRootedAtPrefsFragmentFifthAdapter())),

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.db;
+package de.KnollFrank.lib.settingssearch.db.preference.db.source;
 
 import java.io.InputStream;
 
