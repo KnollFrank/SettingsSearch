@@ -47,7 +47,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 .initPreferencesDatabase(
                         BuildConfig.GENERATE_DATABASE_FOR_ASSET ?
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() :
-                                PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
+                                PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(getAssets()),
                         configuration,
                         searchDatabaseConfig.treeProcessorFactory,
                         new ConfigurationBundleConverter(),

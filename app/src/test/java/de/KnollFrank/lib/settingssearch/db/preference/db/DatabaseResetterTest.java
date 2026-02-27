@@ -58,7 +58,9 @@ public class DatabaseResetterTest {
                         "searchable_preferences.db",
                         Optional.of(
                                 new PrepackagedPreferencesDatabase<>(
-                                        new File("database/searchable_preferences_prepackaged.db"),
+                                        new AssetDatabaseSourceProvider(
+                                                new File("database/searchable_preferences_prepackaged.db"),
+                                                activity.getAssets()),
                                         new TestTreeTransformer<>())),
                         JournalMode.AUTOMATIC),
                 PersistableBundleTestFactory.createSomeConfiguration(),

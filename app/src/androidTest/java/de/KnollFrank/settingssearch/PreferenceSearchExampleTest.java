@@ -29,6 +29,7 @@ import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirs
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.view.View;
 
 import androidx.preference.PreferenceManager;
@@ -48,11 +49,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Views;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DatabaseSourceProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
@@ -423,7 +424,11 @@ public class PreferenceSearchExampleTest {
         try (final ActivityScenario<LocalePreferenceSearchExample> scenario = ActivityScenario.launch(LocalePreferenceSearchExample.class)) {
             scenario.onActivity(
                     activity -> {
-                        final Locale locale = new Locale(getSomeLanguageCodeFromPrepackagedDatabase().code());
+                        final Locale locale =
+                                new Locale(
+                                        PreferenceSearchExampleTest
+                                                .getSomeLanguageCodeFromPrepackagedDatabase(activity.getAssets())
+                                                .code());
                         LocalePreferenceSearchExample.setLocale(locale);
                     });
             onView(searchButton()).perform(click());
@@ -436,15 +441,15 @@ public class PreferenceSearchExampleTest {
         }
     }
 
-    private static LanguageCode getSomeLanguageCodeFromPrepackagedDatabase() {
-        final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
+    private static LanguageCode getSomeLanguageCodeFromPrepackagedDatabase(final AssetManager assetManager) {
+        final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(assetManager);
         final PreferencesRoomDatabase preferencesRoomDatabase =
                 getPreferencesRoomDatabase(
                         preferencesDatabaseConfig.databaseFileName(),
                         preferencesDatabaseConfig
                                 .prepackagedPreferencesDatabase()
                                 .orElseThrow()
-                                .databaseAssetFile());
+                                .databaseSourceProvider());
         final LanguageCode languageCode =
                 preferencesRoomDatabase
                         .searchablePreferenceScreenTreeDao()
@@ -458,13 +463,13 @@ public class PreferenceSearchExampleTest {
     }
 
     private static PreferencesRoomDatabase getPreferencesRoomDatabase(final String databaseFileName,
-                                                                      final File databasedAssetFile) {
+                                                                      final DatabaseSourceProvider databaseSourceProvider) {
         return Room
                 .databaseBuilder(
                         ApplicationProvider.getApplicationContext(),
                         PreferencesRoomDatabase.class,
                         databaseFileName)
-                .createFromAsset(databasedAssetFile.getPath())
+                .createFromInputStream(databaseSourceProvider::getDatabaseSource)
                 .allowMainThreadQueries()
                 .build();
     }

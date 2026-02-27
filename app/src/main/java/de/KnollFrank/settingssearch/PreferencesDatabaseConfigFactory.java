@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import android.content.res.AssetManager;
+
 import java.io.File;
 import java.util.Optional;
 
@@ -21,12 +23,14 @@ class PreferencesDatabaseConfigFactory {
                 PreferencesDatabaseConfig.JournalMode.TRUNCATE);
     }
 
-    public static PreferencesDatabaseConfig<Configuration> createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile() {
+    public static PreferencesDatabaseConfig<Configuration> createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(final AssetManager assetManager) {
         return new PreferencesDatabaseConfig<>(
                 SEARCHABLE_PREFERENCES_DB,
                 Optional.of(
                         new PrepackagedPreferencesDatabase<>(
-                                new File("database/searchable_preferences_prepackaged.db"),
+                                new de.KnollFrank.lib.settingssearch.db.preference.db.AssetDatabaseSourceProvider(
+                                        new File("database/searchable_preferences_prepackaged.db"),
+                                        assetManager),
                                 new SearchDatabaseRootedAtPrefsFragmentFifthAdapter())),
                 PreferencesDatabaseConfig.JournalMode.AUTOMATIC);
     }

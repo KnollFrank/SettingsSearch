@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -10,8 +9,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.concurrent.Callable;
-
-import de.KnollFrank.lib.settingssearch.common.AssetsUtils;
 
 class PreferencesRoomDatabaseFactory {
 
@@ -72,12 +69,8 @@ class PreferencesRoomDatabaseFactory {
         private Optional<Callable<InputStream>> getInputStreamCallable() {
             return preferencesDatabaseConfig
                     .prepackagedPreferencesDatabase()
-                    .map(PrepackagedPreferencesDatabase::databaseAssetFile)
-                    .map(databaseAssetFile -> createInputStreamCallable(databaseAssetFile, context.getAssets()));
-        }
-
-        private static Callable<InputStream> createInputStreamCallable(final File databaseAssetFile, final AssetManager assetManager) {
-            return () -> AssetsUtils.open(databaseAssetFile, assetManager);
+                    .map(PrepackagedPreferencesDatabase::databaseSourceProvider)
+                    .map(databaseSourceProvider -> databaseSourceProvider::getDatabaseSource);
         }
     }
 }
