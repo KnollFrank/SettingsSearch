@@ -14,7 +14,7 @@ public class AssetsUtils {
     public static InputStream open(final File assetFile, final AssetManager assetManager) {
         try {
             return assetManager.open(assetFile.getPath());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -22,7 +22,7 @@ public class AssetsUtils {
     public static String[] list(final File path, final AssetManager assetManager) {
         try {
             return assetManager.list(path.getPath());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException(e);
         }
     }

@@ -1,11 +1,17 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+
+import de.KnollFrank.lib.settingssearch.common.AssetsUtils;
 
 class PreferencesRoomDatabaseFactory {
 
@@ -19,7 +25,7 @@ class PreferencesRoomDatabaseFactory {
                 createPreferencesRoomDatabaseBuilder(
                         preferencesDatabaseConfig,
                         context);
-        maybeCreateFromAsset(databaseBuilder, preferencesDatabaseConfig, context);
+        maybeCreateFromInputStreamCallable(databaseBuilder, preferencesDatabaseConfig, context);
         return databaseBuilder.build();
     }
 
@@ -44,15 +50,33 @@ class PreferencesRoomDatabaseFactory {
         };
     }
 
-    private static <C> void maybeCreateFromAsset(final RoomDatabase.Builder<PreferencesRoomDatabase> databaseBuilder,
-                                                 final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
-                                                 final Context context) {
-        final File databaseFile = context.getDatabasePath(preferencesDatabaseConfig.databaseFileName());
-        if (!databaseFile.exists()) {
-            preferencesDatabaseConfig
-                    .prepackagedPreferencesDatabase()
-                    .map(PrepackagedPreferencesDatabase::databaseAssetFile)
-                    .ifPresent(databaseAssetFile -> databaseBuilder.createFromAsset(databaseAssetFile.getPath()));
+    private static <C> void maybeCreateFromInputStreamCallable(
+            final RoomDatabase.Builder<PreferencesRoomDatabase> databaseBuilder,
+            final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
+            final Context context) {
+        if (!existsDatabaseFile(preferencesDatabaseConfig.databaseFileName(), context)) {
+            PreferencesRoomDatabaseFactory
+                    .getInputStreamCallable(
+                            preferencesDatabaseConfig.prepackagedPreferencesDatabase(),
+                            context.getAssets())
+                    .ifPresent(databaseBuilder::createFromInputStream);
         }
+    }
+
+    private static boolean existsDatabaseFile(final String databaseFileName, final Context context) {
+        final File databaseFile = context.getDatabasePath(databaseFileName);
+        return databaseFile.exists();
+    }
+
+    private static <C> Optional<Callable<InputStream>> getInputStreamCallable(
+            final Optional<PrepackagedPreferencesDatabase<C>> prepackagedPreferencesDatabase,
+            final AssetManager assetManager) {
+        return prepackagedPreferencesDatabase
+                .map(PrepackagedPreferencesDatabase::databaseAssetFile)
+                .map(databaseAssetFile -> createInputStreamCallable(databaseAssetFile, assetManager));
+    }
+
+    private static Callable<InputStream> createInputStreamCallable(final File databaseAssetFile, final AssetManager assetManager) {
+        return () -> AssetsUtils.open(databaseAssetFile, assetManager);
     }
 }
