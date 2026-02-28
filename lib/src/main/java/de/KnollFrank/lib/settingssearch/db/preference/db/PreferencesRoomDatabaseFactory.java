@@ -72,11 +72,12 @@ class PreferencesRoomDatabaseFactory {
             return preferencesDatabaseConfig
                     .prepackagedPreferencesDatabase()
                     .map(PrepackagedPreferencesDatabase::databaseSourceProvider)
-                    .map(PreferencesRoomDatabaseFactoryWorker::asInputStreamCallable);
+                    .flatMap(PreferencesRoomDatabaseFactoryWorker::asInputStreamCallable);
         }
 
-        private static Callable<InputStream> asInputStreamCallable(final DatabaseSourceProvider databaseSourceProvider) {
-            return () -> databaseSourceProvider.getDatabaseSource().orElseThrow();
+        private static Optional<Callable<InputStream>> asInputStreamCallable(final DatabaseSourceProvider databaseSourceProvider) {
+            final Optional<InputStream> databaseSource = databaseSourceProvider.getDatabaseSource();
+            return databaseSource.map(inputStream -> () -> inputStream);
         }
     }
 }
