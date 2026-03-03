@@ -17,14 +17,14 @@ public class Tasks {
 
     public static <ResultTask1ParamsTask2> void asynchronouslyWaitForTask1ThenExecuteTask2(
             final Optional<? extends AsyncTaskWithProgressUpdateListeners<?, ResultTask1ParamsTask2>> task1,
-            final ProgressUpdateListener progressUpdateListener4Task1,
+            final ProgressUpdateListener progressUpdateListenerForTask1,
             final AsyncTask<ResultTask1ParamsTask2, ?, ?> task2) {
         final AsyncTask<Void, Void, Void> asyncTask =
                 new AsyncTask<>() {
 
                     @Override
                     protected Void doInBackground(final Void... voids) {
-                        waitForTask1ThenExecuteTask2(task1, progressUpdateListener4Task1, task2);
+                        waitForTask1ThenExecuteTask2(task1, progressUpdateListenerForTask1, task2);
                         return null;
                     }
                 };
@@ -33,11 +33,11 @@ public class Tasks {
 
     private static <ResultTask1ParamsTask2> void waitForTask1ThenExecuteTask2(
             final Optional<? extends AsyncTaskWithProgressUpdateListeners<?, ResultTask1ParamsTask2>> task1,
-            final ProgressUpdateListener progressUpdateListener4Task1,
+            final ProgressUpdateListener progressUpdateListenerForTask1,
             final AsyncTask<ResultTask1ParamsTask2, ?, ?> task2) {
         task1.ifPresentOrElse(
                 _task1 -> {
-                    waitForTaskWhileListeningToItsProgress(_task1, progressUpdateListener4Task1);
+                    waitForTaskWhileListeningToItsProgress(_task1, progressUpdateListenerForTask1);
                     executeIfNotCancelled(task2);
                 },
                 () -> executeIfNotCancelled(task2));
