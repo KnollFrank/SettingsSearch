@@ -2,22 +2,23 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 
 public class PreferenceFragmentLocalizedIdProvider implements PreferenceFragmentIdProvider {
 
-    private final LanguageCode languageCode;
+    private final Locale locale;
     private final PreferenceFragmentIdProvider delegate;
 
-    public PreferenceFragmentLocalizedIdProvider(final LanguageCode languageCode, final PreferenceFragmentIdProvider delegate) {
-        this.languageCode = languageCode;
+    public PreferenceFragmentLocalizedIdProvider(final Locale locale, final PreferenceFragmentIdProvider delegate) {
+        this.locale = locale;
         this.delegate = delegate;
     }
 
     @Override
     public String getId(final PreferenceFragmentCompat preferenceFragment) {
-        return Strings.prefixIdWithLanguage(delegate.getId(preferenceFragment), languageCode);
+        return Strings.prefixIdWithLocale(delegate.getId(preferenceFragment), locale);
     }
 }

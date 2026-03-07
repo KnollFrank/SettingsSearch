@@ -17,7 +17,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -33,7 +32,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
         final SearchablePreferenceScreenTreeDao dao = createGraphDao();
 
         // When
-        final Optional<SearchablePreferenceScreenTree<PersistableBundle>> graphFromDb = dao.findTreeById(LanguageCode.from(Locale.GERMAN));
+        final Optional<SearchablePreferenceScreenTree<PersistableBundle>> graphFromDb = dao.findTreeById(Locale.GERMAN);
 
         // Then
         assertThat(graphFromDb, is(Optional.empty()));
@@ -48,7 +47,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(
                                         createSomePreferenceFragmentClassOfActivity(),
-                                        LanguageCode.from(Locale.GERMAN),
+                                        Locale.GERMAN,
                                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                                 "5",
                                                 "4",
@@ -60,7 +59,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
                                                 "tree-screen1",
                                                 "tree-screen2"))
                                 .pojoTree(),
-                        LanguageCode.from(Locale.GERMAN),
+                        Locale.GERMAN,
                         PersistableBundleTestFactory.createSomePersistableBundle());
 
         // When
@@ -79,7 +78,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
                                 host,
-                                LanguageCode.from(Locale.GERMAN),
+                                Locale.GERMAN,
                                 new SearchablePreferenceScreenGraphTestFactory.Data(
                                         "5",
                                         "4",
@@ -97,7 +96,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createGraph(
                                 host,
-                                LanguageCode.from(Locale.CHINESE),
+                                Locale.CHINESE,
                                 new SearchablePreferenceScreenGraphTestFactory.Data(
                                         "50",
                                         "40",
@@ -119,7 +118,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
     public void test_persistOrReplaceAndFindTreeById_twoGraphs_sameLocales() {
         // Given
         final SearchablePreferenceScreenTreeDao dao = createGraphDao();
-        final LanguageCode locale = LanguageCode.from(Locale.GERMAN);
+        final Locale locale = Locale.GERMAN;
         final FragmentClassOfActivity<PreferenceFragmentCompat> host = createSomePreferenceFragmentClassOfActivity();
 
         // When
@@ -174,7 +173,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
                                          final SearchablePreferenceScreenTreeDao dao) {
         final SearchablePreferenceScreenTree<PersistableBundle> searchablePreferenceScreenTreeFromDb =
                 dao
-                        .findTreeById(searchablePreferenceScreenTree.languageCode())
+                        .findTreeById(searchablePreferenceScreenTree.locale())
                         .orElseThrow();
         assertActualEqualsExpected(searchablePreferenceScreenTreeFromDb, searchablePreferenceScreenTree);
     }
@@ -182,7 +181,7 @@ public class SearchablePreferenceScreenTreeDaoTest extends PreferencesRoomDataba
     private static void assertActualEqualsExpected(final SearchablePreferenceScreenTree<PersistableBundle> actual,
                                                    final SearchablePreferenceScreenTree<PersistableBundle> expected) {
         assertThat(actual.tree().graph(), is(expected.tree().graph()));
-        assertThat(actual.languageCode(), is(expected.languageCode()));
+        assertThat(actual.locale(), is(expected.locale()));
     }
 
     private static SearchablePreferenceScreenTree<PersistableBundle> asSearchablePreferenceScreenGraph(final Trees trees) {

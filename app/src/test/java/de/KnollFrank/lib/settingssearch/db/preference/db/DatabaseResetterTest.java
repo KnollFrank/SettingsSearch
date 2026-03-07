@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.db.source.AssetDatabaseSourceProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
@@ -39,9 +38,9 @@ public class DatabaseResetterTest {
         doWithFragmentActivity(
                 fragmentActivity -> {
                     // Given
-                    final LanguageCode languageCode = LanguageCode.from(Locale.GERMAN);
-                    final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabase(fragmentActivity, languageCode);
-                    initialize(preferencesDatabase, languageCode);
+                    final Locale locale = Locale.GERMAN;
+                    final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabase(fragmentActivity, locale);
+                    initialize(preferencesDatabase, locale);
 
                     // When
                     DatabaseResetter.resetDatabase(preferencesDatabase);
@@ -53,7 +52,7 @@ public class DatabaseResetterTest {
 
     private static PreferencesDatabase<Configuration> getPreferencesDatabase(
             final FragmentActivity activity,
-            final LanguageCode languageCode) {
+            final Locale locale) {
         return PreferencesDatabaseFactory.createPreferencesDatabase(
                 new PreferencesDatabaseConfig<>(
                         "searchable_preferences.db",
@@ -65,7 +64,7 @@ public class DatabaseResetterTest {
                                         new TestTreeTransformer<>())),
                         JournalMode.AUTOMATIC),
                 PersistableBundleTestFactory.createSomeConfiguration(),
-                languageCode,
+                locale,
                 new TreeProcessorFactory<>() {
 
                     @Override
@@ -83,11 +82,11 @@ public class DatabaseResetterTest {
     }
 
     private static void initialize(final PreferencesDatabase<Configuration> preferencesDatabase,
-                                   final LanguageCode languageCode) {
+                                   final Locale locale) {
         final var singleNodeGraph =
                 SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
                         createSomePreferenceFragmentClassOfActivity(),
-                        languageCode,
+                        locale,
                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                 "5",
                                 "4",

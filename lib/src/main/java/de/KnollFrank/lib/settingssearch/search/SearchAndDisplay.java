@@ -1,8 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import java.util.Locale;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 
 class SearchAndDisplay<C> {
@@ -17,9 +17,9 @@ class SearchAndDisplay<C> {
     }
 
     public void searchForQueryAndDisplayResults(final String query,
-                                                final LanguageCode languageCode,
+                                                final Locale locale,
                                                 final C actualConfiguration) {
-        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query, languageCode, actualConfiguration);
+        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query, locale, actualConfiguration);
         searchResultsDisplayer.displaySearchResults(preferenceMatches);
     }
 }

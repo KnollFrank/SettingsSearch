@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.common;
 
 import static de.KnollFrank.lib.settingssearch.common.IndexSearchResultConverter.minusOneToEmpty;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -18,7 +19,7 @@ public class Strings {
         return charSequence.map(CharSequence::toString);
     }
 
-    public static String prefixIdWithLanguage(final String id, final LanguageCode languageCode) {
-        return languageCode.code() + "-" + id;
+    public static String prefixIdWithLocale(final String id, final Locale locale) {
+        return locale.toLanguageTag() + "-" + id;
     }
 }

@@ -33,7 +33,6 @@ import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -71,20 +70,20 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 preferenceFragmentClassOfActivity,
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
-                final LanguageCode languageCode = LanguageCode.from(Locale.GERMAN);
+                final Locale locale = Locale.GERMAN;
                 final String twoNodeScreen1Id = "graph-screen1";
                 final String twoNodeScreen2Id = "graph-screen2";
                 final SearchablePreferenceScreenGraphTestFactory.Data _data =
                         new SearchablePreferenceScreenGraphTestFactory.Data(
-                                addLocaleToId(languageCode, twoNodeScreen2Id + "-0"),
-                                addLocaleToId(languageCode, twoNodeScreen1Id + "-1"),
+                                addLocaleToId(locale, twoNodeScreen2Id + "-0"),
+                                addLocaleToId(locale, twoNodeScreen1Id + "-1"),
                                 "parentKey",
-                                addLocaleToId(languageCode, twoNodeScreen1Id + "-0"),
-                                addLocaleToId(languageCode, twoNodeScreen1Id + "-0-0"),
-                                addLocaleToId(languageCode, twoNodeScreen1Id + "-0-1"),
-                                addLocaleToId(languageCode, "singleNodeGraph-screen1"),
-                                addLocaleToId(languageCode, twoNodeScreen1Id),
-                                addLocaleToId(languageCode, twoNodeScreen2Id));
+                                addLocaleToId(locale, twoNodeScreen1Id + "-0"),
+                                addLocaleToId(locale, twoNodeScreen1Id + "-0-0"),
+                                addLocaleToId(locale, twoNodeScreen1Id + "-0-1"),
+                                addLocaleToId(locale, "singleNodeGraph-screen1"),
+                                addLocaleToId(locale, twoNodeScreen1Id),
+                                addLocaleToId(locale, twoNodeScreen2Id));
                 final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
                         createGraphToPojoGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
@@ -106,7 +105,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                         removeMapFromPojoNodes(
                                 treeToPojoTreeTransformer.transformTreeToPojoTree(
                                         entityGraph,
-                                        languageCode));
+                                        locale));
 
                 // Then
                 // check graph:
@@ -114,7 +113,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                         pojoGraph,
                         is(
                                 SearchablePreferenceScreenGraphTestFactory
-                                        .createGraph(preferenceFragmentClassOfActivity, languageCode, _data)
+                                        .createGraph(preferenceFragmentClassOfActivity, locale, _data)
                                         .pojoTree()));
                 {
                     final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph, _data);
@@ -147,7 +146,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                 // When
                 treeToPojoTreeTransformer.transformTreeToPojoTree(
                         createSomeEntityGraph(activity),
-                        LanguageCode.from(Locale.GERMAN));
+                        Locale.GERMAN);
             });
         }
     }
@@ -184,11 +183,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 });
 
                 // When
-                final SearchablePreferenceScreenTree<PersistableBundle> germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, LanguageCode.from(Locale.GERMAN));
+                final SearchablePreferenceScreenTree<PersistableBundle> germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.GERMAN);
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(germanPojoGraph);
 
                 // And
-                final SearchablePreferenceScreenTree<PersistableBundle> chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, LanguageCode.from(Locale.CHINESE));
+                final SearchablePreferenceScreenTree<PersistableBundle> chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.CHINESE);
                 preferencesRoomDatabase.searchablePreferenceScreenTreeDao().persistOrReplace(chinesePojoGraph);
 
                 // Then no exception was thrown
@@ -196,20 +195,20 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
         }
     }
 
-    public static String addLocaleToId(final LanguageCode languageCode, final String id) {
-        return Strings.prefixIdWithLanguage(id, languageCode);
+    public static String addLocaleToId(final Locale locale, final String id) {
+        return Strings.prefixIdWithLocale(id, locale);
     }
 
     private static SearchablePreferenceScreenTree<PersistableBundle> transformTreeToPojoTree(
             final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> entityGraph,
             final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
-            final LanguageCode languageCode) {
+            final Locale locale) {
         return new SearchablePreferenceScreenTree<>(
                 MapFromPojoNodesRemover.removeMapFromPojoNodes(
                         treeToPojoTreeTransformer.transformTreeToPojoTree(
                                 entityGraph,
-                                languageCode)),
-                languageCode,
+                                locale)),
+                locale,
                 PersistableBundleTestFactory.createSomePersistableBundle());
     }
 

@@ -6,12 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Locale;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
-
 @Entity
-public record SearchablePreferenceScreenTreeEntity(@PrimaryKey @NonNull LanguageCode id,
+public record SearchablePreferenceScreenTreeEntity(@PrimaryKey @NonNull Locale id,
                                                    PersistableBundle configuration) {
 
     public interface DbDataProvider {

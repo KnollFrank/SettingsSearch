@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 
@@ -51,7 +50,7 @@ public class SettingsActivity3 extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                LanguageCode.from(Locales.getCurrentLocale(getResources())),
+                Locales.getCurrentLocale(getResources()),
                 ConfigurationProvider.getActualConfiguration(this));
     }
 }

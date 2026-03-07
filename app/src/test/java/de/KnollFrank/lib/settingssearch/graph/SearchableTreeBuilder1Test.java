@@ -39,7 +39,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -150,9 +149,9 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                                 .nodes()
                                 .stream()
                                 .map(searchablePreferenceScreen ->
-                                             new SearchablePreferenceScreenWithinTree(
-                                                     searchablePreferenceScreen,
-                                                     pojoGraph))
+                                        new SearchablePreferenceScreenWithinTree(
+                                                searchablePreferenceScreen,
+                                                pojoGraph))
                                 .collect(Collectors.toSet());
                 final SearchablePreferenceOfHostWithinTree preferenceOfFragment2PointingToFragment3 =
                         getPreference(
@@ -195,7 +194,7 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                         addEdgeToTreePredicate,
                         TreeBuilderListeners.emptyTreeBuilderListener(),
                         activity),
-                LanguageCode.from(Locale.GERMAN));
+                Locale.GERMAN);
     }
 
     private SearchablePreferenceOfHostWithinTree getPreference(
