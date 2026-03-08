@@ -3,11 +3,11 @@ package de.KnollFrank.lib.settingssearch.fragment.navigation;
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
@@ -20,14 +20,14 @@ class PreferencePathFactory {
 
     public static <C> PreferencePath createPreferencePath(final PreferencePathData preferencePathData,
                                                           final SearchablePreferenceScreenTreeRepository<C> treeRepository,
-                                                          final LanguageCode languageCode,
+                                                          final Locale locale,
                                                           final C actualConfiguration,
                                                           final FragmentActivity activityContext) {
         return createPreferencePath(
                 preferencePathData,
                 PojoTrees.getPreferences(
                         treeRepository
-                                .findTreeById(languageCode, actualConfiguration, activityContext)
+                                .findTreeById(locale, actualConfiguration, activityContext)
                                 .orElseThrow()
                                 .tree()));
     }

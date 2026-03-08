@@ -4,7 +4,6 @@ import static de.KnollFrank.lib.settingssearch.PreferenceFragmentClassOfActivity
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 
 public class SearchablePreferenceScreenEntityTestFactory {
@@ -22,7 +21,7 @@ public class SearchablePreferenceScreenEntityTestFactory {
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(
                                 createSomePreferenceFragmentClassOfActivity(),
-                                LanguageCode.from(Locale.GERMAN),
+                                Locale.GERMAN,
                                 data)
                         .entityTreeAndDbDataProvider();
         return new SearchablePreferenceScreenEntityAndDbDataProvider(

@@ -1,10 +1,11 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
 @FunctionalInterface
 public interface SearchResultsFilter {
 
-    boolean includePreferenceInSearchResults(SearchablePreferenceOfHostWithinTree preference, final LanguageCode languageCode);
+    boolean includePreferenceInSearchResults(SearchablePreferenceOfHostWithinTree preference, final Locale locale);
 }

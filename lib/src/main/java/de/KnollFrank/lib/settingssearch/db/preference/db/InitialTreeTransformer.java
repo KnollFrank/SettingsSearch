@@ -53,7 +53,7 @@ class InitialTreeTransformer<C> {
                         tree.mapConfiguration(configurationBundleConverter::convertBackward),
                         configuration,
                         activityContext),
-                tree.languageCode(),
+                tree.locale(),
                 configurationBundleConverter.convertForward(configuration));
     }
 }

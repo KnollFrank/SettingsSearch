@@ -37,7 +37,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -202,7 +201,7 @@ public class TreeMergerTest {
         return removeMapFromPojoNodes(
                 createGraphToPojoGraphTransformer().transformTreeToPojoTree(
                         entityTree,
-                        LanguageCode.from(Locale.GERMAN)));
+                        Locale.GERMAN));
     }
 
     private static TreeToPojoTreeTransformer createGraphToPojoGraphTransformer() {

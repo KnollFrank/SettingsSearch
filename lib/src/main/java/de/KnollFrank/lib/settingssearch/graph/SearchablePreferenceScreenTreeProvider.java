@@ -4,8 +4,9 @@ import androidx.preference.Preference;
 
 import com.google.common.graph.ImmutableValueGraph;
 
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -15,14 +16,14 @@ public class SearchablePreferenceScreenTreeProvider {
 
     private final TreeToPojoTreeTransformer treeToPojoTreeTransformer;
     private final TreeBuilder<PreferenceScreenOfHostOfActivity, Preference> treeBuilder;
-    private final LanguageCode languageCode;
+    private final Locale locale;
 
     public SearchablePreferenceScreenTreeProvider(final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
                                                   final TreeBuilder<PreferenceScreenOfHostOfActivity, Preference> treeBuilder,
-                                                  final LanguageCode languageCode) {
+                                                  final Locale locale) {
         this.treeToPojoTreeTransformer = treeToPojoTreeTransformer;
         this.treeBuilder = treeBuilder;
-        this.languageCode = languageCode;
+        this.locale = locale;
     }
 
     public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getSearchablePreferenceScreenTree(final PreferenceScreenOfHostOfActivity root) {
@@ -32,6 +33,6 @@ public class SearchablePreferenceScreenTreeProvider {
     private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformGraphToPojoGraph(
             final Tree<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
-                treeToPojoTreeTransformer.transformTreeToPojoTree(preferenceScreenGraph, languageCode));
+                treeToPojoTreeTransformer.transformTreeToPojoTree(preferenceScreenGraph, locale));
     }
 }

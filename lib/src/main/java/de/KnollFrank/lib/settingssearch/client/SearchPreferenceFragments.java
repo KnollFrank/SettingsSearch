@@ -7,13 +7,13 @@ import android.os.PersistableBundle;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
@@ -38,7 +38,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
 
     public final SearchConfig searchConfig;
     private final SearchDatabaseConfig<C> searchDatabaseConfig;
-    private final LanguageCode languageCode;
+    private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier;
@@ -56,7 +56,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
         return new SearchPreferenceFragmentsBuilder<>(
                 searchDatabaseConfig,
                 searchConfig,
-                LanguageCode.from(Locales.getCurrentLocale(activity.getResources())),
+                Locales.getCurrentLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity,
                 preferencesDatabase,
@@ -66,7 +66,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
 
     protected SearchPreferenceFragments(final SearchDatabaseConfig<C> searchDatabaseConfig,
                                         final SearchConfig searchConfig,
-                                        final LanguageCode languageCode,
+                                        final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final FragmentActivity activity,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier,
@@ -76,7 +76,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                                         final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
-        this.languageCode = languageCode;
+        this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.activity = activity;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
@@ -97,7 +97,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                         createSearchDatabaseTaskSupplier,
                         searchConfig.searchPreferenceFragmentUI,
                         onMergedPreferenceScreenAvailable,
-                        languageCode,
+                        locale,
                         configuration,
                         configurationBundleConverter),
                 searchPreferenceFragment -> {
@@ -121,7 +121,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                 searchDatabaseConfig.fragmentFactory,
                 searchConfig.markupsFactory,
                 activity,
-                languageCode,
+                locale,
                 onUiThreadRunner,
                 this,
                 searchConfig.searchResultsFragmentUI,
@@ -170,7 +170,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                 progressUpdateListener,
                 activityContext,
                 preferencesDatabase,
-                languageCode,
+                locale,
                 configurationBundleConverter);
     }
 

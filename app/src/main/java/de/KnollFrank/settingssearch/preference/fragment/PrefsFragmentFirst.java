@@ -19,10 +19,10 @@ import androidx.preference.SwitchPreference;
 
 import com.google.common.graph.ImmutableValueGraph;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
@@ -61,7 +61,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final LanguageCode languageCode = LanguageCode.from(Locales.getCurrentLocale(getResources()));
+        final Locale locale = Locales.getCurrentLocale(getResources());
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
         {
             final Preference preference = getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT);
@@ -70,7 +70,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         }
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
-        configureSummaryChangingPreference(languageCode);
+        configureSummaryChangingPreference(locale);
         setOnPreferenceClickListeners();
     }
 
@@ -82,14 +82,14 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 true);
     }
 
-    private SearchablePreferenceScreenTree<PersistableBundle> getPojoGraph(final LanguageCode languageCode) {
+    private SearchablePreferenceScreenTree<PersistableBundle> getPojoGraph(final Locale locale) {
         return getPreferencesDatabase()
                 .searchablePreferenceScreenTreeRepository()
-                .findTreeById(languageCode, ConfigurationProvider.getActualConfiguration(requireContext()), requireActivity())
+                .findTreeById(locale, ConfigurationProvider.getActualConfiguration(requireContext()), requireActivity())
                 .orElseThrow();
     }
 
-    private void configureSummaryChangingPreference(final LanguageCode languageCode) {
+    private void configureSummaryChangingPreference(final Locale locale) {
         final SwitchPreference summaryChangingPreference = getPreferenceScreen().findPreference(SUMMARY_CHANGING_PREFERENCE_KEY);
         summaryChangingPreference.setSummary(getSummary(summaryChangingPreference.isChecked()));
         summaryChangingPreference.setOnPreferenceChangeListener(
@@ -101,7 +101,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private boolean onPreferenceChange(final @NonNull Preference preference, final boolean checked) {
-                        final SearchablePreferenceScreenTree<PersistableBundle> pojoGraph = getPojoGraph(languageCode);
+                        final SearchablePreferenceScreenTree<PersistableBundle> pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
                                 getSummaryChangingPreference(pojoGraph.tree()),

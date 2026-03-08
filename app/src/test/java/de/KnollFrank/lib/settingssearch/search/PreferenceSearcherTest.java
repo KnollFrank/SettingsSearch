@@ -48,7 +48,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.LanguageCode;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -148,7 +147,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final LanguageCode languageCode) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final Locale locale) {
                         return keyOfPreferenceToIncludeInSearchResults.equals(preference.searchablePreference().getKey()) &&
                                 preferenceFragment.getClass().equals(preference.hostOfPreference().host().fragment());
                     }
@@ -183,7 +182,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final LanguageCode languageCode) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference, final Locale locale) {
                         return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.hostOfPreference().host().fragment()));
                     }
                 },
@@ -715,7 +714,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             scenario.onActivity(
                     fragmentActivity -> {
                         // Given
-                        final LanguageCode languageCode = LanguageCode.from(Locale.GERMAN);
+                        final Locale locale = Locale.GERMAN;
                         final MergedPreferenceScreen<Configuration> mergedPreferenceScreen =
                                 getMergedPreferenceScreen(
                                         preferenceFragment,
@@ -727,7 +726,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         principalAndProxyProvider,
                                         treeRepository,
                                         treeBuilderListener,
-                                        languageCode,
+                                        locale,
                                         new DefaultPreferenceFragmentIdProvider());
                         final PreferenceSearcher<Configuration> preferenceSearcher =
                                 new PreferenceSearcher<>(
@@ -740,7 +739,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         final Set<PreferenceMatch> preferenceMatches =
                                 preferenceSearcher.searchFor(
                                         keyword,
-                                        languageCode,
+                                        locale,
                                         createSomeConfiguration());
 
                         // Then
@@ -759,7 +758,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
             final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> treeBuilderListener,
-            final LanguageCode languageCode,
+            final Locale locale,
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
@@ -810,7 +809,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 edge -> true,
                                 treeBuilderListener,
                                 fragmentActivity),
-                        languageCode);
+                        locale);
         treeRepository.persistOrReplace(
                 new SearchablePreferenceScreenTree<>(
                         searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
@@ -823,7 +822,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                                                 new PersistableBundle())),
                                                 Optional.empty())
                                         .orElseThrow()),
-                        languageCode,
+                        locale,
                         PersistableBundleTestFactory.createSomePersistableBundle()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {
