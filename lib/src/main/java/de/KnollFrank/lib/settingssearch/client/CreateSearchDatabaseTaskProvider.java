@@ -71,7 +71,7 @@ public class CreateSearchDatabaseTaskProvider {
                         preferencesDatabase,
                         progressUpdateListener)
                 .fillSearchDatabaseWithPreferences(
-                        Locales.getCurrentLocaleOrDefault(activity.getResources().getConfiguration().getLocales()),
+                        Locales.getCurrentLocale(activity.getResources().getConfiguration().getLocales()),
                         configuration);
     }
 }

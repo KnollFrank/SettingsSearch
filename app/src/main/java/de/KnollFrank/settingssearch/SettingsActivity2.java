@@ -50,7 +50,7 @@ public class SettingsActivity2 extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                Locales.getCurrentLocaleOrDefault(getResources().getConfiguration().getLocales()),
+                Locales.getCurrentLocale(getResources().getConfiguration().getLocales()),
                 ConfigurationProvider.getActualConfiguration(this));
     }
 

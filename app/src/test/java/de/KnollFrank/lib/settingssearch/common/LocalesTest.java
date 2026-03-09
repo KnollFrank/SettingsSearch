@@ -3,8 +3,6 @@ package de.KnollFrank.lib.settingssearch.common;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import android.os.LocaleList;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -16,63 +14,59 @@ import java.util.Locale;
 public class LocalesTest {
 
     @Test
-    public void shouldReturnAppDefaultWhenNoMatchIsFound() {
+    public void shouldFindBestSupportedLocaleForDesiredLocales() {
         // Given
-        final Locale appDefault = Locale.GERMAN;
+        final Locale supportedLocale = Locale.forLanguageTag("de-DE");
+        final Locale desiredLocale = Locale.forLanguageTag("de-AT");
 
         // When
-        final Locale actualUsedLocale =
-                Locales.getActualUsedLocale(
-                        new LocaleList(),
-                        List.of(appDefault, Locale.ENGLISH));
+        final Locale bestSupportedLocale =
+                Locales.findBestSupportedLocaleForDesiredLocales(
+                        List.of(supportedLocale),
+                        List.of(desiredLocale));
 
         // Then
-        assertThat(actualUsedLocale, is(appDefault));
+        assertThat(bestSupportedLocale, is(supportedLocale));
     }
 
     @Test
-    public void shouldReturnFirstMatchWhenSystemAndAppLocalesOverlap() {
+    public void findBestSupportedLocaleForDesiredLocales_shouldReturnPrimaryLocaleWhenNoMatchIsFound() {
+        // Given
+        final Locale primaryLocale = Locale.GERMAN;
+
+        // When
+        final Locale bestSupportedLocale =
+                Locales.findBestSupportedLocaleForDesiredLocales(
+                        List.of(primaryLocale, Locale.ENGLISH),
+                        List.of(Locale.CHINESE));
+
+        // Then
+        assertThat(bestSupportedLocale, is(primaryLocale));
+    }
+
+    @Test
+    public void findBestSupportedLocaleForDesiredLocales_shouldReturnFirstMatchWhenSystemAndSupportedLocalesOverlap() {
         // Given
         final Locale overlappingLocale = Locale.GERMANY;
 
         // When
-        final Locale actualUsedLocale =
-                Locales.getActualUsedLocale(
-                        new LocaleList(Locale.FRANCE, overlappingLocale),
-                        List.of(overlappingLocale, Locale.UK));
+        final Locale bestSupportedLocale =
+                Locales.findBestSupportedLocaleForDesiredLocales(
+                        List.of(overlappingLocale, Locale.UK),
+                        List.of(Locale.FRANCE, overlappingLocale));
 
         // Then
-        assertThat(actualUsedLocale, is(overlappingLocale));
+        assertThat(bestSupportedLocale, is(overlappingLocale));
     }
 
-    @Test
-    public void shouldReturnSystemDefaultWhenAppLocalesIsEmpty() {
+    @Test(expected = IllegalArgumentException.class)
+    public void findBestSupportedLocaleForDesiredLocales_supportedLocalesMustNotBeEmpty() {
         // Given
-        final Locale systemDefault = Locale.JAPANESE;
+        final List<Locale> emptyAppLocales = List.of();
 
         // When
-        final Locale actualUsedLocale =
-                Locales.getActualUsedLocale(
-                        new LocaleList(systemDefault),
-                        List.of());
-
-        // Then
-        assertThat(actualUsedLocale, is(systemDefault));
-    }
-
-    @Test
-    public void getCurrentLocaleOrDefault_shouldReturnFirstElementOfList() {
-        // Given
-        final Locale first = Locale.ITALY;
-
-        // When
-        final Locale result =
-                Locales.getCurrentLocaleOrDefault(
-                        new LocaleList(
-                                first,
-                                Locale.GERMANY));
-
-        // Then
-        assertThat(result, is(first));
+        Locales.findBestSupportedLocaleForDesiredLocales(
+                emptyAppLocales,
+                List.of(Locale.JAPANESE));
     }
 }

@@ -9,30 +9,37 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleListConverter;
 
 public class Locales {
 
     private Locales() {
     }
 
-    public static Locale getCurrentLocaleOrDefault(final LocaleList localeList) {
-        return getCurrentLocale(localeList.isEmpty() ? LocaleList.getAdjustedDefault() : localeList);
-    }
-
-    public static Locale getActualUsedLocale(final LocaleList systemLocales, final List<Locale> appLocales) {
-        return Locales
-                .getFirstMatch(systemLocales, appLocales)
-                .or(() -> appLocales.stream().findFirst())
-                .orElseGet(() -> getCurrentLocaleOrDefault(systemLocales));
-    }
-
-    private static Locale getCurrentLocale(final @Size(min = 1) LocaleList localeList) {
+    public static Locale getCurrentLocale(final @Size(min = 1) LocaleList localeList) {
         return localeList.get(0);
     }
 
-    private static Optional<Locale> getFirstMatch(final LocaleList haystack, final List<Locale> needles) {
+    public static Locale findBestSupportedLocaleForDesiredLocales(final @Size(min = 1) List<Locale> supportedLocales,
+                                                                  final List<Locale> desiredLocales) {
+        if (supportedLocales.isEmpty()) {
+            throw new IllegalArgumentException("supportedLocales must not be empty");
+        }
+        return Locales
+                .getFirstMatch(desiredLocales, supportedLocales)
+                .flatMap(desiredLocale -> getFirstMatch(supportedLocales, List.of(desiredLocale)))
+                .orElseGet(() -> getPrimaryLocale(supportedLocales));
+    }
+
+    private static Locale getPrimaryLocale(final @Size(min = 1) List<Locale> locales) {
+        return locales.get(0);
+    }
+
+    private static Optional<Locale> getFirstMatch(final List<Locale> haystack, final List<Locale> needles) {
         return Optional.ofNullable(
-                haystack.getFirstMatch(
-                        LocaleConverter.getLanguageTags(needles).toArray(String[]::new)));
+                new LocaleListConverter()
+                        .convertBackward(haystack)
+                        .getFirstMatch(
+                                LocaleConverter.getLanguageTags(needles).toArray(String[]::new)));
     }
 }
