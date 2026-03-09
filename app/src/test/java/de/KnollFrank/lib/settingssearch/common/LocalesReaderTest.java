@@ -19,7 +19,7 @@ import de.KnollFrank.settingssearch.R;
 public class LocalesReaderTest {
 
     @Test
-    public void readLocales_shouldParseXmlCorrectly() {
+    public void shouldReadLocales() {
         // Given
         final @XmlRes int resId = R.xml.locales_config;
 
