@@ -17,6 +17,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConv
 
 public class LocalesReader {
 
+    private LocalesReader() {
+    }
+
     public static List<Locale> readLocales(final Resources resources, final @XmlRes int resId) {
         return LocaleConverter.getLocales(getLocaleNames(resources, resId));
     }
