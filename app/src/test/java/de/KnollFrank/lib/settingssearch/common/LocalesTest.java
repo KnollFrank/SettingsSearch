@@ -14,58 +14,58 @@ import java.util.Locale;
 public class LocalesTest {
 
     @Test
-    public void shouldGetBestSupportedLocaleForDesiredLocales() {
+    public void shouldGetDisplayLocale() {
         // Given
         final Locale supportedLocale = Locale.forLanguageTag("de-DE");
         final Locale desiredLocale = Locale.forLanguageTag("de-AT");
 
         // When
-        final Locale bestSupportedLocale =
-                Locales.getBestSupportedLocaleForDesiredLocales(
+        final Locale displayLocale =
+                Locales.getDisplayLocale(
                         List.of(supportedLocale),
                         List.of(desiredLocale));
 
         // Then
-        assertThat(bestSupportedLocale, is(supportedLocale));
+        assertThat(displayLocale, is(supportedLocale));
     }
 
     @Test
-    public void getBestSupportedLocaleForDesiredLocales_shouldReturnPrimaryLocaleWhenNoMatchIsFound() {
+    public void getDisplayLocale_shouldReturnPrimaryLocaleWhenNoMatchIsFound() {
         // Given
         final Locale primaryLocale = Locale.GERMAN;
 
         // When
-        final Locale bestSupportedLocale =
-                Locales.getBestSupportedLocaleForDesiredLocales(
+        final Locale displayLocale =
+                Locales.getDisplayLocale(
                         List.of(primaryLocale, Locale.ENGLISH),
                         List.of(Locale.CHINESE));
 
         // Then
-        assertThat(bestSupportedLocale, is(primaryLocale));
+        assertThat(displayLocale, is(primaryLocale));
     }
 
     @Test
-    public void getBestSupportedLocaleForDesiredLocales_shouldReturnFirstMatchWhenSystemAndSupportedLocalesOverlap() {
+    public void getDisplayLocale_shouldReturnFirstMatchWhenSystemAndSupportedLocalesOverlap() {
         // Given
         final Locale overlappingLocale = Locale.GERMANY;
 
         // When
-        final Locale bestSupportedLocale =
-                Locales.getBestSupportedLocaleForDesiredLocales(
+        final Locale displayLocale =
+                Locales.getDisplayLocale(
                         List.of(overlappingLocale, Locale.UK),
                         List.of(Locale.FRANCE, overlappingLocale));
 
         // Then
-        assertThat(bestSupportedLocale, is(overlappingLocale));
+        assertThat(displayLocale, is(overlappingLocale));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getBestSupportedLocaleForDesiredLocales_supportedLocalesMustNotBeEmpty() {
+    public void getDisplayLocale_supportedLocalesMustNotBeEmpty() {
         // Given
         final List<Locale> emptyAppLocales = List.of();
 
         // When
-        Locales.getBestSupportedLocaleForDesiredLocales(
+        Locales.getDisplayLocale(
                 emptyAppLocales,
                 List.of(Locale.JAPANESE));
     }

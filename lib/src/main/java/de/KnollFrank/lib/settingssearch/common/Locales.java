@@ -20,8 +20,8 @@ public class Locales {
         return localeList.get(0);
     }
 
-    public static Locale getBestSupportedLocaleForDesiredLocales(final @Size(min = 1) List<Locale> supportedLocales,
-                                                                 final List<Locale> desiredLocales) {
+    public static Locale getDisplayLocale(final @Size(min = 1) List<Locale> supportedLocales,
+                                          final List<Locale> desiredLocales) {
         if (supportedLocales.isEmpty()) {
             throw new IllegalArgumentException("supportedLocales must not be empty");
         }
