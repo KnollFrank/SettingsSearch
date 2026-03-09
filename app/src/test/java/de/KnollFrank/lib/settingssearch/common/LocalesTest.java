@@ -14,14 +14,14 @@ import java.util.Locale;
 public class LocalesTest {
 
     @Test
-    public void shouldFindBestSupportedLocaleForDesiredLocales() {
+    public void shouldGetBestSupportedLocaleForDesiredLocales() {
         // Given
         final Locale supportedLocale = Locale.forLanguageTag("de-DE");
         final Locale desiredLocale = Locale.forLanguageTag("de-AT");
 
         // When
         final Locale bestSupportedLocale =
-                Locales.findBestSupportedLocaleForDesiredLocales(
+                Locales.getBestSupportedLocaleForDesiredLocales(
                         List.of(supportedLocale),
                         List.of(desiredLocale));
 
@@ -30,13 +30,13 @@ public class LocalesTest {
     }
 
     @Test
-    public void findBestSupportedLocaleForDesiredLocales_shouldReturnPrimaryLocaleWhenNoMatchIsFound() {
+    public void getBestSupportedLocaleForDesiredLocales_shouldReturnPrimaryLocaleWhenNoMatchIsFound() {
         // Given
         final Locale primaryLocale = Locale.GERMAN;
 
         // When
         final Locale bestSupportedLocale =
-                Locales.findBestSupportedLocaleForDesiredLocales(
+                Locales.getBestSupportedLocaleForDesiredLocales(
                         List.of(primaryLocale, Locale.ENGLISH),
                         List.of(Locale.CHINESE));
 
@@ -45,13 +45,13 @@ public class LocalesTest {
     }
 
     @Test
-    public void findBestSupportedLocaleForDesiredLocales_shouldReturnFirstMatchWhenSystemAndSupportedLocalesOverlap() {
+    public void getBestSupportedLocaleForDesiredLocales_shouldReturnFirstMatchWhenSystemAndSupportedLocalesOverlap() {
         // Given
         final Locale overlappingLocale = Locale.GERMANY;
 
         // When
         final Locale bestSupportedLocale =
-                Locales.findBestSupportedLocaleForDesiredLocales(
+                Locales.getBestSupportedLocaleForDesiredLocales(
                         List.of(overlappingLocale, Locale.UK),
                         List.of(Locale.FRANCE, overlappingLocale));
 
@@ -60,12 +60,12 @@ public class LocalesTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void findBestSupportedLocaleForDesiredLocales_supportedLocalesMustNotBeEmpty() {
+    public void getBestSupportedLocaleForDesiredLocales_supportedLocalesMustNotBeEmpty() {
         // Given
         final List<Locale> emptyAppLocales = List.of();
 
         // When
-        Locales.findBestSupportedLocaleForDesiredLocales(
+        Locales.getBestSupportedLocaleForDesiredLocales(
                 emptyAppLocales,
                 List.of(Locale.JAPANESE));
     }

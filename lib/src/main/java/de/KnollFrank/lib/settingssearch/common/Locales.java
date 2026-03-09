@@ -20,19 +20,20 @@ public class Locales {
         return localeList.get(0);
     }
 
-    public static Locale findBestSupportedLocaleForDesiredLocales(final @Size(min = 1) List<Locale> supportedLocales,
-                                                                  final List<Locale> desiredLocales) {
+    public static Locale getBestSupportedLocaleForDesiredLocales(final @Size(min = 1) List<Locale> supportedLocales,
+                                                                 final List<Locale> desiredLocales) {
         if (supportedLocales.isEmpty()) {
             throw new IllegalArgumentException("supportedLocales must not be empty");
         }
         return Locales
-                .getFirstMatch(desiredLocales, supportedLocales)
-                .flatMap(desiredLocale -> getFirstMatch(supportedLocales, List.of(desiredLocale)))
+                .findBestSupportedLocaleForDesiredLocales(supportedLocales, desiredLocales)
                 .orElseGet(() -> getPrimaryLocale(supportedLocales));
     }
 
-    private static Locale getPrimaryLocale(final @Size(min = 1) List<Locale> locales) {
-        return locales.get(0);
+    private static Optional<Locale> findBestSupportedLocaleForDesiredLocales(final List<Locale> supportedLocales, final List<Locale> desiredLocales) {
+        return Locales
+                .getFirstMatch(desiredLocales, supportedLocales)
+                .flatMap(bestDesiredLocale -> getFirstMatch(supportedLocales, List.of(bestDesiredLocale)));
     }
 
     private static Optional<Locale> getFirstMatch(final List<Locale> haystack, final List<Locale> needles) {
@@ -41,5 +42,9 @@ public class Locales {
                         .convertBackward(haystack)
                         .getFirstMatch(
                                 LocaleConverter.getLanguageTags(needles).toArray(String[]::new)));
+    }
+
+    private static Locale getPrimaryLocale(final @Size(min = 1) List<Locale> locales) {
+        return locales.get(0);
     }
 }
