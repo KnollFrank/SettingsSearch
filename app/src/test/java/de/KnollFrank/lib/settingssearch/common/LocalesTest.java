@@ -8,13 +8,11 @@ import android.os.LocaleList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.List;
 import java.util.Locale;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 34)
 public class LocalesTest {
 
     @Test
