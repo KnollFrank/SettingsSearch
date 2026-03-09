@@ -13,23 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
+
 public class LocalesReader {
 
-    // FK-TODO: refactor
     public static List<Locale> readLocales(final Resources resources, final @XmlRes int resId) {
-        final List<Locale> availableLocales = new ArrayList<>();
-        try (final XmlResourceParser xrp = resources.getXml(resId)) {
-            for (int eventType = xrp.getEventType(); eventType != XmlPullParser.END_DOCUMENT; eventType = xrp.next()) {
-                if (eventType == XmlPullParser.START_TAG && "locale".equals(xrp.getName())) {
-                    final String localeTag = xrp.getAttributeValue("http://schemas.android.com/apk/res/android", "name");
-                    if (localeTag != null) {
-                        availableLocales.add(Locale.forLanguageTag(localeTag));
-                    }
+        return LocaleConverter.getLocales(getLocaleNames(resources, resId));
+    }
+
+    private static List<String> getLocaleNames(final Resources resources, final @XmlRes int resId) {
+        final List<String> localeNames = new ArrayList<>();
+        try (final XmlResourceParser parser = resources.getXml(resId)) {
+            for (int eventType = parser.getEventType(); eventType != XmlPullParser.END_DOCUMENT; eventType = parser.next()) {
+                if (eventType == XmlPullParser.START_TAG && "locale".equals(parser.getName())) {
+                    final String localeName = parser.getAttributeValue("http://schemas.android.com/apk/res/android", "name");
+                    localeNames.add(localeName);
                 }
             }
         } catch (final XmlPullParserException | IOException e) {
             throw new RuntimeException(e);
         }
-        return availableLocales;
+        return localeNames;
     }
 }

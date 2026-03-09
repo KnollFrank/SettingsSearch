@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
+
 public class Locales {
 
     private Locales() {
@@ -31,13 +33,6 @@ public class Locales {
     private static Optional<Locale> getFirstMatch(final LocaleList haystack, final List<Locale> needles) {
         return Optional.ofNullable(
                 haystack.getFirstMatch(
-                        toLanguageTags(needles).toArray(String[]::new)));
-    }
-
-    private static List<String> toLanguageTags(final List<Locale> locales) {
-        return locales
-                .stream()
-                .map(Locale::toLanguageTag)
-                .toList();
+                        LocaleConverter.getLanguageTags(needles).toArray(String[]::new)));
     }
 }
