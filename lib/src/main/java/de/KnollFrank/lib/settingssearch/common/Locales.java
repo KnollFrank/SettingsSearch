@@ -30,7 +30,8 @@ public class Locales {
                 .orElseGet(() -> getPrimaryLocale(supportedLocales));
     }
 
-    private static Optional<Locale> findBestSupportedLocaleForDesiredLocales(final List<Locale> supportedLocales, final List<Locale> desiredLocales) {
+    private static Optional<Locale> findBestSupportedLocaleForDesiredLocales(final List<Locale> supportedLocales,
+                                                                             final List<Locale> desiredLocales) {
         return Locales
                 .getFirstMatch(desiredLocales, supportedLocales)
                 .flatMap(bestDesiredLocale -> getFirstMatch(supportedLocales, List.of(bestDesiredLocale)));
