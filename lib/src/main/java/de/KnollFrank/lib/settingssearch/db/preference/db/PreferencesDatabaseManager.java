@@ -26,7 +26,7 @@ public class PreferencesDatabaseManager<C> {
                                     PreferencesDatabaseFactory.createPreferencesDatabase(
                                             preferencesDatabaseConfig,
                                             configuration,
-                                            Locales.getCurrentLocale(activityContext.getResources()),
+                                            Locales.getCurrentLocaleOrDefault(activityContext.getResources().getConfiguration().getLocales()),
                                             treeProcessorFactory,
                                             configurationBundleConverter,
                                             activityContext));

@@ -56,7 +56,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
         return new SearchPreferenceFragmentsBuilder<>(
                 searchDatabaseConfig,
                 searchConfig,
-                Locales.getCurrentLocale(activity.getResources()),
+                Locales.getCurrentLocaleOrDefault(activity.getResources().getConfiguration().getLocales()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity,
                 preferencesDatabase,

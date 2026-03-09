@@ -61,7 +61,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final Locale locale = Locales.getCurrentLocale(getResources());
+        final Locale locale = Locales.getCurrentLocaleOrDefault(getResources().getConfiguration().getLocales());
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
         {
             final Preference preference = getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT);
