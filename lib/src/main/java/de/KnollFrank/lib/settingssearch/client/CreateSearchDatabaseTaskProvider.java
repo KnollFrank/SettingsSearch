@@ -6,8 +6,9 @@ import android.view.View;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
-import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
@@ -30,7 +31,8 @@ public class CreateSearchDatabaseTaskProvider {
             final FragmentActivity activity,
             final PreferencesDatabase<C> preferencesDatabase,
             final PersistableBundle configuration,
-            final PreferenceSearchablePredicate preferenceSearchablePredicate) {
+            final PreferenceSearchablePredicate preferenceSearchablePredicate,
+            final Locale locale) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 Views.getRootViewContainer(activity),
                 FRAGMENT_CONTAINER_VIEW_ID);
@@ -46,7 +48,8 @@ public class CreateSearchDatabaseTaskProvider {
                                 progressUpdateListener,
                                 preferencesDatabase,
                                 configuration,
-                                preferenceSearchablePredicate);
+                                preferenceSearchablePredicate,
+                                locale);
                         return preferencesDatabase;
                     } finally {
                         EspressoIdlingResource.decrement();
@@ -62,7 +65,8 @@ public class CreateSearchDatabaseTaskProvider {
             final ProgressUpdateListener progressUpdateListener,
             final PreferencesDatabase<C> preferencesDatabase,
             final PersistableBundle configuration,
-            final PreferenceSearchablePredicate preferenceSearchablePredicate) {
+            final PreferenceSearchablePredicate preferenceSearchablePredicate,
+            final Locale locale) {
         mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
                         FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID, preferenceSearchablePredicate),
@@ -70,8 +74,6 @@ public class CreateSearchDatabaseTaskProvider {
                         activity,
                         preferencesDatabase,
                         progressUpdateListener)
-                .fillSearchDatabaseWithPreferences(
-                        Locales.getCurrentLocale(activity.getResources().getConfiguration().getLocales()),
-                        configuration);
+                .fillSearchDatabaseWithPreferences(locale, configuration);
     }
 }

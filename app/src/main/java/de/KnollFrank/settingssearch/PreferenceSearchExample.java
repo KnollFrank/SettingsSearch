@@ -14,6 +14,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
@@ -49,6 +50,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() :
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(getAssets()),
                         configuration,
+                        Locales.getCurrentLocale(getResources().getConfiguration().getLocales()),
                         searchDatabaseConfig.treeProcessorFactory,
                         new ConfigurationBundleConverter(),
                         this);
@@ -65,7 +67,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 this,
                                 preferencesDatabase,
                                 new ConfigurationBundleConverter().convertForward(configuration),
-                                searchDatabaseConfig.preferenceSearchablePredicate));
+                                searchDatabaseConfig.preferenceSearchablePredicate,
+                                Locales.getCurrentLocale(getResources().getConfiguration().getLocales())));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 

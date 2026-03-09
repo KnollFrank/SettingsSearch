@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 
@@ -30,6 +31,7 @@ public class SearchPreferenceFragmentsFactory {
                 .builder(
                         searchDatabaseConfig,
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
+                        Locales.getCurrentLocale(activity.getResources().getConfiguration().getLocales()),
                         activity,
                         preferencesDatabase,
                         new ConfigurationBundleConverter().convertForward(configuration),

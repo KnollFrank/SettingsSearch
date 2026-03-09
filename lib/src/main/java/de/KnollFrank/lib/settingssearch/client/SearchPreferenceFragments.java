@@ -14,7 +14,6 @@ import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
@@ -49,6 +48,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
 
     public static <C> SearchPreferenceFragmentsBuilder<C> builder(final SearchDatabaseConfig<C> searchDatabaseConfig,
                                                                   final SearchConfig searchConfig,
+                                                                  final Locale locale,
                                                                   final FragmentActivity activity,
                                                                   final PreferencesDatabase<C> preferencesDatabase,
                                                                   final PersistableBundle configuration,
@@ -56,7 +56,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
         return new SearchPreferenceFragmentsBuilder<>(
                 searchDatabaseConfig,
                 searchConfig,
-                Locales.getCurrentLocale(activity.getResources().getConfiguration().getLocales()),
+                locale,
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity,
                 preferencesDatabase,
