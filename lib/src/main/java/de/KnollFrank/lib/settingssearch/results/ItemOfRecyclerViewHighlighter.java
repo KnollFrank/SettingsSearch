@@ -27,6 +27,7 @@ public class ItemOfRecyclerViewHighlighter implements SettingHighlighter {
     }
 
     private void highlightViewAtPosition(final int position) {
+        // FK-TODO: use new Handler(Looper.getMainLooper())?
         new Handler().post(
                 () -> ViewAtPositionHighlighter.highlightViewAtPosition(recyclerView, position, highlightDuration, () -> {
                 }));

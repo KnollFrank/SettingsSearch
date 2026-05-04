@@ -19,6 +19,7 @@ public class ViewHighlighter {
     public static void highlightView(final View view, final Duration highlightDuration) {
         final Drawable background = view.getBackground();
         view.setBackgroundColor(getHighlightColor(view.getContext()));
+        // FK-TODO: use new Handler(Looper.getMainLooper())?
         new Handler().postDelayed(
                 () -> view.setBackground(background),
                 highlightDuration.toMillis());

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.common;
 
+import android.annotation.SuppressLint;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -36,6 +38,11 @@ public class Preferences {
 
     public static List<Preference> getImmediateChildren(final PreferenceGroup preferenceGroup) {
         return ImmutableList.copyOf(getImmediateChildrenIterator(preferenceGroup));
+    }
+
+    @SuppressLint("RestrictedApi")
+    public static void performClick(final Preference preference) {
+        preference.performClick();
     }
 
     private static Iterator<Preference> getImmediateChildrenIterator(final PreferenceGroup preferenceGroup) {

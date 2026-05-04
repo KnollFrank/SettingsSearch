@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.common;
 
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -19,5 +20,9 @@ public class Functions {
 
     public static <T, R> Function<T, R> constant(final R constant) {
         return t -> constant;
+    }
+
+    public static <T, R> Consumer<T> compose(final Consumer<R> consumer, final Function<T, R> function) {
+        return t -> consumer.accept(function.apply(t));
     }
 }

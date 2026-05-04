@@ -41,6 +41,7 @@ public class PreferenceHighlighter implements SettingHighlighter {
     private static void highlightPreferenceOfPreferenceFragment(final Preference preference,
                                                                 final PreferenceFragmentCompat preferenceFragment,
                                                                 final Duration highlightDuration) {
+        // FK-TODO: use new Handler(Looper.getMainLooper())?
         new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(preference, preferenceFragment, highlightDuration));
     }
 
@@ -88,6 +89,7 @@ public class PreferenceHighlighter implements SettingHighlighter {
         arrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         preference.setIcon(arrow);
         preferenceFragment.scrollToPreference(preference);
+        // FK-TODO: use new Handler(Looper.getMainLooper())?
         new Handler().postDelayed(
                 () -> {
                     preference.setIcon(oldIcon);

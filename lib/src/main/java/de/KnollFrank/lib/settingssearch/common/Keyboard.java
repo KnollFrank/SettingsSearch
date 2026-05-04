@@ -5,15 +5,37 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+// FK-TODO: refactor
 public class Keyboard {
 
     private Keyboard() {
+    }
+
+    public static void showKeyboard(final Activity activity) {
+        final View view = activity.getCurrentFocus();
+        if (view != null) {
+            showKeyboard(activity, view);
+        }
     }
 
     public static void showKeyboard(final Activity activity, final View view) {
         final InputMethodManager inputMethodManager = getInputMethodManager(activity);
         if (inputMethodManager != null) {
             inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
+    public static void hideKeyboard(final Activity activity) {
+        final View view = activity.getCurrentFocus();
+        if (view != null) {
+            hideKeyboard(activity, view);
+        }
+    }
+
+    public static void hideKeyboard(final Activity activity, final View view) {
+        final InputMethodManager inputMethodManager = getInputMethodManager(activity);
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
