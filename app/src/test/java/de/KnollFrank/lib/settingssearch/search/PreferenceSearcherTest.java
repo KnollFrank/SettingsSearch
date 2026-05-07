@@ -34,7 +34,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -830,7 +829,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 preferencePath -> true,
                 new DefaultPreferencePathDisplayer(),
                 treeRepository,
-                fragmentFactoryAndInitializer,
                 new SearchResultsFragmentUI() {
 
                     @Override
@@ -845,9 +843,6 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 },
                 new DefaultMarkupsFactory(fragmentActivity),
                 new SearchResultsByPreferencePathSorter(),
-                instantiateAndInitializeFragment,
-                Map.of(),
-                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 (activity, settingsFragment, settingToHighlight) -> {
                 },
                 fragmentActivity);

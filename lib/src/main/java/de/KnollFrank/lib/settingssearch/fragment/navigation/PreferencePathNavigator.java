@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
@@ -25,16 +24,10 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 // FK-TODO: refactor
 public class PreferencePathNavigator {
 
-    private final FragmentActivity activity;
-
-    public PreferencePathNavigator(final FragmentActivity activity,
-                                   final PreferenceOfHostOfActivityProvider provider,
-                                   final ContinueNavigationInActivity continueNav,
-                                   final PrincipalProvider principalProvider) {
-        this.activity = activity;
+    private PreferencePathNavigator() {
     }
 
-    public ListenableFuture<Optional<? extends Fragment>> navigatePreferencePath(final PreferencePath preferencePath) {
+    public static ListenableFuture<Optional<? extends Fragment>> navigatePreferencePath(final PreferencePath preferencePath) {
         final SettableFuture<Optional<? extends Fragment>> future = SettableFuture.create();
 
         // Signalisiert Espresso-Tests, dass eine Hintergrundaktion läuft
@@ -74,7 +67,7 @@ public class PreferencePathNavigator {
         return future;
     }
 
-    private void clickPreferenceWithTitle(final UiDevice device, final String title) throws UiObjectNotFoundException {
+    private static void clickPreferenceWithTitle(final UiDevice device, final String title) throws UiObjectNotFoundException {
         final UiSelector titleSelector = new UiSelector().text(title);
 
         // Try finding it directly first (it might already be on screen)

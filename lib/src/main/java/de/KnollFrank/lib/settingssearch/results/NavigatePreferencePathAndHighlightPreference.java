@@ -17,16 +17,13 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 
 public class NavigatePreferencePathAndHighlightPreference implements INavigatePreferencePathAndHighlightPreference {
 
-    private final PreferencePathNavigator preferencePathNavigator;
     private final PrepareShow prepareShow;
     private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
     private final FragmentActivity activity;
 
-    public NavigatePreferencePathAndHighlightPreference(final PreferencePathNavigator preferencePathNavigator,
-                                                        final PrepareShow prepareShow,
+    public NavigatePreferencePathAndHighlightPreference(final PrepareShow prepareShow,
                                                         final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
                                                         final FragmentActivity activity) {
-        this.preferencePathNavigator = preferencePathNavigator;
         this.prepareShow = prepareShow;
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
         this.activity = activity;
@@ -36,7 +33,7 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     @Override
     public void navigatePreferencePathAndHighlightPreference(final PreferencePath preferencePath) {
         Futures.addCallback(
-                preferencePathNavigator.navigatePreferencePath(preferencePath),
+                PreferencePathNavigator.navigatePreferencePath(preferencePath),
                 new FutureCallback<>() {
 
                     @Override
