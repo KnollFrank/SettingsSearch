@@ -27,6 +27,6 @@ class PrefixingClassConverter<T> implements Converter<Class<? extends T>, String
     }
 
     public boolean canConvertBackward(final String string) {
-        return converterComposition.second.canConvertBackward(string);
+        return converterComposition.second().canConvertBackward(string);
     }
 }
