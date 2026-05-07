@@ -43,7 +43,7 @@ public class SearchConfigBuilder {
     SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.markupsFactory = new DefaultMarkupsFactory(context);
-        this.showSettingsFragmentAndHighlightSetting = new DefaultShowSettingsFragmentAndHighlightSetting(fragmentContainerViewId);
+        this.showSettingsFragmentAndHighlightSetting = new DefaultShowSettingsFragmentAndHighlightSetting();
         this.searchResultsSorter = new SearchResultsByPreferencePathSorter();
     }
 

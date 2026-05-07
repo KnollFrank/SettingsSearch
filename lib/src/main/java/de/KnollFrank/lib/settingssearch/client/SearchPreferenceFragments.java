@@ -127,8 +127,6 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                 searchConfig.searchResultsFragmentUI,
                 searchConfig.searchResultsSorter,
                 searchConfig.preferencePathDisplayer,
-                searchDatabaseConfig.activityInitializerByActivity,
-                searchDatabaseConfig.principalAndProxyProvider,
                 searchConfig.showSettingsFragmentAndHighlightSetting,
                 preferencesDatabase,
                 searchDatabaseConfig.preferenceSearchablePredicate);

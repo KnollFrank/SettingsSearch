@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.DialogPreference;
@@ -10,12 +9,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
 public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSettingsFragmentAndHighlightSetting {
-
-    private final @IdRes int fragmentContainerViewId;
-
-    public DefaultShowSettingsFragmentAndHighlightSetting(final @IdRes int fragmentContainerViewId) {
-        this.fragmentContainerViewId = fragmentContainerViewId;
-    }
 
     @Override
     public void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity,

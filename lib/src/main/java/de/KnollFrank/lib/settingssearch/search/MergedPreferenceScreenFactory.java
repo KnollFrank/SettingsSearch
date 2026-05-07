@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import android.app.Activity;
 import android.os.PersistableBundle;
 
 import androidx.annotation.IdRes;
@@ -8,10 +7,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
-import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
@@ -22,7 +19,6 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -49,8 +45,6 @@ public class MergedPreferenceScreenFactory<C> {
     private final SearchResultsFragmentUI searchResultsFragmentUI;
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
-    private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
-    private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
     private final PreferencesDatabase<C> preferencesDatabase;
     private final PreferenceSearchablePredicate preferenceSearchablePredicate;
@@ -67,8 +61,6 @@ public class MergedPreferenceScreenFactory<C> {
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
             final PreferencesDatabase<C> preferencesDatabase,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
@@ -83,8 +75,6 @@ public class MergedPreferenceScreenFactory<C> {
         this.searchResultsFragmentUI = searchResultsFragmentUI;
         this.searchResultsSorter = searchResultsSorter;
         this.preferencePathDisplayer = preferencePathDisplayer;
-        this.activityInitializerByActivity = activityInitializerByActivity;
-        this.principalAndProxyProvider = principalAndProxyProvider;
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
         this.preferencesDatabase = preferencesDatabase;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;

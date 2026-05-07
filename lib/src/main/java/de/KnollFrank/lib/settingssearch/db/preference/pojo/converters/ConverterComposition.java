@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
+// FK-TODO: can be record class
 class ConverterComposition<A, B, C, ABConverter extends Converter<A, B>, BCConverter extends Converter<B, C>> implements Converter<A, C> {
 
     public final ABConverter first;
