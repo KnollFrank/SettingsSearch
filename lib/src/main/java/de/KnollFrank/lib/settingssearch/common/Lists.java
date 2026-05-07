@@ -48,6 +48,12 @@ public class Lists {
                 Optional.of(ts.subList(1, ts.size()));
     }
 
+    public static <T> Optional<List<T>> withoutLastElement(final List<T> ts) {
+        return ts.isEmpty() ?
+                Optional.empty() :
+                Optional.of(_withoutLastElement(ts));
+    }
+
     public static <T> List<T> reverse(final List<T> ts) {
         return com.google.common.collect.Lists.reverse(ts);
     }
@@ -72,5 +78,9 @@ public class Lists {
                                      elements.get(consecutiveIndexPair.first),
                                      elements.get(consecutiveIndexPair.second)))
                 .toList();
+    }
+
+    private static <T> List<T> _withoutLastElement(final List<T> ts) {
+        return ts.subList(0, ts.size() - 1);
     }
 }

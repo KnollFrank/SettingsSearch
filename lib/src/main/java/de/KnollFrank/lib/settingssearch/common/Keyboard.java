@@ -26,10 +26,7 @@ public class Keyboard {
     }
 
     public static void hideKeyboard(final Activity activity) {
-        final View view = activity.getCurrentFocus();
-        if (view != null) {
-            hideKeyboard(activity, view);
-        }
+        hideKeyboard(activity, activity.getWindow().getDecorView());
     }
 
     public static void hideKeyboard(final Activity activity, final View view) {

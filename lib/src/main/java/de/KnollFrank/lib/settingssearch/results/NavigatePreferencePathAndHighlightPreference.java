@@ -1,7 +1,14 @@
 package de.KnollFrank.lib.settingssearch.results;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
@@ -28,17 +35,25 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     // FK-TODO: add unit test which tries to navigate a preferencePath to a non existing SearchablePreferenceOfHostWithinTree (because the search database is not synchronized with the app's reality)
     @Override
     public void navigatePreferencePathAndHighlightPreference(final PreferencePath preferencePath) {
-        preferencePathNavigator
-                .navigatePreferencePath(preferencePath)
-                .ifPresent(
-                        fragmentOfPreferenceScreen ->
-                                showSettingsFragmentAndHighlightSetting(
-                                        fragmentOfPreferenceScreen,
-                                        preferencePath.getEnd()));
+        Futures.addCallback(
+                preferencePathNavigator.navigatePreferencePath(preferencePath),
+                new FutureCallback<>() {
+
+                    @Override
+                    public void onSuccess(final Optional<? extends Fragment> result) {
+                        result.ifPresent(fragment -> highlightSetting(fragment, preferencePath.getEnd()));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull final Throwable t) {
+                        throw new RuntimeException("UI Automator navigation failed", t);
+                    }
+                },
+                ContextCompat.getMainExecutor(activity));
     }
 
-    private void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment,
-                                                         final SearchablePreferenceOfHostWithinTree settingToHighlight) {
+    private void highlightSetting(final Fragment settingsFragment,
+                                  final SearchablePreferenceOfHostWithinTree settingToHighlight) {
         prepareShow.prepareShow(settingsFragment);
         showSettingsFragmentAndHighlightSetting.showSettingsFragmentAndHighlightSetting(activity, settingsFragment, settingToHighlight);
     }

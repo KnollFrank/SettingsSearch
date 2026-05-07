@@ -1,15 +1,11 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
-
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
@@ -25,13 +21,15 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     public void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity,
                                                         final Fragment settingsFragment,
                                                         final SearchablePreferenceOfHostWithinTree settingToHighlight) {
-        showFragment(
-                settingsFragment,
-                _settingsFragment -> highlightSetting(_settingsFragment, asSetting(settingToHighlight)),
-                true,
-                fragmentContainerViewId,
-                Optional.empty(),
-                activity.getSupportFragmentManager());
+        // FK-TODO: refactor
+        highlightSetting(settingsFragment, asSetting(settingToHighlight));
+//        showFragment(
+//                settingsFragment,
+//                _settingsFragment -> highlightSetting(_settingsFragment, asSetting(settingToHighlight)),
+//                true,
+//                fragmentContainerViewId,
+//                Optional.empty(),
+//                activity.getSupportFragmentManager());
     }
 
     private static void highlightSetting(final Fragment settingsFragment, final Setting setting) {

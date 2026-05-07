@@ -1,73 +1,108 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
-import android.app.Activity;
-import android.content.Context;
-
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObjectNotFoundException;
+import androidx.test.uiautomator.UiScrollable;
+import androidx.test.uiautomator.UiSelector;
+
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
-import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
+import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
+import de.KnollFrank.lib.settingssearch.fragment.Activities;
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
+// FK-TODO: refactor
 public class PreferencePathNavigator {
 
-    private final Context context;
-    private final PreferenceOfHostOfActivityProvider preferenceOfHostOfActivityProvider;
-    private final ContinueNavigationInActivity continueNavigationInActivity;
-    private final PrincipalProvider principalProvider;
+    private final FragmentActivity activity;
 
-    public PreferencePathNavigator(final Context context,
-                                   final PreferenceOfHostOfActivityProvider preferenceOfHostOfActivityProvider,
-                                   final ContinueNavigationInActivity continueNavigationInActivity,
+    public PreferencePathNavigator(final FragmentActivity activity,
+                                   final PreferenceOfHostOfActivityProvider provider,
+                                   final ContinueNavigationInActivity continueNav,
                                    final PrincipalProvider principalProvider) {
-        this.context = context;
-        this.preferenceOfHostOfActivityProvider = preferenceOfHostOfActivityProvider;
-        this.continueNavigationInActivity = continueNavigationInActivity;
-        this.principalProvider = principalProvider;
+        this.activity = activity;
     }
 
-    public Optional<? extends Fragment> navigatePreferencePath(final PreferencePath preferencePath) {
-        return tryGetPrincipalOfHost(navigatePreferences(preferencePath, Optional.empty()));
+    public ListenableFuture<Optional<? extends Fragment>> navigatePreferencePath(final PreferencePath preferencePath) {
+        final SettableFuture<Optional<? extends Fragment>> future = SettableFuture.create();
+
+        // Signalisiert Espresso-Tests, dass eine Hintergrundaktion läuft
+        EspressoIdlingResource.increment();
+
+        // UI Automator Aktionen müssen außerhalb des Main-Threads laufen
+        new Thread(() -> {
+            try {
+                final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
+                // FK-TODO: make configurable
+                // 1. Suche verlassen / Tastatur schließen
+                Activities
+                        .getCurrentActivity()
+                        .ifPresent(activity ->
+                                           InstrumentationRegistry
+                                                   .getInstrumentation()
+                                                   .runOnMainSync(() -> Keyboard.hideKeyboard(activity)));
+                device.pressBack();
+
+                // 2. Den Pfad durchklicken
+                for (final SearchablePreferenceOfHostWithinTree step : Lists.withoutLastElement(preferencePath.preferences()).orElseThrow()) {
+                    final String title = step.searchablePreference().getTitle().orElseThrow();
+                    clickPreferenceWithTitle(device, title);
+                }
+
+                // 3. Ergebnis zurückgeben
+                future.set(Fragments.findVisiblePreferenceFragmentOnCurrentActivity());
+
+            } catch (Exception e) {
+                future.setException(e);
+            } finally {
+                // Signalisiert Espresso-Tests, dass wir fertig sind
+                EspressoIdlingResource.decrement();
+            }
+        }).start();
+        return future;
     }
 
-    private Optional<PreferenceOfHostOfActivity> navigatePreferences(final PreferencePath preferencePath,
-                                                                     final Optional<PreferenceOfHostOfActivity> src) {
-        final Optional<Class<? extends Activity>> activity =
-                preferencePath
-                        .getStart()
-                        .searchablePreference()
-                        .getClassOfReferencedActivity(context);
-        return activity.isPresent() ?
-                continueNavigationInActivity.continueNavigationInActivity(
-                        activity.orElseThrow(),
-                        preferencePath,
-                        src) :
-                navigatePreferences(
-                        preferencePath.getTail(),
-                        preferenceOfHostOfActivityProvider.getPreferenceOfHostOfActivity(preferencePath.getStart(), src));
-    }
+    private void clickPreferenceWithTitle(final UiDevice device, final String title) throws UiObjectNotFoundException {
+        final UiSelector titleSelector = new UiSelector().text(title);
 
-    private Optional<PreferenceOfHostOfActivity> navigatePreferences(final Optional<PreferencePath> preferencePath,
-                                                                     final PreferenceOfHostOfActivity src) {
-        return preferencePath.isEmpty() ?
-                Optional.of(src) :
-                navigatePreferences(preferencePath.orElseThrow(), Optional.of(src));
-    }
+        // Try finding it directly first (it might already be on screen)
+        final UiObject preference = device.findObject(titleSelector);
+        if (preference.exists()) {
+            preference.click();
+            return;
+        }
 
-    private Optional<? extends Fragment> tryGetPrincipalOfHost(final Optional<PreferenceOfHostOfActivity> preferenceOfHostOfActivity) {
-        final Optional<? extends Fragment> principalOfHost =
-                preferenceOfHostOfActivity
-                        .map(PreferenceOfHostOfActivity::asPreferenceFragmentOfActivity)
-                        .flatMap(preferenceFragmentOfActivity ->
-                                         principalProvider
-                                                 .getPrincipal(
-                                                         preferenceFragmentOfActivity,
-                                                         preferenceOfHostOfActivity)
-                                                 .map(FragmentOfActivity::fragment));
-        return principalOfHost.isPresent() ?
-                principalOfHost :
-                preferenceOfHostOfActivity.map(PreferenceOfHostOfActivity::hostOfPreference);
+        // If not found, try to scroll to it if there is a scrollable container
+        final UiSelector scrollableSelector = new UiSelector().scrollable(true);
+        if (device.findObject(scrollableSelector).exists()) {
+            final UiScrollable scrollable = new UiScrollable(scrollableSelector);
+            try {
+                if (scrollable.scrollIntoView(titleSelector)) {
+                    preference.click();
+                    return;
+                }
+            } catch (UiObjectNotFoundException e) {
+                // Scroll into view failed, maybe it's not in the list or the list is weird
+            }
+        }
+
+        // Fallback: wait a bit and try one last time
+        if (preference.waitForExists(2000)) {
+            preference.click();
+        } else {
+            throw new UiObjectNotFoundException("Could not find preference with title: " + title);
+        }
     }
 }

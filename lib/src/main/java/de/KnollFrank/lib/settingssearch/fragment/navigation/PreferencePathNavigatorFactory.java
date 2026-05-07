@@ -1,7 +1,8 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import android.app.Activity;
-import android.content.Context;
+
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class PreferencePathNavigatorFactory {
     }
 
     public static PreferencePathNavigator createPreferencePathNavigator(
-            final Context context,
+            final FragmentActivity activity,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
@@ -25,12 +26,12 @@ public class PreferencePathNavigatorFactory {
                 new PreferenceOfHostOfActivityProvider(
                         fragmentFactoryAndInitializer,
                         instantiateAndInitializeFragment,
-                        context);
+                        activity);
         return new PreferencePathNavigator(
-                context,
+                activity,
                 preferenceOfHostOfActivityProvider,
                 new ContinueNavigationInActivity(
-                        context,
+                        activity,
                         activityInitializerByActivity,
                         preferenceOfHostOfActivityProvider),
                 new PrincipalProvider(
