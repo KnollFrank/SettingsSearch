@@ -82,7 +82,7 @@ public class PreferencePathNavigator {
                     preference.click();
                     return;
                 }
-            } catch (UiObjectNotFoundException e) {
+            } catch (final UiObjectNotFoundException e) {
                 // Scroll into view failed, maybe it's not in the list or the list is weird
             }
         }
