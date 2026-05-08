@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
+import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -35,6 +36,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 public class MergedPreferenceScreenFactory<C> {
 
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
+    private final PreferencePathNavigator preferencePathNavigator;
     private final PrepareShow prepareShow;
     private final FragmentFactory fragmentFactory;
     private final MarkupsFactory markupsFactory;
@@ -51,6 +53,7 @@ public class MergedPreferenceScreenFactory<C> {
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
+            final PreferencePathNavigator preferencePathNavigator,
             final PrepareShow prepareShow,
             final FragmentFactory fragmentFactory,
             final MarkupsFactory markupsFactory,
@@ -65,6 +68,7 @@ public class MergedPreferenceScreenFactory<C> {
             final PreferencesDatabase<C> preferencesDatabase,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
+        this.preferencePathNavigator = preferencePathNavigator;
         this.prepareShow = prepareShow;
         this.fragmentFactory = fragmentFactory;
         this.markupsFactory = markupsFactory;
@@ -109,6 +113,7 @@ public class MergedPreferenceScreenFactory<C> {
                         instantiateAndInitializeFragment)
                 .fillSearchDatabaseWithPreferences(locale, configuration);
         return createMergedPreferenceScreen(
+                preferencePathNavigator,
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
@@ -121,6 +126,7 @@ public class MergedPreferenceScreenFactory<C> {
     }
 
     public static <C> MergedPreferenceScreen<C> createMergedPreferenceScreen(
+            final PreferencePathNavigator preferencePathNavigator,
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PreferencePathDisplayer preferencePathDisplayer,
@@ -135,6 +141,7 @@ public class MergedPreferenceScreenFactory<C> {
                 new SearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new NavigatePreferencePathAndHighlightPreference(
+                                        preferencePathNavigator,
                                         prepareShow,
                                         showSettingsFragmentAndHighlightSetting,
                                         activity),

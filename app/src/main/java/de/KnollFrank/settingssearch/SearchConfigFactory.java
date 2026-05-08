@@ -11,11 +11,15 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.UiDevice;
 
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
+import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
+import de.KnollFrank.lib.settingssearch.fragment.Activities;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
@@ -35,7 +39,10 @@ class SearchConfigFactory {
                                                   final Context context) {
         final IgnoreSearchResultsFilter ignoreSearchResultsFilter = new IgnoreSearchResultsFilter();
         return SearchConfig
-                .builder(fragmentContainerViewId, context)
+                .builder(
+                        fragmentContainerViewId,
+                        context,
+                        SearchConfigFactory::navigateToInitialPreferenceScreen)
                 .withSearchResultsFilter(ignoreSearchResultsFilter)
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {
@@ -101,6 +108,16 @@ class SearchConfigFactory {
                             }
                         })
                 .build();
+    }
+
+    private static void navigateToInitialPreferenceScreen(final UiDevice device) {
+        Activities
+                .getCurrentActivity()
+                .ifPresent(activity ->
+                                   InstrumentationRegistry
+                                           .getInstrumentation()
+                                           .runOnMainSync(() -> Keyboard.hideKeyboard(activity)));
+        device.pressBack();
     }
 
     private static class IgnoreSearchResultsFilter implements SearchResultsFilter {

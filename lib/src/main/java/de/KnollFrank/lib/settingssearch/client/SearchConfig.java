@@ -3,9 +3,12 @@ package de.KnollFrank.lib.settingssearch.client;
 import android.content.Context;
 
 import androidx.annotation.IdRes;
+import androidx.test.uiautomator.UiDevice;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
@@ -33,6 +36,7 @@ public class SearchConfig {
     public final SearchResultsFragmentUI searchResultsFragmentUI;
     public final MarkupsFactory markupsFactory;
     public final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
+    public final PreferencePathNavigator preferencePathNavigator;
 
     SearchConfig(final @IdRes int fragmentContainerViewId,
                  final Optional<String> queryHint,
@@ -45,7 +49,8 @@ public class SearchConfig {
                  final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
                  final SearchResultsFragmentUI searchResultsFragmentUI,
                  final MarkupsFactory markupsFactory,
-                 final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
+                 final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
+                 final PreferencePathNavigator preferencePathNavigator) {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.queryHint = queryHint;
         this.stringMatcher = stringMatcher;
@@ -58,9 +63,12 @@ public class SearchConfig {
         this.searchResultsFragmentUI = searchResultsFragmentUI;
         this.markupsFactory = markupsFactory;
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
+        this.preferencePathNavigator = preferencePathNavigator;
     }
 
-    public static SearchConfigBuilder builder(final @IdRes int fragmentContainerViewId, final Context context) {
-        return new SearchConfigBuilder(fragmentContainerViewId, context);
+    public static SearchConfigBuilder builder(final @IdRes int fragmentContainerViewId,
+                                              final Context context,
+                                              final Consumer<UiDevice> navigateToInitialPreferenceScreen) {
+        return new SearchConfigBuilder(fragmentContainerViewId, context, navigateToInitialPreferenceScreen);
     }
 }

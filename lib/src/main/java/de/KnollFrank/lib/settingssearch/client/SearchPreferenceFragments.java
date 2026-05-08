@@ -117,6 +117,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
     public MergedPreferenceScreenFactory<C> getMergedPreferenceScreenFactory() {
         return new MergedPreferenceScreenFactory<>(
                 searchConfig.showPreferencePathPredicate,
+                searchConfig.preferencePathNavigator,
                 searchConfig.prepareShow,
                 searchDatabaseConfig.fragmentFactory,
                 searchConfig.markupsFactory,

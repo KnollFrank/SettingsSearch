@@ -12,22 +12,24 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
-import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
-import de.KnollFrank.lib.settingssearch.fragment.Activities;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
 // FK-TODO: refactor
 public class PreferencePathNavigator {
 
-    private PreferencePathNavigator() {
+    private final Consumer<UiDevice> navigateToInitialPreferenceScreen;
+
+    public PreferencePathNavigator(final Consumer<UiDevice> navigateToInitialPreferenceScreen) {
+        this.navigateToInitialPreferenceScreen = navigateToInitialPreferenceScreen;
     }
 
-    public static ListenableFuture<Optional<? extends Fragment>> navigatePreferencePath(final PreferencePath preferencePath) {
+    public ListenableFuture<Optional<? extends Fragment>> navigatePreferencePath(final PreferencePath preferencePath) {
         final SettableFuture<Optional<? extends Fragment>> future = SettableFuture.create();
 
         // Signalisiert Espresso-Tests, dass eine Hintergrundaktion läuft
@@ -37,17 +39,7 @@ public class PreferencePathNavigator {
         new Thread(() -> {
             try {
                 final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-
-                // FK-TODO: make configurable
-                // 1. Suche verlassen / Tastatur schließen
-                Activities
-                        .getCurrentActivity()
-                        .ifPresent(activity ->
-                                           InstrumentationRegistry
-                                                   .getInstrumentation()
-                                                   .runOnMainSync(() -> Keyboard.hideKeyboard(activity)));
-                device.pressBack();
-
+                navigateToInitialPreferenceScreen.accept(device);
                 // 2. Den Pfad durchklicken
                 for (final SearchablePreferenceOfHostWithinTree step : Lists.withoutLastElement(preferencePath.preferences()).orElseThrow()) {
                     final String title = step.searchablePreference().getTitle().orElseThrow();
