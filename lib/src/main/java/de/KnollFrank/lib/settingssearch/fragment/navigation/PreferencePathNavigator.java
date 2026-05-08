@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
@@ -35,12 +36,7 @@ public class PreferencePathNavigator {
         EspressoIdlingResource.increment();
         new Thread(() -> {
             try {
-                final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-                navigateToInitialPreferenceScreen.accept(device);
-                clickPreferences(
-                        Lists.withoutLastElement(preferencePath.preferences()).orElseThrow(),
-                        device);
-                future.set(Fragments.findVisiblePreferenceFragmentOnCurrentActivity());
+                future.set(_navigatePreferencePath(preferencePath));
             } catch (final Exception e) {
                 future.setException(e);
             } finally {
@@ -48,6 +44,15 @@ public class PreferencePathNavigator {
             }
         }).start();
         return future;
+    }
+
+    private Optional<PreferenceFragmentCompat> _navigatePreferencePath(final PreferencePath preferencePath) throws UiObjectNotFoundException {
+        final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        navigateToInitialPreferenceScreen.accept(device);
+        clickPreferences(
+                Lists.withoutLastElement(preferencePath.preferences()).orElseThrow(),
+                device);
+        return Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
     }
 
     private static void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences, final UiDevice device) throws UiObjectNotFoundException {
