@@ -1,6 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SearchView;
@@ -9,17 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.uiautomator.UiDevice;
 
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
-import de.KnollFrank.lib.settingssearch.fragment.Activities;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
@@ -36,13 +33,13 @@ class SearchConfigFactory {
     }
 
     public static SearchConfig createSearchConfig(final @IdRes int fragmentContainerViewId,
-                                                  final Context context) {
+                                                  final FragmentActivity fragmentActivity) {
         final IgnoreSearchResultsFilter ignoreSearchResultsFilter = new IgnoreSearchResultsFilter();
         return SearchConfig
                 .builder(
                         fragmentContainerViewId,
-                        context,
-                        SearchConfigFactory::navigateToInitialPreferenceScreen)
+                        fragmentActivity,
+                        () -> navigateToInitialPreferenceScreen(fragmentActivity))
                 .withSearchResultsFilter(ignoreSearchResultsFilter)
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {
@@ -110,14 +107,11 @@ class SearchConfigFactory {
                 .build();
     }
 
-    private static void navigateToInitialPreferenceScreen(final UiDevice device) {
-        Activities
-                .getCurrentActivity()
-                .ifPresent(activity ->
-                                   InstrumentationRegistry
-                                           .getInstrumentation()
-                                           .runOnMainSync(() -> Keyboard.hideKeyboard(activity)));
-        device.pressBack();
+    private static void navigateToInitialPreferenceScreen(final FragmentActivity fragmentActivity) {
+        fragmentActivity.runOnUiThread(() -> {
+            Keyboard.hideKeyboard(fragmentActivity);
+            fragmentActivity.getOnBackPressedDispatcher().onBackPressed();
+        });
     }
 
     private static class IgnoreSearchResultsFilter implements SearchResultsFilter {

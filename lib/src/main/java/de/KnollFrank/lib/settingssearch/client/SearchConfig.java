@@ -3,10 +3,8 @@ package de.KnollFrank.lib.settingssearch.client;
 import android.content.Context;
 
 import androidx.annotation.IdRes;
-import androidx.test.uiautomator.UiDevice;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -68,7 +66,7 @@ public class SearchConfig {
 
     public static SearchConfigBuilder builder(final @IdRes int fragmentContainerViewId,
                                               final Context context,
-                                              final Consumer<UiDevice> navigateToInitialPreferenceScreen) {
+                                              final Runnable navigateToInitialPreferenceScreen) {
         return new SearchConfigBuilder(fragmentContainerViewId, context, navigateToInitialPreferenceScreen);
     }
 }

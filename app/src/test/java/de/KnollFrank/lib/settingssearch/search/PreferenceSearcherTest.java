@@ -825,7 +825,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         locale,
                         PersistableBundleTestFactory.createSomePersistableBundle()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
-                new PreferencePathNavigator(device -> {
+                new PreferencePathNavigator(() -> {
                 }),
                 fragment -> {
                 },

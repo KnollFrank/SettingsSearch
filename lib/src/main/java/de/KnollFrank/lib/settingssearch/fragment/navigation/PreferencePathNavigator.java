@@ -14,7 +14,6 @@ import com.google.common.util.concurrent.SettableFuture;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
@@ -25,9 +24,9 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 // FK-TODO: refactor
 public class PreferencePathNavigator {
 
-    private final Consumer<UiDevice> navigateToInitialPreferenceScreen;
+    private final Runnable navigateToInitialPreferenceScreen;
 
-    public PreferencePathNavigator(final Consumer<UiDevice> navigateToInitialPreferenceScreen) {
+    public PreferencePathNavigator(final Runnable navigateToInitialPreferenceScreen) {
         this.navigateToInitialPreferenceScreen = navigateToInitialPreferenceScreen;
     }
 
@@ -47,23 +46,19 @@ public class PreferencePathNavigator {
     }
 
     private Optional<PreferenceFragmentCompat> _navigatePreferencePath(final PreferencePath preferencePath) throws UiObjectNotFoundException {
-        final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        navigateToInitialPreferenceScreen.accept(device);
-        clickPreferences(
-                Lists.withoutLastElement(preferencePath.preferences()).orElseThrow(),
-                device);
+        navigateToInitialPreferenceScreen.run();
+        clickPreferences(Lists.withoutLastElement(preferencePath.preferences()).orElseThrow());
         return Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
     }
 
-    private static void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences, final UiDevice device) throws UiObjectNotFoundException {
+    private static void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences) throws UiObjectNotFoundException {
         for (final SearchablePreferenceOfHostWithinTree preference : preferences) {
-            clickPreferenceWithTitle(
-                    preference.searchablePreference().getTitle().orElseThrow(),
-                    device);
+            clickPreferenceWithTitle(preference.searchablePreference().getTitle().orElseThrow());
         }
     }
 
-    private static void clickPreferenceWithTitle(final String title, final UiDevice device) throws UiObjectNotFoundException {
+    private static void clickPreferenceWithTitle(final String title) throws UiObjectNotFoundException {
+        final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         final UiSelector titleSelector = new UiSelector().text(title);
 
         // Try finding it directly first (it might already be on screen)
