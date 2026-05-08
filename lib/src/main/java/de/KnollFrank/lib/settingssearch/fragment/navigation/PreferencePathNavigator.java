@@ -11,6 +11,7 @@ import androidx.test.uiautomator.UiSelector;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -31,35 +32,33 @@ public class PreferencePathNavigator {
 
     public ListenableFuture<Optional<? extends Fragment>> navigatePreferencePath(final PreferencePath preferencePath) {
         final SettableFuture<Optional<? extends Fragment>> future = SettableFuture.create();
-
-        // Signalisiert Espresso-Tests, dass eine Hintergrundaktion läuft
         EspressoIdlingResource.increment();
-
-        // UI Automator Aktionen müssen außerhalb des Main-Threads laufen
         new Thread(() -> {
             try {
                 final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
                 navigateToInitialPreferenceScreen.accept(device);
-                // 2. Den Pfad durchklicken
-                for (final SearchablePreferenceOfHostWithinTree step : Lists.withoutLastElement(preferencePath.preferences()).orElseThrow()) {
-                    final String title = step.searchablePreference().getTitle().orElseThrow();
-                    clickPreferenceWithTitle(device, title);
-                }
-
-                // 3. Ergebnis zurückgeben
+                clickPreferences(
+                        Lists.withoutLastElement(preferencePath.preferences()).orElseThrow(),
+                        device);
                 future.set(Fragments.findVisiblePreferenceFragmentOnCurrentActivity());
-
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 future.setException(e);
             } finally {
-                // Signalisiert Espresso-Tests, dass wir fertig sind
                 EspressoIdlingResource.decrement();
             }
         }).start();
         return future;
     }
 
-    private static void clickPreferenceWithTitle(final UiDevice device, final String title) throws UiObjectNotFoundException {
+    private static void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences, final UiDevice device) throws UiObjectNotFoundException {
+        for (final SearchablePreferenceOfHostWithinTree preference : preferences) {
+            clickPreferenceWithTitle(
+                    preference.searchablePreference().getTitle().orElseThrow(),
+                    device);
+        }
+    }
+
+    private static void clickPreferenceWithTitle(final String title, final UiDevice device) throws UiObjectNotFoundException {
         final UiSelector titleSelector = new UiSelector().text(title);
 
         // Try finding it directly first (it might already be on screen)
