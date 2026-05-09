@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.Optional;
 
-public class Activities {
+public class CurrentActivityProvider {
 
     private static WeakReference<Activity> currentActivityRef = new WeakReference<>(null);
 
@@ -31,23 +31,23 @@ public class Activities {
                     }
 
                     @Override
-                    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle s) {
+                    public void onActivityCreated(final @NonNull Activity activity, final @Nullable Bundle s) {
                     }
 
                     @Override
-                    public void onActivityStarted(@NonNull Activity activity) {
+                    public void onActivityStarted(final @NonNull Activity activity) {
                     }
 
                     @Override
-                    public void onActivityStopped(@NonNull Activity activity) {
+                    public void onActivityStopped(final @NonNull Activity activity) {
                     }
 
                     @Override
-                    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle o) {
+                    public void onActivitySaveInstanceState(final @NonNull Activity activity, final @NonNull Bundle o) {
                     }
 
                     @Override
-                    public void onActivityDestroyed(@NonNull Activity activity) {
+                    public void onActivityDestroyed(final @NonNull Activity activity) {
                     }
                 });
     }

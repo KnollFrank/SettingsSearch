@@ -68,7 +68,7 @@ public class Fragments implements InstantiateAndInitializeFragment {
     }
 
     public static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragmentOnCurrentActivity() {
-        return Activities
+        return CurrentActivityProvider
                 .getCurrentActivity()
                 .flatMap(Fragments::asFragmentActivity)
                 .flatMap(fragmentActivity -> findVisiblePreferenceFragment(fragmentActivity.getSupportFragmentManager()));

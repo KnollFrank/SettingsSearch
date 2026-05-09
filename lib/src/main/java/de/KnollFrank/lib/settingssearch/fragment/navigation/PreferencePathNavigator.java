@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
-import de.KnollFrank.lib.settingssearch.fragment.Activities;
+import de.KnollFrank.lib.settingssearch.fragment.CurrentActivityProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
 // FK-TODO: refactor
@@ -66,7 +66,7 @@ public class PreferencePathNavigator {
 
     private void clickElementWithText(final String text) throws Exception {
         final Activity activity =
-                Activities
+                CurrentActivityProvider
                         .getCurrentActivity()
                         .orElseThrow(() -> new IllegalStateException("No active activity found"));
 
@@ -141,7 +141,7 @@ public class PreferencePathNavigator {
     }
 
     private void waitForIdle() throws InterruptedException {
-        final Activity activity = Activities.getCurrentActivity().orElse(null);
+        final Activity activity = CurrentActivityProvider.getCurrentActivity().orElse(null);
         if (activity == null) {
             return;
         }

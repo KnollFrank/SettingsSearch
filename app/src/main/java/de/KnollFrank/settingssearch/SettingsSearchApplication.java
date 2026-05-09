@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseManager;
-import de.KnollFrank.lib.settingssearch.fragment.Activities;
+import de.KnollFrank.lib.settingssearch.fragment.CurrentActivityProvider;
 
 public class SettingsSearchApplication extends Application {
 
@@ -17,6 +17,6 @@ public class SettingsSearchApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Activities.initialize(this);
+        CurrentActivityProvider.initialize(this);
     }
 }
