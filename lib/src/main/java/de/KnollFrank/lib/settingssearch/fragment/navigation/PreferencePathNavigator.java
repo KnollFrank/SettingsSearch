@@ -26,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.fragment.CurrentActivityProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
 // FK-TODO: refactor
+// FK-TODO: remove magic numbers
 public class PreferencePathNavigator {
 
     private final Runnable navigateToInitialPreferenceScreen;
