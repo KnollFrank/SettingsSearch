@@ -1,24 +1,28 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
+import android.app.Activity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.uiautomator.UiDevice;
-import androidx.test.uiautomator.UiObject;
-import androidx.test.uiautomator.UiObjectNotFoundException;
-import androidx.test.uiautomator.UiScrollable;
-import androidx.test.uiautomator.UiSelector;
+import androidx.preference.PreferenceGroup;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
+import de.KnollFrank.lib.settingssearch.fragment.Activities;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
 // FK-TODO: refactor
@@ -45,48 +49,106 @@ public class PreferencePathNavigator {
         return future;
     }
 
-    private Optional<PreferenceFragmentCompat> _navigatePreferencePath(final PreferencePath preferencePath) throws UiObjectNotFoundException {
+    private Optional<PreferenceFragmentCompat> _navigatePreferencePath(final PreferencePath preferencePath) throws Exception {
         navigateToInitialPreferenceScreen.run();
+        waitForIdle();
         clickPreferences(Lists.withoutLastElement(preferencePath.preferences()).orElseThrow());
         return Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
     }
 
-    private static void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences) throws UiObjectNotFoundException {
+    private void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences) throws Exception {
         for (final SearchablePreferenceOfHostWithinTree preference : preferences) {
-            clickPreferenceWithTitle(preference.searchablePreference().getTitle().orElseThrow());
+            // FK-TODO: auch preference.searchablePreference().getKey() und verwenden übergeben
+            clickElementWithText(preference.searchablePreference().getTitle().orElseThrow());
+            waitForIdle();
         }
     }
 
-    private static void clickPreferenceWithTitle(final String title) throws UiObjectNotFoundException {
-        final UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        final UiSelector titleSelector = new UiSelector().text(title);
+    private void clickElementWithText(final String text) throws Exception {
+        final Activity activity =
+                Activities
+                        .getCurrentActivity()
+                        .orElseThrow(() -> new IllegalStateException("No active activity found"));
 
-        // Try finding it directly first (it might already be on screen)
-        final UiObject preference = device.findObject(titleSelector);
-        if (preference.exists()) {
-            preference.click();
-            return;
-        }
-
-        // If not found, try to scroll to it if there is a scrollable container
-        final UiSelector scrollableSelector = new UiSelector().scrollable(true);
-        if (device.findObject(scrollableSelector).exists()) {
-            final UiScrollable scrollable = new UiScrollable(scrollableSelector);
-            try {
-                if (scrollable.scrollIntoView(titleSelector)) {
-                    preference.click();
-                    return;
-                }
-            } catch (final UiObjectNotFoundException e) {
-                // Scroll into view failed, maybe it's not in the list or the list is weird
+        // 1. Suche in Preferences (für automatisches Scrollen)
+        final Optional<PreferenceFragmentCompat> fragment = Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
+        if (fragment.isPresent()) {
+            final Preference pref = findPreferenceByTitle(fragment.get().getPreferenceScreen(), text);
+            if (pref != null) {
+                activity.runOnUiThread(() -> fragment.get().scrollToPreference(pref));
+                waitForIdle();
             }
         }
 
-        // Fallback: wait a bit and try one last time
-        if (preference.waitForExists(2000)) {
-            preference.click();
-        } else {
-            throw new UiObjectNotFoundException("Could not find preference with title: " + title);
+        // 2. Suche im View-Baum & Klick
+        final SettableFuture<Boolean> clicked = SettableFuture.create();
+        activity.runOnUiThread(() -> {
+            final View view = findViewWithText(activity.getWindow().getDecorView(), text);
+            if (view != null) {
+                performClickOnViewChain(view);
+                clicked.set(true);
+            } else {
+                clicked.setException(new Exception("Element not found: " + text));
+            }
+        });
+        clicked.get(5, TimeUnit.SECONDS);
+    }
+
+    // FK-TODO: return Optional<View>
+    private View findViewWithText(final View root, final String text) {
+        if (root instanceof final TextView textView && text.equals(textView.getText().toString())) {
+            return textView;
         }
+        if (root instanceof final ViewGroup group) {
+            for (int i = 0; i < group.getChildCount(); i++) {
+                final View found = findViewWithText(group.getChildAt(i), text);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void performClickOnViewChain(final View view) {
+        View target = view;
+        while (target != null && !target.isClickable()) {
+            if (target.getParent() instanceof final View parent) {
+                target = parent;
+            } else {
+                break;
+            }
+        }
+        if (target != null) {
+            target.performClick();
+        }
+    }
+
+    private Preference findPreferenceByTitle(final PreferenceGroup group, final String title) {
+        for (int i = 0; i < group.getPreferenceCount(); i++) {
+            final Preference p = group.getPreference(i);
+            if (title.contentEquals(p.getTitle())) {
+                return p;
+            }
+            if (p instanceof final PreferenceGroup g) {
+                final Preference found = findPreferenceByTitle(g, title);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void waitForIdle() throws InterruptedException {
+        final Activity activity = Activities.getCurrentActivity().orElse(null);
+        if (activity == null) {
+            return;
+        }
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        activity.getWindow().getDecorView().post(latch::countDown);
+        latch.await(2, TimeUnit.SECONDS);
+        Thread.sleep(300); // Zeit für Fragmente/Animationen
     }
 }

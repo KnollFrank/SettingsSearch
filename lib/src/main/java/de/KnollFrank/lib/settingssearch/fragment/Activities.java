@@ -1,30 +1,58 @@
 package de.KnollFrank.lib.settingssearch.fragment;
 
 import android.app.Activity;
+import android.app.Application;
+import android.os.Bundle;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import androidx.test.runner.lifecycle.Stage;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import java.util.Collection;
+import java.lang.ref.WeakReference;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Activities {
 
+    private static WeakReference<Activity> currentActivityRef = new WeakReference<>(null);
+
+    public static void initialize(final Application application) {
+        application.registerActivityLifecycleCallbacks(
+                new Application.ActivityLifecycleCallbacks() {
+
+                    @Override
+                    public void onActivityResumed(final @NonNull Activity activity) {
+                        currentActivityRef = new WeakReference<>(activity);
+                    }
+
+                    @Override
+                    public void onActivityPaused(final @NonNull Activity activity) {
+                        if (currentActivityRef.get() == activity) {
+                            currentActivityRef.clear();
+                        }
+                    }
+
+                    @Override
+                    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle s) {
+                    }
+
+                    @Override
+                    public void onActivityStarted(@NonNull Activity activity) {
+                    }
+
+                    @Override
+                    public void onActivityStopped(@NonNull Activity activity) {
+                    }
+
+                    @Override
+                    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle o) {
+                    }
+
+                    @Override
+                    public void onActivityDestroyed(@NonNull Activity activity) {
+                    }
+                });
+    }
+
     public static Optional<Activity> getCurrentActivity() {
-        final AtomicReference<Optional<Activity>> currentActivity = new AtomicReference<>(Optional.empty());
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> currentActivity.set(_getCurrentActivity()));
-        return currentActivity.get();
-    }
-
-    private static Optional<Activity> _getCurrentActivity() {
-        return getResumedActivities().stream().findFirst();
-    }
-
-    private static Collection<Activity> getResumedActivities() {
-        return ActivityLifecycleMonitorRegistry
-                .getInstance()
-                .getActivitiesInStage(Stage.RESUMED);
+        return Optional.ofNullable(currentActivityRef.get());
     }
 }
