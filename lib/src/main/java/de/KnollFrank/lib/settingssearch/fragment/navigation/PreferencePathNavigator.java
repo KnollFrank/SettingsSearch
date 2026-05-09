@@ -1,8 +1,11 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import android.app.Activity;
+import android.os.Looper;
+import android.os.MessageQueue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
@@ -26,8 +30,11 @@ import de.KnollFrank.lib.settingssearch.fragment.CurrentActivityProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
 // FK-TODO: refactor
-// FK-TODO: remove magic numbers
 public class PreferencePathNavigator {
+
+    private static final int MAX_VIEW_WAIT_RETRIES = 50;
+    private static final long VIEW_POLLING_INTERVAL_MS = 100;
+    private static final long IDLE_TIMEOUT_SECONDS = 5;
 
     private final Runnable navigateToInitialPreferenceScreen;
 
@@ -52,16 +59,15 @@ public class PreferencePathNavigator {
 
     private Optional<PreferenceFragmentCompat> _navigatePreferencePath(final PreferencePath preferencePath) throws Exception {
         navigateToInitialPreferenceScreen.run();
-        waitForIdle();
+        waitUntilIdle();
         clickPreferences(Lists.withoutLastElement(preferencePath.preferences()).orElseThrow());
         return Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
     }
 
     private void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences) throws Exception {
         for (final SearchablePreferenceOfHostWithinTree preference : preferences) {
-            // FK-TODO: auch preference.searchablePreference().getKey() und verwenden übergeben
             clickElementWithText(preference.searchablePreference().getTitle().orElseThrow());
-            waitForIdle();
+            waitUntilIdle();
         }
     }
 
@@ -72,84 +78,130 @@ public class PreferencePathNavigator {
                         .orElseThrow(() -> new IllegalStateException("No active activity found"));
 
         // 1. Suche in Preferences (für automatisches Scrollen)
-        final Optional<PreferenceFragmentCompat> fragment = Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
-        if (fragment.isPresent()) {
-            final Preference pref = findPreferenceByTitle(fragment.get().getPreferenceScreen(), text);
-            if (pref != null) {
-                activity.runOnUiThread(() -> fragment.get().scrollToPreference(pref));
-                waitForIdle();
-            }
-        }
+        Fragments
+                .findVisiblePreferenceFragmentOnCurrentActivity()
+                .ifPresent(
+                        fragment ->
+                                this
+                                        .findPreferenceByTitle(fragment.getPreferenceScreen(), text)
+                                        .ifPresent(
+                                                preference -> {
+                                                    activity.runOnUiThread(() -> fragment.scrollToPreference(preference));
+                                                    try {
+                                                        waitUntilIdle();
+                                                    } catch (final InterruptedException e) {
+                                                        Thread.currentThread().interrupt();
+                                                    }
+                                                }));
 
-        // 2. Suche im View-Baum & Klick
+        // 2. Suche im View-Baum mit programmatischem Warten auf Sichtbarkeit
+        final View view = waitForViewWithText(activity, text);
+
         final SettableFuture<Boolean> clicked = SettableFuture.create();
         activity.runOnUiThread(() -> {
-            final View view = findViewWithText(activity.getWindow().getDecorView(), text);
-            if (view != null) {
-                performClickOnViewChain(view);
-                clicked.set(true);
-            } else {
-                clicked.setException(new Exception("Element not found: " + text));
-            }
+            performClickOnViewChain(view);
+            clicked.set(true);
         });
-        clicked.get(5, TimeUnit.SECONDS);
+        clicked.get();
     }
 
-    // FK-TODO: return Optional<View>
-    private View findViewWithText(final View root, final String text) {
+    private View waitForViewWithText(final Activity activity, final String text) throws Exception {
+        for (int i = 0; i < MAX_VIEW_WAIT_RETRIES; i++) {
+            final AtomicReference<Optional<View>> foundView = new AtomicReference<>(Optional.empty());
+            final CountDownLatch latch = new CountDownLatch(1);
+
+            activity.runOnUiThread(() -> {
+                foundView.set(findViewWithText(activity.getWindow().getDecorView(), text));
+                latch.countDown();
+            });
+
+            latch.await();
+            if (foundView.get().isPresent()) {
+                return foundView.get().get();
+            }
+            Thread.sleep(VIEW_POLLING_INTERVAL_MS);
+        }
+        throw new Exception("Timeout waiting for view with text: " + text);
+    }
+
+    private Optional<View> findViewWithText(final View root, final String text) {
         if (root instanceof final TextView textView && text.equals(textView.getText().toString())) {
-            return textView;
+            return Optional.of(textView);
         }
         if (root instanceof final ViewGroup group) {
             for (int i = 0; i < group.getChildCount(); i++) {
-                final View found = findViewWithText(group.getChildAt(i), text);
-                if (found != null) {
+                final Optional<View> found = findViewWithText(group.getChildAt(i), text);
+                if (found.isPresent()) {
                     return found;
                 }
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     private void performClickOnViewChain(final View view) {
-        View target = view;
-        while (target != null && !target.isClickable()) {
-            if (target.getParent() instanceof final View parent) {
-                target = parent;
-            } else {
-                break;
-            }
+        Optional<View> target = Optional.of(view);
+        while (target.isPresent() && !target.get().isClickable()) {
+            target = Optional.ofNullable(target.get().getParent())
+                    .filter(View.class::isInstance)
+                    .map(View.class::cast);
         }
-        if (target != null) {
-            target.performClick();
-        }
+        target.ifPresent(View::performClick);
     }
 
-    private Preference findPreferenceByTitle(final PreferenceGroup preferenceGroup, final String title) {
+    private Optional<Preference> findPreferenceByTitle(final PreferenceGroup preferenceGroup, final String title) {
         for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
             final Preference preference = preferenceGroup.getPreference(i);
-            if (preference.getTitle() != null && title.contentEquals(preference.getTitle())) {
-                return preference;
+            if (Optional.ofNullable(preference.getTitle()).map(title::contentEquals).orElse(false)) {
+                return Optional.of(preference);
             }
             if (preference instanceof final PreferenceGroup _preferenceGroup) {
-                final Preference found = findPreferenceByTitle(_preferenceGroup, title);
-                if (found != null) {
+                final Optional<Preference> found = findPreferenceByTitle(_preferenceGroup, title);
+                if (found.isPresent()) {
                     return found;
                 }
             }
         }
-        return null;
+        return Optional.empty();
     }
 
-    private void waitForIdle() throws InterruptedException {
+    private void waitUntilIdle() throws InterruptedException {
         final Activity activity = CurrentActivityProvider.getCurrentActivity().orElse(null);
         if (activity == null) {
             return;
         }
 
-        final CountDownLatch latch = new CountDownLatch(1);
-        activity.getWindow().getDecorView().post(latch::countDown);
-        latch.await(2, TimeUnit.SECONDS);
-        Thread.sleep(300); // Zeit für Fragmente/Animationen
+        // 1. Warten bis der Main-Looper idle ist (MessageQueue leer)
+        final CountDownLatch looperLatch = new CountDownLatch(1);
+        activity.runOnUiThread(() -> {
+            Looper.myQueue().addIdleHandler(
+                    new MessageQueue.IdleHandler() {
+
+                        @Override
+                        public boolean queueIdle() {
+                            looperLatch.countDown();
+                            return false;
+                        }
+                    });
+        });
+        looperLatch.await(IDLE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+        // 2. Warten bis das Layout stabil ist
+        final CountDownLatch layoutLatch = new CountDownLatch(1);
+        activity.runOnUiThread(() -> {
+            final View decorView = activity.getWindow().getDecorView();
+            if (!decorView.isLayoutRequested()) {
+                layoutLatch.countDown();
+                return;
+            }
+            decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    layoutLatch.countDown();
+                }
+            });
+        });
+        layoutLatch.await(IDLE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 }
