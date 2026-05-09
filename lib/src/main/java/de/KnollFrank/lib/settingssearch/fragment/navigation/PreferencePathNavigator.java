@@ -124,14 +124,14 @@ public class PreferencePathNavigator {
         }
     }
 
-    private Preference findPreferenceByTitle(final PreferenceGroup group, final String title) {
-        for (int i = 0; i < group.getPreferenceCount(); i++) {
-            final Preference p = group.getPreference(i);
-            if (title.contentEquals(p.getTitle())) {
-                return p;
+    private Preference findPreferenceByTitle(final PreferenceGroup preferenceGroup, final String title) {
+        for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
+            final Preference preference = preferenceGroup.getPreference(i);
+            if (preference.getTitle() != null && title.contentEquals(preference.getTitle())) {
+                return preference;
             }
-            if (p instanceof final PreferenceGroup g) {
-                final Preference found = findPreferenceByTitle(g, title);
+            if (preference instanceof final PreferenceGroup _preferenceGroup) {
+                final Preference found = findPreferenceByTitle(_preferenceGroup, title);
                 if (found != null) {
                     return found;
                 }
