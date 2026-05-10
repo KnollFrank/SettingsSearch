@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class UiController {
-
-    private static final long IDLE_TIMEOUT_SECONDS = 5;
 
     // FK-TODO: refactor
     public static void waitUntilIdle() throws InterruptedException {
@@ -30,7 +27,7 @@ public class UiController {
                                         return false;
                                     }
                                 }));
-        looperLatch.await(IDLE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        looperLatch.await();
 
         // 2. Warten bis das Layout stabil ist
         final CountDownLatch layoutLatch = new CountDownLatch(1);
@@ -40,14 +37,16 @@ public class UiController {
                 layoutLatch.countDown();
                 return;
             }
-            decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    layoutLatch.countDown();
-                }
-            });
+            decorView.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                        @Override
+                        public void onGlobalLayout() {
+                            decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            layoutLatch.countDown();
+                        }
+                    });
         });
-        layoutLatch.await(IDLE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        layoutLatch.await();
     }
 }
