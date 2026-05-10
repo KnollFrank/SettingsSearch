@@ -3,8 +3,8 @@ package de.KnollFrank.settingssearch;
 import android.app.Application;
 import android.content.Context;
 
+import de.KnollFrank.lib.settingssearch.common.uicontroller.CurrentActivityProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseManager;
-import de.KnollFrank.lib.settingssearch.fragment.CurrentActivityProvider;
 
 public class SettingsSearchApplication extends Application {
 

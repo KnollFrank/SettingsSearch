@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.fragment;
+package de.KnollFrank.lib.settingssearch.common.uicontroller;
 
 import android.app.Activity;
 import android.app.Application;
@@ -13,6 +13,7 @@ import java.util.Optional;
 public class CurrentActivityProvider {
 
     private static WeakReference<Activity> currentActivityRef = new WeakReference<>(null);
+    private static final Object LOCK = new Object();
 
     public static void initialize(final Application application) {
         application.registerActivityLifecycleCallbacks(
@@ -20,13 +21,18 @@ public class CurrentActivityProvider {
 
                     @Override
                     public void onActivityResumed(final @NonNull Activity activity) {
-                        currentActivityRef = new WeakReference<>(activity);
+                        synchronized (LOCK) {
+                            currentActivityRef = new WeakReference<>(activity);
+                            LOCK.notifyAll();
+                        }
                     }
 
                     @Override
                     public void onActivityPaused(final @NonNull Activity activity) {
-                        if (currentActivityRef.get() == activity) {
-                            currentActivityRef.clear();
+                        synchronized (LOCK) {
+                            if (currentActivityRef.get() == activity) {
+                                currentActivityRef.clear();
+                            }
                         }
                     }
 
@@ -53,6 +59,20 @@ public class CurrentActivityProvider {
     }
 
     public static Optional<Activity> getCurrentActivity() {
-        return Optional.ofNullable(currentActivityRef.get());
+        synchronized (LOCK) {
+            return Optional.ofNullable(currentActivityRef.get());
+        }
+    }
+
+    public static Activity awaitResumedActivity() throws InterruptedException {
+        synchronized (LOCK) {
+            while (true) {
+                final Optional<Activity> currentActivity = getCurrentActivity();
+                if (currentActivity.isPresent()) {
+                    return currentActivity.get();
+                }
+                LOCK.wait();
+            }
+        }
     }
 }

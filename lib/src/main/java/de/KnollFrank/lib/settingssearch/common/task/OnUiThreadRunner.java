@@ -18,6 +18,14 @@ public class OnUiThreadRunner {
         runNonBlockingOnUiThread.accept(runnable);
     }
 
+    public void runBlockingOnUiThread(final Runnable runnable) {
+        runBlockingOnUiThread(
+                () -> {
+                    runnable.run();
+                    return null;
+                });
+    }
+
     public <V> V runBlockingOnUiThread(final Callable<V> callable) {
         final RunnableFuture<V> task = new FutureTask<>(callable);
         runNonBlockingOnUiThread.accept(task);

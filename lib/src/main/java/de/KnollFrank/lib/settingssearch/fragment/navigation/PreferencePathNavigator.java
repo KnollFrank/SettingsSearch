@@ -1,11 +1,8 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import android.app.Activity;
-import android.os.Looper;
-import android.os.MessageQueue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -18,23 +15,20 @@ import com.google.common.util.concurrent.SettableFuture;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
+import de.KnollFrank.lib.settingssearch.common.uicontroller.CurrentActivityProvider;
+import de.KnollFrank.lib.settingssearch.common.uicontroller.Fragments;
+import de.KnollFrank.lib.settingssearch.common.uicontroller.UiController;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
-import de.KnollFrank.lib.settingssearch.fragment.CurrentActivityProvider;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
 // FK-TODO: refactor
 public class PreferencePathNavigator {
-
-    private static final int MAX_VIEW_WAIT_RETRIES = 50;
-    private static final long VIEW_POLLING_INTERVAL_MS = 100;
-    private static final long IDLE_TIMEOUT_SECONDS = 5;
 
     private final Runnable navigateToInitialPreferenceScreen;
 
@@ -57,73 +51,98 @@ public class PreferencePathNavigator {
         return future;
     }
 
-    private Optional<PreferenceFragmentCompat> _navigatePreferencePath(final PreferencePath preferencePath) throws Exception {
+    private Optional<PreferenceFragmentCompat> _navigatePreferencePath(final PreferencePath preferencePath) throws InterruptedException {
         navigateToInitialPreferenceScreen.run();
-        waitUntilIdle();
+        UiController.waitUntilIdle();
         clickPreferences(Lists.withoutLastElement(preferencePath.preferences()).orElseThrow());
         return Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
     }
 
-    private void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences) throws Exception {
+    private void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences) throws InterruptedException {
         for (final SearchablePreferenceOfHostWithinTree preference : preferences) {
-            clickElementWithText(preference.searchablePreference().getTitle().orElseThrow());
-            waitUntilIdle();
+            clickPreference(preference);
+            UiController.waitUntilIdle();
         }
     }
 
-    private void clickElementWithText(final String text) throws Exception {
-        final Activity activity =
-                CurrentActivityProvider
-                        .getCurrentActivity()
-                        .orElseThrow(() -> new IllegalStateException("No active activity found"));
+    private void clickPreference(final SearchablePreferenceOfHostWithinTree preference) throws InterruptedException {
+        clickElementWithText(preference.searchablePreference().getTitle().orElseThrow());
+    }
 
-        // 1. Suche in Preferences (für automatisches Scrollen)
-        Fragments
+    private void clickElementWithText(final String text) throws InterruptedException {
+        final Activity activity = getCurrentActivity();
+        scrollToPreferenceHavingTitle(text, activity);
+        final View view = waitForViewWithText(text, activity);
+        OnUiThreadRunnerFactory
+                .fromActivity(activity)
+                .runBlockingOnUiThread(() -> performClickOnViewChain(view));
+    }
+
+    private static Activity getCurrentActivity() {
+        return CurrentActivityProvider
+                .getCurrentActivity()
+                .orElseThrow(() -> new IllegalStateException("No active activity found"));
+    }
+
+    private record PreferenceOfPreferenceFragment(Preference preference,
+                                                  PreferenceFragmentCompat preferenceFragment) {
+    }
+
+    private void scrollToPreferenceHavingTitle(final String text, final Activity activity) throws InterruptedException {
+        final Optional<PreferenceOfPreferenceFragment> preferenceOfPreferenceFragment = findPreferenceByTitle(text);
+        if (preferenceOfPreferenceFragment.isPresent()) {
+            scrollToPreference(preferenceOfPreferenceFragment.orElseThrow(), activity);
+        }
+    }
+
+    private Optional<PreferenceOfPreferenceFragment> findPreferenceByTitle(final String text) {
+        return Fragments
                 .findVisiblePreferenceFragmentOnCurrentActivity()
-                .ifPresent(
-                        fragment ->
+                .flatMap(
+                        preferenceFragment ->
                                 this
-                                        .findPreferenceByTitle(fragment.getPreferenceScreen(), text)
-                                        .ifPresent(
-                                                preference -> {
-                                                    activity.runOnUiThread(() -> fragment.scrollToPreference(preference));
-                                                    try {
-                                                        waitUntilIdle();
-                                                    } catch (final InterruptedException e) {
-                                                        Thread.currentThread().interrupt();
-                                                    }
-                                                }));
-
-        // 2. Suche im View-Baum mit programmatischem Warten auf Sichtbarkeit
-        final View view = waitForViewWithText(activity, text);
-
-        final SettableFuture<Boolean> clicked = SettableFuture.create();
-        activity.runOnUiThread(() -> {
-            performClickOnViewChain(view);
-            clicked.set(true);
-        });
-        clicked.get();
+                                        .findPreferenceByTitle(preferenceFragment.getPreferenceScreen(), text)
+                                        .map(preference -> new PreferenceOfPreferenceFragment(preference, preferenceFragment)));
     }
 
-    private View waitForViewWithText(final Activity activity, final String text) throws Exception {
-        for (int i = 0; i < MAX_VIEW_WAIT_RETRIES; i++) {
-            final AtomicReference<Optional<View>> foundView = new AtomicReference<>(Optional.empty());
-            final CountDownLatch latch = new CountDownLatch(1);
+    private Optional<Preference> findPreferenceByTitle(final PreferenceGroup preferenceGroup, final String title) {
+        return Preferences
+                .getChildrenRecursively(preferenceGroup)
+                .stream()
+                .filter(preference -> isPreferenceWithTitle(preference, title))
+                .findFirst();
+    }
 
-            activity.runOnUiThread(() -> {
-                foundView.set(findViewWithText(activity.getWindow().getDecorView(), text));
-                latch.countDown();
-            });
+    private static Boolean isPreferenceWithTitle(final Preference preference, final String title) {
+        return Optional
+                .ofNullable(preference.getTitle())
+                .map(title::contentEquals)
+                .orElse(false);
+    }
 
-            latch.await();
-            if (foundView.get().isPresent()) {
-                return foundView.get().get();
+    private void scrollToPreference(final PreferenceOfPreferenceFragment preferenceOfPreferenceFragment, final Activity activity) throws InterruptedException {
+        activity.runOnUiThread(() -> preferenceOfPreferenceFragment.preferenceFragment().scrollToPreference(preferenceOfPreferenceFragment.preference()));
+        UiController.waitUntilIdle();
+    }
+
+    private View waitForViewWithText(final String text, final Activity activity) throws InterruptedException {
+        final OnUiThreadRunner onUiThreadRunner = OnUiThreadRunnerFactory.fromActivity(activity);
+        while (true) {
+            final Optional<View> foundView =
+                    onUiThreadRunner.runBlockingOnUiThread(
+                            () ->
+                                    findViewWithText(
+                                            activity.getWindow().getDecorView(),
+                                            text));
+            if (foundView.isPresent()) {
+                return foundView.get();
             }
-            Thread.sleep(VIEW_POLLING_INTERVAL_MS);
+            UiController.waitUntilIdle();
         }
-        throw new Exception("Timeout waiting for view with text: " + text);
     }
 
+
+    // FK-TODO: refactor analogous to Preferences.getChildrenRecursively(preferenceGroup)
     private Optional<View> findViewWithText(final View root, final String text) {
         if (root instanceof final TextView textView && text.equals(textView.getText().toString())) {
             return Optional.of(textView);
@@ -140,68 +159,22 @@ public class PreferencePathNavigator {
     }
 
     private void performClickOnViewChain(final View view) {
-        Optional<View> target = Optional.of(view);
-        while (target.isPresent() && !target.get().isClickable()) {
-            target = Optional.ofNullable(target.get().getParent())
-                    .filter(View.class::isInstance)
-                    .map(View.class::cast);
-        }
-        target.ifPresent(View::performClick);
+        findClickableParentView(view).ifPresent(View::performClick);
     }
 
-    private Optional<Preference> findPreferenceByTitle(final PreferenceGroup preferenceGroup, final String title) {
-        for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
-            final Preference preference = preferenceGroup.getPreference(i);
-            if (Optional.ofNullable(preference.getTitle()).map(title::contentEquals).orElse(false)) {
-                return Optional.of(preference);
-            }
-            if (preference instanceof final PreferenceGroup _preferenceGroup) {
-                final Optional<Preference> found = findPreferenceByTitle(_preferenceGroup, title);
-                if (found.isPresent()) {
-                    return found;
-                }
-            }
+    private static Optional<View> findClickableParentView(final View view) {
+        Optional<View> target;
+        for (target = Optional.of(view);
+             target.isPresent() && !target.orElseThrow().isClickable();
+             target = findParentView(target.orElseThrow())) {
         }
-        return Optional.empty();
+        return target;
     }
 
-    private void waitUntilIdle() throws InterruptedException {
-        final Activity activity = CurrentActivityProvider.getCurrentActivity().orElse(null);
-        if (activity == null) {
-            return;
-        }
-
-        // 1. Warten bis der Main-Looper idle ist (MessageQueue leer)
-        final CountDownLatch looperLatch = new CountDownLatch(1);
-        activity.runOnUiThread(() -> {
-            Looper.myQueue().addIdleHandler(
-                    new MessageQueue.IdleHandler() {
-
-                        @Override
-                        public boolean queueIdle() {
-                            looperLatch.countDown();
-                            return false;
-                        }
-                    });
-        });
-        looperLatch.await(IDLE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-
-        // 2. Warten bis das Layout stabil ist
-        final CountDownLatch layoutLatch = new CountDownLatch(1);
-        activity.runOnUiThread(() -> {
-            final View decorView = activity.getWindow().getDecorView();
-            if (!decorView.isLayoutRequested()) {
-                layoutLatch.countDown();
-                return;
-            }
-            decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    layoutLatch.countDown();
-                }
-            });
-        });
-        layoutLatch.await(IDLE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    private static Optional<View> findParentView(final View view) {
+        return Optional
+                .ofNullable(view.getParent())
+                .filter(View.class::isInstance)
+                .map(View.class::cast);
     }
 }
