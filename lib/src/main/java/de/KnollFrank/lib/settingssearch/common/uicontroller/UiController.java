@@ -35,23 +35,25 @@ public class UiController {
     }
 
     private static void waitUntilLayoutIsStable(final Activity activity) throws InterruptedException {
-        final SettableFuture<Boolean> layoutOfViewIsStableFuture = SettableFuture.create();
-        if (isLayoutOfViewPending(activity, layoutOfViewIsStableFuture)) {
-            await(layoutOfViewIsStableFuture);
+        final SettableFuture<Boolean> layoutIsStableFuture = SettableFuture.create();
+        if (isLayoutPending(activity, layoutIsStableFuture)) {
+            await(layoutIsStableFuture);
         }
     }
 
-    private static boolean isLayoutOfViewPending(final Activity activity, final SettableFuture<Boolean> layoutOfViewIsStableFuture) {
+    private static boolean isLayoutPending(final Activity activity,
+                                           final SettableFuture<Boolean> layoutIsStableFuture) {
         return OnUiThreadRunnerFactory
                 .fromActivity(activity)
                 .runBlockingOnUiThread(
                         () ->
                                 _isLayoutOfViewPending(
                                         activity.getWindow().getDecorView(),
-                                        layoutOfViewIsStableFuture));
+                                        layoutIsStableFuture));
     }
 
-    private static boolean _isLayoutOfViewPending(final View view, final SettableFuture<Boolean> layoutOfViewIsStableFuture) {
+    private static boolean _isLayoutOfViewPending(final View view,
+                                                  final SettableFuture<Boolean> layoutOfViewIsStableFuture) {
         if (!view.isLayoutRequested()) {
             return false;
         }
