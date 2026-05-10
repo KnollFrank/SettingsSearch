@@ -47,13 +47,13 @@ public class UiController {
                 .fromActivity(activity)
                 .runBlockingOnUiThread(
                         () ->
-                                _isLayoutOfViewPending(
+                                isLayoutOfViewPending(
                                         activity.getWindow().getDecorView(),
                                         layoutIsStableFuture));
     }
 
-    private static boolean _isLayoutOfViewPending(final View view,
-                                                  final SettableFuture<Boolean> layoutOfViewIsStableFuture) {
+    private static boolean isLayoutOfViewPending(final View view,
+                                                 final SettableFuture<Boolean> layoutOfViewIsStableFuture) {
         if (!view.isLayoutRequested()) {
             return false;
         }
