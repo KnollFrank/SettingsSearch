@@ -5,7 +5,9 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import java.util.concurrent.CountDownLatch;
+import com.google.common.util.concurrent.SettableFuture;
+
+import java.util.concurrent.ExecutionException;
 
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 
@@ -18,7 +20,7 @@ public class UiController {
     }
 
     private static void waitUntilMainLooperIsIdle(final Activity activity) throws InterruptedException {
-        final CountDownLatch looperLatch = new CountDownLatch(1);
+        final SettableFuture<Boolean> looperFuture = SettableFuture.create();
         OnUiThreadRunnerFactory
                 .fromActivity(activity)
                 .runNonBlockingOnUiThread(
@@ -26,24 +28,30 @@ public class UiController {
                                 Looper
                                         .myQueue()
                                         .addIdleHandler(() -> {
-                                            looperLatch.countDown();
+                                            looperFuture.set(true);
                                             return false;
                                         }));
-        looperLatch.await();
+        await(looperFuture);
     }
 
     private static void waitUntilLayoutIsStable(final Activity activity) throws InterruptedException {
-        final CountDownLatch layoutIsStableLatch = new CountDownLatch(1);
-        final boolean pending =
-                OnUiThreadRunnerFactory
-                        .fromActivity(activity)
-                        .runBlockingOnUiThread(() -> isLayoutOfViewPending(activity.getWindow().getDecorView(), layoutIsStableLatch));
-        if (pending) {
-            layoutIsStableLatch.await();
+        final SettableFuture<Boolean> layoutOfViewIsStableFuture = SettableFuture.create();
+        if (isLayoutOfViewPending(activity, layoutOfViewIsStableFuture)) {
+            await(layoutOfViewIsStableFuture);
         }
     }
 
-    private static boolean isLayoutOfViewPending(final View view, final CountDownLatch layoutIsStableLatch) {
+    private static boolean isLayoutOfViewPending(final Activity activity, final SettableFuture<Boolean> layoutOfViewIsStableFuture) {
+        return OnUiThreadRunnerFactory
+                .fromActivity(activity)
+                .runBlockingOnUiThread(
+                        () ->
+                                _isLayoutOfViewPending(
+                                        activity.getWindow().getDecorView(),
+                                        layoutOfViewIsStableFuture));
+    }
+
+    private static boolean _isLayoutOfViewPending(final View view, final SettableFuture<Boolean> layoutOfViewIsStableFuture) {
         if (!view.isLayoutRequested()) {
             return false;
         }
@@ -54,9 +62,17 @@ public class UiController {
                     @Override
                     public void onGlobalLayout() {
                         viewTreeObserver.removeOnGlobalLayoutListener(this);
-                        layoutIsStableLatch.countDown();
+                        layoutOfViewIsStableFuture.set(true);
                     }
                 });
         return true;
+    }
+
+    private static <V> void await(final SettableFuture<V> future) throws InterruptedException {
+        try {
+            future.get();
+        } catch (final ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
