@@ -10,7 +10,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.StringNode;
@@ -34,20 +34,20 @@ public class TreeBuilderTest {
          * v
          * C
          */
-        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider =
+        final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
                 node -> {
                     if (node.equals(nA)) {
-                        return Map.of("A->B", nB);
+                        return List.of(new ChildNodeTransition<>("A->B", nB));
                     }
                     if (node.equals(nB)) {
-                        return Map.of("B->C", nC);
+                        return List.of(new ChildNodeTransition<>("B->C", nC));
                     }
-                    return Collections.emptyMap();
+                    return Collections.emptyList();
                 };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         TreeBuilderListeners.emptyTreeBuilderListener(),
-                        childNodeByEdgeValueProvider);
+                        childNodeTransitionsProvider);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = treeBuilder.buildTreeWithRoot(nA);
@@ -72,20 +72,20 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider =
+        final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
                 node -> {
                     if (node.equals(nA)) {
-                        return Map.of("A->B", nB);
+                        return List.of(new ChildNodeTransition<>("A->B", nB));
                     }
                     if (node.equals(nB)) {
-                        return Map.of("B->A", nA);
+                        return List.of(new ChildNodeTransition<>("B->A", nA));
                     }
-                    return Collections.emptyMap();
+                    return Collections.emptyList();
                 };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         TreeBuilderListeners.emptyTreeBuilderListener(),
-                        childNodeByEdgeValueProvider);
+                        childNodeTransitionsProvider);
 
         // When
         treeBuilder.buildTreeWithRoot(nA);
@@ -99,13 +99,13 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final ChildNodeByEdgeValueProvider<StringNode, String> childNodeByEdgeValueProvider =
-                node -> node.equals(nA) ? Map.of("A->B", nB) : Collections.emptyMap();
+        final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
+                node -> node.equals(nA) ? List.of(new ChildNodeTransition<>("A->B", nB)) : Collections.emptyList();
         @SuppressWarnings("unchecked") final TreeBuilderListener<StringNode, String> listener = Mockito.mock(TreeBuilderListener.class);
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         listener,
-                        childNodeByEdgeValueProvider);
+                        childNodeTransitionsProvider);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = treeBuilder.buildTreeWithRoot(nA);

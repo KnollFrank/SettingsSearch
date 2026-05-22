@@ -11,12 +11,12 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 public class TreeBuilder<N, V> {
 
     private final TreeBuilderListener<N, V> treeBuilderListener;
-    private final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider;
+    private final ChildNodeTransitionsProvider<N, V> childNodeTransitionsProvider;
 
     public TreeBuilder(final TreeBuilderListener<N, V> treeBuilderListener,
-                       final ChildNodeByEdgeValueProvider<N, V> childNodeByEdgeValueProvider) {
+                       final ChildNodeTransitionsProvider<N, V> childNodeTransitionsProvider) {
         this.treeBuilderListener = treeBuilderListener;
-        this.childNodeByEdgeValueProvider = childNodeByEdgeValueProvider;
+        this.childNodeTransitionsProvider = childNodeTransitionsProvider;
     }
 
     public Tree<N, V, ImmutableValueGraph<N, V>> buildTreeWithRoot(final N root) {
@@ -37,15 +37,14 @@ public class TreeBuilder<N, V> {
                             root));
         }
         graph.addNode(root);
-        childNodeByEdgeValueProvider
-                .getChildNodeOfNodeByEdgeValue(root)
-                .forEach(
-                        (edgeValue, childNodeOfRoot) -> {
-                            buildGraph(childNodeOfRoot, graph);
-                            graph.putEdgeValue(
-                                    EndpointPair.ordered(root, childNodeOfRoot),
-                                    edgeValue);
-                        });
+        for (final ChildNodeTransition<N, V> childNodeTransition : childNodeTransitionsProvider.getChildNodeTransitions(root)) {
+            final N childNodeOfRoot = childNodeTransition.childNode();
+            final V edgeValue = childNodeTransition.edgeValue();
+            buildGraph(childNodeOfRoot, graph);
+            graph.putEdgeValue(
+                    EndpointPair.ordered(root, childNodeOfRoot),
+                    edgeValue);
+        }
         treeBuilderListener.onFinishBuildSubtree(root);
     }
 }

@@ -27,7 +27,7 @@ import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
-class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeValueProvider<PreferenceScreenOfHostOfActivity, Preference> {
+class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeTransitionsProvider<PreferenceScreenOfHostOfActivity, Preference> {
 
     private final PreferenceScreenProvider preferenceScreenProvider;
     private final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
@@ -45,8 +45,13 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
     }
 
     @Override
-    public Map<Preference, PreferenceScreenOfHostOfActivity> getChildNodeOfNodeByEdgeValue(final PreferenceScreenOfHostOfActivity node) {
-        return getConnectedPreferenceScreenByPreference(node);
+    public Iterable<ChildNodeTransition<PreferenceScreenOfHostOfActivity, Preference>> getChildNodeTransitions(final PreferenceScreenOfHostOfActivity node) {
+        return this
+                .getConnectedPreferenceScreenByPreference(node)
+                .entrySet()
+                .stream()
+                .map(entry -> new ChildNodeTransition<>(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     public Map<Preference, PreferenceScreenOfHostOfActivity> getConnectedPreferenceScreenByPreference(final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivity) {

@@ -23,7 +23,7 @@ public class PreferenceScreenTreeBuilderFactory {
             final Context context) {
         return new TreeBuilder<>(
                 treeBuilderListener,
-                new FilteredChildNodeByEdgeValueProvider<>(
+                new FilteredChildNodeTransitionsProvider<>(
                         new ConnectedPreferenceScreenByPreferenceProvider(
                                 preferenceScreenProvider,
                                 preferenceFragmentConnectedToPreferenceProvider,

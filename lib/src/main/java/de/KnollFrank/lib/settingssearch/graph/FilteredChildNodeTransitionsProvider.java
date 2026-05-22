@@ -2,31 +2,33 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import com.google.common.graph.EndpointPair;
 
-import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 
 @SuppressWarnings({"UnstableApiUsage"})
-public class FilteredChildNodeByEdgeValueProvider<N, V> implements ChildNodeByEdgeValueProvider<N, V> {
+public class FilteredChildNodeTransitionsProvider<N, V> implements ChildNodeTransitionsProvider<N, V> {
 
-    private final ChildNodeByEdgeValueProvider<N, V> delegate;
+    private final ChildNodeTransitionsProvider<N, V> delegate;
     private final AddEdgeToTreePredicate<N, V> addEdgeToTreePredicate;
 
-    public FilteredChildNodeByEdgeValueProvider(final ChildNodeByEdgeValueProvider<N, V> delegate,
+    public FilteredChildNodeTransitionsProvider(final ChildNodeTransitionsProvider<N, V> delegate,
                                                 final AddEdgeToTreePredicate<N, V> addEdgeToTreePredicate) {
         this.delegate = delegate;
         this.addEdgeToTreePredicate = addEdgeToTreePredicate;
     }
 
     @Override
-    public Map<V, N> getChildNodeOfNodeByEdgeValue(final N node) {
-        return Maps.filter(
-                delegate.getChildNodeOfNodeByEdgeValue(node),
-                shallAddEdgeOriginatingFromNodeToTree(node));
+    public Iterable<ChildNodeTransition<N, V>> getChildNodeTransitions(final N node) {
+        return StreamSupport
+                .stream(delegate.getChildNodeTransitions(node).spliterator(), false)
+                .filter(childNodeTransition -> shallAddEdgeOriginatingFromNodeToTree(node).test(childNodeTransition.edgeValue(), childNodeTransition.childNode()))
+                .collect(Collectors.toList());
     }
 
+    // FK-TODO: return Predicate<ChildNodeTransition<N, V>>
     private BiPredicate<V, N> shallAddEdgeOriginatingFromNodeToTree(final N node) {
         return (edgeValue, childNodeOfNode) ->
                 addEdgeToTreePredicate.shallAddEdgeToTree(
