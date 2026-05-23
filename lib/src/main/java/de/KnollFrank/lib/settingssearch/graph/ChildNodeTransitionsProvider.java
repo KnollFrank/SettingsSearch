@@ -1,7 +1,9 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import java.util.List;
+
 @FunctionalInterface
 public interface ChildNodeTransitionsProvider<N, V> {
 
-    Iterable<ChildNodeTransition<N, V>> getChildNodeTransitions(N node);
+    List<ChildNodeTransition<N, V>> getChildNodeTransitions(N node);
 }

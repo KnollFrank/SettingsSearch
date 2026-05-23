@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.StringNode;
@@ -37,10 +38,10 @@ public class TreeBuilderTest {
         final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
                 node -> {
                     if (node.equals(nA)) {
-                        return List.of(new ChildNodeTransition<>("A->B", nB));
+                        return List.of(new ChildNodeTransition<>("A->B", () -> Optional.of(nB)));
                     }
                     if (node.equals(nB)) {
-                        return List.of(new ChildNodeTransition<>("B->C", nC));
+                        return List.of(new ChildNodeTransition<>("B->C", () -> Optional.of(nC)));
                     }
                     return Collections.emptyList();
                 };
@@ -75,10 +76,10 @@ public class TreeBuilderTest {
         final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
                 node -> {
                     if (node.equals(nA)) {
-                        return List.of(new ChildNodeTransition<>("A->B", nB));
+                        return List.of(new ChildNodeTransition<>("A->B", () -> Optional.of(nB)));
                     }
                     if (node.equals(nB)) {
-                        return List.of(new ChildNodeTransition<>("B->A", nA));
+                        return List.of(new ChildNodeTransition<>("B->A", () -> Optional.of(nA)));
                     }
                     return Collections.emptyList();
                 };
@@ -100,7 +101,13 @@ public class TreeBuilderTest {
          * B
          */
         final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
-                node -> node.equals(nA) ? List.of(new ChildNodeTransition<>("A->B", nB)) : Collections.emptyList();
+                node ->
+                        node.equals(nA) ?
+                                List.of(
+                                        new ChildNodeTransition<>(
+                                                "A->B",
+                                                () -> Optional.of(nB))) :
+                                Collections.emptyList();
         @SuppressWarnings("unchecked") final TreeBuilderListener<StringNode, String> listener = Mockito.mock(TreeBuilderListener.class);
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(

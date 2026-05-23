@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
@@ -21,7 +20,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.Intents;
-import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
@@ -45,29 +43,19 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeTransiti
     }
 
     @Override
-    public Iterable<ChildNodeTransition<PreferenceScreenOfHostOfActivity, Preference>> getChildNodeTransitions(final PreferenceScreenOfHostOfActivity node) {
-        return this
-                .getConnectedPreferenceScreenByPreference(node)
-                .entrySet()
+    public List<ChildNodeTransition<PreferenceScreenOfHostOfActivity, Preference>> getChildNodeTransitions(final PreferenceScreenOfHostOfActivity node) {
+        return Preferences
+                .getChildrenRecursively(node.preferenceScreen())
                 .stream()
-                .map(entry -> new ChildNodeTransition<>(entry.getKey(), entry.getValue()))
+                .map(preference ->
+                             new ChildNodeTransition<>(
+                                     preference,
+                                     () -> getConnectedPreferenceScreen(
+                                             new PreferenceOfHostOfActivity(
+                                                     preference,
+                                                     node.hostOfPreferenceScreen(),
+                                                     node.activityOfHost()))))
                 .collect(Collectors.toList());
-    }
-
-    public Map<Preference, PreferenceScreenOfHostOfActivity> getConnectedPreferenceScreenByPreference(final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivity) {
-        return Maps.filterPresentValues(
-                Preferences
-                        .getChildrenRecursively(preferenceScreenOfHostOfActivity.preferenceScreen())
-                        .stream()
-                        .collect(
-                                Collectors.toMap(
-                                        Function.identity(),
-                                        preference ->
-                                                getConnectedPreferenceScreen(
-                                                        new PreferenceOfHostOfActivity(
-                                                                preference,
-                                                                preferenceScreenOfHostOfActivity.hostOfPreferenceScreen(),
-                                                                preferenceScreenOfHostOfActivity.activityOfHost())))));
     }
 
     private Optional<PreferenceScreenOfHostOfActivity> getConnectedPreferenceScreen(final PreferenceOfHostOfActivity preferenceOfHostOfActivity) {

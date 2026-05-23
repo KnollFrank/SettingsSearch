@@ -38,12 +38,16 @@ public class TreeBuilder<N, V> {
         }
         graph.addNode(root);
         for (final ChildNodeTransition<N, V> childNodeTransition : childNodeTransitionsProvider.getChildNodeTransitions(root)) {
-            final N childNodeOfRoot = childNodeTransition.childNode();
-            final V edgeValue = childNodeTransition.edgeValue();
-            buildGraph(childNodeOfRoot, graph);
-            graph.putEdgeValue(
-                    EndpointPair.ordered(root, childNodeOfRoot),
-                    edgeValue);
+            childNodeTransition
+                    .childNodeProvider()
+                    .traverse()
+                    .ifPresent(
+                            childNodeOfRoot -> {
+                                buildGraph(childNodeOfRoot, graph);
+                                graph.putEdgeValue(
+                                        EndpointPair.ordered(root, childNodeOfRoot),
+                                        childNodeTransition.edgeValue());
+                            });
         }
         treeBuilderListener.onFinishBuildSubtree(root);
     }

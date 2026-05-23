@@ -2,9 +2,9 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import com.google.common.graph.EndpointPair;
 
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 
@@ -21,10 +21,16 @@ public class FilteredChildNodeTransitionsProvider<N, V> implements ChildNodeTran
     }
 
     @Override
-    public Iterable<ChildNodeTransition<N, V>> getChildNodeTransitions(final N node) {
-        return StreamSupport
-                .stream(delegate.getChildNodeTransitions(node).spliterator(), false)
-                .filter(childNodeTransition -> shallAddEdgeOriginatingFromNodeToTree(node).test(childNodeTransition.edgeValue(), childNodeTransition.childNode()))
+    public List<ChildNodeTransition<N, V>> getChildNodeTransitions(final N node) {
+        return delegate
+                .getChildNodeTransitions(node)
+                .stream()
+                .filter(transition ->
+                                transition
+                                        .childNodeProvider()
+                                        .traverse()
+                                        .map(childNodeOfNode -> shallAddEdgeOriginatingFromNodeToTree(node).test(transition.edgeValue(), childNodeOfNode))
+                                        .orElse(false))
                 .collect(Collectors.toList());
     }
 

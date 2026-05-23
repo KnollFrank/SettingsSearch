@@ -10,24 +10,26 @@ public class TreeBuilderListeners {
     }
 
     public static <N, V> TreeBuilderListener<N, V> emptyTreeBuilderListener() {
-        return new TreeBuilderListener<>() {
+        return new EmptyTreeBuilderListener<>();
+    }
 
-            @Override
-            public void onStartBuildTree(final N treeRoot) {
-            }
+    public static class EmptyTreeBuilderListener<N, V> implements TreeBuilderListener<N, V> {
 
-            @Override
-            public void onStartBuildSubtree(final N subtreeRoot) {
-            }
+        @Override
+        public void onStartBuildTree(final N treeRoot) {
+        }
 
-            @Override
-            public void onFinishBuildSubtree(final N subtreeRoot) {
-            }
+        @Override
+        public void onStartBuildSubtree(final N subtreeRoot) {
+        }
 
-            @Override
-            @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-            public void onFinishBuildTree(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
-            }
-        };
+        @Override
+        public void onFinishBuildSubtree(final N subtreeRoot) {
+        }
+
+        @Override
+        @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+        public void onFinishBuildTree(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+        }
     }
 }
