@@ -35,20 +35,20 @@ public class TreeBuilderTest {
          * v
          * C
          */
-        final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
+        final EdgeSuppliersFactory<StringNode, String> edgeSuppliersFactory =
                 node -> {
                     if (node.equals(nA)) {
-                        return List.of(new ChildNodeTransition<>("A->B", () -> Optional.of(nB)));
+                        return List.of(EdgeSupplierFactory.createEdgeSupplier(nA, "A->B", () -> Optional.of(nB)));
                     }
                     if (node.equals(nB)) {
-                        return List.of(new ChildNodeTransition<>("B->C", () -> Optional.of(nC)));
+                        return List.of(EdgeSupplierFactory.createEdgeSupplier(nB, "B->C", () -> Optional.of(nC)));
                     }
                     return Collections.emptyList();
                 };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         TreeBuilderListeners.emptyTreeBuilderListener(),
-                        childNodeTransitionsProvider);
+                        edgeSuppliersFactory);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = treeBuilder.buildTreeWithRoot(nA);
@@ -73,20 +73,20 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
+        final EdgeSuppliersFactory<StringNode, String> edgeSuppliersFactory =
                 node -> {
                     if (node.equals(nA)) {
-                        return List.of(new ChildNodeTransition<>("A->B", () -> Optional.of(nB)));
+                        return List.of(EdgeSupplierFactory.createEdgeSupplier(nA, "A->B", () -> Optional.of(nB)));
                     }
                     if (node.equals(nB)) {
-                        return List.of(new ChildNodeTransition<>("B->A", () -> Optional.of(nA)));
+                        return List.of(EdgeSupplierFactory.createEdgeSupplier(nB, "B->A", () -> Optional.of(nA)));
                     }
                     return Collections.emptyList();
                 };
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         TreeBuilderListeners.emptyTreeBuilderListener(),
-                        childNodeTransitionsProvider);
+                        edgeSuppliersFactory);
 
         // When
         treeBuilder.buildTreeWithRoot(nA);
@@ -100,19 +100,16 @@ public class TreeBuilderTest {
          * v
          * B
          */
-        final ChildNodeTransitionsProvider<StringNode, String> childNodeTransitionsProvider =
+        final EdgeSuppliersFactory<StringNode, String> edgeSuppliersFactory =
                 node ->
                         node.equals(nA) ?
-                                List.of(
-                                        new ChildNodeTransition<>(
-                                                "A->B",
-                                                () -> Optional.of(nB))) :
+                                List.of(EdgeSupplierFactory.createEdgeSupplier(nA, "A->B", () -> Optional.of(nB))) :
                                 Collections.emptyList();
         @SuppressWarnings("unchecked") final TreeBuilderListener<StringNode, String> listener = Mockito.mock(TreeBuilderListener.class);
         final TreeBuilder<StringNode, String> treeBuilder =
                 new TreeBuilder<>(
                         listener,
-                        childNodeTransitionsProvider);
+                        edgeSuppliersFactory);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree = treeBuilder.buildTreeWithRoot(nA);

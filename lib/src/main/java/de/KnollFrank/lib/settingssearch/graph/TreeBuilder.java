@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 
@@ -11,12 +10,12 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 public class TreeBuilder<N, V> {
 
     private final TreeBuilderListener<N, V> treeBuilderListener;
-    private final ChildNodeTransitionsProvider<N, V> childNodeTransitionsProvider;
+    private final EdgeSuppliersFactory<N, V> edgeSuppliersFactory;
 
     public TreeBuilder(final TreeBuilderListener<N, V> treeBuilderListener,
-                       final ChildNodeTransitionsProvider<N, V> childNodeTransitionsProvider) {
+                       final EdgeSuppliersFactory<N, V> edgeSuppliersFactory) {
         this.treeBuilderListener = treeBuilderListener;
-        this.childNodeTransitionsProvider = childNodeTransitionsProvider;
+        this.edgeSuppliersFactory = edgeSuppliersFactory;
     }
 
     public Tree<N, V, ImmutableValueGraph<N, V>> buildTreeWithRoot(final N root) {
@@ -37,16 +36,13 @@ public class TreeBuilder<N, V> {
                             root));
         }
         graph.addNode(root);
-        for (final ChildNodeTransition<N, V> childNodeTransition : childNodeTransitionsProvider.getChildNodeTransitions(root)) {
-            childNodeTransition
-                    .childNodeProvider()
-                    .traverse()
+        for (final EdgeSupplier<N, V> edgeSupplier : edgeSuppliersFactory.createEdgeSuppliersHavingSource(root)) {
+            edgeSupplier
+                    .getEdge()
                     .ifPresent(
-                            childNodeOfRoot -> {
-                                buildGraph(childNodeOfRoot, graph);
-                                graph.putEdgeValue(
-                                        EndpointPair.ordered(root, childNodeOfRoot),
-                                        childNodeTransition.edgeValue());
+                            edge -> {
+                                buildGraph(edge.endpointPair().target(), graph);
+                                Graphs.addEdge(graph, edge);
                             });
         }
         treeBuilderListener.onFinishBuildSubtree(root);

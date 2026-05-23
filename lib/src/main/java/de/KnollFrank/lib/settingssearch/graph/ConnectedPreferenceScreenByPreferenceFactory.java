@@ -25,17 +25,17 @@ import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
-class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeTransitionsProvider<PreferenceScreenOfHostOfActivity, Preference> {
+class ConnectedPreferenceScreenByPreferenceFactory implements EdgeSuppliersFactory<PreferenceScreenOfHostOfActivity, Preference> {
 
     private final PreferenceScreenProvider preferenceScreenProvider;
     private final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final Context context;
 
-    public ConnectedPreferenceScreenByPreferenceProvider(final PreferenceScreenProvider preferenceScreenProvider,
-                                                         final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
-                                                         final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
-                                                         final Context context) {
+    public ConnectedPreferenceScreenByPreferenceFactory(final PreferenceScreenProvider preferenceScreenProvider,
+                                                        final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
+                                                        final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
+                                                        final Context context) {
         this.preferenceScreenProvider = preferenceScreenProvider;
         this.preferenceFragmentConnectedToPreferenceProvider = preferenceFragmentConnectedToPreferenceProvider;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
@@ -43,18 +43,20 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeTransiti
     }
 
     @Override
-    public List<ChildNodeTransition<PreferenceScreenOfHostOfActivity, Preference>> getChildNodeTransitions(final PreferenceScreenOfHostOfActivity node) {
+    public List<EdgeSupplier<PreferenceScreenOfHostOfActivity, Preference>> createEdgeSuppliersHavingSource(final PreferenceScreenOfHostOfActivity source) {
         return Preferences
-                .getChildrenRecursively(node.preferenceScreen())
+                .getChildrenRecursively(source.preferenceScreen())
                 .stream()
-                .map(preference ->
-                             new ChildNodeTransition<>(
-                                     preference,
-                                     () -> getConnectedPreferenceScreen(
-                                             new PreferenceOfHostOfActivity(
-                                                     preference,
-                                                     node.hostOfPreferenceScreen(),
-                                                     node.activityOfHost()))))
+                .map(
+                        preference ->
+                                EdgeSupplierFactory.createEdgeSupplier(
+                                        source,
+                                        preference,
+                                        () -> getConnectedPreferenceScreen(
+                                                new PreferenceOfHostOfActivity(
+                                                        preference,
+                                                        source.hostOfPreferenceScreen(),
+                                                        source.activityOfHost()))))
                 .collect(Collectors.toList());
     }
 
