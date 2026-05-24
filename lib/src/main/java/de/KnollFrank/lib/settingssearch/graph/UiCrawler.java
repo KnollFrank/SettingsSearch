@@ -10,6 +10,7 @@ import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -72,8 +73,12 @@ public final class UiCrawler {
     private Optional<SearchablePreferenceScreen> getTargetNode(final SearchablePreferenceScreen screen, final SearchablePreference searchablePreference) {
         final PreferenceFragmentCompat currentFragment =
                 Fragments
-                        .findVisiblePreferenceFragmentOnCurrentActivity()
-                        .orElseThrow(() -> new IllegalStateException("Current fragment not found during crawl"));
+                        .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
+                        .join(
+                                Function.identity(),
+                                errorMessage -> {
+                                    throw new IllegalStateException(errorMessage);
+                                });
 
         // Wir konvertieren den Screen jedes Mal neu, um die aktuellen View-Referenzen zu erhalten,
         // da wir zwischenzeitlich in Unterseiten und wieder zurück navigiert sind.
@@ -93,7 +98,12 @@ public final class UiCrawler {
             Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
-        final Optional<PreferenceFragmentCompat> childFragment = Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
+        final Optional<PreferenceFragmentCompat> childFragment =
+                Fragments
+                        .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
+                        .join(
+                                Optional::of,
+                                errorMessage -> Optional.empty());
         // Prüfen, ob wir wirklich auf einer neuen Seite gelandet sind
         if (childFragment.isPresent() && childFragment.get() != currentFragment) {
             return Optional.of(
@@ -117,8 +127,12 @@ public final class UiCrawler {
 
     private static PreferenceFragmentCompat getRootPreferenceFragment() {
         return Fragments
-                .findVisiblePreferenceFragmentOnCurrentActivity()
-                .orElseThrow(() -> new IllegalStateException("No visible PreferenceFragment found."));
+                .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
+                .join(
+                        fragment -> fragment,
+                        errorMessage -> {
+                            throw new IllegalStateException(errorMessage);
+                        });
     }
 
     private class CrawlerListener extends TreeBuilderListeners.EmptyTreeBuilderListener<SearchablePreferenceScreen, SearchablePreference> {

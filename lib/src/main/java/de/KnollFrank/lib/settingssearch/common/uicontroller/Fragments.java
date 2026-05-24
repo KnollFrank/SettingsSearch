@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.MoreCollectors;
 
 import java.util.Optional;
@@ -14,11 +15,23 @@ import java.util.stream.Stream;
 
 public class Fragments {
 
-    public static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragmentOnCurrentActivity() {
+    public static Either<PreferenceFragmentCompat, String> findEitherVisiblePreferenceFragmentOnCurrentActivityOrError() {
         return CurrentActivityProvider
                 .getCurrentActivity()
-                .flatMap(Fragments::asFragmentActivity)
-                .flatMap(fragmentActivity -> findVisiblePreferenceFragment(fragmentActivity.getSupportFragmentManager()));
+                .map(
+                        activity ->
+                                // FK-TODO: use asFragmentActivityOrError()
+                                activity instanceof final FragmentActivity fragmentActivity ?
+                                        findEitherVisiblePreferenceFragmentOrError(fragmentActivity) :
+                                        Either.<PreferenceFragmentCompat, String>ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity. Fragments cannot be retrieved."))
+                .orElseGet(() -> Either.ofRight("No current Activity found. Is the app in foreground?"));
+    }
+
+    private static Either<PreferenceFragmentCompat, String> findEitherVisiblePreferenceFragmentOrError(final FragmentActivity fragmentActivity) {
+        return Fragments
+                .findVisiblePreferenceFragment(fragmentActivity.getSupportFragmentManager())
+                .map(Either::<PreferenceFragmentCompat, String>ofLeft)
+                .orElseGet(() -> Either.ofRight("No visible PreferenceFragmentCompat found on Activity: " + fragmentActivity.getClass().getName() + "."));
     }
 
     public static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragment(final FragmentManager fragmentManager) {
@@ -30,10 +43,10 @@ public class Fragments {
                 .collect(MoreCollectors.toOptional());
     }
 
-    private static Optional<FragmentActivity> asFragmentActivity(final Activity activity) {
+    private static Either<FragmentActivity, String> asFragmentActivityOrError(final Activity activity) {
         return activity instanceof final FragmentActivity fragmentActivity ?
-                Optional.of(fragmentActivity) :
-                Optional.empty();
+                Either.ofLeft(fragmentActivity) :
+                Either.ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity.");
     }
 
     private static Stream<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {

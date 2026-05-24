@@ -55,7 +55,11 @@ public class PreferencePathNavigator {
         navigateToInitialPreferenceScreen.run();
         UiController.waitUntilIdle();
         clickPreferences(Lists.withoutLastElement(preferencePath.preferences()).orElseThrow());
-        return Fragments.findVisiblePreferenceFragmentOnCurrentActivity();
+        return Fragments
+                .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
+                .join(
+                        Optional::of,
+                        errorMessage -> Optional.empty());
     }
 
     private void clickPreferences(final List<SearchablePreferenceOfHostWithinTree> preferences) throws InterruptedException {
@@ -97,7 +101,10 @@ public class PreferencePathNavigator {
 
     private Optional<PreferenceOfPreferenceFragment> findPreferenceByTitle(final String text) {
         return Fragments
-                .findVisiblePreferenceFragmentOnCurrentActivity()
+                .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
+                .<Optional<PreferenceFragmentCompat>>join(
+                        Optional::of,
+                        errorMessage -> Optional.empty())
                 .flatMap(
                         preferenceFragment ->
                                 this
