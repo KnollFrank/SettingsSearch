@@ -174,11 +174,11 @@ public class SearchDatabaseConfigFactory {
                             }
 
                             @Override
-                            public void onStartBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
+                            public void onStartBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot, final boolean isRootOfTree) {
                             }
 
                             @Override
-                            public void onFinishBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
+                            public void onFinishBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot, final boolean isRootOfTree) {
                             }
 
                             @Override

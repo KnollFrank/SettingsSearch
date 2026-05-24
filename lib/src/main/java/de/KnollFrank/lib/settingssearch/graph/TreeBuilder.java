@@ -21,30 +21,33 @@ public class TreeBuilder<N, V> {
     public Tree<N, V, ImmutableValueGraph<N, V>> buildTreeWithRoot(final N root) {
         treeBuilderListener.onStartBuildTree(root);
         final MutableValueGraph<N, V> graph = Graphs.createEmptyDirectedMutableValueGraph();
-        buildGraph(root, graph);
+        buildGraph(new Node<>(root, true), graph);
         final Tree<N, V, ImmutableValueGraph<N, V>> tree = new Tree<>(ImmutableValueGraph.copyOf(graph));
         treeBuilderListener.onFinishBuildTree(tree);
         return tree;
     }
 
-    private void buildGraph(final N root, final MutableValueGraph<N, V> graph) {
-        treeBuilderListener.onStartBuildSubtree(root);
-        if (graph.nodes().contains(root)) {
+    private record Node<N>(N node, boolean isRootOfTree) {
+    }
+
+    private void buildGraph(final Node<N> root, final MutableValueGraph<N, V> graph) {
+        treeBuilderListener.onStartBuildSubtree(root.node(), root.isRootOfTree());
+        if (graph.nodes().contains(root.node())) {
             throw new IllegalStateException(
                     String.format(
                             "Cycle detected in the graph. The node '%s' has been visited twice. A tree structure must not contain cycles.",
                             root));
         }
-        graph.addNode(root);
-        for (final EdgeSupplier<N, V> edgeSupplier : edgeSuppliersFactory.createEdgeSuppliersHavingSource(root)) {
+        graph.addNode(root.node());
+        for (final EdgeSupplier<N, V> edgeSupplier : edgeSuppliersFactory.createEdgeSuppliersHavingSource(root.node())) {
             edgeSupplier
                     .getEdge()
                     .ifPresent(
                             edge -> {
-                                buildGraph(edge.endpointPair().target(), graph);
+                                buildGraph(new Node<>(edge.endpointPair().target(), false), graph);
                                 Graphs.addEdge(graph, edge);
                             });
         }
-        treeBuilderListener.onFinishBuildSubtree(root);
+        treeBuilderListener.onFinishBuildSubtree(root.node(), root.isRootOfTree());
     }
 }

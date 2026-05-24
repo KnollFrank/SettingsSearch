@@ -27,14 +27,14 @@ class ProgressUpdatingTreeBuilderListener implements TreeBuilderListener<Prefere
     }
 
     @Override
-    public void onStartBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
-        delegate.onStartBuildSubtree(subtreeRoot);
+    public void onStartBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot, final boolean isRootOfTree) {
+        delegate.onStartBuildSubtree(subtreeRoot, isRootOfTree);
         progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(subtreeRoot));
     }
 
     @Override
-    public void onFinishBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
-        delegate.onFinishBuildSubtree(subtreeRoot);
+    public void onFinishBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot, final boolean isRootOfTree) {
+        delegate.onFinishBuildSubtree(subtreeRoot, isRootOfTree);
     }
 
     @Override

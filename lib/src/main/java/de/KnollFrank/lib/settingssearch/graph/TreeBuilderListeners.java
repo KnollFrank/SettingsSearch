@@ -20,11 +20,11 @@ public class TreeBuilderListeners {
         }
 
         @Override
-        public void onStartBuildSubtree(final N subtreeRoot) {
+        public void onStartBuildSubtree(final N subtreeRoot, final boolean isRootOfTree) {
         }
 
         @Override
-        public void onFinishBuildSubtree(final N subtreeRoot) {
+        public void onFinishBuildSubtree(final N subtreeRoot, final boolean isRootOfTree) {
         }
 
         @Override

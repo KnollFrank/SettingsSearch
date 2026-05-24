@@ -8,9 +8,9 @@ public interface TreeBuilderListener<N, V> {
 
     void onStartBuildTree(N treeRoot);
 
-    void onStartBuildSubtree(N subtreeRoot);
+    void onStartBuildSubtree(N subtreeRoot, boolean isRootOfTree);
 
-    void onFinishBuildSubtree(N subtreeRoot);
+    void onFinishBuildSubtree(N subtreeRoot, boolean isRootOfTree);
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     void onFinishBuildTree(Tree<N, V, ImmutableValueGraph<N, V>> tree);

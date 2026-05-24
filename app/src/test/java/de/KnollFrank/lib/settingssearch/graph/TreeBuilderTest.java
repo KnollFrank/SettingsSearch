@@ -117,10 +117,10 @@ public class TreeBuilderTest {
         // Then
         final InOrder inOrder = Mockito.inOrder(listener);
         inOrder.verify(listener).onStartBuildTree(nA);
-        inOrder.verify(listener).onStartBuildSubtree(nA);
-        inOrder.verify(listener).onStartBuildSubtree(nB);
-        inOrder.verify(listener).onFinishBuildSubtree(nB);
-        inOrder.verify(listener).onFinishBuildSubtree(nA);
+        inOrder.verify(listener).onStartBuildSubtree(nA, true);
+        inOrder.verify(listener).onStartBuildSubtree(nB, false);
+        inOrder.verify(listener).onFinishBuildSubtree(nB, false);
+        inOrder.verify(listener).onFinishBuildSubtree(nA, true);
         inOrder.verify(listener).onFinishBuildTree(tree);
     }
 }
