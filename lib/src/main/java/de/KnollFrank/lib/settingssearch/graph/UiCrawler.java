@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.collect.BiMap;
 import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.List;
@@ -20,7 +21,6 @@ import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.uicontroller.Fragments;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -70,27 +70,50 @@ public final class UiCrawler {
         return isLikelySubScreen(searchablePreference) || isSubScreenPredicate.test(searchablePreference);
     }
 
-    private Optional<SearchablePreferenceScreen> getTargetNode(final SearchablePreferenceScreen screen, final SearchablePreference searchablePreference) {
+    private Optional<SearchablePreferenceScreen> getTargetNode(final SearchablePreferenceScreen screen,
+                                                               final SearchablePreference searchablePreference) {
         final PreferenceFragmentCompat currentFragment =
                 Fragments
                         .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
                         .join(
                                 Function.identity(),
                                 errorMessage -> {
-                                    throw new IllegalStateException(errorMessage + " screen: " + screen + " searchablePreference: " + searchablePreference);
+                                    throw new IllegalStateException(
+                                            String.format(
+                                                    "%s screen: %s searchablePreference: %s",
+                                                    errorMessage,
+                                                    screen,
+                                                    searchablePreference));
                                 });
+        return this
+                .getPreference(searchablePreference, screen, currentFragment)
+                .flatMap(
+                        preference ->
+                                this
+                                        .navigate(preference)
+                                        .filter(targetFragment -> targetFragment != currentFragment)
+                                        .map(
+                                                targetFragment ->
+                                                        converter
+                                                                .convertPreferenceScreen(
+                                                                        createPreferenceScreenOfHostOfActivity(targetFragment),
+                                                                        screen.id() + "/" + searchablePreference.getKey())
+                                                                .searchablePreferenceScreen()));
+    }
 
-        // Wir konvertieren den Screen jedes Mal neu, um die aktuellen View-Referenzen zu erhalten,
-        // da wir zwischenzeitlich in Unterseiten und wieder zurück navigiert sind.
-        final SearchablePreferenceScreenWithMap screenWithMap =
-                converter.convertPreferenceScreen(
-                        createPreferenceScreenOfHostOfActivity(currentFragment),
-                        screen.id());
-        final Preference preference = screenWithMap.pojoEntityMap().get(searchablePreference);
-        if (preference == null) {
-            return Optional.empty();
-        }
-        // Jetzt erst wird physisch geklickt!
+    private Optional<PreferenceFragmentCompat> navigate(final Preference preference) {
+        clickAndWaitUntilIdle(preference);
+        return Fragments
+                .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
+                .join(
+                        Optional::of,
+                        errorMessage -> {
+                            goBackAndWaitUntilIdle();
+                            return Optional.empty();
+                        });
+    }
+
+    private void clickAndWaitUntilIdle(final Preference preference) {
         uiNavigator.click(preference);
         try {
             uiNavigator.waitUntilIdle();
@@ -98,31 +121,33 @@ public final class UiCrawler {
             Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
-        final Optional<PreferenceFragmentCompat> childFragment =
-                Fragments
-                        .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
-                        .join(
-                                Optional::of,
-                                errorMessage -> {
-                                    uiNavigator.goBack();
-                                    try {
-                                        uiNavigator.waitUntilIdle();
-                                    } catch (final InterruptedException e) {
-                                        Thread.currentThread().interrupt();
-                                    }
-                                    return Optional.empty();
-                                });
-        // Prüfen, ob wir wirklich auf einer neuen Seite gelandet sind
-        if (childFragment.isPresent() && childFragment.get() != currentFragment) {
-            return Optional.of(
-                    converter
-                            .convertPreferenceScreen(
-                                    createPreferenceScreenOfHostOfActivity(childFragment.get()),
-                                    screen.id() + "/" + searchablePreference.getKey())
-                            .searchablePreferenceScreen());
-        } else {
-            return Optional.empty();
+    }
+
+    private void goBackAndWaitUntilIdle() {
+        uiNavigator.goBack();
+        try {
+            uiNavigator.waitUntilIdle();
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
+    }
+
+    private Optional<Preference> getPreference(final SearchablePreference searchablePreference,
+                                               final SearchablePreferenceScreen screen,
+                                               final PreferenceFragmentCompat currentFragment) {
+        return Optional.ofNullable(
+                this
+                        .getPojoEntityMap(screen, currentFragment)
+                        .get(searchablePreference));
+    }
+
+    private BiMap<SearchablePreference, Preference> getPojoEntityMap(final SearchablePreferenceScreen screen,
+                                                                     final PreferenceFragmentCompat currentFragment) {
+        return converter
+                .convertPreferenceScreen(
+                        createPreferenceScreenOfHostOfActivity(currentFragment),
+                        screen.id())
+                .pojoEntityMap();
     }
 
     private SearchablePreferenceScreen getRootSearchablePreferenceScreen() {
@@ -137,7 +162,7 @@ public final class UiCrawler {
         return Fragments
                 .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
                 .join(
-                        fragment -> fragment,
+                        Function.identity(),
                         errorMessage -> {
                             throw new IllegalStateException(errorMessage);
                         });
@@ -150,12 +175,7 @@ public final class UiCrawler {
             if (isRootOfTree) {
                 return;
             }
-            uiNavigator.goBack();
-            try {
-                uiNavigator.waitUntilIdle();
-            } catch (final InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+            goBackAndWaitUntilIdle();
         }
     }
 
