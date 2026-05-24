@@ -77,7 +77,7 @@ public final class UiCrawler {
                         .join(
                                 Function.identity(),
                                 errorMessage -> {
-                                    throw new IllegalStateException(errorMessage);
+                                    throw new IllegalStateException(errorMessage + " screen: " + screen + " searchablePreference: " + searchablePreference);
                                 });
 
         // Wir konvertieren den Screen jedes Mal neu, um die aktuellen View-Referenzen zu erhalten,
