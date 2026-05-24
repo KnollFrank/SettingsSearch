@@ -103,7 +103,15 @@ public final class UiCrawler {
                         .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
                         .join(
                                 Optional::of,
-                                errorMessage -> Optional.empty());
+                                errorMessage -> {
+                                    uiNavigator.goBack();
+                                    try {
+                                        uiNavigator.waitUntilIdle();
+                                    } catch (final InterruptedException e) {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                    return Optional.empty();
+                                });
         // Prüfen, ob wir wirklich auf einer neuen Seite gelandet sind
         if (childFragment.isPresent() && childFragment.get() != currentFragment) {
             return Optional.of(

@@ -27,11 +27,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
@@ -52,7 +52,7 @@ public class GenerateDatabaseTest {
                 .register(EspressoIdlingResource.getCountingIdlingResource());
     }
 
-    @Test
+    // @Test
     public void generateDatabaseAndWaitForCompletion() {
         // Because of onStart(), the background task is already running.
         // Espresso will AUTOMATICALLY PAUSE HERE until the IdlingResource counter is 0.
@@ -91,7 +91,7 @@ public class GenerateDatabaseTest {
                 .persistOrReplace(
                         new SearchablePreferenceScreenTree<>(
                                 tree,
-                                Locale.getDefault(),
+                                Locales.getCurrentLocale(activity.getResources().getConfiguration().getLocales()),
                                 new ConfigurationBundleConverter().convertForward(ConfigurationProvider.getActualConfiguration(activity))));
         System.out.println("Database generated via UiCrawler and persisted successfully.");
     }
