@@ -1,13 +1,13 @@
 package de.KnollFrank.lib.settingssearch;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 public record PreferenceOfHostOfActivity(Preference preference,
-                                         PreferenceFragmentCompat hostOfPreference,
+                                         Fragment hostOfPreference,
                                          ActivityDescription activityOfHost) {
 
-    public FragmentOfActivity<? extends PreferenceFragmentCompat> asPreferenceFragmentOfActivity() {
+    public FragmentOfActivity<? extends Fragment> asPreferenceFragmentOfActivity() {
         return new FragmentOfActivity<>(hostOfPreference, activityOfHost);
     }
 }

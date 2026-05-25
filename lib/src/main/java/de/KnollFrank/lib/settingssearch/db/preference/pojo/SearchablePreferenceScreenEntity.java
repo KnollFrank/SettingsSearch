@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 public record SearchablePreferenceScreenEntity(@PrimaryKey @NonNull String id,
-                                               @Embedded(prefix = "host_") PreferenceFragmentClassOfActivitySurrogate host,
+                                               @Embedded(prefix = "host_") FragmentClassOfActivitySurrogate host,
                                                Optional<String> title,
                                                Optional<String> summary,
                                                Locale graphId) {

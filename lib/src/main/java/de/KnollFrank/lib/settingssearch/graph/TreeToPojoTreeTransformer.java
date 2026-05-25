@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
 import com.google.common.graph.ImmutableValueGraph;
@@ -7,6 +8,7 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
@@ -19,11 +21,14 @@ public class TreeToPojoTreeTransformer {
 
     private final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter;
     private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
+    private final FragmentToPreferencesConverter fragmentToPreferencesConverter;
 
     public TreeToPojoTreeTransformer(final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter,
-                                     final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+                                     final PreferenceFragmentIdProvider preferenceFragmentIdProvider,
+                                     final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         this.preferenceScreenToSearchablePreferenceScreenConverter = preferenceScreenToSearchablePreferenceScreenConverter;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
+        this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
@@ -59,10 +64,18 @@ public class TreeToPojoTreeTransformer {
             }
 
             private SearchablePreferenceScreenWithMap convertToPojo(final PreferenceScreenOfHostOfActivity node) {
+                final Fragment host = node.hostOfPreferenceScreen();
+                final PreferencesOfFragment preferencesOfFragment = fragmentToPreferencesConverter.getPreferences(host).orElseThrow();
                 return preferenceScreenToSearchablePreferenceScreenConverter.convertPreferenceScreen(
-                        node,
-                        preferenceFragmentIdProvider.getId(node.hostOfPreferenceScreen()));
+                        preferencesOfFragment.preferences(),
+                        host,
+                        node.activityOfHost(),
+                        preferencesOfFragment.title(),
+                        preferencesOfFragment.summary(),
+                        preferenceFragmentUniqueIdProvider.getId(host));
             }
+
+            private final PreferenceFragmentIdProvider preferenceFragmentUniqueIdProvider = preferenceFragmentIdProvider;
 
             private static SearchablePreference getTransformedPreference(
                     final Preference preference,

@@ -97,14 +97,16 @@ public class MergedPreferenceScreenDataRepository<C> {
                                 PreferenceToSearchablePreferenceConverterFactory.createPreferenceToSearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         preferenceDialogs)),
-                        searchDatabaseConfig.preferenceFragmentIdProvider),
+                        searchDatabaseConfig.preferenceFragmentIdProvider,
+                        searchDatabaseConfig.fragmentToPreferencesConverter),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         preferenceScreenProvider,
                         searchDatabaseConfig.preferenceFragmentConnectedToPreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         edge -> true,
                         new ProgressUpdatingTreeBuilderListener(searchDatabaseConfig.preferenceScreenTreeBuilderListener, progressUpdateListener),
-                        activityContext),
+                        activityContext,
+                        searchDatabaseConfig.fragmentToPreferencesConverter),
                 locale);
     }
 }

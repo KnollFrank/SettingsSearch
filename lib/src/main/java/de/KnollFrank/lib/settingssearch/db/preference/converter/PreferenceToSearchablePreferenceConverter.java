@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
 import com.codepoetics.ambivalence.Either;
@@ -44,7 +44,7 @@ public class PreferenceToSearchablePreferenceConverter {
             final Preference preference,
             final List<Integer> indexPathOfPreference,
             final String searchablePreferenceScreenId,
-            final PreferenceFragmentCompat hostOfPreference) {
+            final Fragment hostOfPreference) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 convertChildrenOfPreference(
                         preference,
@@ -79,7 +79,7 @@ public class PreferenceToSearchablePreferenceConverter {
             final List<Preference> preferences,
             final List<Integer> indexPathOfParentOfPreferences,
             final String searchablePreferenceScreenId,
-            final PreferenceFragmentCompat hostOfPreferences) {
+            final Fragment hostOfPreferences) {
         final List<SearchablePreferenceWithMap> pojoWithMapList =
                 IntStream
                         .range(0, preferences.size())
@@ -98,7 +98,7 @@ public class PreferenceToSearchablePreferenceConverter {
             final Preference preference,
             final List<Integer> indexPathOfPreference,
             final String searchablePreferenceScreenId,
-            final PreferenceFragmentCompat hostOfPreference) {
+            final Fragment hostOfPreference) {
         return preference instanceof final PreferenceGroup preferenceGroup ?
                 convertPreferences(
                         Preferences.getImmediateChildren(preferenceGroup),
@@ -109,7 +109,7 @@ public class PreferenceToSearchablePreferenceConverter {
     }
 
     private Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData(final Preference preference,
-                                                                               final PreferenceFragmentCompat hostOfPreference) {
+                                                                               final Fragment hostOfPreference) {
         return iconProvider
                 .getIconResourceIdOrIconDrawableOfPreference(preference, hostOfPreference)
                 .map(iconResourceIdOrIconDrawable ->

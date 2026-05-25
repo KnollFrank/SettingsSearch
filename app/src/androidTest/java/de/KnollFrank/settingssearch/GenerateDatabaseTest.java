@@ -5,15 +5,19 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static de.KnollFrank.settingssearch.PreferenceSearchExampleTest.searchButton;
 import static de.KnollFrank.settingssearch.PreferenceSearchExampleTest.searchView;
 
+import android.content.Context;
+import android.view.View;
+
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.Preference;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.action.ViewActions;
@@ -21,17 +25,20 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Locales;
+import de.KnollFrank.lib.settingssearch.common.uicontroller.Fragments;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
@@ -75,10 +82,11 @@ public class GenerateDatabaseTest {
         final AtomicReference<FragmentActivity> activityRef = new AtomicReference<>();
         activityRule.getScenario().onActivity(activityRef::set);
         final FragmentActivity activity = activityRef.get();
+        final SearchDatabaseConfig<Configuration> searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
         final UiCrawler crawler =
                 new UiCrawler(
-                        createConverter(activity),
-                        new EspressoUiNavigator(),
+                        createConverter(activity, searchDatabaseConfig),
+                        new EspressoUiNavigator(activity),
                         searchablePreference -> false);
 
         System.out.println("Starting UI Crawl...");
@@ -103,8 +111,8 @@ public class GenerateDatabaseTest {
                 .unregister(EspressoIdlingResource.getCountingIdlingResource());
     }
 
-    private static PreferenceScreenToSearchablePreferenceScreenConverter createConverter(final FragmentActivity activity) {
-        final SearchDatabaseConfig<Configuration> searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
+    private static PreferenceScreenToSearchablePreferenceScreenConverter createConverter(final FragmentActivity activity,
+                                                                                          final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
         return new PreferenceScreenToSearchablePreferenceScreenConverter(
                 PreferenceToSearchablePreferenceConverterFactory.createPreferenceToSearchablePreferenceConverter(
                         searchDatabaseConfig,
@@ -124,17 +132,41 @@ public class GenerateDatabaseTest {
 
     private static class EspressoUiNavigator implements UiCrawler.UiNavigator {
 
+        private final Context context;
+
+        public EspressoUiNavigator(final Context context) {
+            this.context = context;
+        }
+
         @Override
-        public void click(final Preference preference) {
-            Espresso
-                    .onView(withId(androidx.preference.R.id.recycler_view))
-                    .perform(
-                            RecyclerViewActions.actionOnItem(
-                                    hasDescendant(
-                                            allOf(
-                                                    withId(android.R.id.title),
-                                                    withText(preference.getTitle().toString()))),
-                                    ViewActions.click()));
+        public void click(final de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference preference) {
+            final String id = preference.getId();
+            try {
+                final String[] parts = id.split("-");
+                final int index = Integer.parseInt(parts[parts.length - 1]);
+                Espresso
+                        .onView(isAssignableFrom(androidx.recyclerview.widget.RecyclerView.class))
+                        .perform(RecyclerViewActions.actionOnItemAtPosition(index, ViewActions.click()));
+            } catch (final Exception e) {
+                // Fallback: This should not happen if the id is correctly formatted
+                final Matcher<View> titleMatcher = allOf(
+                        anyOf(withId(android.R.id.title), withId(R.id.title)),
+                        withText(preference.getTitle().get()));
+
+                final Matcher<View> itemMatcher;
+                if (preference.getSummary().isPresent()) {
+                    final Matcher<View> summaryMatcher = allOf(
+                            anyOf(withId(android.R.id.summary), withId(R.id.summary)),
+                            withText(preference.getSummary().get()));
+                    itemMatcher = allOf(hasDescendant(titleMatcher), hasDescendant(summaryMatcher));
+                } else {
+                    itemMatcher = hasDescendant(titleMatcher);
+                }
+
+                Espresso
+                        .onView(isAssignableFrom(androidx.recyclerview.widget.RecyclerView.class))
+                        .perform(RecyclerViewActions.actionOnItem(itemMatcher, ViewActions.click()));
+            }
         }
 
         @Override
@@ -145,6 +177,15 @@ public class GenerateDatabaseTest {
         @Override
         public void waitUntilIdle() {
             // Espresso handles this automatically
+        }
+
+        @Override
+        public Optional<de.KnollFrank.lib.settingssearch.graph.PreferencesOfFragment> extractPreferences() {
+            return Fragments
+                    .findEitherVisibleFragmentOnCurrentActivityOrError()
+                    .join(
+                            fragment -> GraphicalPreferenceExtractor.extract(context, fragment),
+                            errorMessage -> Optional.empty());
         }
     }
 }

@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class SearchableInfoAndDialogInfoProvider {
         this.searchableDialogInfoOfProvider = searchableDialogInfoOfProvider;
     }
 
-    public Optional<String> getSearchableInfo(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+    public Optional<String> getSearchableInfo(final Preference preference, final Fragment hostOfPreference) {
         return join(
                 searchableInfoProvider.getSearchableInfo(preference),
                 searchableDialogInfoOfProvider.getSearchableDialogInfoOfPreference(preference, hostOfPreference),

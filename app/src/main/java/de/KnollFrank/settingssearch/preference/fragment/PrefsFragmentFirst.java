@@ -75,7 +75,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     public static void markExtrasOfPreferenceConnectingSrcWithDst(final Preference preference,
-                                                                  final PreferenceFragmentCompat src,
+                                                                  final Fragment src,
                                                                   final Class<?> dst) {
         preference.getExtras().putBoolean(
                 preference.getKey() + ": " + src.getClass().getName() + " -> " + dst.getName(),

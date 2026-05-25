@@ -89,7 +89,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
-                                    public String getId(final PreferenceFragmentCompat preferenceFragment) {
+                                    public String getId(final Fragment preferenceFragment) {
                                         if (PreferenceFragmentWithSinglePreference.class.equals(preferenceFragment.getClass())) {
                                             return twoNodeScreen2Id;
                                         }
@@ -136,7 +136,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                         new PreferenceFragmentIdProvider() {
 
                             @Override
-                            public String getId(final PreferenceFragmentCompat preferenceFragment) {
+                            public String getId(final Fragment preferenceFragment) {
                                 return "non unique id";
                             }
                         };
@@ -171,7 +171,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
-                                    public String getId(final PreferenceFragmentCompat preferenceFragment) {
+                                    public String getId(final Fragment preferenceFragment) {
                                         if (PreferenceFragmentWithSinglePreference.class.equals(preferenceFragment.getClass())) {
                                             return "graph-screen2";
                                         }
@@ -314,6 +314,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()))),
-                preferenceFragmentIdProvider);
+                preferenceFragmentIdProvider,
+                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
     }
 }

@@ -14,20 +14,22 @@ public class DbDataProviderDatas {
 
     public static DbDataProviderData merge(final Collection<DbDataProviderData> dbDataProviderDatas) {
         return new DbDataProviderData(
-                mapThenMerge(dbDataProviderDatas, DbDataProviderData::nodesByTree),
-                mapThenMerge(dbDataProviderDatas, DbDataProviderData::allPreferencesBySearchablePreferenceScreen),
-                mapThenMerge(dbDataProviderDatas, DbDataProviderData::hostByPreference),
-                mapThenMerge(dbDataProviderDatas, DbDataProviderData::predecessorByPreference),
-                mapThenMerge(dbDataProviderDatas, DbDataProviderData::childrenByPreference));
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::nodesByTree, de.KnollFrank.lib.settingssearch.common.Sets::union),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::allPreferencesBySearchablePreferenceScreen, de.KnollFrank.lib.settingssearch.common.Sets::union),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::hostByPreference, (v1, v2) -> v2),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::predecessorByPreference, (v1, v2) -> v2),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::childrenByPreference, de.KnollFrank.lib.settingssearch.common.Sets::union));
     }
 
     private static <K, V> Map<K, V> mapThenMerge(
             final Collection<DbDataProviderData> dbDataProviderDatas,
-            final Function<DbDataProviderData, Map<K, V>> mapper) {
+            final Function<DbDataProviderData, Map<K, V>> mapper,
+            final java.util.function.BinaryOperator<V> mergeFunction) {
         return Maps.merge(
                 dbDataProviderDatas
                         .stream()
                         .map(mapper)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toSet()),
+                mergeFunction);
     }
 }

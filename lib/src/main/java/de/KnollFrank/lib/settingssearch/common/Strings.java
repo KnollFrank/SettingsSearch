@@ -19,6 +19,10 @@ public class Strings {
         return charSequence.map(CharSequence::toString);
     }
 
+    public static Optional<String> toString(final Optional<String> string, final Void dummy) {
+        return string;
+    }
+
     public static String prefixIdWithLocale(final String id, final Locale locale) {
         return locale.toLanguageTag() + "-" + id;
     }

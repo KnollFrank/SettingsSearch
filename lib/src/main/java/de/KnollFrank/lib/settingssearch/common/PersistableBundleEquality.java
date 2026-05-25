@@ -1,10 +1,11 @@
-package de.KnollFrank.lib.settingssearch.matcher;
+package de.KnollFrank.lib.settingssearch.common;
 
 import android.os.PersistableBundle;
 
 import androidx.annotation.Nullable;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class PersistableBundleEquality {
 
@@ -30,6 +31,35 @@ public class PersistableBundleEquality {
             }
         }
         return true;
+    }
+
+    public static int hashCode(@Nullable final PersistableBundle bundle) {
+        if (bundle == null) {
+            return 0;
+        }
+        int res = 0;
+        for (final String key : bundle.keySet()) {
+            res = 31 * res + Objects.hashCode(key);
+            final Object value = bundle.get(key);
+            if (value instanceof final PersistableBundle sub) {
+                res = 31 * res + hashCode(sub);
+            } else if (value != null && value.getClass().isArray()) {
+                if (value instanceof final int[] ints) {
+                    res = 31 * res + Arrays.hashCode(ints);
+                } else if (value instanceof final long[] longs) {
+                    res = 31 * res + Arrays.hashCode(longs);
+                } else if (value instanceof final double[] doubles) {
+                    res = 31 * res + Arrays.hashCode(doubles);
+                } else if (value instanceof final boolean[] booleans) {
+                    res = 31 * res + Arrays.hashCode(booleans);
+                } else if (value instanceof final Object[] objects) {
+                    res = 31 * res + Arrays.deepHashCode(objects);
+                }
+            } else {
+                res = 31 * res + Objects.hashCode(value);
+            }
+        }
+        return res;
     }
 
     private static boolean areObjectsEqual(@Nullable final Object a, @Nullable final Object b) {

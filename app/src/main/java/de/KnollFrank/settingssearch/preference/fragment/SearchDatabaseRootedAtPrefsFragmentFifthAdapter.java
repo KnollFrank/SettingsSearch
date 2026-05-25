@@ -135,6 +135,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                                         FRAGMENT_CONTAINER_VIEW_ID,
                                         searchDatabaseConfig.preferenceSearchablePredicate),
                                 activityContext),
-                        searchDatabaseConfig.principalAndProxyProvider));
+                        searchDatabaseConfig.principalAndProxyProvider,
+                        searchDatabaseConfig.fragmentToPreferencesConverter),
+                searchDatabaseConfig.fragmentToPreferencesConverter);
     }
 }

@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.time.Duration;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
 import de.KnollFrank.lib.settingssearch.results.PositionOfSettingProvider;
 import de.KnollFrank.lib.settingssearch.results.Setting;
@@ -84,46 +79,5 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
     @Override
     public SettingHighlighter getSettingHighlighter() {
         return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this, Duration.ofSeconds(1));
-    }
-
-    public static class ItemFragmentProxy extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment> {
-
-        private List<PlaceholderContent.PlaceholderItem> items;
-
-        @Override
-        public void initializePreferenceFragmentWithFragmentBeforeOnCreate(final ItemFragment itemFragment) {
-            items = itemFragment.getItems();
-        }
-
-        @Override
-        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
-            screen.setTitle("screen title PreferenceFragment");
-            screen.setSummary("screen summary");
-            ItemFragmentProxy
-                    .asPreferences(items, requireContext())
-                    .forEach(screen::addPreference);
-            setPreferenceScreen(screen);
-        }
-
-        private static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
-            return items
-                    .stream()
-                    .map(placeholderItem -> asPreference(placeholderItem, context))
-                    .collect(Collectors.toList());
-        }
-
-        private static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,
-                                               final Context context) {
-            final Preference preference = new Preference(context);
-            preference.setKey(placeholderItem.key());
-            preference.setTitle(placeholderItem.title());
-            preference.setSummary(placeholderItem.summary());
-            placeholderItem
-                    .intentFactory()
-                    .map(intentFactory -> intentFactory.apply(context))
-                    .ifPresent(preference::setIntent);
-            return preference;
-        }
     }
 }

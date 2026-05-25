@@ -5,28 +5,35 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 public class PreferenceScreenProvider {
 
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
+    private final FragmentToPreferencesConverter fragmentToPreferencesConverter;
 
     public PreferenceScreenProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-                                    final PrincipalAndProxyProvider principalAndProxyProvider) {
+                                    final PrincipalAndProxyProvider principalAndProxyProvider,
+                                    final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.principalAndProxyProvider = principalAndProxyProvider;
+        this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }
 
     public Optional<PreferenceScreenOfHostOfActivity> getPreferenceScreen(
             final FragmentClassOfActivity<? extends Fragment> fragmentClass,
             final Optional<PreferenceOfHostOfActivity> src) {
-        return this
-                .getPreferenceFragment(fragmentClass, src)
-                .map(preferenceFragment ->
+        final FragmentOfActivity<? extends Fragment> fragmentOfActivity = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
+        return fragmentToPreferencesConverter
+                .getPreferences(fragmentOfActivity.fragment())
+                .map(preferencesOfFragment ->
                              new PreferenceScreenOfHostOfActivity(
-                                     preferenceFragment.fragment().getPreferenceScreen(),
-                                     preferenceFragment.fragment(),
+                                     preferencesOfFragment.preferences(),
+                                     preferencesOfFragment.title(),
+                                     preferencesOfFragment.summary(),
+                                     fragmentOfActivity.fragment(),
                                      fragmentClass.activityOfFragment()));
     }
 

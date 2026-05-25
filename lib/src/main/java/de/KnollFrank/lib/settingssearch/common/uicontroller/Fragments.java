@@ -15,6 +15,31 @@ import java.util.stream.Stream;
 
 public class Fragments {
 
+    public static Either<Fragment, String> findEitherVisibleFragmentOnCurrentActivityOrError() {
+        return CurrentActivityProvider
+                .getCurrentActivity()
+                .map(
+                        activity ->
+                                activity instanceof final FragmentActivity fragmentActivity ?
+                                        findEitherVisibleFragmentOrError(fragmentActivity) :
+                                        Either.<Fragment, String>ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity. Fragments cannot be retrieved."))
+                .orElseGet(() -> Either.ofRight("No current Activity found. Is the app in foreground?"));
+    }
+
+    private static Either<Fragment, String> findEitherVisibleFragmentOrError(final FragmentActivity fragmentActivity) {
+        return findVisibleFragment(fragmentActivity.getSupportFragmentManager())
+                .map(Either::<Fragment, String>ofLeft)
+                .orElseGet(() -> Either.ofRight("No visible Fragment found on Activity: " + fragmentActivity.getClass().getName() + "."));
+    }
+
+    public static Optional<Fragment> findVisibleFragment(final FragmentManager fragmentManager) {
+        return fragmentManager
+                .getFragments()
+                .stream()
+                .filter(Fragment::isVisible)
+                .collect(MoreCollectors.toOptional());
+    }
+
     public static Either<PreferenceFragmentCompat, String> findEitherVisiblePreferenceFragmentOnCurrentActivityOrError() {
         return CurrentActivityProvider
                 .getCurrentActivity()

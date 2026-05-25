@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.Map;
 import java.util.Optional;
@@ -49,13 +49,13 @@ class ContinueNavigationInActivity {
     }
 
     private void continueNavigationInActivity(final Class<? extends Activity> activity,
-                                              final PreferenceFragmentCompat src,
+                                              final Fragment src,
                                               final PreferencePath preferencePath) {
         beforeStartActivity(activity, src);
         startActivity(activity, src, preferencePath);
     }
 
-    private <T extends PreferenceFragmentCompat> void beforeStartActivity(final Class<? extends Activity> activity,
+    private <T extends Fragment> void beforeStartActivity(final Class<? extends Activity> activity,
                                                                           final T src) {
         Maps
                 .get(activityInitializerByActivity, activity)
@@ -63,12 +63,12 @@ class ContinueNavigationInActivity {
     }
 
     private void startActivity(final Class<? extends Activity> activity,
-                               final PreferenceFragmentCompat src,
+                               final Fragment src,
                                final PreferencePath preferencePath) {
         context.startActivity(createIntent(activity, src, preferencePath));
     }
 
-    private <T extends PreferenceFragmentCompat> Intent createIntent(final Class<? extends Activity> activity,
+    private <T extends Fragment> Intent createIntent(final Class<? extends Activity> activity,
                                                                      final T src,
                                                                      final PreferencePath preferencePath) {
         final Intent intent = new Intent(context, activity);
@@ -80,7 +80,7 @@ class ContinueNavigationInActivity {
         return intent;
     }
 
-    private <T extends PreferenceFragmentCompat> Bundle createExtrasForActivity(final Class<? extends Activity> activity,
+    private <T extends Fragment> Bundle createExtrasForActivity(final Class<? extends Activity> activity,
                                                                                 final T src) {
         return Maps
                 .get(activityInitializerByActivity, activity)

@@ -10,6 +10,6 @@ public class PreferenceFragmentClassConverterTest {
 
     @Test
     public void shouldConvertFromClassToStringAndBack() {
-        test_a_convertForward_convertBackward_equals_a(PrefsFragmentFirst.class, new PreferenceFragmentClassConverter());
+        test_a_convertForward_convertBackward_equals_a(PrefsFragmentFirst.class, new FragmentClassConverter());
     }
 }

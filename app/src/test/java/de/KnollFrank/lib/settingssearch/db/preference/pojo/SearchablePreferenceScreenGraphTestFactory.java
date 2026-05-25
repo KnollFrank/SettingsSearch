@@ -322,7 +322,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
         final SearchablePreferenceScreenEntity searchablePreferenceScreen =
                 new SearchablePreferenceScreenEntity(
                         screenId,
-                        host.asPreferenceFragmentClassOfActivitySurrogate(),
+                        host.asFragmentClassOfActivitySurrogate(),
                         Optional.of("screen title"),
                         Optional.of("screen summary"),
                         graphId);
@@ -411,7 +411,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
         final SearchablePreferenceScreenEntity searchablePreferenceScreen =
                 new SearchablePreferenceScreenEntity(
                         screenId,
-                        host.asPreferenceFragmentClassOfActivitySurrogate(),
+                        host.asFragmentClassOfActivitySurrogate(),
                         Optional.of("screen title"),
                         Optional.of("screen summary"),
                         graphId);

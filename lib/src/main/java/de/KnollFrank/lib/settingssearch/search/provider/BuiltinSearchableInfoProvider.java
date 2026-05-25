@@ -19,26 +19,22 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
 
     @Override
     public Optional<String> getSearchableInfo(final Preference preference) {
-        if (hasClass(preference, ListPreference.class)) {
-            return Optional.of(getListPreferenceSearchableInfo((ListPreference) preference));
-        }
-        if (hasClass(preference, SwitchPreference.class)) {
-            return Optional.of(getSwitchPreferenceSearchableInfo((SwitchPreference) preference));
-        }
-        if (hasClass(preference, DropDownPreference.class)) {
-            return Optional.of(getDropDownPreferenceSearchableInfo((DropDownPreference) preference));
-        }
-        if (hasClass(preference, MultiSelectListPreference.class)) {
+        if (preference instanceof MultiSelectListPreference) {
             return Optional.of(getMultiSelectListPreferenceSearchableInfo((MultiSelectListPreference) preference));
         }
-        if (hasClass(preference, EditTextPreference.class)) {
+        if (preference instanceof DropDownPreference) {
+            return Optional.of(getDropDownPreferenceSearchableInfo((DropDownPreference) preference));
+        }
+        if (preference instanceof ListPreference) {
+            return Optional.of(getListPreferenceSearchableInfo((ListPreference) preference));
+        }
+        if (preference instanceof SwitchPreference) {
+            return Optional.of(getSwitchPreferenceSearchableInfo((SwitchPreference) preference));
+        }
+        if (preference instanceof EditTextPreference) {
             return Optional.of(getEditTextPreferenceSearchableInfo((EditTextPreference) preference));
         }
         return Optional.empty();
-    }
-
-    private static boolean hasClass(final Preference preference, final Class<? extends Preference> preferenceClass) {
-        return preference.getClass().equals(preferenceClass);
     }
 
     private static String getListPreferenceSearchableInfo(final ListPreference listPreference) {

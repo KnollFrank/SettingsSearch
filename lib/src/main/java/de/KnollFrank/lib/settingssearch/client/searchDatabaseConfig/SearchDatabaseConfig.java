@@ -2,8 +2,8 @@ package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
 import android.app.Activity;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class SearchDatabaseConfig<C> {
     public final SearchableInfoProvider searchableInfoProvider;
     public final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     public final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
-    public final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment;
+    public final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment;
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
@@ -36,20 +36,22 @@ public class SearchDatabaseConfig<C> {
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
     public final TreeProcessorFactory<C> treeProcessorFactory;
+    public final FragmentToPreferencesConverter fragmentToPreferencesConverter;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
                          final SearchableInfoProvider searchableInfoProvider,
                          final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                          final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
-                         final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+                         final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment,
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final PrincipalAndProxyProvider principalAndProxyProvider,
                          final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
                          final PreferenceFragmentIdProvider preferenceFragmentIdProvider,
-                         final TreeProcessorFactory<C> treeProcessorFactory) {
+                         final TreeProcessorFactory<C> treeProcessorFactory,
+                         final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -63,9 +65,10 @@ public class SearchDatabaseConfig<C> {
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
         this.treeProcessorFactory = treeProcessorFactory;
+        this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }
 
-    public static <C> SearchDatabaseConfigBuilder<C> builder(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+    public static <C> SearchDatabaseConfigBuilder<C> builder(final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment,
                                                              final TreeProcessorFactory<C> treeProcessorFactory) {
         return new SearchDatabaseConfigBuilder<>(rootPreferenceFragment, treeProcessorFactory);
     }

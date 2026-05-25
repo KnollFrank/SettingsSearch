@@ -61,13 +61,15 @@ public class PojoTreeTestFactory {
                         classNameOfActivity -> Optional.empty(),
                         addEdgeToTreePredicate,
                         TreeBuilderListeners.emptyTreeBuilderListener(),
-                        context)
+                        context,
+                        de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE)
                 .buildTreeWithRoot(root);
     }
 
     private static PreferenceScreenProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return new PreferenceScreenProvider(
                 instantiateAndInitializeFragment,
-                new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
+                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
     }
 }

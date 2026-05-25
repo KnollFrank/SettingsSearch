@@ -1,12 +1,12 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
 @FunctionalInterface
 public interface PreferenceDialogAndSearchableInfoProvider {
 
-    Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(Preference preference, PreferenceFragmentCompat hostOfPreference);
+    Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(Preference preference, Fragment hostOfPreference);
 }

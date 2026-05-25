@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
@@ -18,7 +18,7 @@ public class PreferenceFragmentLocalizedIdProvider implements PreferenceFragment
     }
 
     @Override
-    public String getId(final PreferenceFragmentCompat preferenceFragment) {
+    public String getId(final Fragment preferenceFragment) {
         return Strings.prefixIdWithLocale(delegate.getId(preferenceFragment), locale);
     }
 }

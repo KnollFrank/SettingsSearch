@@ -22,7 +22,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -34,6 +33,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescri
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
+import de.KnollFrank.lib.settingssearch.graph.PreferencesOfFragment;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
@@ -44,7 +44,6 @@ import de.KnollFrank.settingssearch.SettingsActivity2.SettingsFragment2;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
-import de.KnollFrank.settingssearch.preference.fragment.ItemFragment;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth;
@@ -114,11 +113,9 @@ public class SearchDatabaseConfigFactory {
                                         .<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>>builder()
                                         .put(SettingsActivity.class, SettingsFragment.class)
                                         .put(SettingsActivity2.class, SettingsFragment2.class)
-                                        .put(SettingsActivity3.class, ItemFragment3.ItemFragment3Proxy.class)
+                                        .put(SettingsActivity3.class, (Class<? extends PreferenceFragmentCompat>) (Class<?>) ItemFragment3.class)
                                         .build(),
-                                Set.of(
-                                        new PrincipalAndProxy<>(ItemFragment.class, ItemFragment.ItemFragmentProxy.class),
-                                        new PrincipalAndProxy<>(ItemFragment3.class, ItemFragment3.ItemFragment3Proxy.class))))
+                                Set.of()))
                 .withActivityInitializerByActivity(
                         ImmutableMap
                                 .<Class<? extends Activity>, ActivityInitializer<?>>builder()
@@ -138,13 +135,24 @@ public class SearchDatabaseConfigFactory {
                                         })
                                 .build())
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
+                .withFragmentToPreferencesConverter(
+                        fragment -> {
+                            if (fragment instanceof final PreferenceFragmentCompat p) {
+                                return Optional.of(
+                                        new PreferencesOfFragment(
+                                                de.KnollFrank.lib.settingssearch.common.Preferences.getImmediateChildren(p.getPreferenceScreen()),
+                                                Optional.ofNullable(p.getPreferenceScreen().getTitle()).map(Object::toString),
+                                                Optional.ofNullable(p.getPreferenceScreen().getSummary()).map(Object::toString)));
+                            }
+                            return Optional.empty();
+                        })
                 .withPreferenceFragmentConnectedToPreferenceProvider(
                         new PreferenceFragmentConnectedToPreferenceProvider() {
 
                             @Override
                             public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnectedToPreference(
                                     final Preference preference,
-                                    final PreferenceFragmentCompat hostOfPreference) {
+                                    final Fragment hostOfPreference) {
                                 return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
                                         Optional.of(PrefsFragmentSecond.class) :
                                         Optional.empty();
@@ -156,7 +164,7 @@ public class SearchDatabaseConfigFactory {
                             @Override
                             public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
                                     final Preference preference,
-                                    final PreferenceFragmentCompat hostOfPreference) {
+                                    final Fragment hostOfPreference) {
                                 return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                         Optional.of(
                                                 new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(

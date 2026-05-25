@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
 import android.app.Activity;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -28,7 +29,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchDatabaseConfigBuilder<C> {
 
-    private final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment;
+    private final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment;
     private final TreeProcessorFactory<C> treeProcessorFactory;
     private FragmentFactory fragmentFactory = FragmentFactories.createWrappedDefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
@@ -39,11 +40,18 @@ public class SearchDatabaseConfigBuilder<C> {
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
     private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
+    private FragmentToPreferencesConverter fragmentToPreferencesConverter = fragment -> Optional.empty();
 
-    SearchDatabaseConfigBuilder(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+    SearchDatabaseConfigBuilder(final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment,
                                 final TreeProcessorFactory<C> treeProcessorFactory) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.treeProcessorFactory = treeProcessorFactory;
+    }
+
+    @SuppressWarnings("unused")
+    public SearchDatabaseConfigBuilder<C> withFragmentToPreferencesConverter(final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
+        this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
+        return this;
     }
 
     @SuppressWarnings("unused")
@@ -117,7 +125,8 @@ public class SearchDatabaseConfigBuilder<C> {
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
                 activityInitializerByActivity,
                 preferenceFragmentIdProvider,
-                treeProcessorFactory);
+                treeProcessorFactory,
+                fragmentToPreferencesConverter);
     }
 
     private static RootPreferenceFragmentOfActivityProvider createRootPreferenceFragmentOfActivityProvider(final Map<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>> rootPreferenceFragmentByActivity) {
