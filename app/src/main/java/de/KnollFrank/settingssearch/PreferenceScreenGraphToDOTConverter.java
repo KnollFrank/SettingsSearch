@@ -1,7 +1,6 @@
 package de.KnollFrank.settingssearch;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.common.Preferences;
 
 class PreferenceScreenGraphToDOTConverter {
 
@@ -41,10 +39,10 @@ class PreferenceScreenGraphToDOTConverter {
 
     private static String getVertexId(final PreferenceScreenOfHostOfActivity preferenceScreenOfHostOfActivity) {
         return preferenceScreenOfHostOfActivity
-                .preferenceScreen()
-                .toString()
+                .title()
+                .orElse("Untitled")
                 .concat("_")
-                .concat(Integer.toHexString(preferenceScreenOfHostOfActivity.preferenceScreen().hashCode()))
+                .concat(Integer.toHexString(preferenceScreenOfHostOfActivity.hashCode()))
                 .replace(' ', '_');
     }
 
@@ -53,18 +51,18 @@ class PreferenceScreenGraphToDOTConverter {
                 .<String, Attribute>builder()
                 .put(
                         "label",
-                        DefaultAttribute.createAttribute(getLabel(preferenceScreenOfHostOfActivity.preferenceScreen())))
+                        DefaultAttribute.createAttribute(getLabel(preferenceScreenOfHostOfActivity)))
                 .put("shape", DefaultAttribute.createAttribute("box"))
                 .build();
     }
 
-    private static String getLabel(final PreferenceScreen preferenceScreen) {
-        return preferenceScreen.toString() + "\\l\\l" + getPreferences(preferenceScreen);
+    private static String getLabel(final PreferenceScreenOfHostOfActivity node) {
+        return node.title().orElse("Untitled") + "\\l\\l" + getPreferences(node);
     }
 
-    private static String getPreferences(final PreferenceScreen preferenceScreen) {
-        return Preferences
-                .getChildrenRecursively(preferenceScreen)
+    private static String getPreferences(final PreferenceScreenOfHostOfActivity node) {
+        return node
+                .preferences()
                 .stream()
                 .map(Preference::toString)
                 .collect(Collectors.joining("\\l")) + "\\l";

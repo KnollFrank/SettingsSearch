@@ -29,7 +29,8 @@ public class MergedPreferenceScreenDataRepositoryFactory {
         return new MergedPreferenceScreenDataRepository<>(
                 new PreferenceScreenProvider(
                         instantiateAndInitializeFragment,
-                        searchDatabaseConfig.principalAndProxyProvider),
+                        searchDatabaseConfig.principalAndProxyProvider,
+                        searchDatabaseConfig.fragmentToPreferencesConverter),
                 preferenceDialogs,
                 searchDatabaseConfig,
                 progressUpdateListener,

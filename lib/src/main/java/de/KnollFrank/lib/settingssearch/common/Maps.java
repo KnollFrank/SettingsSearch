@@ -19,12 +19,18 @@ public class Maps {
     }
 
     public static <K, V> Map<K, V> merge(final Collection<Map<K, V>> maps) {
+        return merge(maps, (first, second) -> second);
+    }
+
+    public static <K, V> Map<K, V> merge(final Collection<Map<K, V>> maps,
+                                         final java.util.function.BinaryOperator<V> mergeFunction) {
         return Maps
                 .getEntryStream(maps)
                 .collect(
                         Collectors.toMap(
                                 Map.Entry::getKey,
-                                Map.Entry::getValue));
+                                Map.Entry::getValue,
+                                mergeFunction));
     }
 
     // adapted from https://stackoverflow.com/a/31954986
@@ -33,7 +39,7 @@ public class Maps {
                 .getEntryStream(biMaps)
                 .collect(
                         HashBiMap::create,
-                        (bm, t) -> bm.put(t.getKey(), t.getValue()),
+                        (bm, t) -> bm.forcePut(t.getKey(), t.getValue()),
                         BiMap::putAll);
     }
 

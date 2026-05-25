@@ -1,17 +1,17 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
 import androidx.room.Embedded;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 
-public record PreferenceFragmentClassOfActivitySurrogate(
-        Class<? extends PreferenceFragmentCompat> preferenceFragment,
+public record FragmentClassOfActivitySurrogate(
+        Class<? extends Fragment> fragment,
         @Embedded ActivityDescriptionSurrogate activityOfFragment) {
 
-    public FragmentClassOfActivity<? extends PreferenceFragmentCompat> asFragmentClassOfActivity() {
+    public FragmentClassOfActivity<? extends Fragment> asFragmentClassOfActivity() {
         return new FragmentClassOfActivity<>(
-                preferenceFragment,
+                fragment,
                 activityOfFragment.asActivityDescription());
     }
 }

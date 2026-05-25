@@ -6,6 +6,7 @@ import androidx.preference.Preference;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
@@ -20,7 +21,8 @@ public class PreferenceScreenTreeBuilderFactory {
             final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
             final AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference> addEdgeToTreePredicate,
             final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> treeBuilderListener,
-            final Context context) {
+            final Context context,
+            final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         return new TreeBuilder<>(
                 treeBuilderListener,
                 new FilteredEdgeSuppliersFactory<>(
@@ -28,7 +30,8 @@ public class PreferenceScreenTreeBuilderFactory {
                                 preferenceScreenProvider,
                                 preferenceFragmentConnectedToPreferenceProvider,
                                 rootPreferenceFragmentOfActivityProvider,
-                                context),
+                                context,
+                                fragmentToPreferencesConverter),
                         addEdgeToTreePredicate));
     }
 }

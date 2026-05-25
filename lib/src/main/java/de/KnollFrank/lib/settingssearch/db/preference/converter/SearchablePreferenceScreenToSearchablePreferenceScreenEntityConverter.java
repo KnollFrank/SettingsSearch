@@ -42,7 +42,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
             final Locale graphId) {
         return new SearchablePreferenceScreenEntity(
                 screenToConvertToEntity.id(),
-                screenToConvertToEntity.host().asPreferenceFragmentClassOfActivitySurrogate(),
+                screenToConvertToEntity.host().asFragmentClassOfActivitySurrogate(),
                 screenToConvertToEntity.title(),
                 screenToConvertToEntity.summary(),
                 graphId);

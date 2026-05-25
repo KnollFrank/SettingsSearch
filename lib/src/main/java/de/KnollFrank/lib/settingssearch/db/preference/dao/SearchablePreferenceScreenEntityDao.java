@@ -61,7 +61,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
     public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
         return Maps
                 .get(getAllPreferencesBySearchablePreferenceScreen(), screen)
-                .orElseThrow();
+                .orElse(Set.of());
     }
 
     @Override
@@ -104,7 +104,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
 
     @Query("SELECT " +
             "screen.id AS " + SCREEN_PREFIX + "id, " +
-            "screen.host_preferenceFragment AS " + SCREEN_PREFIX + "host_preferenceFragment, " +
+            "screen.host_fragment AS " + SCREEN_PREFIX + "host_fragment, " +
             "screen.host_activity AS " + SCREEN_PREFIX + "host_activity, " +
             "screen.host_arguments AS " + SCREEN_PREFIX + "host_arguments, " +
             "screen.title AS " + SCREEN_PREFIX + "title, " +

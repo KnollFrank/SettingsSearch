@@ -14,13 +14,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeProcessorDescriptionEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ActivityClassConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.FragmentClassConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LazyPersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.TreeProcessorClassConverter;
 import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
@@ -35,7 +35,7 @@ import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
         exportSchema = false)
 @TypeConverters(
         {
-                PreferenceFragmentClassConverter.class,
+                FragmentClassConverter.class,
                 ActivityClassConverter.class,
                 OptionalEitherIntegerOrStringConverter.class,
                 OptionalStringConverter.class,

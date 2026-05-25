@@ -37,6 +37,11 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
         return new Setting() {
 
             @Override
+            public String getId() {
+                return preference.searchablePreference().getId();
+            }
+
+            @Override
             public String getKey() {
                 return preference.searchablePreference().getKey();
             }
@@ -50,9 +55,14 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
 
     private static void highlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,
                                             final Setting setting) {
-        fragmentOfPreferenceScreen.scrollToPreference(setting.getKey());
+        final String logicalKey = getLogicalKey(setting.getKey());
+        fragmentOfPreferenceScreen.scrollToPreference(logicalKey);
         new PreferenceHighlighter().highlightSetting(fragmentOfPreferenceScreen, setting);
-        showDialog(fragmentOfPreferenceScreen.findPreference(setting.getKey()), setting.hasPreferenceMatchWithinSearchableInfo());
+        showDialog(fragmentOfPreferenceScreen.findPreference(logicalKey), setting.hasPreferenceMatchWithinSearchableInfo());
+    }
+
+    private static String getLogicalKey(final String key) {
+        return de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey.getLogicalKey(key);
     }
 
     private static void highlightSetting(final Fragment settingsFragment,
@@ -63,7 +73,7 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     }
 
     private static void showDialog(final Preference preference, final boolean hasPreferenceMatchWithinSearchableInfo) {
-        if (!hasPreferenceMatchWithinSearchableInfo) {
+        if (!hasPreferenceMatchWithinSearchableInfo || preference == null) {
             return;
         }
         if (preference instanceof final DialogPreference dialogPreference) {

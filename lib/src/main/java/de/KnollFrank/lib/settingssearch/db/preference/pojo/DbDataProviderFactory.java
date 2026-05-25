@@ -68,14 +68,14 @@ public class DbDataProviderFactory {
             public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
                 return Maps
                         .get(dbDataProviderData.allPreferencesBySearchablePreferenceScreen(), screen)
-                        .orElseThrow();
+                        .orElse(Set.of());
             }
 
             @Override
             public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.hostByPreference(), preference)
-                        .orElseThrow();
+                        .orElse(null);
             }
         };
     }
@@ -87,21 +87,21 @@ public class DbDataProviderFactory {
             public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.childrenByPreference(), preference)
-                        .orElseThrow();
+                        .orElse(Set.of());
             }
 
             @Override
             public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.predecessorByPreference(), preference)
-                        .orElseThrow();
+                        .orElse(Optional.empty());
             }
 
             @Override
             public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.hostByPreference(), preference)
-                        .orElseThrow();
+                        .orElse(null);
             }
         };
     }

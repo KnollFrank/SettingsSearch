@@ -1,8 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search.provider;
 
 import androidx.annotation.IdRes;
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface IconResourceIdProvider {
 
     @IdRes
-    Optional<Integer> getIconResourceIdOfPreference(Preference preference, PreferenceFragmentCompat hostOfPreference);
+    Optional<Integer> getIconResourceIdOfPreference(Preference preference, Fragment hostOfPreference);
 }

@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
 import com.google.common.collect.BiMap;
@@ -7,8 +8,9 @@ import com.google.common.collect.BiMap;
 import java.util.List;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.ActivityDescription;
+import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -22,23 +24,39 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
     }
 
     public SearchablePreferenceScreenWithMap convertPreferenceScreen(
-            final PreferenceScreenOfHostOfActivity preferenceScreen,
+            final List<Preference> preferences,
+            final Fragment host,
+            final ActivityDescription activityDescription,
+            final Optional<String> title,
+            final Optional<String> summary,
             final String id) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preferenceToSearchablePreferenceConverter.convertPreferences(
-                        Preferences.getImmediateChildren(preferenceScreen.preferenceScreen()),
+                        preferences,
                         List.of(),
                         id,
-                        preferenceScreen.hostOfPreferenceScreen());
+                        host);
         return new SearchablePreferenceScreenWithMap(
                 new SearchablePreferenceScreen(
                         id,
-                        preferenceScreen
-                                .asPreferenceFragmentOfActivity()
-                                .asFragmentClassOfActivity(),
-                        Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getTitle())),
-                        Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getSummary())),
+                        new FragmentClassOfActivity<Fragment>(
+                                (Class<Fragment>) host.getClass(),
+                                activityDescription),
+                        Strings.toString(title, null),
+                        Strings.toString(summary, null),
                         searchablePreferences.keySet()),
                 searchablePreferences);
+    }
+
+    public SearchablePreferenceScreenWithMap convertPreferenceScreen(
+            final PreferenceScreenOfHostOfActivity preferenceScreen,
+            final String id) {
+        return convertPreferenceScreen(
+                preferenceScreen.preferences(),
+                preferenceScreen.hostOfPreferenceScreen(),
+                preferenceScreen.activityOfHost(),
+                preferenceScreen.title(),
+                preferenceScreen.summary(),
+                id);
     }
 }

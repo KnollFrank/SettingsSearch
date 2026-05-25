@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.graph.EndpointPair;
@@ -12,6 +12,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
 import de.KnollFrank.lib.settingssearch.common.HeadAndTail;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
@@ -25,9 +26,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class TreePathInstantiator {
 
     private final PreferenceScreenProvider preferenceScreenProvider;
+    private final FragmentToPreferencesConverter fragmentToPreferencesConverter;
 
-    public TreePathInstantiator(final PreferenceScreenProvider preferenceScreenProvider) {
+    public TreePathInstantiator(final PreferenceScreenProvider preferenceScreenProvider,
+                                final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         this.preferenceScreenProvider = preferenceScreenProvider;
+        this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }
 
     public TreePath<PreferenceScreenOfHostOfActivity, Preference, ImmutableValueGraph<PreferenceScreenOfHostOfActivity, Preference>> instantiate(final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
@@ -85,10 +89,10 @@ public class TreePathInstantiator {
                 nodesBuilder.build());
     }
 
-    private static Preference getInstanceOfSearchablePreference(final PreferenceFragmentCompat hostOfPreference,
+    private Preference getInstanceOfSearchablePreference(final Fragment hostOfPreference,
                                                                 final SearchablePreference searchablePreference) {
         return Preferences.findPreferenceByKeyOrElseThrow(
-                hostOfPreference,
+                fragmentToPreferencesConverter.getPreferences(hostOfPreference).orElseThrow().preferences(),
                 searchablePreference.getKey());
     }
 

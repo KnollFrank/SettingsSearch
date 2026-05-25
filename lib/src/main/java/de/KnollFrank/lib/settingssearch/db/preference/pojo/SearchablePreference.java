@@ -31,8 +31,8 @@ public final class SearchablePreference {
     private Optional<String> summary;
     private Supplier<Optional<CharSequence>> highlightedSummaryProvider = Optional::empty;
     private final @LayoutRes int widgetLayoutResId;
-    private final Optional<String> fragment;
-    private final Optional<String> classNameOfReferencedActivity;
+    private Optional<String> fragment;
+    private Optional<String> classNameOfReferencedActivity;
     private final boolean visible;
     private final PersistableBundle extras;
     private final Optional<String> searchableInfo;
@@ -138,8 +138,16 @@ public final class SearchablePreference {
         return widgetLayoutResId;
     }
 
+    public void setFragment(final Optional<String> fragment) {
+        this.fragment = fragment;
+    }
+
     public Optional<String> getFragment() {
         return fragment;
+    }
+
+    public void setClassNameOfReferencedActivity(final Optional<String> classNameOfReferencedActivity) {
+        this.classNameOfReferencedActivity = classNameOfReferencedActivity;
     }
 
     public Optional<String> getClassNameOfReferencedActivity() {

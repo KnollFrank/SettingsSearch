@@ -62,7 +62,8 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                                 PreferenceToSearchablePreferenceConverterFactory.createPreferenceToSearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId, searchDatabaseConfig.preferenceSearchablePredicate))),
-                        searchDatabaseConfig.preferenceFragmentIdProvider),
+                        searchDatabaseConfig.preferenceFragmentIdProvider,
+                        searchDatabaseConfig.fragmentToPreferencesConverter),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         new PreferenceScreenProvider(
                                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
@@ -73,12 +74,14 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                                                 OnUiThreadRunnerFactory.fromActivity(fragmentActivity),
                                                 searchDatabaseConfig.preferenceSearchablePredicate),
                                         context),
-                                searchDatabaseConfig.principalAndProxyProvider),
+                                searchDatabaseConfig.principalAndProxyProvider,
+                                searchDatabaseConfig.fragmentToPreferencesConverter),
                         searchDatabaseConfig.preferenceFragmentConnectedToPreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         addEdgeToTreePredicate,
                         searchDatabaseConfig.preferenceScreenTreeBuilderListener,
-                        context),
+                        context,
+                        searchDatabaseConfig.fragmentToPreferencesConverter),
                 locale);
     }
 }

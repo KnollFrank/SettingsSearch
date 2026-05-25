@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
 
 @FunctionalInterface
 public interface PreferenceFragmentIdProvider {
 
-    String getId(PreferenceFragmentCompat preferenceFragment);
+    String getId(Fragment preferenceFragment);
 }

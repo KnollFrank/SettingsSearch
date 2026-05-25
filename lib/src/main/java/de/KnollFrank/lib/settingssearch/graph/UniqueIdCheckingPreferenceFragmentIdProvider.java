@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ class UniqueIdCheckingPreferenceFragmentIdProvider implements PreferenceFragment
     }
 
     @Override
-    public String getId(final PreferenceFragmentCompat preferenceFragment) {
+    public String getId(final Fragment preferenceFragment) {
         final String id = delegate.getId(preferenceFragment);
         assertUnique(id);
         return id;

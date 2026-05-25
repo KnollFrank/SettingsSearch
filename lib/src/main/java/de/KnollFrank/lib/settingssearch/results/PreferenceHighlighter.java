@@ -3,6 +3,8 @@ package de.KnollFrank.lib.settingssearch.results;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -13,7 +15,6 @@ import androidx.preference.PreferenceGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.OptionalInt;
 
 import de.KnollFrank.lib.settingssearch.R;
@@ -23,19 +24,47 @@ public class PreferenceHighlighter implements SettingHighlighter {
 
     @Override
     public void highlightSetting(final Fragment settingsFragment, final Setting setting) {
-        highlightPreferenceOfPreferenceFragment(
-                setting.getKey(),
-                (PreferenceFragmentCompat) settingsFragment,
-                Duration.ofSeconds(1));
+        final Duration duration = Duration.ofSeconds(1);
+        final String key = setting.getKey();
+
+        if (de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey.isStructuredKey(key)) {
+            highlightGraphicalItem(settingsFragment, key, duration);
+        } else if (settingsFragment instanceof PreferenceFragmentCompat) {
+            highlightPreferenceOfPreferenceFragment(key, (PreferenceFragmentCompat) settingsFragment, duration);
+        }
+    }
+
+    private void highlightGraphicalItem(final Fragment fragment, final String key, final Duration duration) {
+        final java.util.OptionalInt index = de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey.getIndex(key);
+        if (index.isPresent()) {
+            final RecyclerView recyclerView = findRecyclerView(fragment.getView());
+            if (recyclerView != null) {
+                recyclerView.post(() -> ViewAtPositionHighlighter.highlightViewAtPosition(recyclerView, index.getAsInt(), duration, () -> {
+                }));
+            }
+        }
+    }
+
+    private static RecyclerView findRecyclerView(final View view) {
+        if (view instanceof RecyclerView) {
+            return (RecyclerView) view;
+        } else if (view instanceof ViewGroup) {
+            final ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                final RecyclerView found = findRecyclerView(group.getChildAt(i));
+                if (found != null) return found;
+            }
+        }
+        return null;
     }
 
     private static void highlightPreferenceOfPreferenceFragment(final String keyOfPreference,
                                                                 final PreferenceFragmentCompat preferenceFragment,
                                                                 final Duration highlightDuration) {
-        highlightPreferenceOfPreferenceFragment(
-                Objects.<Preference>requireNonNull(preferenceFragment.findPreference(keyOfPreference)),
-                preferenceFragment,
-                highlightDuration);
+        final Preference preference = preferenceFragment.findPreference(keyOfPreference);
+        if (preference != null) {
+            highlightPreferenceOfPreferenceFragment(preference, preferenceFragment, highlightDuration);
+        }
     }
 
     private static void highlightPreferenceOfPreferenceFragment(final Preference preference,

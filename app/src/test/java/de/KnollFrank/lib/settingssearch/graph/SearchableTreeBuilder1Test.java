@@ -186,14 +186,16 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                                         new SearchableInfoAndDialogInfoProvider(
                                                 preference -> Optional.empty(),
                                                 (preference, hostOfPreference) -> Optional.empty()))),
-                        new DefaultPreferenceFragmentIdProvider()),
+                        new DefaultPreferenceFragmentIdProvider(),
+                        de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         preferenceScreenProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         addEdgeToTreePredicate,
                         TreeBuilderListeners.emptyTreeBuilderListener(),
-                        activity),
+                        activity,
+                        de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE),
                 Locale.GERMAN);
     }
 
@@ -255,7 +257,8 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
     public static PreferenceScreenProvider createPreferenceScreenWithHostProvider(final FragmentActivity activity) {
         return new PreferenceScreenProvider(
                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity),
-                new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
+                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
     }
 
     public record SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(

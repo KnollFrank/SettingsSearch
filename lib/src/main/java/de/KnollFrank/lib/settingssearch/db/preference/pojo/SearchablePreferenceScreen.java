@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 
 public record SearchablePreferenceScreen(String id,
-                                         FragmentClassOfActivity<? extends PreferenceFragmentCompat> host,
+                                         FragmentClassOfActivity<? extends Fragment> host,
                                          Optional<String> title,
                                          Optional<String> summary,
                                          Set<SearchablePreference> allPreferencesOfPreferenceHierarchy) {

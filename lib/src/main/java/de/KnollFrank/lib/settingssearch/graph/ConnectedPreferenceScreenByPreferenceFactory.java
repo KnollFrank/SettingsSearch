@@ -18,9 +18,9 @@ import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.Intents;
-import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
@@ -31,21 +31,25 @@ class ConnectedPreferenceScreenByPreferenceFactory implements EdgeSuppliersFacto
     private final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final Context context;
+    private final FragmentToPreferencesConverter fragmentToPreferencesConverter;
 
     public ConnectedPreferenceScreenByPreferenceFactory(final PreferenceScreenProvider preferenceScreenProvider,
                                                         final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
                                                         final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
-                                                        final Context context) {
+                                                        final Context context,
+                                                        final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         this.preferenceScreenProvider = preferenceScreenProvider;
         this.preferenceFragmentConnectedToPreferenceProvider = preferenceFragmentConnectedToPreferenceProvider;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.context = context;
+        this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }
 
     @Override
     public List<EdgeSupplier<PreferenceScreenOfHostOfActivity, Preference>> createEdgeSuppliersHavingSource(final PreferenceScreenOfHostOfActivity source) {
-        return Preferences
-                .getChildrenRecursively(source.preferenceScreen())
+        final PreferencesOfFragment preferencesOfFragment = fragmentToPreferencesConverter.getPreferences(source.hostOfPreferenceScreen()).orElseThrow();
+        return preferencesOfFragment
+                .preferences()
                 .stream()
                 .map(
                         preference ->

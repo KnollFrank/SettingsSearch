@@ -2,8 +2,8 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import android.graphics.drawable.Drawable;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -20,14 +20,14 @@ public class IconProvider implements de.KnollFrank.lib.settingssearch.search.pro
     }
 
     @Override
-    public Optional<Either<Integer, Drawable>> getIconResourceIdOrIconDrawableOfPreference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+    public Optional<Either<Integer, Drawable>> getIconResourceIdOrIconDrawableOfPreference(final Preference preference, final Fragment hostOfPreference) {
         return this
                 .getIconResourceId(preference, hostOfPreference)
                 .or(() -> getIconDrawable(preference));
     }
 
     private Optional<Either<Integer, Drawable>> getIconResourceId(final Preference preference,
-                                                                  final PreferenceFragmentCompat hostOfPreference) {
+                                                                  final Fragment hostOfPreference) {
         return iconResourceIdProvider
                 .getIconResourceIdOfPreference(preference, hostOfPreference)
                 .map(Either::ofLeft);

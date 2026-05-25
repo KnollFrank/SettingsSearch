@@ -175,11 +175,11 @@ public class TreeMergerTest {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
         return PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
-                new TreePathInstantiator(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
+                new TreePathInstantiator(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment), de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE)
                         .instantiate(pojoTree.getPathFromRootNodeToTarget(rootOfPartialPojoTree))
                         .endNode(),
                 instantiateAndInitializeFragment,
-                new AddEdgeToTreePredicate<>() {
+                new AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference>() {
 
                     @Override
                     public boolean shallAddEdgeToTree(final Edge<PreferenceScreenOfHostOfActivity, Preference> edge) {
@@ -193,7 +193,8 @@ public class TreeMergerTest {
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return new PreferenceScreenProvider(
                 instantiateAndInitializeFragment,
-                new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
+                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
     }
 
     private static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformToPojoTree(
@@ -212,7 +213,8 @@ public class TreeMergerTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()))),
-                new DefaultPreferenceFragmentIdProvider());
+                new DefaultPreferenceFragmentIdProvider(),
+                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
     }
 
     public static class RootFragmentConnectedToFragmentWithPreferenceCategory extends PreferenceFragmentCompat {

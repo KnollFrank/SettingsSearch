@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.fragment.factory;
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ class ArgumentsFactory {
 				.map(Preference::getKey);
 	}
 
-	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceOfHostOfActivity> preference) {
+	private static Optional<Fragment> getHostOfPreference(final Optional<PreferenceOfHostOfActivity> preference) {
 		return preference.map(PreferenceOfHostOfActivity::hostOfPreference);
 	}
 }

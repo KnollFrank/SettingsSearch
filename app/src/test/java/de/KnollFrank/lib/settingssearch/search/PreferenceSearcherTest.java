@@ -771,10 +771,12 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new Fragments(
                         new FragmentFactoryAndInitializerRegistry(fragmentFactoryAndInitializer),
                         fragmentActivity);
+        final de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter fragmentToPreferencesConverter = de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE;
         final PreferenceScreenProvider preferenceScreenProvider =
                 new PreferenceScreenProvider(
                         instantiateAndInitializeFragment,
-                        principalAndProxyProvider);
+                        principalAndProxyProvider,
+                        fragmentToPreferencesConverter);
         final SearchablePreferenceScreenTreeProvider searchablePreferenceScreenTreeProvider =
                 new SearchablePreferenceScreenTreeProvider(
                         new TreeToPojoTreeTransformer(
@@ -789,7 +791,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                                                         TestActivity.FRAGMENT_CONTAINER_VIEW,
                                                                         preferenceSearchablePredicate),
                                                                 preferenceDialogAndSearchableInfoProvider)))),
-                                preferenceFragmentIdProvider),
+                                preferenceFragmentIdProvider,
+                                fragmentToPreferencesConverter),
                         PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                                 preferenceScreenProvider,
                                 preferenceFragmentConnectedToPreferenceProvider,
@@ -808,7 +811,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 },
                                 edge -> true,
                                 treeBuilderListener,
-                                fragmentActivity),
+                                fragmentActivity,
+                                fragmentToPreferencesConverter),
                         locale);
         treeRepository.persistOrReplace(
                 new SearchablePreferenceScreenTree<>(
@@ -854,7 +858,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {
 
         @Override
-        public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+        public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final Fragment hostOfPreference) {
             return preference instanceof CustomDialogPreference || KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER.equals(preference.getKey()) ?
                     Optional.of(
                             new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(

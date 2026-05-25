@@ -55,9 +55,12 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                 final String id = "some unique id";
 
                 // When
+                final PreferenceScreen screen = getPreferenceScreen(preferenceFragment, activity);
                 final PreferenceScreenOfHostOfActivity preferenceScreen =
                         new PreferenceScreenOfHostOfActivity(
-                                getPreferenceScreen(preferenceFragment, activity),
+                                de.KnollFrank.lib.settingssearch.common.Preferences.getImmediateChildren(screen),
+                                Optional.ofNullable(screen.getTitle()).map(Object::toString),
+                                Optional.ofNullable(screen.getSummary()).map(Object::toString),
                                 preferenceFragment,
                                 new ActivityDescription(
                                         activity.getClass(),
@@ -78,9 +81,9 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                                 keyOfChild1,
                                 keyOfChild2,
                                 layoutResIdOfEachChild,
-                                preferenceScreen
-                                        .asPreferenceFragmentOfActivity()
-                                        .asFragmentClassOfActivity()));
+                                new FragmentClassOfActivity<>(
+                                        preferenceFragment.getClass(),
+                                        preferenceScreen.activityOfHost())));
             });
         }
     }

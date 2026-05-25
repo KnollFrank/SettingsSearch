@@ -18,6 +18,20 @@ public class Preferences {
     private Preferences() {
     }
 
+    public static Preference findPreferenceByKeyOrElseThrow(final List<Preference> preferences,
+                                                            final String keyOfPreference) {
+        return findPreferenceByKey(preferences, keyOfPreference)
+                .orElseThrow(() -> new NoSuchElementException("can not find preference with key " + keyOfPreference + " within provided preferences."));
+    }
+
+    public static Optional<Preference> findPreferenceByKey(final List<Preference> preferences,
+                                                           final String keyOfPreference) {
+        return preferences
+                .stream()
+                .filter(preference -> keyOfPreference.equals(preference.getKey()))
+                .findFirst();
+    }
+
     public static Preference findPreferenceByKeyOrElseThrow(final PreferenceFragmentCompat hostOfPreference,
                                                             final String keyOfPreference) {
         return Optional
