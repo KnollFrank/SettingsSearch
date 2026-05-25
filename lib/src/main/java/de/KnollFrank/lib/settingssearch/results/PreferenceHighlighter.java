@@ -27,11 +27,10 @@ public class PreferenceHighlighter implements SettingHighlighter {
     public void highlightSetting(final Fragment settingsFragment, final Setting setting) {
         final Duration duration = Duration.ofSeconds(1);
         final String key = setting.getKey();
-
         if (StructuredPreferenceKey.isStructuredKey(key)) {
             highlightGraphicalItem(settingsFragment, key, duration);
-        } else if (settingsFragment instanceof PreferenceFragmentCompat) {
-            highlightPreferenceOfPreferenceFragment(key, (PreferenceFragmentCompat) settingsFragment, duration);
+        } else if (settingsFragment instanceof final PreferenceFragmentCompat preferenceFragment) {
+            highlightPreferenceOfPreferenceFragment(key, preferenceFragment, duration);
         }
     }
 
@@ -47,21 +46,25 @@ public class PreferenceHighlighter implements SettingHighlighter {
     }
 
     private static RecyclerView findRecyclerView(final View view) {
+        // FK-TODO: DRY, da dieses Muster immer wieder auftritt
         if (view instanceof RecyclerView) {
             return (RecyclerView) view;
-        } else if (view instanceof ViewGroup) {
-            final ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                final RecyclerView found = findRecyclerView(group.getChildAt(i));
-                if (found != null) return found;
+        } else if (view instanceof final ViewGroup viewGroup) {
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                final RecyclerView found = findRecyclerView(viewGroup.getChildAt(i));
+                if (found != null) {
+                    return found;
+                }
             }
         }
+        // FK-TODO: return Optional<RecyclerView>
         return null;
     }
 
     private static void highlightPreferenceOfPreferenceFragment(final String keyOfPreference,
                                                                 final PreferenceFragmentCompat preferenceFragment,
                                                                 final Duration highlightDuration) {
+        // FK-TODO: use Optional
         final Preference preference = preferenceFragment.findPreference(keyOfPreference);
         if (preference != null) {
             highlightPreferenceOfPreferenceFragment(preference, preferenceFragment, highlightDuration);

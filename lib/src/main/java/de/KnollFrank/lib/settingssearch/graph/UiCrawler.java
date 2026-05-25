@@ -1,5 +1,8 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import android.app.Activity;
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
@@ -105,7 +108,7 @@ public final class UiCrawler {
                                                     return Optional.empty();
                                                 }
                                                 final ActivityDescription targetActivity = getActivityDescription(targetFragment);
-                                                final CrawlerState targetState = new CrawlerState((Class<? extends Fragment>) targetFragment.getClass(), targetActivity);
+                                                final CrawlerState targetState = new CrawlerState(targetFragment.getClass(), targetActivity);
                                                 if (crawlerListener.isStateInPath(targetState)) {
                                                     goBackAndWaitUntilIdle();
                                                     return Optional.empty();
@@ -140,6 +143,7 @@ public final class UiCrawler {
                 });
     }
 
+    // FK-TODO: remove isAlreadyInPath(), CrawlerState, CrawlerListener, ... because cycle detection is already implemented in TreeBuilder?
     private boolean isAlreadyInPath(final Preference preference) {
         final String fragmentClassName = preference.getFragment();
         if (fragmentClassName != null) {
@@ -154,7 +158,7 @@ public final class UiCrawler {
     }
 
     private static ActivityDescription getActivityDescriptionFromPreference(final Preference preference) {
-        final android.app.Activity activity = (android.app.Activity) preference.getContext();
+        final Activity activity = (Activity) preference.getContext();
         return new ActivityDescription(
                 activity.getClass(),
                 BundleConverter.toPersistableBundle(preference.getExtras()));
@@ -179,7 +183,7 @@ public final class UiCrawler {
                 BundleConverter.toPersistableBundle(
                         Optional
                                 .ofNullable(fragment.requireActivity().getIntent().getExtras())
-                                .orElse(new android.os.Bundle())));
+                                .orElse(new Bundle())));
     }
 
     private void clickAndWaitUntilIdle(final SearchablePreference searchablePreference) {
@@ -250,7 +254,8 @@ public final class UiCrawler {
                         });
     }
 
-    private record CrawlerState(Class<? extends Fragment> fragmentClass, ActivityDescription activityDescription) {
+    private record CrawlerState(Class<? extends Fragment> fragmentClass,
+                                ActivityDescription activityDescription) {
     }
 
     private class CrawlerListener extends TreeBuilderListeners.EmptyTreeBuilderListener<SearchablePreferenceScreen, SearchablePreference> {

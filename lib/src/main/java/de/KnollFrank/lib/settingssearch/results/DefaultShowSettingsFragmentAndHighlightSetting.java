@@ -56,14 +56,10 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
 
     private static void highlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,
                                             final Setting setting) {
-        final String logicalKey = getLogicalKey(setting.getKey());
+        final String logicalKey = StructuredPreferenceKey.getLogicalKey(setting.getKey());
         fragmentOfPreferenceScreen.scrollToPreference(logicalKey);
         new PreferenceHighlighter().highlightSetting(fragmentOfPreferenceScreen, setting);
         showDialog(fragmentOfPreferenceScreen.findPreference(logicalKey), setting.hasPreferenceMatchWithinSearchableInfo());
-    }
-
-    private static String getLogicalKey(final String key) {
-        return StructuredPreferenceKey.getLogicalKey(key);
     }
 
     private static void highlightSetting(final Fragment settingsFragment,

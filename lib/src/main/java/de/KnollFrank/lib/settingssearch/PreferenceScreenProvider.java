@@ -28,13 +28,14 @@ public class PreferenceScreenProvider {
         final FragmentOfActivity<? extends Fragment> fragmentOfActivity = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
         return fragmentToPreferencesConverter
                 .getPreferences(fragmentOfActivity.fragment())
-                .map(preferencesOfFragment ->
-                             new PreferenceScreenOfHostOfActivity(
-                                     preferencesOfFragment.preferences(),
-                                     preferencesOfFragment.title(),
-                                     preferencesOfFragment.summary(),
-                                     fragmentOfActivity.fragment(),
-                                     fragmentClass.activityOfFragment()));
+                .map(
+                        preferencesOfFragment ->
+                                new PreferenceScreenOfHostOfActivity(
+                                        preferencesOfFragment.preferences(),
+                                        preferencesOfFragment.title(),
+                                        preferencesOfFragment.summary(),
+                                        fragmentOfActivity.fragment(),
+                                        fragmentClass.activityOfFragment()));
     }
 
     private Optional<FragmentOfActivity<? extends PreferenceFragmentCompat>> getPreferenceFragment(
