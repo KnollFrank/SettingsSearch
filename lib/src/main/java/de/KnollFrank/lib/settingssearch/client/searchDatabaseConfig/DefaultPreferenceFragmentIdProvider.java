@@ -7,10 +7,10 @@ import java.util.Optional;
 public class DefaultPreferenceFragmentIdProvider implements PreferenceFragmentIdProvider {
 
     @Override
-    public String getId(final Fragment preferenceFragment) {
-        final String className = preferenceFragment.getClass().getName();
+    public String getId(final Fragment fragment) {
+        final String className = fragment.getClass().getName();
         return Optional
-                .ofNullable(preferenceFragment.getArguments())
+                .ofNullable(fragment.getArguments())
                 .map(arguments -> className + " " + arguments)
                 .orElse(className);
     }

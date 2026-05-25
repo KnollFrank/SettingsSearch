@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class BundleConverter {
 
-    public static final Gson gson = new Gson();
+    private static final Gson gson = new Gson();
 
     private BundleConverter() {
     }

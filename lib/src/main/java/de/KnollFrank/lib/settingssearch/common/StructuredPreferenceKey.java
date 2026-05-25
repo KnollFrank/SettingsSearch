@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.common;
 
 import java.util.OptionalInt;
 
+// FK-TODO: refactor
 public class StructuredPreferenceKey {
 
     private static final String PREFIX = "graphical_item:::";

@@ -15,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
+// FK-TODO: Stelle die vorherige Version dieser Klasse wieder her, die war um Klassen besser.
 public class PreferenceScreenToSearchablePreferenceScreenConverter {
 
     private final PreferenceToSearchablePreferenceConverter preferenceToSearchablePreferenceConverter;
@@ -24,6 +25,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
     }
 
     public SearchablePreferenceScreenWithMap convertPreferenceScreen(
+            // FK-TODO: refactor by using PreferenceScreenOfHostOfActivity preferenceScreen for the following 5 parameters
             final List<Preference> preferences,
             final Fragment host,
             final ActivityDescription activityDescription,
@@ -39,7 +41,8 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
         return new SearchablePreferenceScreenWithMap(
                 new SearchablePreferenceScreen(
                         id,
-                        new FragmentClassOfActivity<Fragment>(
+                        // FK-TODO: use preferenceScreen.asPreferenceFragmentOfActivity().asFragmentClassOfActivity()
+                        new FragmentClassOfActivity<>(
                                 (Class<Fragment>) host.getClass(),
                                 activityDescription),
                         Strings.toString(title, null),

@@ -20,6 +20,7 @@ public class Fragments {
                 .getCurrentActivity()
                 .map(
                         activity ->
+                                // FK-TODO: refactor to using Optional
                                 activity instanceof final FragmentActivity fragmentActivity ?
                                         findEitherVisibleFragmentOrError(fragmentActivity) :
                                         Either.<Fragment, String>ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity. Fragments cannot be retrieved."))
@@ -27,7 +28,8 @@ public class Fragments {
     }
 
     private static Either<Fragment, String> findEitherVisibleFragmentOrError(final FragmentActivity fragmentActivity) {
-        return findVisibleFragment(fragmentActivity.getSupportFragmentManager())
+        return Fragments
+                .findVisibleFragment(fragmentActivity.getSupportFragmentManager())
                 .map(Either::<Fragment, String>ofLeft)
                 .orElseGet(() -> Either.ofRight("No visible Fragment found on Activity: " + fragmentActivity.getClass().getName() + "."));
     }

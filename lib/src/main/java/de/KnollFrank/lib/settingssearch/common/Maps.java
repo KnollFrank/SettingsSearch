@@ -23,6 +23,7 @@ public class Maps {
     }
 
     public static <K, V> Map<K, V> merge(final Collection<Map<K, V>> maps,
+                                         // FK-TODO: überdenke die Notwendigkeit einer mergeFunction, bisher war das unnötig. Welcher Fehler soll dadurch versteckt werden?
                                          final java.util.function.BinaryOperator<V> mergeFunction) {
         return Maps
                 .getEntryStream(maps)
@@ -39,6 +40,7 @@ public class Maps {
                 .getEntryStream(biMaps)
                 .collect(
                         HashBiMap::create,
+                        // FK-TODO: das war zuvor put() und nicht forcePut(). Welcher Fehler soll dadurch versteckt werden?
                         (bm, t) -> bm.forcePut(t.getKey(), t.getValue()),
                         BiMap::putAll);
     }

@@ -9,14 +9,13 @@ import de.KnollFrank.lib.settingssearch.graph.PreferencesOfFragment;
 
 public class TestFragmentToPreferencesConverter {
 
-    public static final FragmentToPreferencesConverter INSTANCE = fragment -> {
-        if (fragment instanceof final PreferenceFragmentCompat p) {
-            return Optional.of(
-                    new PreferencesOfFragment(
-                            de.KnollFrank.lib.settingssearch.common.Preferences.getImmediateChildren(p.getPreferenceScreen()),
-                            Optional.ofNullable(p.getPreferenceScreen().getTitle()).map(Object::toString),
-                            Optional.ofNullable(p.getPreferenceScreen().getSummary()).map(Object::toString)));
-        }
-        return Optional.empty();
-    };
+    public static final FragmentToPreferencesConverter INSTANCE =
+            fragment ->
+                    fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
+                            Optional.of(
+                                    new PreferencesOfFragment(
+                                            de.KnollFrank.lib.settingssearch.common.Preferences.getImmediateChildren(preferenceFragment.getPreferenceScreen()),
+                                            Optional.ofNullable(preferenceFragment.getPreferenceScreen().getTitle()).map(Object::toString),
+                                            Optional.ofNullable(preferenceFragment.getPreferenceScreen().getSummary()).map(Object::toString))) :
+                            Optional.empty();
 }

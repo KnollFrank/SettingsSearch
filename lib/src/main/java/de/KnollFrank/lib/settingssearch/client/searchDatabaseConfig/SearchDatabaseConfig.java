@@ -28,6 +28,7 @@ public class SearchDatabaseConfig<C> {
     public final SearchableInfoProvider searchableInfoProvider;
     public final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     public final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
+    // FK-TODO: rename to rootFragment
     public final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment;
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener;
@@ -68,8 +69,8 @@ public class SearchDatabaseConfig<C> {
         this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }
 
-    public static <C> SearchDatabaseConfigBuilder<C> builder(final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment,
+    public static <C> SearchDatabaseConfigBuilder<C> builder(final FragmentClassOfActivity<? extends Fragment> rootFragment,
                                                              final TreeProcessorFactory<C> treeProcessorFactory) {
-        return new SearchDatabaseConfigBuilder<>(rootPreferenceFragment, treeProcessorFactory);
+        return new SearchDatabaseConfigBuilder<>(rootFragment, treeProcessorFactory);
     }
 }

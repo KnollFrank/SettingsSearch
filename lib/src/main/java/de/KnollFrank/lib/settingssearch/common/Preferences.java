@@ -20,7 +20,8 @@ public class Preferences {
 
     public static Preference findPreferenceByKeyOrElseThrow(final List<Preference> preferences,
                                                             final String keyOfPreference) {
-        return findPreferenceByKey(preferences, keyOfPreference)
+        return Preferences
+                .findPreferenceByKey(preferences, keyOfPreference)
                 .orElseThrow(() -> new NoSuchElementException("can not find preference with key " + keyOfPreference + " within provided preferences."));
     }
 

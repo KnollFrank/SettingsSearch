@@ -6,6 +6,7 @@ import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
 public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSettingsFragmentAndHighlightSetting {
@@ -62,7 +63,7 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     }
 
     private static String getLogicalKey(final String key) {
-        return de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey.getLogicalKey(key);
+        return StructuredPreferenceKey.getLogicalKey(key);
     }
 
     private static void highlightSetting(final Fragment settingsFragment,

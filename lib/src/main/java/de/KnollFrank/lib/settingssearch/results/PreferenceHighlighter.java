@@ -19,6 +19,7 @@ import java.util.OptionalInt;
 
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.Attributes;
+import de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey;
 
 public class PreferenceHighlighter implements SettingHighlighter {
 
@@ -27,7 +28,7 @@ public class PreferenceHighlighter implements SettingHighlighter {
         final Duration duration = Duration.ofSeconds(1);
         final String key = setting.getKey();
 
-        if (de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey.isStructuredKey(key)) {
+        if (StructuredPreferenceKey.isStructuredKey(key)) {
             highlightGraphicalItem(settingsFragment, key, duration);
         } else if (settingsFragment instanceof PreferenceFragmentCompat) {
             highlightPreferenceOfPreferenceFragment(key, (PreferenceFragmentCompat) settingsFragment, duration);
@@ -35,7 +36,7 @@ public class PreferenceHighlighter implements SettingHighlighter {
     }
 
     private void highlightGraphicalItem(final Fragment fragment, final String key, final Duration duration) {
-        final java.util.OptionalInt index = de.KnollFrank.lib.settingssearch.common.StructuredPreferenceKey.getIndex(key);
+        final OptionalInt index = StructuredPreferenceKey.getIndex(key);
         if (index.isPresent()) {
             final RecyclerView recyclerView = findRecyclerView(fragment.getView());
             if (recyclerView != null) {

@@ -17,8 +17,8 @@ class UniqueIdCheckingPreferenceFragmentIdProvider implements PreferenceFragment
     }
 
     @Override
-    public String getId(final Fragment preferenceFragment) {
-        final String id = delegate.getId(preferenceFragment);
+    public String getId(final Fragment fragment) {
+        final String id = delegate.getId(fragment);
         assertUnique(id);
         return id;
     }

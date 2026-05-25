@@ -90,9 +90,12 @@ public class TreePathInstantiator {
     }
 
     private Preference getInstanceOfSearchablePreference(final Fragment hostOfPreference,
-                                                                final SearchablePreference searchablePreference) {
+                                                         final SearchablePreference searchablePreference) {
         return Preferences.findPreferenceByKeyOrElseThrow(
-                fragmentToPreferencesConverter.getPreferences(hostOfPreference).orElseThrow().preferences(),
+                fragmentToPreferencesConverter
+                        .getPreferences(hostOfPreference)
+                        .orElseThrow()
+                        .preferences(),
                 searchablePreference.getKey());
     }
 

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 public record ActivitySearchDatabaseConfigs(
+        // FK-TODO: muß ein Class<? extends Fragment> statt Class<? extends PreferenceFragmentCompat> akzeptieren
         Map<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>> rootPreferenceFragmentByActivity,
         Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
 }

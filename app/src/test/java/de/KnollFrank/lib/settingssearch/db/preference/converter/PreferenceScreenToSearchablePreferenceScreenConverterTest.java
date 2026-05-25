@@ -26,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
+import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -58,7 +59,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                 final PreferenceScreen screen = getPreferenceScreen(preferenceFragment, activity);
                 final PreferenceScreenOfHostOfActivity preferenceScreen =
                         new PreferenceScreenOfHostOfActivity(
-                                de.KnollFrank.lib.settingssearch.common.Preferences.getImmediateChildren(screen),
+                                Preferences.getImmediateChildren(screen),
                                 Optional.ofNullable(screen.getTitle()).map(Object::toString),
                                 Optional.ofNullable(screen.getSummary()).map(Object::toString),
                                 preferenceFragment,

@@ -42,8 +42,10 @@ import de.KnollFrank.lib.settingssearch.common.uicontroller.Fragments;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
+import de.KnollFrank.lib.settingssearch.graph.PreferencesOfFragment;
 import de.KnollFrank.lib.settingssearch.graph.UiCrawler;
 
 @RunWith(AndroidJUnit4.class)
@@ -112,7 +114,7 @@ public class GenerateDatabaseTest {
     }
 
     private static PreferenceScreenToSearchablePreferenceScreenConverter createConverter(final FragmentActivity activity,
-                                                                                          final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
+                                                                                         final SearchDatabaseConfig<Configuration> searchDatabaseConfig) {
         return new PreferenceScreenToSearchablePreferenceScreenConverter(
                 PreferenceToSearchablePreferenceConverterFactory.createPreferenceToSearchablePreferenceConverter(
                         searchDatabaseConfig,
@@ -139,7 +141,7 @@ public class GenerateDatabaseTest {
         }
 
         @Override
-        public void click(final de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference preference) {
+        public void click(final SearchablePreference preference) {
             final String id = preference.getId();
             try {
                 final String[] parts = id.split("-");
@@ -180,7 +182,7 @@ public class GenerateDatabaseTest {
         }
 
         @Override
-        public Optional<de.KnollFrank.lib.settingssearch.graph.PreferencesOfFragment> extractPreferences() {
+        public Optional<PreferencesOfFragment> extractPreferences() {
             return Fragments
                     .findEitherVisibleFragmentOnCurrentActivityOrError()
                     .join(

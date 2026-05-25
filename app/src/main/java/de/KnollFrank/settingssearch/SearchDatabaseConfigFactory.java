@@ -24,6 +24,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySear
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
+import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
@@ -113,6 +114,7 @@ public class SearchDatabaseConfigFactory {
                                         .<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>>builder()
                                         .put(SettingsActivity.class, SettingsFragment.class)
                                         .put(SettingsActivity2.class, SettingsFragment2.class)
+                                        // FK-TODO: remove casting after refactoring ActivitySearchDatabaseConfigs
                                         .put(SettingsActivity3.class, (Class<? extends PreferenceFragmentCompat>) (Class<?>) ItemFragment3.class)
                                         .build(),
                                 Set.of()))
@@ -137,12 +139,13 @@ public class SearchDatabaseConfigFactory {
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withFragmentToPreferencesConverter(
                         fragment -> {
-                            if (fragment instanceof final PreferenceFragmentCompat p) {
+                            if (fragment instanceof final PreferenceFragmentCompat preferenceFragment) {
                                 return Optional.of(
                                         new PreferencesOfFragment(
-                                                de.KnollFrank.lib.settingssearch.common.Preferences.getImmediateChildren(p.getPreferenceScreen()),
-                                                Optional.ofNullable(p.getPreferenceScreen().getTitle()).map(Object::toString),
-                                                Optional.ofNullable(p.getPreferenceScreen().getSummary()).map(Object::toString)));
+                                                // FK-TODO: warum getImmediateChildren() und nicht getChildrenRecursively?
+                                                Preferences.getImmediateChildren(preferenceFragment.getPreferenceScreen()),
+                                                Optional.ofNullable(preferenceFragment.getPreferenceScreen().getTitle()).map(Object::toString),
+                                                Optional.ofNullable(preferenceFragment.getPreferenceScreen().getSummary()).map(Object::toString)));
                             }
                             return Optional.empty();
                         })

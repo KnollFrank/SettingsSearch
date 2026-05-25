@@ -6,6 +6,8 @@ import androidx.preference.Preference;
 import com.google.common.collect.BiMap;
 import com.google.common.graph.ImmutableValueGraph;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -38,6 +40,7 @@ public final class UiCrawler {
 
     private final PreferenceScreenToSearchablePreferenceScreenConverter converter;
     private final UiNavigator uiNavigator;
+    // FK-TODO: remove isSubScreenPredicate?
     private final Predicate<SearchablePreference> isSubScreenPredicate;
     private final CrawlerListener crawlerListener = new CrawlerListener();
 
@@ -212,7 +215,9 @@ public final class UiCrawler {
         final Optional<PreferencesOfFragment> preferencesOfFragment = uiNavigator.extractPreferences();
         return converter
                 .convertPreferenceScreen(
-                        preferencesOfFragment.map(PreferencesOfFragment::preferences).orElse(List.of()),
+                        preferencesOfFragment
+                                .map(PreferencesOfFragment::preferences)
+                                .orElse(List.of()),
                         currentFragment,
                         getActivityDescription(currentFragment),
                         preferencesOfFragment.flatMap(PreferencesOfFragment::title),
@@ -250,7 +255,7 @@ public final class UiCrawler {
 
     private class CrawlerListener extends TreeBuilderListeners.EmptyTreeBuilderListener<SearchablePreferenceScreen, SearchablePreference> {
 
-        private final java.util.Deque<CrawlerState> ancestry = new java.util.ArrayDeque<>();
+        private final Deque<CrawlerState> ancestry = new ArrayDeque<>();
 
         @Override
         public void onStartBuildSubtree(final SearchablePreferenceScreen subtreeRoot, final boolean isRootOfTree) {

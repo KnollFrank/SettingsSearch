@@ -28,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.graph.SearchableTreeBuilder1Test.Fragment3ConnectedToFragment4;
 import de.KnollFrank.lib.settingssearch.graph.SearchableTreeBuilder1Test.Fragment4;
+import de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -39,7 +40,7 @@ public class TreePathInstantiatorTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity), de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
+                final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity), TestFragmentToPreferencesConverter.INSTANCE);
                 final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraphSingleNode =
                         createSomePojoGraph(
                                 fragmentActivity,
@@ -63,7 +64,7 @@ public class TreePathInstantiatorTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity), de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
+                final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity), TestFragmentToPreferencesConverter.INSTANCE);
                 final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> graphTwoNodes = createSomePojoGraph(fragmentActivity, Fragment3ConnectedToFragment4.class);
                 final SearchablePreferenceScreen thirdScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "third screen");
                 final SearchablePreferenceScreen fourthScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "fourth screen");

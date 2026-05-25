@@ -15,6 +15,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -25,12 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.graph.PreferencesOfFragment;
 import de.KnollFrank.lib.settingssearch.graph.UiCrawler;
 
 public class GraphicalPreferenceExtractor {
 
+    // FK-TODO: refactor
     public static Optional<PreferencesOfFragment> extract(final Context context, final Fragment fragment) {
         final List<Preference> preferences = new ArrayList<>();
 
@@ -40,14 +43,20 @@ public class GraphicalPreferenceExtractor {
             return Optional.empty();
         }
 
-        final Matcher<View> recyclerViewMatcher = allOf(isAssignableFrom(RecyclerView.class), isDisplayed());
-        final int itemCount = recyclerView.getAdapter() != null ? recyclerView.getAdapter().getItemCount() : 0;
-
+        final Matcher<View> recyclerViewMatcher =
+                allOf(
+                        isAssignableFrom(RecyclerView.class),
+                        isDisplayed());
+        final int itemCount =
+                recyclerView.getAdapter() != null ?
+                        recyclerView.getAdapter().getItemCount() :
+                        0;
         for (int i = 0; i < itemCount; i++) {
             final int position = i;
 
             Espresso.onView(recyclerViewMatcher).perform(RecyclerViewActions.scrollToPosition(position));
 
+            // FK-TODO: use AtomicReferences for capturedTitle, capturedSummary and isCheckable analogous to GenerateDatabaseTest.generateDatabaseViaUiCrawler()
             final String[] capturedTitle = {null};
             final String[] capturedSummary = {null};
             final boolean[] isCheckable = {false};
@@ -68,7 +77,7 @@ public class GraphicalPreferenceExtractor {
                                 }
 
                                 @Override
-                                public void perform(final androidx.test.espresso.UiController uiController, final View view) {
+                                public void perform(final UiController uiController, final View view) {
                                     final RecyclerView rv = (RecyclerView) view;
                                     final RecyclerView.ViewHolder viewHolder = rv.findViewHolderForAdapterPosition(position);
                                     if (viewHolder != null) {
@@ -98,23 +107,27 @@ public class GraphicalPreferenceExtractor {
                     // For purely virtual items, ensure a unique, non-null key
                     discoveredPreference.setKey("graphical_item_" + capturedTitle[0] + "_" + i);
                 }
-
                 preferences.add(discoveredPreference);
             }
         }
 
-        return Optional.of(new PreferencesOfFragment(preferences, Optional.empty(), Optional.empty()));
+        return Optional.of(
+                new PreferencesOfFragment(
+                        preferences,
+                        Optional.empty(),
+                        Optional.empty()));
     }
 
     private static Preference findMatchingPreference(final Fragment fragment, final String title, final String summary) {
         if (!(fragment instanceof final PreferenceFragmentCompat p)) {
+            // FK-TODO: return Optional<Preference>
             return null;
         }
         final PreferenceScreen screen = p.getPreferenceScreen();
         if (screen == null) {
             return null;
         }
-        final List<Preference> all = de.KnollFrank.lib.settingssearch.common.Preferences.getChildrenRecursively(screen);
+        final List<Preference> all = Preferences.getChildrenRecursively(screen);
         for (final Preference pRef : all) {
             final String pTitle = Strings.toString(Optional.ofNullable(pRef.getTitle())).orElse("");
             final String pSummary = Strings.toString(Optional.ofNullable(pRef.getSummary())).orElse("");
@@ -130,6 +143,7 @@ public class GraphicalPreferenceExtractor {
     }
 
     private static RecyclerView findVisibleRecyclerView() {
+        // FK-TODO: use AtomicReferences for result analogous to GenerateDatabaseTest.generateDatabaseViaUiCrawler()
         final RecyclerView[] result = {null};
         try {
             Espresso
@@ -148,38 +162,38 @@ public class GraphicalPreferenceExtractor {
                                 }
 
                                 @Override
-                                public void perform(final androidx.test.espresso.UiController uiController, final View view) {
+                                public void perform(final UiController uiController, final View view) {
                                     result[0] = findRecyclerViewRecursively(view);
                                 }
                             });
         } catch (final Exception e) {
+            // FK-TODO: return Optional<RecyclerView>
             return null;
         }
         return result[0];
     }
 
     private static RecyclerView findRecyclerViewRecursively(final View view) {
-        if (view instanceof RecyclerView && view.getVisibility() == View.VISIBLE) {
-            return (RecyclerView) view;
-        } else if (view instanceof ViewGroup) {
-            final ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                final RecyclerView found = findRecyclerViewRecursively(group.getChildAt(i));
+        if (view instanceof final RecyclerView recyclerView && view.getVisibility() == View.VISIBLE) {
+            return recyclerView;
+        } else if (view instanceof final ViewGroup viewGroup) {
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                final RecyclerView found = findRecyclerViewRecursively(viewGroup.getChildAt(i));
                 if (found != null) {
                     return found;
                 }
             }
         }
+        // FK-TODO: return Optional<RecyclerView>
         return null;
     }
 
     private static boolean containsCheckable(final View view) {
         if (view instanceof android.widget.Checkable) {
             return true;
-        } else if (view instanceof ViewGroup) {
-            final ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                if (containsCheckable(group.getChildAt(i))) {
+        } else if (view instanceof final ViewGroup viewGroup) {
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (containsCheckable(viewGroup.getChildAt(i))) {
                     return true;
                 }
             }
@@ -222,12 +236,11 @@ public class GraphicalPreferenceExtractor {
 
     private static List<TextView> findTextViews(final View view) {
         final List<TextView> result = new ArrayList<>();
-        if (view instanceof TextView) {
-            result.add((TextView) view);
-        } else if (view instanceof ViewGroup) {
-            final ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                result.addAll(findTextViews(group.getChildAt(i)));
+        if (view instanceof final TextView textView) {
+            result.add(textView);
+        } else if (view instanceof final ViewGroup viewGroup) {
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                result.addAll(findTextViews(viewGroup.getChildAt(i)));
             }
         }
         return result;

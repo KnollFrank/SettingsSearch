@@ -16,6 +16,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PojoTreeTestFactory {
@@ -62,7 +63,7 @@ public class PojoTreeTestFactory {
                         addEdgeToTreePredicate,
                         TreeBuilderListeners.emptyTreeBuilderListener(),
                         context,
-                        de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE)
+                        TestFragmentToPreferencesConverter.INSTANCE)
                 .buildTreeWithRoot(root);
     }
 
@@ -70,6 +71,6 @@ public class PojoTreeTestFactory {
         return new PreferenceScreenProvider(
                 instantiateAndInitializeFragment,
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
-                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
+                TestFragmentToPreferencesConverter.INSTANCE);
     }
 }

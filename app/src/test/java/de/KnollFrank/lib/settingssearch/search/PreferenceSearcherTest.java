@@ -46,6 +46,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
@@ -87,6 +88,7 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
+import de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
@@ -771,7 +773,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new Fragments(
                         new FragmentFactoryAndInitializerRegistry(fragmentFactoryAndInitializer),
                         fragmentActivity);
-        final de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter fragmentToPreferencesConverter = de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE;
+        final FragmentToPreferencesConverter fragmentToPreferencesConverter = TestFragmentToPreferencesConverter.INSTANCE;
         final PreferenceScreenProvider preferenceScreenProvider =
                 new PreferenceScreenProvider(
                         instantiateAndInitializeFragment,

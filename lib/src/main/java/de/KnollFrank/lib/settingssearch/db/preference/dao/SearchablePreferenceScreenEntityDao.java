@@ -61,6 +61,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
     public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
         return Maps
                 .get(getAllPreferencesBySearchablePreferenceScreen(), screen)
+                // FK-TODO: verwende wie zuvor besser orElseThrow(). Welcher Fehler soll hier versteckt werden?
                 .orElse(Set.of());
     }
 

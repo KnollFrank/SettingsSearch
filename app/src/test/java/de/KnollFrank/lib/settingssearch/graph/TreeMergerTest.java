@@ -48,6 +48,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -179,7 +180,7 @@ public class TreeMergerTest {
                         .instantiate(pojoTree.getPathFromRootNodeToTarget(rootOfPartialPojoTree))
                         .endNode(),
                 instantiateAndInitializeFragment,
-                new AddEdgeToTreePredicate<PreferenceScreenOfHostOfActivity, Preference>() {
+                new AddEdgeToTreePredicate<>() {
 
                     @Override
                     public boolean shallAddEdgeToTree(final Edge<PreferenceScreenOfHostOfActivity, Preference> edge) {
@@ -194,7 +195,7 @@ public class TreeMergerTest {
         return new PreferenceScreenProvider(
                 instantiateAndInitializeFragment,
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
-                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
+                TestFragmentToPreferencesConverter.INSTANCE);
     }
 
     private static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformToPojoTree(
@@ -214,7 +215,7 @@ public class TreeMergerTest {
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()))),
                 new DefaultPreferenceFragmentIdProvider(),
-                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
+                TestFragmentToPreferencesConverter.INSTANCE);
     }
 
     public static class RootFragmentConnectedToFragmentWithPreferenceCategory extends PreferenceFragmentCompat {

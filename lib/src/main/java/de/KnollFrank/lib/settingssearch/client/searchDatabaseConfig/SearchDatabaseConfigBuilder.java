@@ -29,6 +29,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchDatabaseConfigBuilder<C> {
 
+    // FK-TODO: rename to rootFragment
     private final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment;
     private final TreeProcessorFactory<C> treeProcessorFactory;
     private FragmentFactory fragmentFactory = FragmentFactories.createWrappedDefaultFragmentFactory();

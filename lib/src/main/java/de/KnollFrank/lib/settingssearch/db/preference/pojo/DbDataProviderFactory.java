@@ -68,6 +68,7 @@ public class DbDataProviderFactory {
             public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
                 return Maps
                         .get(dbDataProviderData.allPreferencesBySearchablePreferenceScreen(), screen)
+                        // FK-TODO: verwende wieder orElseThrow(), dann erscheint auch der Fehler, der hier wohl versteckt werden soll.
                         .orElse(Set.of());
             }
 
@@ -75,6 +76,7 @@ public class DbDataProviderFactory {
             public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.hostByPreference(), preference)
+                        // FK-TODO: verwende wieder orElseThrow(), dann erscheint auch der Fehler, der hier wohl versteckt werden soll.
                         .orElse(null);
             }
         };
@@ -87,6 +89,7 @@ public class DbDataProviderFactory {
             public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.childrenByPreference(), preference)
+                        // FK-TODO: verwende wieder orElseThrow(), dann erscheint auch der Fehler, der hier wohl versteckt werden soll.
                         .orElse(Set.of());
             }
 
@@ -94,6 +97,7 @@ public class DbDataProviderFactory {
             public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.predecessorByPreference(), preference)
+                        // FK-TODO: verwende wieder orElseThrow(), dann erscheint auch der Fehler, der hier wohl versteckt werden soll.
                         .orElse(Optional.empty());
             }
 
@@ -101,6 +105,7 @@ public class DbDataProviderFactory {
             public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
                 return Maps
                         .get(dbDataProviderData.hostByPreference(), preference)
+                        // FK-TODO: verwende wieder orElseThrow(), dann erscheint auch der Fehler, der hier wohl versteckt werden soll.
                         .orElse(null);
             }
         };

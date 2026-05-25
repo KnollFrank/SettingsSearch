@@ -33,6 +33,7 @@ public class PersistableBundleEquality {
         return true;
     }
 
+    // FK-TODO: refactor
     public static int hashCode(@Nullable final PersistableBundle bundle) {
         if (bundle == null) {
             return 0;

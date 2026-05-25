@@ -47,6 +47,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
+import de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -89,11 +90,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
-                                    public String getId(final Fragment preferenceFragment) {
-                                        if (PreferenceFragmentWithSinglePreference.class.equals(preferenceFragment.getClass())) {
+                                    public String getId(final Fragment fragment) {
+                                        if (PreferenceFragmentWithSinglePreference.class.equals(fragment.getClass())) {
                                             return twoNodeScreen2Id;
                                         }
-                                        if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
+                                        if (PreferenceFragmentTemplate.class.equals(fragment.getClass())) {
                                             return twoNodeScreen1Id;
                                         }
                                         throw new IllegalArgumentException();
@@ -136,7 +137,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                         new PreferenceFragmentIdProvider() {
 
                             @Override
-                            public String getId(final Fragment preferenceFragment) {
+                            public String getId(final Fragment fragment) {
                                 return "non unique id";
                             }
                         };
@@ -171,11 +172,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
-                                    public String getId(final Fragment preferenceFragment) {
-                                        if (PreferenceFragmentWithSinglePreference.class.equals(preferenceFragment.getClass())) {
+                                    public String getId(final Fragment fragment) {
+                                        if (PreferenceFragmentWithSinglePreference.class.equals(fragment.getClass())) {
                                             return "graph-screen2";
                                         }
-                                        if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
+                                        if (PreferenceFragmentTemplate.class.equals(fragment.getClass())) {
                                             return "graph-screen1";
                                         }
                                         throw new IllegalArgumentException();
@@ -315,6 +316,6 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()))),
                 preferenceFragmentIdProvider,
-                de.KnollFrank.lib.settingssearch.test.TestFragmentToPreferencesConverter.INSTANCE);
+                TestFragmentToPreferencesConverter.INSTANCE);
     }
 }

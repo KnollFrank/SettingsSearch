@@ -19,6 +19,7 @@ public class Strings {
         return charSequence.map(CharSequence::toString);
     }
 
+    // FK-TODO: remove dummy and rename method if necessary
     public static Optional<String> toString(final Optional<String> string, final Void dummy) {
         return string;
     }

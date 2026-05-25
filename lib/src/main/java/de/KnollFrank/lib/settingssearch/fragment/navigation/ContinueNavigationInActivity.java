@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 
+// FK-TODO: remove class
 class ContinueNavigationInActivity {
 
     private final Context context;
