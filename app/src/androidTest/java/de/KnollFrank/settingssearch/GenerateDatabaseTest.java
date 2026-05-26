@@ -7,6 +7,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -89,7 +90,8 @@ public class GenerateDatabaseTest {
                 new UiCrawler(
                         createConverter(activity, searchDatabaseConfig),
                         new EspressoUiNavigator(activity),
-                        searchablePreference -> false);
+                        searchablePreference -> false,
+                        () -> onView(isRoot()).check(matches(isDisplayed())));
 
         System.out.println("Starting UI Crawl...");
         final var tree = crawler.crawl();

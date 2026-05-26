@@ -42,6 +42,7 @@ public final class UiCrawler {
     private final UiNavigator uiNavigator;
     // FK-TODO: remove isSubScreenPredicate?
     private final Predicate<SearchablePreference> isSubScreenPredicate;
+    private final Runnable navigateToInitialPreferenceScreen;
     private final TreeBuilderListeners.EmptyTreeBuilderListener<SearchablePreferenceScreen, SearchablePreference> crawlerListener =
             new TreeBuilderListeners.EmptyTreeBuilderListener<>() {
 
@@ -55,19 +56,32 @@ public final class UiCrawler {
 
     public UiCrawler(final PreferenceScreenToSearchablePreferenceScreenConverter converter,
                      final UiNavigator uiNavigator,
-                     final Predicate<SearchablePreference> isSubScreenPredicate) {
+                     final Predicate<SearchablePreference> isSubScreenPredicate,
+                     final Runnable navigateToInitialPreferenceScreen) {
         this.converter = converter;
         this.uiNavigator = uiNavigator;
         this.isSubScreenPredicate = isSubScreenPredicate;
+        this.navigateToInitialPreferenceScreen = navigateToInitialPreferenceScreen;
     }
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> crawl() {
+        navigateToInitialPreferenceScreen();
         final TreeBuilder<SearchablePreferenceScreen, SearchablePreference> treeBuilder =
                 new TreeBuilder<>(
                         crawlerListener,
                         this::createEdgeSuppliersHavingSource);
         return treeBuilder.buildTreeWithRoot(getRootSearchablePreferenceScreen());
+    }
+
+    private void navigateToInitialPreferenceScreen() {
+        navigateToInitialPreferenceScreen.run();
+        try {
+            uiNavigator.waitUntilIdle();
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
     }
 
     private List<EdgeSupplier<SearchablePreferenceScreen, SearchablePreference>> createEdgeSuppliersHavingSource(final SearchablePreferenceScreen screen) {
