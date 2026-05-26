@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,8 +8,6 @@ import androidx.preference.Preference;
 import com.google.common.collect.BiMap;
 import com.google.common.graph.ImmutableValueGraph;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -45,7 +42,16 @@ public final class UiCrawler {
     private final UiNavigator uiNavigator;
     // FK-TODO: remove isSubScreenPredicate?
     private final Predicate<SearchablePreference> isSubScreenPredicate;
-    private final CrawlerListener crawlerListener = new CrawlerListener();
+    private final TreeBuilderListeners.EmptyTreeBuilderListener<SearchablePreferenceScreen, SearchablePreference> crawlerListener =
+            new TreeBuilderListeners.EmptyTreeBuilderListener<>() {
+
+                @Override
+                public void onFinishBuildSubtree(final SearchablePreferenceScreen subtreeRoot, final boolean isRootOfTree) {
+                    if (!isRootOfTree) {
+                        goBackAndWaitUntilIdle();
+                    }
+                }
+            };
 
     public UiCrawler(final PreferenceScreenToSearchablePreferenceScreenConverter converter,
                      final UiNavigator uiNavigator,
@@ -96,9 +102,6 @@ public final class UiCrawler {
                 .getPreference(searchablePreference, screen, currentFragment)
                 .flatMap(
                         preference -> {
-                            if (isAlreadyInPath(preference)) {
-                                return Optional.empty();
-                            }
                             clickAndWaitUntilIdle(searchablePreference);
                             return Fragments
                                     .findEitherVisibleFragmentOnCurrentActivityOrError()
@@ -108,11 +111,6 @@ public final class UiCrawler {
                                                     return Optional.empty();
                                                 }
                                                 final ActivityDescription targetActivity = getActivityDescription(targetFragment);
-                                                final CrawlerState targetState = new CrawlerState(targetFragment.getClass(), targetActivity);
-                                                if (crawlerListener.isStateInPath(targetState)) {
-                                                    goBackAndWaitUntilIdle();
-                                                    return Optional.empty();
-                                                }
 
                                                 final Optional<PreferencesOfFragment> childPreferencesOfFragment = uiNavigator.extractPreferences();
                                                 if (childPreferencesOfFragment.isEmpty() || childPreferencesOfFragment.get().preferences().isEmpty()) {
@@ -141,27 +139,6 @@ public final class UiCrawler {
                     clearDiscoveryDummy(searchablePreference);
                     return Optional.empty();
                 });
-    }
-
-    // FK-TODO: remove isAlreadyInPath(), CrawlerState, CrawlerListener, ... because cycle detection is already implemented in TreeBuilder?
-    private boolean isAlreadyInPath(final Preference preference) {
-        final String fragmentClassName = preference.getFragment();
-        if (fragmentClassName != null) {
-            try {
-                final Class<? extends Fragment> fragmentClass = (Class<? extends Fragment>) Class.forName(fragmentClassName);
-                final ActivityDescription activityDescription = getActivityDescriptionFromPreference(preference);
-                return crawlerListener.isStateInPath(new CrawlerState(fragmentClass, activityDescription));
-            } catch (final Exception ignored) {
-            }
-        }
-        return false;
-    }
-
-    private static ActivityDescription getActivityDescriptionFromPreference(final Preference preference) {
-        final Activity activity = (Activity) preference.getContext();
-        return new ActivityDescription(
-                activity.getClass(),
-                BundleConverter.toPersistableBundle(preference.getExtras()));
     }
 
     private static void updateSearchablePreferenceWithDiscovery(final SearchablePreference searchablePreference, final Fragment targetFragment) {
@@ -252,33 +229,6 @@ public final class UiCrawler {
                         errorMessage -> {
                             throw new IllegalStateException(errorMessage);
                         });
-    }
-
-    private record CrawlerState(Class<? extends Fragment> fragmentClass,
-                                ActivityDescription activityDescription) {
-    }
-
-    private class CrawlerListener extends TreeBuilderListeners.EmptyTreeBuilderListener<SearchablePreferenceScreen, SearchablePreference> {
-
-        private final Deque<CrawlerState> ancestry = new ArrayDeque<>();
-
-        @Override
-        public void onStartBuildSubtree(final SearchablePreferenceScreen subtreeRoot, final boolean isRootOfTree) {
-            ancestry.push(new CrawlerState((Class<? extends Fragment>) subtreeRoot.host().fragment(), subtreeRoot.host().activityOfFragment()));
-        }
-
-        @Override
-        public void onFinishBuildSubtree(final SearchablePreferenceScreen subtreeRoot, final boolean isRootOfTree) {
-            ancestry.pop();
-            if (isRootOfTree) {
-                return;
-            }
-            goBackAndWaitUntilIdle();
-        }
-
-        public boolean isStateInPath(final CrawlerState state) {
-            return ancestry.contains(state);
-        }
     }
 
     private static boolean isLikelySubScreen(final SearchablePreference searchablePreference) {
