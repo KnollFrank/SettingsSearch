@@ -97,7 +97,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                                 PreferenceToSearchablePreferenceConverterFactory.createPreferenceToSearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         preferenceDialogs)),
-                        searchDatabaseConfig.preferenceFragmentIdProvider,
+                        searchDatabaseConfig.fragmentIdProvider,
                         searchDatabaseConfig.fragmentToPreferencesConverter),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         preferenceScreenProvider,

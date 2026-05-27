@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -87,7 +87,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 addLocaleToId(locale, twoNodeScreen2Id));
                 final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
                         createGraphToPojoGraphTransformer(
-                                new PreferenceFragmentIdProvider() {
+                                new FragmentIdProvider() {
 
                                     @Override
                                     public String getId(final Fragment fragment) {
@@ -133,8 +133,8 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final PreferenceFragmentIdProvider preferenceFragmentIdProviderCreatingNonUniqueId =
-                        new PreferenceFragmentIdProvider() {
+                final FragmentIdProvider fragmentIdProviderCreatingNonUniqueId =
+                        new FragmentIdProvider() {
 
                             @Override
                             public String getId(final Fragment fragment) {
@@ -142,7 +142,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                             }
                         };
                 final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
-                        createGraphToPojoGraphTransformer(preferenceFragmentIdProviderCreatingNonUniqueId);
+                        createGraphToPojoGraphTransformer(fragmentIdProviderCreatingNonUniqueId);
 
                 // When
                 treeToPojoTreeTransformer.transformTreeToPojoTree(
@@ -169,7 +169,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 activity);
                 final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
                         createGraphToPojoGraphTransformer(
-                                new PreferenceFragmentIdProvider() {
+                                new FragmentIdProvider() {
 
                                     @Override
                                     public String getId(final Fragment fragment) {
@@ -307,7 +307,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                 activity);
     }
 
-    private static TreeToPojoTreeTransformer createGraphToPojoGraphTransformer(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+    private static TreeToPojoTreeTransformer createGraphToPojoGraphTransformer(final FragmentIdProvider fragmentIdProvider) {
         return new TreeToPojoTreeTransformer(
                 new PreferenceScreenToSearchablePreferenceScreenConverter(
                         new PreferenceToSearchablePreferenceConverter(
@@ -315,7 +315,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()))),
-                preferenceFragmentIdProvider,
+                fragmentIdProvider,
                 TestFragmentToPreferencesConverter.INSTANCE);
     }
 }

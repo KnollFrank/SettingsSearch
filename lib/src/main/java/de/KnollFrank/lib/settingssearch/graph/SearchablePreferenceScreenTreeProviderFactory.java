@@ -62,7 +62,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                                 PreferenceToSearchablePreferenceConverterFactory.createPreferenceToSearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId, searchDatabaseConfig.preferenceSearchablePredicate))),
-                        searchDatabaseConfig.preferenceFragmentIdProvider,
+                        searchDatabaseConfig.fragmentIdProvider,
                         searchDatabaseConfig.fragmentToPreferencesConverter),
                 PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                         new PreferenceScreenProvider(

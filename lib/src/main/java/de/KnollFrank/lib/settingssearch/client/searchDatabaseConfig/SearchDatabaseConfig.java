@@ -35,7 +35,7 @@ public class SearchDatabaseConfig<C> {
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final PrincipalAndProxyProvider principalAndProxyProvider;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
-    public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
+    public final FragmentIdProvider fragmentIdProvider;
     public final TreeProcessorFactory<C> treeProcessorFactory;
     public final FragmentToPreferencesConverter fragmentToPreferencesConverter;
 
@@ -50,7 +50,7 @@ public class SearchDatabaseConfig<C> {
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final PrincipalAndProxyProvider principalAndProxyProvider,
                          final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-                         final PreferenceFragmentIdProvider preferenceFragmentIdProvider,
+                         final FragmentIdProvider fragmentIdProvider,
                          final TreeProcessorFactory<C> treeProcessorFactory,
                          final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         this.fragmentFactory = fragmentFactory;
@@ -64,7 +64,7 @@ public class SearchDatabaseConfig<C> {
         this.preferenceSearchablePredicate = new PreferenceVisibleAndSearchablePredicate(preferenceSearchablePredicate);
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.activityInitializerByActivity = activityInitializerByActivity;
-        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
+        this.fragmentIdProvider = fragmentIdProvider;
         this.treeProcessorFactory = treeProcessorFactory;
         this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }

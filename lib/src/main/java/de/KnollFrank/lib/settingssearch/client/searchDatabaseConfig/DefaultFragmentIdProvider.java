@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
 
-public class DefaultPreferenceFragmentIdProvider implements PreferenceFragmentIdProvider {
+public class DefaultFragmentIdProvider implements FragmentIdProvider {
 
     @Override
     public String getId(final Fragment fragment) {

@@ -5,14 +5,14 @@ import androidx.fragment.app.Fragment;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentIdProvider;
 
-class UniqueIdCheckingPreferenceFragmentIdProvider implements PreferenceFragmentIdProvider {
+class UniqueIdCheckingFragmentIdProvider implements FragmentIdProvider {
 
     private final Set<String> ids = new HashSet<>();
-    private final PreferenceFragmentIdProvider delegate;
+    private final FragmentIdProvider delegate;
 
-    public UniqueIdCheckingPreferenceFragmentIdProvider(final PreferenceFragmentIdProvider delegate) {
+    public UniqueIdCheckingFragmentIdProvider(final FragmentIdProvider delegate) {
         this.delegate = delegate;
     }
 

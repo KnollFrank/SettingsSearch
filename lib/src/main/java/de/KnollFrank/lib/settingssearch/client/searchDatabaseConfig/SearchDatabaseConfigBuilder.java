@@ -40,7 +40,7 @@ public class SearchDatabaseConfigBuilder<C> {
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
-    private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
+    private FragmentIdProvider fragmentIdProvider = new DefaultFragmentIdProvider();
     private FragmentToPreferencesConverter fragmentToPreferencesConverter = fragment -> Optional.empty();
 
     SearchDatabaseConfigBuilder(final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment,
@@ -105,8 +105,8 @@ public class SearchDatabaseConfigBuilder<C> {
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder<C> withPreferenceFragmentIdProvider(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
-        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
+    public SearchDatabaseConfigBuilder<C> withFragmentIdProvider(final FragmentIdProvider fragmentIdProvider) {
+        this.fragmentIdProvider = fragmentIdProvider;
         return this;
     }
 
@@ -125,7 +125,7 @@ public class SearchDatabaseConfigBuilder<C> {
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
                 activityInitializerByActivity,
-                preferenceFragmentIdProvider,
+                fragmentIdProvider,
                 treeProcessorFactory,
                 fragmentToPreferencesConverter);
     }

@@ -4,15 +4,15 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 
-public class PreferenceFragmentLocalizedIdProvider implements PreferenceFragmentIdProvider {
+public class FragmentLocalizedIdProvider implements FragmentIdProvider {
 
     private final Locale locale;
-    private final PreferenceFragmentIdProvider delegate;
+    private final FragmentIdProvider delegate;
 
-    public PreferenceFragmentLocalizedIdProvider(final Locale locale, final PreferenceFragmentIdProvider delegate) {
+    public FragmentLocalizedIdProvider(final Locale locale, final FragmentIdProvider delegate) {
         this.locale = locale;
         this.delegate = delegate;
     }

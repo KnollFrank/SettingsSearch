@@ -45,9 +45,9 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -729,7 +729,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         treeRepository,
                                         treeBuilderListener,
                                         locale,
-                                        new DefaultPreferenceFragmentIdProvider());
+                                        new DefaultFragmentIdProvider());
                         final PreferenceSearcher<Configuration> preferenceSearcher =
                                 new PreferenceSearcher<>(
                                         mergedPreferenceScreen.treeRepository(),
@@ -761,7 +761,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
             final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> treeBuilderListener,
             final Locale locale,
-            final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+            final FragmentIdProvider fragmentIdProvider) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
@@ -793,7 +793,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                                                         TestActivity.FRAGMENT_CONTAINER_VIEW,
                                                                         preferenceSearchablePredicate),
                                                                 preferenceDialogAndSearchableInfoProvider)))),
-                                preferenceFragmentIdProvider,
+                                fragmentIdProvider,
                                 fragmentToPreferencesConverter),
                         PreferenceScreenTreeBuilderFactory.createPreferenceScreenTreeBuilder(
                                 preferenceScreenProvider,

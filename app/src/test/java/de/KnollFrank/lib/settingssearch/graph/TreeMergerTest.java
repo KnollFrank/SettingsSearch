@@ -36,7 +36,7 @@ import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -214,7 +214,7 @@ public class TreeMergerTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()))),
-                new DefaultPreferenceFragmentIdProvider(),
+                new DefaultFragmentIdProvider(),
                 TestFragmentToPreferencesConverter.INSTANCE);
     }
 

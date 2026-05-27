@@ -8,8 +8,8 @@ import com.google.common.graph.ImmutableValueGraph;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentToPreferencesConverter;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformerAlgorithm;
@@ -20,14 +20,14 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 public class TreeToPojoTreeTransformer {
 
     private final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter;
-    private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
+    private final FragmentIdProvider fragmentIdProvider;
     private final FragmentToPreferencesConverter fragmentToPreferencesConverter;
 
     public TreeToPojoTreeTransformer(final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter,
-                                     final PreferenceFragmentIdProvider preferenceFragmentIdProvider,
+                                     final FragmentIdProvider fragmentIdProvider,
                                      final FragmentToPreferencesConverter fragmentToPreferencesConverter) {
         this.preferenceScreenToSearchablePreferenceScreenConverter = preferenceScreenToSearchablePreferenceScreenConverter;
-        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
+        this.fragmentIdProvider = fragmentIdProvider;
         this.fragmentToPreferencesConverter = fragmentToPreferencesConverter;
     }
 
@@ -42,7 +42,7 @@ public class TreeToPojoTreeTransformer {
 
     private TreeTransformer<PreferenceScreenOfHostOfActivity, Preference, SearchablePreferenceScreenWithMap, SearchablePreference> createTreeTransformer(
             final Locale locale) {
-        final PreferenceFragmentIdProvider preferenceFragmentIdProvider = createPreferenceFragmentUniqueLocalizedIdProvider(locale);
+        final FragmentIdProvider fragmentIdProvider = createPreferenceFragmentUniqueLocalizedIdProvider(locale);
         return new TreeTransformer<>() {
 
             @Override
@@ -75,7 +75,7 @@ public class TreeToPojoTreeTransformer {
                         preferenceFragmentUniqueIdProvider.getId(host));
             }
 
-            private final PreferenceFragmentIdProvider preferenceFragmentUniqueIdProvider = preferenceFragmentIdProvider;
+            private final FragmentIdProvider preferenceFragmentUniqueIdProvider = fragmentIdProvider;
 
             private static SearchablePreference getTransformedPreference(
                     final Preference preference,
@@ -88,9 +88,9 @@ public class TreeToPojoTreeTransformer {
         };
     }
 
-    private PreferenceFragmentLocalizedIdProvider createPreferenceFragmentUniqueLocalizedIdProvider(final Locale locale) {
-        return new PreferenceFragmentLocalizedIdProvider(
+    private FragmentLocalizedIdProvider createPreferenceFragmentUniqueLocalizedIdProvider(final Locale locale) {
+        return new FragmentLocalizedIdProvider(
                 locale,
-                new UniqueIdCheckingPreferenceFragmentIdProvider(preferenceFragmentIdProvider));
+                new UniqueIdCheckingFragmentIdProvider(fragmentIdProvider));
     }
 }
