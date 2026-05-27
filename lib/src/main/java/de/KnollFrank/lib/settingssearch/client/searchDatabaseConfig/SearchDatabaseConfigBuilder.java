@@ -29,8 +29,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchDatabaseConfigBuilder<C> {
 
-    // FK-TODO: rename to rootFragment
-    private final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment;
+    private final FragmentClassOfActivity<? extends Fragment> rootFragment;
     private final TreeProcessorFactory<C> treeProcessorFactory;
     private FragmentFactory fragmentFactory = FragmentFactories.createWrappedDefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
@@ -43,9 +42,9 @@ public class SearchDatabaseConfigBuilder<C> {
     private FragmentIdProvider fragmentIdProvider = new DefaultFragmentIdProvider();
     private FragmentToPreferencesConverter fragmentToPreferencesConverter = fragment -> Optional.empty();
 
-    SearchDatabaseConfigBuilder(final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment,
+    SearchDatabaseConfigBuilder(final FragmentClassOfActivity<? extends Fragment> rootFragment,
                                 final TreeProcessorFactory<C> treeProcessorFactory) {
-        this.rootPreferenceFragment = rootPreferenceFragment;
+        this.rootFragment = rootFragment;
         this.treeProcessorFactory = treeProcessorFactory;
     }
 
@@ -119,7 +118,7 @@ public class SearchDatabaseConfigBuilder<C> {
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnectedToPreferenceProvider,
-                rootPreferenceFragment,
+                rootFragment,
                 createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs.rootPreferenceFragmentByActivity()),
                 preferenceScreenTreeBuilderListener,
                 preferenceSearchablePredicate,
