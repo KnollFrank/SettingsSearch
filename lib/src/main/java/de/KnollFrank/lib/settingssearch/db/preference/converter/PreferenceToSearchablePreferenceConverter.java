@@ -55,8 +55,8 @@ public class PreferenceToSearchablePreferenceConverter {
                 new SearchablePreference(
                         join(searchablePreferenceScreenId, indexPathOfPreference),
                         preference.getKey(),
-                        Strings.toString(Optional.ofNullable(preference.getTitle())),
-                        Strings.toString(Optional.ofNullable(preference.getSummary())),
+                        Strings.charSequenceToString(Optional.ofNullable(preference.getTitle())),
+                        Strings.charSequenceToString(Optional.ofNullable(preference.getSummary())),
                         getIconResourceIdOrIconPixelData(preference, hostOfPreference),
                         preference.getLayoutResource(),
                         preference.getWidgetLayoutResource(),

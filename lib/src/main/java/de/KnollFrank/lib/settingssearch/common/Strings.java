@@ -15,12 +15,11 @@ public class Strings {
         return minusOneToEmpty(haystack.indexOf(needle, fromIndex));
     }
 
-    public static Optional<String> toString(final Optional<CharSequence> charSequence) {
+    public static Optional<String> charSequenceToString(final Optional<CharSequence> charSequence) {
         return charSequence.map(CharSequence::toString);
     }
 
-    // FK-TODO: remove dummy and rename method if necessary
-    public static Optional<String> toString(final Optional<String> string, final Void dummy) {
+    public static Optional<String> stringToString(final Optional<String> string) {
         return string;
     }
 

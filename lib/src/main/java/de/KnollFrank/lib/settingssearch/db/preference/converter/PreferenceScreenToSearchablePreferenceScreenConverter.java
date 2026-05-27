@@ -45,8 +45,8 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
                         new FragmentClassOfActivity<>(
                                 (Class<Fragment>) host.getClass(),
                                 activityDescription),
-                        Strings.toString(title, null),
-                        Strings.toString(summary, null),
+                        Strings.stringToString(title),
+                        Strings.stringToString(summary),
                         searchablePreferences.keySet()),
                 searchablePreferences);
     }

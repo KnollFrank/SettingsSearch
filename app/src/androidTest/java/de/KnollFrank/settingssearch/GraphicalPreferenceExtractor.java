@@ -129,8 +129,8 @@ public class GraphicalPreferenceExtractor {
         }
         final List<Preference> all = Preferences.getChildrenRecursively(screen);
         for (final Preference pRef : all) {
-            final String pTitle = Strings.toString(Optional.ofNullable(pRef.getTitle())).orElse("");
-            final String pSummary = Strings.toString(Optional.ofNullable(pRef.getSummary())).orElse("");
+            final String pTitle = Strings.charSequenceToString(Optional.ofNullable(pRef.getTitle())).orElse("");
+            final String pSummary = Strings.charSequenceToString(Optional.ofNullable(pRef.getSummary())).orElse("");
 
             final String targetTitle = title != null ? title : "";
             final String targetSummary = summary != null ? summary : "";
