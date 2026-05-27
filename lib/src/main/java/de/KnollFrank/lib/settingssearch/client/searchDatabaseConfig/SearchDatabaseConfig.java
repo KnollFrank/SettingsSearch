@@ -28,8 +28,7 @@ public class SearchDatabaseConfig<C> {
     public final SearchableInfoProvider searchableInfoProvider;
     public final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     public final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider;
-    // FK-TODO: rename to rootFragment
-    public final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment;
+    public final FragmentClassOfActivity<? extends Fragment> rootFragment;
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
@@ -44,7 +43,7 @@ public class SearchDatabaseConfig<C> {
                          final SearchableInfoProvider searchableInfoProvider,
                          final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                          final PreferenceFragmentConnectedToPreferenceProvider preferenceFragmentConnectedToPreferenceProvider,
-                         final FragmentClassOfActivity<? extends Fragment> rootPreferenceFragment,
+                         final FragmentClassOfActivity<? extends Fragment> rootFragment,
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
@@ -58,7 +57,7 @@ public class SearchDatabaseConfig<C> {
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.preferenceFragmentConnectedToPreferenceProvider = preferenceFragmentConnectedToPreferenceProvider;
-        this.rootPreferenceFragment = rootPreferenceFragment;
+        this.rootFragment = rootFragment;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
         this.preferenceSearchablePredicate = new PreferenceVisibleAndSearchablePredicate(preferenceSearchablePredicate);
