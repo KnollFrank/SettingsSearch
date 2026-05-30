@@ -47,8 +47,8 @@ public class PreferenceHighlighter implements SettingHighlighter {
 
     private static RecyclerView findRecyclerView(final View view) {
         // FK-TODO: DRY, da dieses Muster immer wieder auftritt
-        if (view instanceof RecyclerView) {
-            return (RecyclerView) view;
+        if (view instanceof final RecyclerView recyclerView) {
+            return recyclerView;
         } else if (view instanceof final ViewGroup viewGroup) {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 final RecyclerView found = findRecyclerView(viewGroup.getChildAt(i));
