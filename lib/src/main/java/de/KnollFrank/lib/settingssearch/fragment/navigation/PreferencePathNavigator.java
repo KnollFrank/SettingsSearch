@@ -55,6 +55,9 @@ public class PreferencePathNavigator {
         navigateToInitialPreferenceScreen.run();
         UiController.waitUntilIdle();
         clickPreferences(Lists.withoutLastElement(preferencePath.preferences()).orElseThrow());
+        scrollToPreferenceHavingTitle(
+                preferencePath.preferences().get(preferencePath.preferences().size() - 1).searchablePreference().getTitle().orElseThrow(),
+                getCurrentActivity());
         return Fragments
                 .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
                 .join(
