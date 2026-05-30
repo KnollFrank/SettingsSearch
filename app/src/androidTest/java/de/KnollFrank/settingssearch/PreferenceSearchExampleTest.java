@@ -167,6 +167,15 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceReferencingAnotherActivity2() {
+        try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
+            final String query = "Preference with IntentA";
+            searchForQueryThenClickSearchResultAtPosition(query, 0);
+            onView(titleOfPreference(query)).check(matches(withText(query)));
+        }
+    }
+
+    @Test
     public void shouldSearchAndFindListPreference() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final String entryOfSomeListPreference = getEmailAddressTypes()[0];

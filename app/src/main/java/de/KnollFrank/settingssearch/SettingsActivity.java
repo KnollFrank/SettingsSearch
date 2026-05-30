@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(new Intent(getContext(), SettingsActivity2.class));
+            getPreferenceScreen().findPreference("preferenceWithIntentA").setIntent(new Intent(getContext(), SettingsActivity2.class));
             dynamicTitle.ifPresent(
                     _dynamicTitle ->
                             this

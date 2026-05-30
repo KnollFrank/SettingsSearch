@@ -85,10 +85,8 @@ public class PreferencePathNavigator {
                 .runBlockingOnUiThread(() -> performClickOnViewChain(view));
     }
 
-    private static Activity getCurrentActivity() {
-        return CurrentActivityProvider
-                .getCurrentActivity()
-                .orElseThrow(() -> new IllegalStateException("No active activity found"));
+    private static Activity getCurrentActivity() throws InterruptedException {
+        return CurrentActivityProvider.awaitResumedActivity();
     }
 
     private record PreferenceOfPreferenceFragment(Preference preference,

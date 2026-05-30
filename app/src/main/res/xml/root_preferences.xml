@@ -43,8 +43,8 @@
         android:title="no title set" />
 
     <Preference
-        android:key="preferenceWithIntent"
+        android:key="preferenceWithIntentA"
         android:persistent="false"
-        android:title="Preference with Intent" />
+        android:title="Preference with IntentA" />
 
 </PreferenceScreen>
