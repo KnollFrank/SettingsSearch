@@ -12,7 +12,6 @@ import com.google.common.collect.MoreCollectors;
 
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 public class Fragments {
 
@@ -31,13 +30,6 @@ public class Fragments {
                 .map(Either::left)
                 .<Either<F, String>>map(fragmentActivity -> fragmentActivity.flatMap(findEitherVisibleFragmentOrError))
                 .orElseGet(() -> Either.ofRight("No current Activity found. Is the app in foreground?"));
-    }
-
-    private static Either<FragmentActivity, String> asFragmentActivityOrError(final Activity activity) {
-        // FK-TODO: use asPreferenceFragment()
-        return activity instanceof final FragmentActivity fragmentActivity ?
-                Either.ofLeft(fragmentActivity) :
-                Either.ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity.");
     }
 
     private static Either<PreferenceFragmentCompat, String> findEitherVisiblePreferenceFragmentOrError(final FragmentActivity fragmentActivity) {
@@ -60,7 +52,7 @@ public class Fragments {
                 .getFragments()
                 .stream()
                 .filter(Fragment::isVisible)
-                .flatMap(Fragments::asPreferenceFragment)
+                .flatMap(fragment -> Fragments.asPreferenceFragment(fragment).stream())
                 .collect(MoreCollectors.toOptional());
     }
 
@@ -72,9 +64,15 @@ public class Fragments {
                 .collect(MoreCollectors.toOptional());
     }
 
-    private static Stream<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
+    private static Either<FragmentActivity, String> asFragmentActivityOrError(final Activity activity) {
+        return activity instanceof final FragmentActivity fragmentActivity ?
+                Either.ofLeft(fragmentActivity) :
+                Either.ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity.");
+    }
+
+    private static Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
         return fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
-                Stream.of(preferenceFragment) :
-                Stream.empty();
+                Optional.of(preferenceFragment) :
+                Optional.empty();
     }
 }
