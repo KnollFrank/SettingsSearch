@@ -696,6 +696,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 createTreeRepository());
     }
 
+    // FK-TODO: fails
     @Test
     public void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment() {
         PreferenceSearcherTestCaseNonStandardPreferenceFragment.shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
