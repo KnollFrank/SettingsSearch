@@ -47,13 +47,9 @@ public class Fragments {
     }
 
     private static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragment(final FragmentManager fragmentManager) {
-        // FK-TODO: DRY with findVisibleFragment()
-        return fragmentManager
-                .getFragments()
-                .stream()
-                .filter(Fragment::isVisible)
-                .flatMap(fragment -> Fragments.asPreferenceFragment(fragment).stream())
-                .collect(MoreCollectors.toOptional());
+        return Fragments
+                .findVisibleFragment(fragmentManager)
+                .flatMap(Fragments::asPreferenceFragment);
     }
 
     private static Optional<Fragment> findVisibleFragment(final FragmentManager fragmentManager) {
