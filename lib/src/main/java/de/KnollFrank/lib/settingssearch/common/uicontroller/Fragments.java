@@ -11,47 +11,36 @@ import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.MoreCollectors;
 
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class Fragments {
 
     public static Either<Fragment, String> findEitherVisibleFragmentOnCurrentActivityOrError() {
-        return CurrentActivityProvider
-                .getCurrentActivity()
-                .map(
-                        activity ->
-                                // FK-TODO: refactor to using Optional
-                                activity instanceof final FragmentActivity fragmentActivity ?
-                                        findEitherVisibleFragmentOrError(fragmentActivity) :
-                                        Either.<Fragment, String>ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity. Fragments cannot be retrieved."))
-                .orElseGet(() -> Either.ofRight("No current Activity found. Is the app in foreground?"));
-    }
-
-    private static Either<Fragment, String> findEitherVisibleFragmentOrError(final FragmentActivity fragmentActivity) {
-        return Fragments
-                .findVisibleFragment(fragmentActivity.getSupportFragmentManager())
-                .map(Either::<Fragment, String>ofLeft)
-                .orElseGet(() -> Either.ofRight("No visible Fragment found on Activity: " + fragmentActivity.getClass().getName() + "."));
-    }
-
-    public static Optional<Fragment> findVisibleFragment(final FragmentManager fragmentManager) {
-        return fragmentManager
-                .getFragments()
-                .stream()
-                .filter(Fragment::isVisible)
-                .collect(MoreCollectors.toOptional());
+        return _findEitherVisibleFragmentOnCurrentActivityOrError(Fragments::findEitherVisibleFragmentOrError);
     }
 
     public static Either<PreferenceFragmentCompat, String> findEitherVisiblePreferenceFragmentOnCurrentActivityOrError() {
+        return _findEitherVisibleFragmentOnCurrentActivityOrError(Fragments::findEitherVisiblePreferenceFragmentOrError);
+    }
+
+    private static <F extends Fragment> Either<F, String> _findEitherVisibleFragmentOnCurrentActivityOrError(final Function<FragmentActivity, Either<F, String>> findEitherVisibleFragmentOrError) {
         return CurrentActivityProvider
                 .getCurrentActivity()
-                .map(
+                .<Either<F, String>>map(
                         activity ->
-                                // FK-TODO: use asFragmentActivityOrError()
-                                activity instanceof final FragmentActivity fragmentActivity ?
-                                        findEitherVisiblePreferenceFragmentOrError(fragmentActivity) :
-                                        Either.<PreferenceFragmentCompat, String>ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity. Fragments cannot be retrieved."))
+                                Fragments
+                                        .asFragmentActivityOrError(activity)
+                                        .left()
+                                        .flatMap(findEitherVisibleFragmentOrError))
                 .orElseGet(() -> Either.ofRight("No current Activity found. Is the app in foreground?"));
+    }
+
+    private static Either<FragmentActivity, String> asFragmentActivityOrError(final Activity activity) {
+        // FK-TODO: use asPreferenceFragment()
+        return activity instanceof final FragmentActivity fragmentActivity ?
+                Either.ofLeft(fragmentActivity) :
+                Either.ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity.");
     }
 
     private static Either<PreferenceFragmentCompat, String> findEitherVisiblePreferenceFragmentOrError(final FragmentActivity fragmentActivity) {
@@ -61,7 +50,15 @@ public class Fragments {
                 .orElseGet(() -> Either.ofRight("No visible PreferenceFragmentCompat found on Activity: " + fragmentActivity.getClass().getName() + "."));
     }
 
-    public static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragment(final FragmentManager fragmentManager) {
+    private static Either<Fragment, String> findEitherVisibleFragmentOrError(final FragmentActivity fragmentActivity) {
+        return Fragments
+                .findVisibleFragment(fragmentActivity.getSupportFragmentManager())
+                .map(Either::<Fragment, String>ofLeft)
+                .orElseGet(() -> Either.ofRight("No visible Fragment found on Activity: " + fragmentActivity.getClass().getName() + "."));
+    }
+
+    private static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragment(final FragmentManager fragmentManager) {
+        // FK-TODO: DRY with findVisibleFragment()
         return fragmentManager
                 .getFragments()
                 .stream()
@@ -70,10 +67,12 @@ public class Fragments {
                 .collect(MoreCollectors.toOptional());
     }
 
-    private static Either<FragmentActivity, String> asFragmentActivityOrError(final Activity activity) {
-        return activity instanceof final FragmentActivity fragmentActivity ?
-                Either.ofLeft(fragmentActivity) :
-                Either.ofRight("Current Activity (" + activity.getClass().getName() + ") is not a FragmentActivity.");
+    private static Optional<Fragment> findVisibleFragment(final FragmentManager fragmentManager) {
+        return fragmentManager
+                .getFragments()
+                .stream()
+                .filter(Fragment::isVisible)
+                .collect(MoreCollectors.toOptional());
     }
 
     private static Stream<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
