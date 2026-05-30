@@ -27,12 +27,9 @@ public class Fragments {
     private static <F extends Fragment> Either<F, String> _findEitherVisibleFragmentOnCurrentActivityOrError(final Function<FragmentActivity, Either<F, String>> findEitherVisibleFragmentOrError) {
         return CurrentActivityProvider
                 .getCurrentActivity()
-                .<Either<F, String>>map(
-                        activity ->
-                                Fragments
-                                        .asFragmentActivityOrError(activity)
-                                        .left()
-                                        .flatMap(findEitherVisibleFragmentOrError))
+                .map(Fragments::asFragmentActivityOrError)
+                .map(Either::left)
+                .<Either<F, String>>map(fragmentActivity -> fragmentActivity.flatMap(findEitherVisibleFragmentOrError))
                 .orElseGet(() -> Either.ofRight("No current Activity found. Is the app in foreground?"));
     }
 
