@@ -33,24 +33,27 @@ public class Fragments {
     }
 
     private static Either<Fragment, String> findEitherVisibleFragmentOrError(final FragmentActivity fragmentActivity) {
-        return Fragments
-                .findVisibleFragment(fragmentActivity.getSupportFragmentManager())
-                .map(Either::<Fragment, String>ofLeft)
-                .orElseGet(() -> Either.ofRight("No visible Fragment found on Activity: " + fragmentActivity.getClass().getName() + "."));
+        return _findEitherVisibleFragmentOrError(
+                fragmentActivity,
+                Fragments::findVisibleFragment,
+                "Fragment");
     }
 
     private static Either<PreferenceFragmentCompat, String> findEitherVisiblePreferenceFragmentOrError(final FragmentActivity fragmentActivity) {
-        // FK-TODO: DRY with findEitherVisibleFragmentOrError()
-        return Fragments
-                .findVisiblePreferenceFragment(fragmentActivity.getSupportFragmentManager())
-                .map(Either::<PreferenceFragmentCompat, String>ofLeft)
-                .orElseGet(() -> Either.ofRight("No visible PreferenceFragmentCompat found on Activity: " + fragmentActivity.getClass().getName() + "."));
+        return _findEitherVisibleFragmentOrError(
+                fragmentActivity,
+                Fragments::findVisiblePreferenceFragment,
+                "PreferenceFragment");
     }
 
-    private static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragment(final FragmentManager fragmentManager) {
-        return Fragments
-                .findVisibleFragment(fragmentManager)
-                .flatMap(Fragments::asPreferenceFragment);
+    private static <F extends Fragment> Either<F, String> _findEitherVisibleFragmentOrError(
+            final FragmentActivity fragmentActivity,
+            final Function<FragmentManager, Optional<F>> findVisibleFragment,
+            final String fragment) {
+        return findVisibleFragment
+                .apply(fragmentActivity.getSupportFragmentManager())
+                .map(Either::<F, String>ofLeft)
+                .orElseGet(() -> Either.ofRight("No visible " + fragment + " found on Activity: " + fragmentActivity.getClass().getName() + "."));
     }
 
     private static Optional<Fragment> findVisibleFragment(final FragmentManager fragmentManager) {
@@ -59,6 +62,12 @@ public class Fragments {
                 .stream()
                 .filter(Fragment::isVisible)
                 .collect(MoreCollectors.toOptional());
+    }
+
+    private static Optional<PreferenceFragmentCompat> findVisiblePreferenceFragment(final FragmentManager fragmentManager) {
+        return Fragments
+                .findVisibleFragment(fragmentManager)
+                .flatMap(Fragments::asPreferenceFragment);
     }
 
     private static Either<FragmentActivity, String> asFragmentActivityOrError(final Activity activity) {
