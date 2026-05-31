@@ -2,6 +2,7 @@ package de.KnollFrank.settingssearch;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 
 import android.content.Context;
@@ -46,6 +47,7 @@ public class GraphicalPreferenceExtractor {
         final Matcher<View> recyclerViewMatcher =
                 allOf(
                         isAssignableFrom(RecyclerView.class),
+                        withId(androidx.preference.R.id.recycler_view),
                         isDisplayed());
         final int itemCount =
                 recyclerView.getAdapter() != null ?
@@ -174,7 +176,9 @@ public class GraphicalPreferenceExtractor {
     }
 
     private static RecyclerView findRecyclerViewRecursively(final View view) {
-        if (view instanceof final RecyclerView recyclerView && view.getVisibility() == View.VISIBLE) {
+        if (view instanceof final RecyclerView recyclerView &&
+                view.getVisibility() == View.VISIBLE &&
+                recyclerView.getId() == androidx.preference.R.id.recycler_view) {
             return recyclerView;
         } else if (view instanceof final ViewGroup viewGroup) {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
