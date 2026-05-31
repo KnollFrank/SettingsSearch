@@ -44,10 +44,11 @@ public class GraphicalPreferenceExtractor {
             return Optional.empty();
         }
 
+        final int rvId = recyclerView.getId();
         final Matcher<View> recyclerViewMatcher =
                 allOf(
                         isAssignableFrom(RecyclerView.class),
-                        withId(androidx.preference.R.id.recycler_view),
+                        withId(rvId),
                         isDisplayed());
         final int itemCount =
                 recyclerView.getAdapter() != null ?
@@ -176,10 +177,13 @@ public class GraphicalPreferenceExtractor {
     }
 
     private static RecyclerView findRecyclerViewRecursively(final View view) {
-        if (view instanceof final RecyclerView recyclerView &&
-                view.getVisibility() == View.VISIBLE &&
-                recyclerView.getId() == androidx.preference.R.id.recycler_view) {
-            return recyclerView;
+        if (view instanceof final RecyclerView recyclerView && view.getVisibility() == View.VISIBLE) {
+            final int id = recyclerView.getId();
+            if (id == androidx.preference.R.id.recycler_view ||
+                    id == android.R.id.list ||
+                    id == R.id.list) {
+                return recyclerView;
+            }
         } else if (view instanceof final ViewGroup viewGroup) {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 final RecyclerView found = findRecyclerViewRecursively(viewGroup.getChildAt(i));
