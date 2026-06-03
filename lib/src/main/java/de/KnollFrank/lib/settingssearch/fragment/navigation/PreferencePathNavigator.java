@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.FragmentOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
+// FK-TODO: use PreferencePathNavigator from branch feat/blackbox-tree-discovery-refactoring?
 public class PreferencePathNavigator {
 
     private final Context context;

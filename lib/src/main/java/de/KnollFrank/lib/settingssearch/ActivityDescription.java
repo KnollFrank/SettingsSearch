@@ -6,6 +6,7 @@ import android.os.PersistableBundle;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.ActivityDescriptionSurrogate;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.LazyPersistableBundleFactory;
 
+// FK-TODO: es fehlt equals() und hashCode(), die PersistableBundle korrekt behandeln.
 public record ActivityDescription(Class<? extends Activity> activity,
                                   PersistableBundle arguments) {
 
