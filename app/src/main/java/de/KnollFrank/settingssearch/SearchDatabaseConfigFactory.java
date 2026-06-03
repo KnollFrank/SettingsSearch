@@ -34,7 +34,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeTransformerDescri
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
-import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
+import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -166,19 +166,11 @@ public class SearchDatabaseConfigFactory {
                             }
                         })
                 .withPreferenceScreenTreeBuilderListener(
-                        new TreeBuilderListener<>() {
+                        new TreeBuilderListeners.TreeBuilderListenerTemplate<>() {
 
                             @Override
                             public void onStartBuildTree(final PreferenceScreenOfHostOfActivity treeRoot) {
                                 Log.i(this.getClass().getSimpleName(), "onStartComputePreferences");
-                            }
-
-                            @Override
-                            public void onStartBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
-                            }
-
-                            @Override
-                            public void onFinishBuildSubtree(final PreferenceScreenOfHostOfActivity subtreeRoot) {
                             }
 
                             @Override

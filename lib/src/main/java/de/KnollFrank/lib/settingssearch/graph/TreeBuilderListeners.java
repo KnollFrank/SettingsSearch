@@ -13,7 +13,6 @@ public class TreeBuilderListeners {
         return new TreeBuilderListenerTemplate<>();
     }
 
-    // FK-TODO: use TreeBuilderListenerTemplate
     public static class TreeBuilderListenerTemplate<N, V> implements TreeBuilderListener<N, V> {
 
         @Override
