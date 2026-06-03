@@ -42,7 +42,6 @@ public class TreeBuilder<N, V> {
                 .forEach(
                         (edgeValue, childNodeOfRoot) -> {
                             buildGraph(childNodeOfRoot, graph);
-                            // FK-TODO: use Graphs.addEdge()?
                             graph.putEdgeValue(
                                     EndpointPair.ordered(root, childNodeOfRoot),
                                     edgeValue);
