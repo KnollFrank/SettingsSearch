@@ -52,15 +52,19 @@
             app:isPreferenceVisible="false" />
     </PreferenceCategory>
 
-    <PreferenceScreen
-        android:key="screen"
-        android:summary="This is a PreferenceScreen"
-        android:title="Screen">
-        <CheckBoxPreference
-            android:key="checkbox3"
-            android:summary="This is a checkbox preference inside a PreferenceScreen"
-            android:title="Checkbox in screen" />
-    </PreferenceScreen>
+    <PreferenceCategory
+        android:key="key of PreferenceCategory with inner PreferenceScreen"
+        android:title="PreferenceCategory with inner PreferenceScreen">
+        <PreferenceScreen
+            android:key="screen"
+            android:summary="This is a PreferenceScreen"
+            android:title="Screen">
+            <CheckBoxPreference
+                android:key="checkbox3"
+                android:summary="This is a checkbox preference inside a PreferenceScreen"
+                android:title="Checkbox in screen" />
+        </PreferenceScreen>
+    </PreferenceCategory>
 
     <CheckBoxPreference
         android:key="string"
