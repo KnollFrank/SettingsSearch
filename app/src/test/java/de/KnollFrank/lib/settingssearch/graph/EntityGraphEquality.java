@@ -122,7 +122,7 @@ class EntityGraphEquality {
                 .add("parentId=" + entity.parentId())
                 .add("predecessorId=" + entity.predecessorId())
                 .add("searchablePreferenceScreenId='" + entity.searchablePreferenceScreenId() + "'")
-                .add("children=" + toString(entity.getChildren(dbDataProvider), dbDataProvider))
+                .add("immediatePreferences=" + toString(entity.getImmediateChildren(dbDataProvider), dbDataProvider))
                 .toString();
     }
 }

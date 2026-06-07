@@ -11,7 +11,7 @@ public class DbDataProviderDataBuilder {
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen = new HashMap<>();
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
     private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference = new HashMap<>();
-    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference = new HashMap<>();
+    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> immediateChildrenByPreference = new HashMap<>();
 
     protected DbDataProviderDataBuilder() {
     }
@@ -36,8 +36,8 @@ public class DbDataProviderDataBuilder {
         return this;
     }
 
-    public DbDataProviderDataBuilder withChildrenByPreference(final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference) {
-        this.childrenByPreference = childrenByPreference;
+    public DbDataProviderDataBuilder withImmediateChildrenByPreference(final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> immediateChildrenByPreference) {
+        this.immediateChildrenByPreference = immediateChildrenByPreference;
         return this;
     }
 
@@ -47,6 +47,6 @@ public class DbDataProviderDataBuilder {
                 allPreferencesBySearchablePreferenceScreen,
                 hostByPreference,
                 predecessorByPreference,
-                childrenByPreference);
+                immediateChildrenByPreference);
     }
 }

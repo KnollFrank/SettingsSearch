@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildrens;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndImmediateChildren;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndImmediateChildrens;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessors;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -29,7 +29,7 @@ public abstract class SearchablePreferenceEntityDao implements SearchablePrefere
     // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>> predecessorByPreference = Optional.empty();
     // FK-TODO: remove cache?
-    private Optional<Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>> childrenByPreference = Optional.empty();
+    private Optional<Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>> immediateChildrenByPreference = Optional.empty();
 
     public SearchablePreferenceEntityDao(final PreferencesRoomDatabase preferencesRoomDatabase) {
         this.preferencesRoomDatabase = preferencesRoomDatabase;
@@ -61,9 +61,9 @@ public abstract class SearchablePreferenceEntityDao implements SearchablePrefere
     }
 
     @Override
-    public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
+    public Set<SearchablePreferenceEntity> getImmediateChildren(final SearchablePreferenceEntity preference) {
         return Maps
-                .get(getChildrenByPreference(), preference)
+                .get(getImmediateChildrenByPreference(), preference)
                 .orElseThrow();
     }
 
@@ -98,21 +98,21 @@ public abstract class SearchablePreferenceEntityDao implements SearchablePrefere
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceEntity")
-    protected abstract List<PreferenceAndChildren> getPreferencesAndChildren();
+    protected abstract List<PreferenceAndImmediateChildren> getPreferencesAndImmediateChildren();
 
     @Query("DELETE FROM SearchablePreferenceEntity WHERE id IN (:ids)")
     protected abstract int removeByIdsInBatchAndReturnNumberOfDeletedRows(Set<String> ids);
 
-    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
-        if (childrenByPreference.isEmpty()) {
-            childrenByPreference = Optional.of(computeChildrenByPreference());
+    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getImmediateChildrenByPreference() {
+        if (immediateChildrenByPreference.isEmpty()) {
+            immediateChildrenByPreference = Optional.of(computeImmediateChildrenByPreference());
         }
-        return childrenByPreference.orElseThrow();
+        return immediateChildrenByPreference.orElseThrow();
     }
 
-    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> computeChildrenByPreference() {
-        return PreferenceAndChildrens.getChildrenByPreference(
-                new HashSet<>(getPreferencesAndChildren()));
+    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> computeImmediateChildrenByPreference() {
+        return PreferenceAndImmediateChildrens.getImmediateChildrenByPreference(
+                new HashSet<>(getPreferencesAndImmediateChildren()));
     }
 
     private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> getPredecessorByPreference() {
@@ -129,7 +129,7 @@ public abstract class SearchablePreferenceEntityDao implements SearchablePrefere
 
     private void invalidateCaches() {
         predecessorByPreference = Optional.empty();
-        childrenByPreference = Optional.empty();
+        immediateChildrenByPreference = Optional.empty();
     }
 
     private class Wrapper {

@@ -85,7 +85,7 @@ public class GraphDifference {
                 sb.append(String.format("  - Mismatch in Screen [id=%s]: summary is different.\n    actualScreen: %s\n    expectedScreen: %s\n", actualScreen.id(), actualScreen.summary(), expectedScreen.summary()));
             }
 
-            // Level 3: Deep compare 'allPreferencesOfPreferenceHierarchy'
+            // Level 3: Deep compare 'immediatePreferences'
             if (!compareContainedPreferences(actualScreen, expectedScreen, sb)) {
                 componentsAreEqual = false;
             }
@@ -99,8 +99,8 @@ public class GraphDifference {
     private boolean compareContainedPreferences(final SearchablePreferenceScreen actualScreen,
                                                 final SearchablePreferenceScreen expectedScreen,
                                                 final StringBuilder sb) {
-        final Set<SearchablePreference> prefsActual = actualScreen.allPreferencesOfPreferenceHierarchy();
-        final Set<SearchablePreference> prefsExpected = expectedScreen.allPreferencesOfPreferenceHierarchy();
+        final Set<SearchablePreference> prefsActual = actualScreen.immediatePreferences();
+        final Set<SearchablePreference> prefsExpected = expectedScreen.immediatePreferences();
 
         boolean preferencesAreEqual = true;
 
@@ -108,7 +108,7 @@ public class GraphDifference {
         final Set<SearchablePreference> prefsOnlyInActual = Sets.difference(prefsActual, prefsExpected);
         if (!prefsOnlyInActual.isEmpty()) {
             preferencesAreEqual = false;
-            sb.append(String.format("  - Mismatch in Screen [id=%s]: 'allPreferencesOfPreferenceHierarchy' has items only in actual screen:\n", actualScreen.id()));
+            sb.append(String.format("  - Mismatch in Screen [id=%s]: 'immediatePreferences' has items only in actual screen:\n", actualScreen.id()));
             prefsOnlyInActual.forEach(pref -> sb.append(String.format("    - %s\n", pref)));
         }
 
@@ -116,7 +116,7 @@ public class GraphDifference {
         final Set<SearchablePreference> prefsOnlyInExpected = Sets.difference(prefsExpected, prefsActual);
         if (!prefsOnlyInExpected.isEmpty()) {
             preferencesAreEqual = false;
-            sb.append(String.format("  - Mismatch in Screen [id=%s]: 'allPreferencesOfPreferenceHierarchy' has items only in expected screen:\n", expectedScreen.id()));
+            sb.append(String.format("  - Mismatch in Screen [id=%s]: 'immediatePreferences' has items only in expected screen:\n", expectedScreen.id()));
             prefsOnlyInExpected.forEach(pref -> sb.append(String.format("    - %s\n", pref)));
         }
 

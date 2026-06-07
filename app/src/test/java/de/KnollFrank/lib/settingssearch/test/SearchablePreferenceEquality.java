@@ -28,7 +28,7 @@ public class SearchablePreferenceEquality {
         assertThat(actual.getFragment(), is(expected.getFragment()));
         assertThat(actual.isVisible(), is(expected.isVisible()));
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
-        assertActualEqualsExpected(actual.getAllPreferencesOfChildrenHierarchy(), expected.getAllPreferencesOfChildrenHierarchy());
+        assertActualEqualsExpected(actual.getImmediateChildren(), expected.getImmediateChildren());
     }
 
     public static void assertActualEqualsExpected(final Set<SearchablePreference> actual,

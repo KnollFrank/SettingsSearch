@@ -187,7 +187,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                 host,
                 Optional.of("screen title"),
                 Optional.of("screen summary"),
-                Set.of(parent, child1, child2));
+                Set.of(parent));
     }
 
     public static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,

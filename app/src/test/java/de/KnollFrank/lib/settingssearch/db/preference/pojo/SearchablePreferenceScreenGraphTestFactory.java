@@ -115,7 +115,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                 Map.of(
                                                                         preferenceConnectingSrcToDst,
                                                                         Optional.empty()))
-                                                        .withChildrenByPreference(
+                                                        .withImmediateChildrenByPreference(
                                                                 Map.of(
                                                                         preferenceConnectingSrcToDst,
                                                                         Set.of()))
@@ -201,7 +201,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                 Map.of(
                                                                         preferenceConnectingSrcToDst,
                                                                         Optional.empty()))
-                                                        .withChildrenByPreference(
+                                                        .withImmediateChildrenByPreference(
                                                                 Map.of(
                                                                         preferenceConnectingSrcToDst,
                                                                         Set.of()))
@@ -349,7 +349,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                 .put(child1, Optional.empty())
                                                 .put(child2, Optional.empty())
                                                 .build())
-                                .withChildrenByPreference(
+                                .withImmediateChildrenByPreference(
                                         ImmutableMap
                                                 .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
                                                 .put(parent, Set.of(child1, child2))
@@ -431,7 +431,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                         Map.of(
                                                 searchablePreference,
                                                 Optional.of(predecessor)))
-                                .withChildrenByPreference(
+                                .withImmediateChildrenByPreference(
                                         Map.of(
                                                 searchablePreference,
                                                 Set.of()))

@@ -6,11 +6,11 @@ import androidx.room.Relation;
 import java.util.Set;
 
 // FK-TODO: hat N+1 Problem, verwende JOIN
-public record PreferenceAndChildren(
+public record PreferenceAndImmediateChildren(
         @Embedded
         SearchablePreferenceEntity preference,
         @Relation(
                 parentColumn = "id",
                 entityColumn = "parentId")
-        Set<SearchablePreferenceEntity> children) {
+        Set<SearchablePreferenceEntity> immediateChildren) {
 }

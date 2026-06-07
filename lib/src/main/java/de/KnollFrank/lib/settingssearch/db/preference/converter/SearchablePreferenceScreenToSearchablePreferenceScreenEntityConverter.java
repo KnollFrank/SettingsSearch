@@ -69,12 +69,12 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                 Map.of(
                                                         entity,
                                                         searchablePreferenceEntities))
-                                        .withChildrenByPreference(
+                                        .withImmediateChildrenByPreference(
                                                 SearchablePreferenceToSearchablePreferenceEntityTransformerFactory
                                                         .createTransformer(searchablePreferenceEntities)
                                                         .transform(
-                                                                ChildrenByPreferenceProvider.getChildrenByPreference(
-                                                                        screenToConvertToEntity.allPreferencesOfPreferenceHierarchy())))
+                                                                ImmediateChildrenByPreferenceProvider.getImmediateChildrenByPreference(
+                                                                        screenToConvertToEntity.immediatePreferences())))
                                         .build())
                         .build());
     }

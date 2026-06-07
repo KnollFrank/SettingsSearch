@@ -102,13 +102,13 @@ public class SearchablePreferenceDaoTest extends PreferencesRoomDatabaseTest {
         final SearchablePreferenceEntity parentFromDb = dao.findPreferenceById(parent.id()).orElseThrow();
 
         // When
-        final Set<SearchablePreferenceEntity> childrenFromDb = parentFromDb.getChildren(dao);
+        final Set<SearchablePreferenceEntity> childrenFromDb = parentFromDb.getImmediateChildren(dao);
 
         // Then
         assertThat(childrenFromDb, contains(child));
 
         final SearchablePreferenceEntity childFromDb = Iterables.getOnlyElement(childrenFromDb);
-        assertThat(childFromDb.getChildren(dao), is(empty()));
+        assertThat(childFromDb.getImmediateChildren(dao), is(empty()));
     }
 
     @Test

@@ -222,7 +222,7 @@ public class DotGraphDifference {
                 .append("</tr>");
 
         // --- SEKTION 3: PRÄFERENZEN LISTE ---
-        screen.allPreferencesOfPreferenceHierarchy().forEach(pref -> {
+        screen.immediatePreferences().forEach(pref -> {
             if (showDifferences && preferenceContentDiffs.containsKey(pref)) {
                 // DIFF-Fall: Belegt alle 3 Spalten
                 sb.append("<tr><td colspan='3' border='0' align='left' cellpadding='0'>");
@@ -269,7 +269,7 @@ public class DotGraphDifference {
     }
 
     private boolean hasAnyPreferenceDiff(final SearchablePreferenceScreen screen) {
-        return screen.allPreferencesOfPreferenceHierarchy().stream().anyMatch(preferenceContentDiffs::containsKey);
+        return screen.immediatePreferences().stream().anyMatch(preferenceContentDiffs::containsKey);
     }
 
     private Map<SearchablePreference, String> findPreferenceContentDifferences() {
@@ -279,8 +279,8 @@ public class DotGraphDifference {
         Sets.intersection(actualMap.keySet(), expectedMap.keySet()).forEach(id -> {
             SearchablePreferenceScreen sA = actualMap.get(id);
             SearchablePreferenceScreen sE = expectedMap.get(id);
-            Map<String, SearchablePreference> ePrefs = sE.allPreferencesOfPreferenceHierarchy().stream().collect(Collectors.toMap(SearchablePreference::getId, Function.identity(), (a, b) -> a));
-            sA.allPreferencesOfPreferenceHierarchy().forEach(pA -> {
+            Map<String, SearchablePreference> ePrefs = sE.immediatePreferences().stream().collect(Collectors.toMap(SearchablePreference::getId, Function.identity(), (a, b) -> a));
+            sA.immediatePreferences().forEach(pA -> {
                 SearchablePreference pE = ePrefs.get(pA.getId());
                 if (pE != null && !pA.toString().equals(pE.toString()))
                     diffs.put(pA, pE.toString());

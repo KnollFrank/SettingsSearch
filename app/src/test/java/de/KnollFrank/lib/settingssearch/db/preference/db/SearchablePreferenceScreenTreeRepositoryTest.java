@@ -200,7 +200,7 @@ public class SearchablePreferenceScreenTreeRepositoryTest extends PreferencesRoo
                     searchablePreferenceScreen.host(),
                     Optional.of(title),
                     searchablePreferenceScreen.summary(),
-                    searchablePreferenceScreen.allPreferencesOfPreferenceHierarchy());
+                    searchablePreferenceScreen.immediatePreferences());
         }
 
         @Override

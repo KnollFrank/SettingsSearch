@@ -31,8 +31,8 @@ public class DbDataProviderFactory {
             }
 
             @Override
-            public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
-                return preferenceDbDataProvider.getChildren(preference);
+            public Set<SearchablePreferenceEntity> getImmediateChildren(final SearchablePreferenceEntity preference) {
+                return preferenceDbDataProvider.getImmediateChildren(preference);
             }
 
             @Override
@@ -84,9 +84,9 @@ public class DbDataProviderFactory {
         return new SearchablePreferenceEntity.DbDataProvider() {
 
             @Override
-            public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
+            public Set<SearchablePreferenceEntity> getImmediateChildren(final SearchablePreferenceEntity preference) {
                 return Maps
-                        .get(dbDataProviderData.childrenByPreference(), preference)
+                        .get(dbDataProviderData.immediateChildrenByPreference(), preference)
                         .orElseThrow();
             }
 

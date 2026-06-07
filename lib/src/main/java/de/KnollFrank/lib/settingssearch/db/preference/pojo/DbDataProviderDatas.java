@@ -18,7 +18,7 @@ public class DbDataProviderDatas {
                 mapThenMerge(dbDataProviderDatas, DbDataProviderData::allPreferencesBySearchablePreferenceScreen),
                 mapThenMerge(dbDataProviderDatas, DbDataProviderData::hostByPreference),
                 mapThenMerge(dbDataProviderDatas, DbDataProviderData::predecessorByPreference),
-                mapThenMerge(dbDataProviderDatas, DbDataProviderData::childrenByPreference));
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::immediateChildrenByPreference));
     }
 
     private static <K, V> Map<K, V> mapThenMerge(

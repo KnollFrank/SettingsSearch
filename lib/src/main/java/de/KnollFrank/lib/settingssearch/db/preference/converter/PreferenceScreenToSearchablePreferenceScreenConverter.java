@@ -1,16 +1,13 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import androidx.preference.Preference;
-
-import com.google.common.collect.BiMap;
-
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter.SearchablePreferencesWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class PreferenceScreenToSearchablePreferenceScreenConverter {
@@ -24,7 +21,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
     public SearchablePreferenceScreenWithMap convertPreferenceScreen(
             final PreferenceScreenOfHostOfActivity preferenceScreen,
             final String id) {
-        final BiMap<SearchablePreference, Preference> searchablePreferences =
+        final SearchablePreferencesWithMap immediateChildrenWithMap =
                 preferenceToSearchablePreferenceConverter.convertPreferences(
                         Preferences.getImmediateChildren(preferenceScreen.preferenceScreen()),
                         List.of(),
@@ -38,7 +35,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
                                 .asFragmentClassOfActivity(),
                         Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getTitle())),
                         Strings.toString(Optional.ofNullable(preferenceScreen.preferenceScreen().getSummary())),
-                        searchablePreferences.keySet()),
-                searchablePreferences);
+                        new HashSet<>(immediateChildrenWithMap.searchablePreferences())),
+                immediateChildrenWithMap.pojoEntityMap());
     }
 }

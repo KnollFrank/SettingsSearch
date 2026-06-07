@@ -35,6 +35,6 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
                 entity.visible(),
                 entity.extras().get(),
                 entity.searchableInfo(),
-                fromEntities(entity.getChildren(dbDataProvider)));
+                fromEntities(entity.getImmediateChildren(dbDataProvider)));
     }
 }

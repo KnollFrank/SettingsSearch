@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -39,6 +40,13 @@ public class Maps {
 
     public static <K, V> Optional<V> get(final Map<K, V> map, final K key) {
         return Optional.ofNullable(map.get(key));
+    }
+
+    public static <K, V> List<V> getAll(final Map<K, V> map, final List<K> keys) {
+        return keys
+                .stream()
+                .map(map::get)
+                .toList();
     }
 
     public static <K, V> Map<K, V> filterPresentValues(final Map<K, Optional<V>> map) {

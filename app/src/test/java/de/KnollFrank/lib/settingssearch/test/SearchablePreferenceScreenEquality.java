@@ -15,6 +15,6 @@ public class SearchablePreferenceScreenEquality {
         assertThat(actual.host(), is(expected.host()));
         assertThat(actual.title(), is(expected.title()));
         assertThat(actual.summary(), is(expected.summary()));
-        SearchablePreferenceEquality.assertActualEqualsExpected(actual.allPreferencesOfPreferenceHierarchy(), expected.allPreferencesOfPreferenceHierarchy());
+        SearchablePreferenceEquality.assertActualEqualsExpected(actual.immediatePreferences(), expected.immediatePreferences());
     }
 }

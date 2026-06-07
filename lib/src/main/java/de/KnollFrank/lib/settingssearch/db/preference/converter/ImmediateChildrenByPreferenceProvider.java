@@ -7,18 +7,18 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-class ChildrenByPreferenceProvider {
+class ImmediateChildrenByPreferenceProvider {
 
-    private ChildrenByPreferenceProvider() {
+    private ImmediateChildrenByPreferenceProvider() {
     }
 
-    public static Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference(
+    public static Map<SearchablePreference, Set<SearchablePreference>> getImmediateChildrenByPreference(
             final Set<SearchablePreference> searchablePreferences) {
         return searchablePreferences
                 .stream()
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                SearchablePreference::getAllPreferencesOfChildrenHierarchy));
+                                SearchablePreference::getImmediateChildren));
     }
 }

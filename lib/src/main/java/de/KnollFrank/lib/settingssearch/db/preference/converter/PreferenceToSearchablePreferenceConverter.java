@@ -9,6 +9,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableList;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -40,13 +41,17 @@ public class PreferenceToSearchablePreferenceConverter {
                                               BiMap<SearchablePreference, Preference> pojoEntityMap) {
     }
 
+    public record SearchablePreferencesWithMap(List<SearchablePreference> searchablePreferences,
+                                               BiMap<SearchablePreference, Preference> pojoEntityMap) {
+    }
+
     public SearchablePreferenceWithMap convertPreference(
             final Preference preference,
             final List<Integer> indexPathOfPreference,
             final String searchablePreferenceScreenId,
             final PreferenceFragmentCompat hostOfPreference) {
-        final BiMap<SearchablePreference, Preference> searchablePreferences =
-                convertChildrenOfPreference(
+        final SearchablePreferencesWithMap immediateChildrenWithMap =
+                convertImmediateChildrenOfPreference(
                         preference,
                         indexPathOfPreference,
                         searchablePreferenceScreenId,
@@ -65,22 +70,22 @@ public class PreferenceToSearchablePreferenceConverter {
                         preference.isVisible(),
                         BundleConverter.toPersistableBundle(preference.getExtras()),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
-                        searchablePreferences.keySet());
+                        new HashSet<>(immediateChildrenWithMap.searchablePreferences()));
         return new SearchablePreferenceWithMap(
                 searchablePreference,
                 ImmutableBiMap
                         .<SearchablePreference, Preference>builder()
-                        .putAll(searchablePreferences)
+                        .putAll(immediateChildrenWithMap.pojoEntityMap())
                         .put(searchablePreference, preference)
                         .buildOrThrow());
     }
 
-    public BiMap<SearchablePreference, Preference> convertPreferences(
+    public SearchablePreferencesWithMap convertPreferences(
             final List<Preference> preferences,
             final List<Integer> indexPathOfParentOfPreferences,
             final String searchablePreferenceScreenId,
             final PreferenceFragmentCompat hostOfPreferences) {
-        final List<SearchablePreferenceWithMap> pojoWithMapList =
+        final List<SearchablePreferenceWithMap> searchablePreferenceWithMapList =
                 IntStream
                         .range(0, preferences.size())
                         .mapToObj(
@@ -91,10 +96,19 @@ public class PreferenceToSearchablePreferenceConverter {
                                                 searchablePreferenceScreenId,
                                                 hostOfPreferences))
                         .collect(Collectors.toList());
-        return getPojoEntityMap(pojoWithMapList);
+        return new SearchablePreferencesWithMap(
+                getSearchablePreferences(searchablePreferenceWithMapList),
+                Maps.mergeBiMaps(getPojoEntityMaps(searchablePreferenceWithMapList)));
     }
 
-    private BiMap<SearchablePreference, Preference> convertChildrenOfPreference(
+    private static List<SearchablePreference> getSearchablePreferences(final List<SearchablePreferenceWithMap> searchablePreferenceWithMapList) {
+        return searchablePreferenceWithMapList
+                .stream()
+                .map(SearchablePreferenceWithMap::searchablePreference)
+                .toList();
+    }
+
+    private SearchablePreferencesWithMap convertImmediateChildrenOfPreference(
             final Preference preference,
             final List<Integer> indexPathOfPreference,
             final String searchablePreferenceScreenId,
@@ -105,7 +119,7 @@ public class PreferenceToSearchablePreferenceConverter {
                         indexPathOfPreference,
                         searchablePreferenceScreenId,
                         hostOfPreference) :
-                ImmutableBiMap.of();
+                new SearchablePreferencesWithMap(List.of(), ImmutableBiMap.of());
     }
 
     private Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData(final Preference preference,
@@ -118,12 +132,11 @@ public class PreferenceToSearchablePreferenceConverter {
                                      DrawableAndStringConverter::drawableToString));
     }
 
-    private static BiMap<SearchablePreference, Preference> getPojoEntityMap(final List<SearchablePreferenceWithMap> pojoWithMapList) {
-        return Maps.mergeBiMaps(
-                pojoWithMapList
-                        .stream()
-                        .map(SearchablePreferenceWithMap::pojoEntityMap)
-                        .collect(Collectors.toList()));
+    private static List<BiMap<SearchablePreference, Preference>> getPojoEntityMaps(final List<SearchablePreferenceWithMap> pojoWithMapList) {
+        return pojoWithMapList
+                .stream()
+                .map(SearchablePreferenceWithMap::pojoEntityMap)
+                .collect(Collectors.toList());
     }
 
     private static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {

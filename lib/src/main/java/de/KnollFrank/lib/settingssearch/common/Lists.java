@@ -55,7 +55,13 @@ public class Lists {
     // adapted from https://stackoverflow.com/questions/31963297/how-to-zip-two-java-lists
     public static <A, B> List<Pair<A, B>> zip(final List<A> as, final List<B> bs) {
         if (as.size() != bs.size()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Lists must have the same size to be zipped. List 1 (size %d): %s, List 2 (size %d): %s",
+                            as.size(),
+                            as,
+                            bs.size(),
+                            bs));
         }
         return IntStream
                 .range(0, as.size())

@@ -30,7 +30,7 @@ public record SearchablePreferenceEntity(@PrimaryKey @NonNull String id,
 
     public interface DbDataProvider {
 
-        Set<SearchablePreferenceEntity> getChildren(SearchablePreferenceEntity preference);
+        Set<SearchablePreferenceEntity> getImmediateChildren(SearchablePreferenceEntity preference);
 
         Optional<SearchablePreferenceEntity> getPredecessor(SearchablePreferenceEntity preference);
 
@@ -41,8 +41,8 @@ public record SearchablePreferenceEntity(@PrimaryKey @NonNull String id,
         Objects.requireNonNull(key);
     }
 
-    public Set<SearchablePreferenceEntity> getChildren(final DbDataProvider dbDataProvider) {
-        return dbDataProvider.getChildren(this);
+    public Set<SearchablePreferenceEntity> getImmediateChildren(final DbDataProvider dbDataProvider) {
+        return dbDataProvider.getImmediateChildren(this);
     }
 
     public Optional<SearchablePreferenceEntity> getPredecessor(final DbDataProvider dbDataProvider) {
