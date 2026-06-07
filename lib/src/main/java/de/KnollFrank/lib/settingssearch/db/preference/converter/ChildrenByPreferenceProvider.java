@@ -19,6 +19,6 @@ class ChildrenByPreferenceProvider {
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                SearchablePreference::getChildren));
+                                SearchablePreference::getAllPreferencesOfChildrenHierarchy));
     }
 }

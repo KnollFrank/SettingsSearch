@@ -23,7 +23,7 @@ class ParentPreferenceByPreferenceProvider {
 
     private static Map<SearchablePreference, SearchablePreference> getParentPreferenceByPreference(final SearchablePreference searchablePreference) {
         return Maps.mapEachKeyToValue(
-                searchablePreference.getChildren(),
+                searchablePreference.getAllPreferencesOfChildrenHierarchy(),
                 searchablePreference);
     }
 }

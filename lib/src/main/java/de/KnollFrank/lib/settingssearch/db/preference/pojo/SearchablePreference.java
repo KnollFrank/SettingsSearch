@@ -37,7 +37,7 @@ public final class SearchablePreference {
     private final PersistableBundle extras;
     private final Optional<String> searchableInfo;
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider = Optional::empty;
-    private final Set<SearchablePreference> children;
+    private final Set<SearchablePreference> allPreferencesOfChildrenHierarchy;
 
     public SearchablePreference(final String id,
                                 final String key,
@@ -51,7 +51,7 @@ public final class SearchablePreference {
                                 final boolean visible,
                                 final PersistableBundle extras,
                                 final Optional<String> searchableInfo,
-                                final Set<SearchablePreference> children) {
+                                final Set<SearchablePreference> allPreferencesOfChildrenHierarchy) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -64,7 +64,7 @@ public final class SearchablePreference {
         this.visible = visible;
         this.extras = extras;
         this.searchableInfo = searchableInfo;
-        this.children = children;
+        this.allPreferencesOfChildrenHierarchy = allPreferencesOfChildrenHierarchy;
     }
 
     public String getId() {
@@ -165,8 +165,8 @@ public final class SearchablePreference {
         return extras;
     }
 
-    public Set<SearchablePreference> getChildren() {
-        return children;
+    public Set<SearchablePreference> getAllPreferencesOfChildrenHierarchy() {
+        return allPreferencesOfChildrenHierarchy;
     }
 
     @Override
