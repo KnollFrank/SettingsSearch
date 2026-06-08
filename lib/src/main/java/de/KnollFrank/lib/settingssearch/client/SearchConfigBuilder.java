@@ -6,6 +6,7 @@ import androidx.annotation.IdRes;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
@@ -27,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 public class SearchConfigBuilder {
 
     private final @IdRes int fragmentContainerViewId;
+    private final PreferencePathNavigator preferencePathNavigator;
     private Optional<String> queryHint = Optional.empty();
     private StringMatcher stringMatcher = new CaseInsensitiveSubstringMatcher();
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> true;
@@ -40,11 +42,14 @@ public class SearchConfigBuilder {
     private MarkupsFactory markupsFactory;
     private ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
 
-    SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
+    SearchConfigBuilder(final @IdRes int fragmentContainerViewId,
+                        final Context context,
+                        final Runnable navigateToInitialPreferenceScreen) {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.markupsFactory = new DefaultMarkupsFactory(context);
-        this.showSettingsFragmentAndHighlightSetting = new DefaultShowSettingsFragmentAndHighlightSetting(fragmentContainerViewId);
+        this.showSettingsFragmentAndHighlightSetting = new DefaultShowSettingsFragmentAndHighlightSetting();
         this.searchResultsSorter = new SearchResultsByPreferencePathSorter();
+        this.preferencePathNavigator = new PreferencePathNavigator(navigateToInitialPreferenceScreen);
     }
 
     @SuppressWarnings("unused")
@@ -126,6 +131,7 @@ public class SearchConfigBuilder {
                 searchPreferenceFragmentUI,
                 searchResultsFragmentUI,
                 markupsFactory,
-                showSettingsFragmentAndHighlightSetting);
+                showSettingsFragmentAndHighlightSetting,
+                preferencePathNavigator);
     }
 }

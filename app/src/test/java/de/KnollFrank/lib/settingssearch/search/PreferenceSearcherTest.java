@@ -72,6 +72,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
+import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeBuilderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
@@ -825,6 +826,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         locale,
                         PersistableBundleTestFactory.createSomePersistableBundle()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
+                new PreferencePathNavigator(() -> {
+                }),
                 fragment -> {
                 },
                 preferencePath -> true,

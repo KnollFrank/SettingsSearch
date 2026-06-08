@@ -3,6 +3,7 @@ package de.KnollFrank.settingssearch;
 import android.app.Application;
 import android.content.Context;
 
+import de.KnollFrank.lib.settingssearch.common.uicontroller.CurrentActivityProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseManager;
 
 public class SettingsSearchApplication extends Application {
@@ -11,5 +12,11 @@ public class SettingsSearchApplication extends Application {
 
     public static SettingsSearchApplication getInstanceFromContext(final Context context) {
         return (SettingsSearchApplication) context.getApplicationContext();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        CurrentActivityProvider.initialize(this);
     }
 }

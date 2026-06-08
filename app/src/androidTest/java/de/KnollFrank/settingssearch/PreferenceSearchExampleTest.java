@@ -36,6 +36,7 @@ import androidx.preference.PreferenceManager;
 import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -51,6 +52,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
@@ -67,11 +69,17 @@ public class PreferenceSearchExampleTest {
     @Before
     public void setUp() {
         LocalePreferenceSearchExample.unsetLocale();
+        IdlingRegistry
+                .getInstance()
+                .register(EspressoIdlingResource.getCountingIdlingResource());
     }
 
     @After
     public void tearDown() {
         LocalePreferenceSearchExample.unsetLocale();
+        IdlingRegistry
+                .getInstance()
+                .unregister(EspressoIdlingResource.getCountingIdlingResource());
     }
 
     @Test
