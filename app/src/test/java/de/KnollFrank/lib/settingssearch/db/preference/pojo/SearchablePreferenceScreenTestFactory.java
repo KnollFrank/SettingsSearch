@@ -11,13 +11,13 @@ public class SearchablePreferenceScreenTestFactory {
     }
 
     public static SearchablePreferenceScreen createScreen(final String id,
-                                                          final Set<SearchablePreference> allPreferencesOfPreferenceHierarchy) {
+                                                          final Set<SearchablePreference> immediatePreferences) {
         return new SearchablePreferenceScreen(
                 id,
                 createSomePreferenceFragmentClassOfActivity(),
                 Optional.of("Screen " + id),
                 Optional.empty(),
-                allPreferencesOfPreferenceHierarchy);
+                immediatePreferences);
     }
 
     public static SearchablePreferenceScreen createScreen(final SearchablePreference searchablePreference) {
