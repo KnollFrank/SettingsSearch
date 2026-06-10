@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.BaseBundle;
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +17,6 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePr
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private static final @IdRes int fragmentContainerViewId = View.generateViewId();
     public static final String SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY = "SettingsActivity.mandatoryDummyKey";
     public static final String PREFERENCE_WITH_DYNAMIC_TITLE_KEY = "preferenceWithDynamicTitle";
 
