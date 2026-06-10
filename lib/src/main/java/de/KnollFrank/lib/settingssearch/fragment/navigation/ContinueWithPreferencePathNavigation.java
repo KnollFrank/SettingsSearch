@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 
+// FK-TODO: remove?
 public class ContinueWithPreferencePathNavigation<C> {
 
     private final FragmentActivity activity;

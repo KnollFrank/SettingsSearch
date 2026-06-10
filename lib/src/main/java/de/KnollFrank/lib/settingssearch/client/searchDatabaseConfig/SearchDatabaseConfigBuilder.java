@@ -17,7 +17,6 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactories;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
@@ -37,7 +36,6 @@ public class SearchDatabaseConfigBuilder<C> {
     private TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener = TreeBuilderListeners.emptyTreeBuilderListener();
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
-    private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
     private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
 
     SearchDatabaseConfigBuilder(final FragmentClassOfActivity<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -90,12 +88,6 @@ public class SearchDatabaseConfigBuilder<C> {
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder<C> withActivityInitializerByActivity(final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
-        this.activityInitializerByActivity = activityInitializerByActivity;
-        return this;
-    }
-
-    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder<C> withPreferenceFragmentIdProvider(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
         return this;
@@ -115,7 +107,6 @@ public class SearchDatabaseConfigBuilder<C> {
                 preferenceScreenTreeBuilderListener,
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
-                activityInitializerByActivity,
                 preferenceFragmentIdProvider,
                 treeProcessorFactory);
     }

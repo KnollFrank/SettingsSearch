@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
+// FK-TODO: remove?
 class PreferenceOfHostOfActivityProvider {
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;

@@ -1,11 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
-import android.app.Activity;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-
-import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenOfHostOfActivity;
@@ -13,7 +9,6 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.TreeProcessorFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListener;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnectedToPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
@@ -33,8 +28,6 @@ public class SearchDatabaseConfig<C> {
     public final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final PrincipalAndProxyProvider principalAndProxyProvider;
-    // FK-TODO: remove activityInitializerByActivity?
-    public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
     public final TreeProcessorFactory<C> treeProcessorFactory;
 
@@ -48,7 +41,6 @@ public class SearchDatabaseConfig<C> {
                          final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final PrincipalAndProxyProvider principalAndProxyProvider,
-                         final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
                          final PreferenceFragmentIdProvider preferenceFragmentIdProvider,
                          final TreeProcessorFactory<C> treeProcessorFactory) {
         this.fragmentFactory = fragmentFactory;
@@ -61,7 +53,6 @@ public class SearchDatabaseConfig<C> {
         this.preferenceScreenTreeBuilderListener = preferenceScreenTreeBuilderListener;
         this.preferenceSearchablePredicate = new PreferenceVisibleAndSearchablePredicate(preferenceSearchablePredicate);
         this.principalAndProxyProvider = principalAndProxyProvider;
-        this.activityInitializerByActivity = activityInitializerByActivity;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
         this.treeProcessorFactory = treeProcessorFactory;
     }
