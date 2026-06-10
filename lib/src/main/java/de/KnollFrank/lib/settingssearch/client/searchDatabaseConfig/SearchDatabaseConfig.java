@@ -33,6 +33,7 @@ public class SearchDatabaseConfig<C> {
     public final TreeBuilderListener<PreferenceScreenOfHostOfActivity, Preference> preferenceScreenTreeBuilderListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final PrincipalAndProxyProvider principalAndProxyProvider;
+    // FK-TODO: remove activityInitializerByActivity?
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
     public final TreeProcessorFactory<C> treeProcessorFactory;
