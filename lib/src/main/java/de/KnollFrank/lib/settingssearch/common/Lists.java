@@ -34,12 +34,12 @@ public class Lists {
                 Optional.empty();
     }
 
-    public static <T> Optional<T> getLastElement(final List<T> ts) {
-        return getElementAtIndex(ts, ts.size() - 1);
-    }
-
     public static <T> Optional<T> getHead(final List<T> ts) {
         return getElementAtIndex(ts, 0);
+    }
+
+    public static <T> Optional<T> getLastElement(final List<T> ts) {
+        return getElementAtIndex(ts, ts.size() - 1);
     }
 
     public static <T> Optional<List<T>> getTail(final List<T> ts) {

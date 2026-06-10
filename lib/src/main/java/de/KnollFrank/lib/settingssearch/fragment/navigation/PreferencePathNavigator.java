@@ -56,8 +56,7 @@ public class PreferencePathNavigator {
         UiController.waitUntilIdle();
         clickPreferences(Lists.withoutLastElement(preferencePath.preferences()).orElseThrow());
         scrollToPreferenceHavingTitle(
-                // FK-TODO: use preferencePath.getEnd()
-                preferencePath.preferences().get(preferencePath.preferences().size() - 1).searchablePreference().getTitle().orElseThrow(),
+                preferencePath.getEnd().searchablePreference().getTitle().orElseThrow(),
                 getCurrentActivity());
         return Fragments
                 .findEitherVisiblePreferenceFragmentOnCurrentActivityOrError()
