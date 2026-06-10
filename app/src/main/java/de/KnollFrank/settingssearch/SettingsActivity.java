@@ -1,7 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.lib.settingssearch.fragment.navigation.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.BaseBundle;
@@ -12,17 +10,12 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate;
-import de.KnollFrank.lib.settingssearch.common.Locales;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -53,34 +46,6 @@ public class SettingsActivity extends AppCompatActivity {
         if (!getIntent().getExtras().containsKey(SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY)) {
             throw new IllegalStateException();
         }
-        continueWithPreferencePathNavigation(
-                this,
-                findViewById(R.id.settings_root),
-                fragmentContainerViewId,
-                (final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable) ->
-                        createSearchPreferenceFragments(
-                                this,
-                                onMergedPreferenceScreenAvailable,
-                                fragmentContainerViewId),
-                Locales.getCurrentLocale(getResources().getConfiguration().getLocales()),
-                ConfigurationProvider.getActualConfiguration(this));
-    }
-
-    static SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(
-            final FragmentActivity activity,
-            final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable,
-            final @IdRes int fragmentContainerViewId) {
-        return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
-                fragmentContainerViewId,
-                activity,
-                Optional::empty,
-                onMergedPreferenceScreenAvailable,
-                SettingsSearchApplication
-                        .getInstanceFromContext(activity)
-                        .preferencesDatabaseManager
-                        .getPreferencesDatabase(),
-                ConfigurationProvider.getActualConfiguration(activity),
-                SearchDatabaseConfigFactory.createSearchDatabaseConfig());
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate {

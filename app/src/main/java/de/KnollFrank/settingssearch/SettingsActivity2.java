@@ -1,25 +1,13 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.lib.settingssearch.fragment.navigation.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
-import static de.KnollFrank.settingssearch.SettingsActivity.createSearchPreferenceFragments;
-
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.IdRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.function.Consumer;
-
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.common.Locales;
-
 // FK-FIXME: search for signature2, click search result, then you must press the back button MULTIPLE TIMES in order to go back. Expected: press back button ONCE in order to go back.
 public class SettingsActivity2 extends AppCompatActivity {
-
-    private static final @IdRes int fragmentContainerViewId = View.generateViewId();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -36,22 +24,6 @@ public class SettingsActivity2 extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        continueWithPreferencePathNavigation(
-                this,
-                findViewById(R.id.settings_root),
-                fragmentContainerViewId,
-                (final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable) ->
-                        createSearchPreferenceFragments(
-                                this,
-                                onMergedPreferenceScreenAvailable,
-                                fragmentContainerViewId),
-                Locales.getCurrentLocale(getResources().getConfiguration().getLocales()),
-                ConfigurationProvider.getActualConfiguration(this));
     }
 
     public static class SettingsFragment2 extends PreferenceFragmentCompat {
