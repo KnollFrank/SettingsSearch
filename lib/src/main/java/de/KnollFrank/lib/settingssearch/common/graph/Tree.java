@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+// FK-TODO: auch ein Graph ohne EdgeValues kann und soll hier als ein Tree behandelt werden können.
 public final class Tree<N, V, G extends ValueGraph<N, V>> {
 
     private final G graph;
