@@ -16,7 +16,7 @@ class PreferenceMatchHelper {
     public static Set<String> getKeySet(final Set<PreferenceMatch> preferenceMatches) {
         return PreferenceMatchHelper
                 .getKeyStream(preferenceMatches)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     public static List<String> getKeyList(final Set<PreferenceMatch> preferenceMatches) {

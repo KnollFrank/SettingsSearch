@@ -64,7 +64,7 @@ public class PojoGraphToEntityGraphTransformer {
         return detachedSearchablePreferenceScreenEntities
                 .stream()
                 .map(DetachedSearchablePreferenceScreenEntity::dbDataProviderData)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static TreeTransformer<SearchablePreferenceScreen, SearchablePreference, DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity> createGraphTransformer(final Locale graphId) {

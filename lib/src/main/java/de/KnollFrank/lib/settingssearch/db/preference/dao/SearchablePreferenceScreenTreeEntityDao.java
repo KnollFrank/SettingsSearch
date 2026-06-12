@@ -47,7 +47,7 @@ public abstract class SearchablePreferenceScreenTreeEntityDao implements Searcha
                 ._loadAll()
                 .stream()
                 .map(this::createTreeAndDbDataProvider)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override

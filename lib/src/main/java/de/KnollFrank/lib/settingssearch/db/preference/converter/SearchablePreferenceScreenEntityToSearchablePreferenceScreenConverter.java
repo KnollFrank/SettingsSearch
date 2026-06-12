@@ -38,7 +38,7 @@ public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConvert
                         searchablePreferences
                                 .stream()
                                 .map(SearchablePreference::getImmediateChildren)
-                                .collect(Collectors.toSet()));
+                                .collect(Collectors.toUnmodifiableSet()));
         return Sets.difference(searchablePreferences, allChildren);
     }
 }

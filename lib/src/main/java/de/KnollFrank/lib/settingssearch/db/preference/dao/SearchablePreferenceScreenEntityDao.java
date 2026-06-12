@@ -137,7 +137,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
                                 PreferenceWithScreen::screen,
                                 Collectors.mapping(
                                         PreferenceWithScreen::preference,
-                                        Collectors.toSet())));
+                                        Collectors.toUnmodifiableSet())));
     }
 
     private List<PreferenceWithScreen> getPreferenceWithScreens() {
@@ -208,7 +208,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
             return screens
                     .stream()
                     .map(SearchablePreferenceScreenEntity::id)
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toUnmodifiableSet());
         }
     }
 

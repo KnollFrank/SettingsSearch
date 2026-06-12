@@ -19,7 +19,7 @@ public class CaseInsensitiveSubstringMatcher implements StringMatcher {
                 .getIndicesOfNeedleWithinHaystack(haystack.toLowerCase(), needle.toLowerCase())
                 .stream()
                 .map(index -> new IndexRange(index, index + needle.length()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private List<Integer> getIndicesOfNeedleWithinHaystack(final String haystack,

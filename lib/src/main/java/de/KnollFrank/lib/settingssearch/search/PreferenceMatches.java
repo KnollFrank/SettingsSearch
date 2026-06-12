@@ -14,6 +14,6 @@ public class PreferenceMatches {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

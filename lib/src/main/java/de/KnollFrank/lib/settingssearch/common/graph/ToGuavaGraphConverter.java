@@ -39,7 +39,7 @@ public class ToGuavaGraphConverter<TNode, TEdge, TEdgeValue> {
                                              jgraphtGraph.getEdgeSource(edge),
                                              jgraphtGraph.getEdgeTarget(edge)),
                                      edgeValueExtractor.apply(edge)))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private void addEdges(final ImmutableValueGraph.Builder<TNode, TEdgeValue> guavaGraphBuilder,

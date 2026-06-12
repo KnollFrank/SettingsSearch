@@ -59,6 +59,6 @@ class EdgesProvider {
         return endpointPairs
                 .stream()
                 .map(endpointPair -> Edge.of(endpointPair, graph))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

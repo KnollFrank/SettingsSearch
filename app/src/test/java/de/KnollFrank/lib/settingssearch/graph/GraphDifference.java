@@ -147,7 +147,7 @@ public class GraphDifference {
         return preferences
                 .stream()
                 .map(SearchablePreference::getId)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static <T> void appendSetDifference(final StringBuilder sb,

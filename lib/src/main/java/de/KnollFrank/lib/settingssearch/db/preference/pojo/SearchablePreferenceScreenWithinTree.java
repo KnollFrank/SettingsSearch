@@ -27,7 +27,7 @@ public record SearchablePreferenceScreenWithinTree(
                                      searchablePreference,
                                      searchablePreferenceScreen,
                                      treeContainingScreen))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override

@@ -153,7 +153,7 @@ public abstract class SearchablePreferenceEntityDao implements SearchablePrefere
             return preferences
                     .stream()
                     .map(SearchablePreferenceEntity::id)
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toUnmodifiableSet());
         }
     }
 

@@ -46,7 +46,7 @@ class PreferenceSearcher<C> {
                 .stream()
                 .map(searchablePreference -> preferenceMatcher.getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::streamOfPresentElements)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private Set<SearchablePreferenceOfHostWithinTree> getHaystack(final Locale locale,
@@ -56,7 +56,7 @@ class PreferenceSearcher<C> {
                 .stream()
                 .filter(PreferenceSearcher::isVisible)
                 .filter(preference -> searchResultsFilter.includePreferenceInSearchResults(preference, locale))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenTree<PersistableBundle>> tree) {

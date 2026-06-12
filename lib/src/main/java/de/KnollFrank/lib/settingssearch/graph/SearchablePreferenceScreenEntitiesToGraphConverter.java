@@ -61,7 +61,7 @@ public class SearchablePreferenceScreenEntitiesToGraphConverter {
                 .stream()
                 .map(preference -> preference.getPredecessor(dbDataProvider))
                 .flatMap(Optional::stream)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static void addNodes(final ImmutableValueGraph.Builder<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> graphBuilder,

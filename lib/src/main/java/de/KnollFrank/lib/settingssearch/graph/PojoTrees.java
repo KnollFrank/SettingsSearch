@@ -28,7 +28,7 @@ public class PojoTrees {
                                 new SearchablePreferenceScreenWithinTree(
                                         searchablePreferenceScreen,
                                         tree))
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toUnmodifiableSet()));
     }
 
     public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Set<SearchablePreferenceScreenWithinTree> preferenceScreens) {
@@ -36,6 +36,6 @@ public class PojoTrees {
                 preferenceScreens
                         .stream()
                         .map(SearchablePreferenceScreenWithinTree::getAllPreferencesOfPreferenceHierarchy)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toUnmodifiableSet()));
     }
 }

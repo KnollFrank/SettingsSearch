@@ -49,6 +49,6 @@ class StringGraphEquality {
                 .edgeSet()
                 .stream()
                 .map(edge -> graph.getEdgeSource(edge).label() + "->" + graph.getEdgeTarget(edge).label() + ":" + edge.getLabel())
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

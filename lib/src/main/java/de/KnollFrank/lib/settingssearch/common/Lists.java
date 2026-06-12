@@ -4,7 +4,6 @@ import androidx.core.util.Pair;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Lists {
@@ -25,7 +24,6 @@ public class Lists {
         return lists
                 .stream()
                 .flatMap(List::stream)
-                // FK-TODO: ändere im gesamten Projekt alle Collectors.to*() in die entsprechenden Collectors.toUnmodifiable*() Varianten
                 .toList();
     }
 
@@ -73,7 +71,7 @@ public class Lists {
         return IntStream
                 .range(0, as.size())
                 .mapToObj(i -> Pair.create(as.get(i), bs.get(i)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static <N> List<Pair<N, N>> getConsecutivePairs(final List<N> elements) {

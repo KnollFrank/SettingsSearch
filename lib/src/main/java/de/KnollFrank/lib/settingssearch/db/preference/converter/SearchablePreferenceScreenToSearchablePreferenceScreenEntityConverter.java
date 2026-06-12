@@ -104,20 +104,20 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
         return searchablePreferences
                 .stream()
                 .map(toEntity)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceEntity> preferences) {
         return preferences
                 .stream()
                 .map(DetachedSearchablePreferenceEntity::dbDataProviderData)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static Set<SearchablePreferenceEntity> getSearchablePreferenceEntities(final Set<DetachedSearchablePreferenceEntity> preferences) {
         return preferences
                 .stream()
                 .map(DetachedSearchablePreferenceEntity::preference)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

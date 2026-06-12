@@ -25,7 +25,7 @@ class RootNodeProvider {
                 .nodes()
                 .stream()
                 .filter(node -> isRootNode(graph, node))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static <N> boolean isRootNode(final ValueGraph<N, ?> graph, final N node) {

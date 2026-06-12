@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -47,6 +46,6 @@ public class PreferencePathProvider {
                                      searchablePreferenceEdge.value(),
                                      searchablePreferenceEdge.endpointPair().source(),
                                      treePath.tree()))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

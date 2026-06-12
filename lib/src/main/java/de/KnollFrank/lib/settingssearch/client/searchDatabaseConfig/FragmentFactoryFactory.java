@@ -38,6 +38,6 @@ public class FragmentFactoryFactory {
                              new PreferenceFragmentFactory<>(
                                      principalAndProxy,
                                      delegate))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

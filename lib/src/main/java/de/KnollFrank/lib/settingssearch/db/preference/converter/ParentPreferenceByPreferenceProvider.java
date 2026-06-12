@@ -18,7 +18,7 @@ class ParentPreferenceByPreferenceProvider {
                         .allPreferencesOfPreferenceHierarchy()
                         .stream()
                         .map(ParentPreferenceByPreferenceProvider::getParentPreferenceByPreference)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toUnmodifiableSet()));
     }
 
     private static Map<SearchablePreference, SearchablePreference> getParentPreferenceByPreference(final SearchablePreference searchablePreference) {

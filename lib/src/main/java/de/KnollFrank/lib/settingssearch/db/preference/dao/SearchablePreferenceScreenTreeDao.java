@@ -60,7 +60,7 @@ public class SearchablePreferenceScreenTreeDao {
                 .loadAll()
                 .stream()
                 .map(entityTreePojoTreeConverter::convertForward)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private void cache(final Set<SearchablePreferenceScreenTree<PersistableBundle>> graphs) {

@@ -18,7 +18,7 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
         return entities
                 .stream()
                 .map(this::fromEntity)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private SearchablePreference fromEntity(final SearchablePreferenceEntity entity) {

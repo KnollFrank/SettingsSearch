@@ -95,7 +95,7 @@ public class PreferenceToSearchablePreferenceConverter {
                                                 append(indexPathOfParentOfPreferences, index),
                                                 searchablePreferenceScreenId,
                                                 hostOfPreferences))
-                        .collect(Collectors.toList());
+                        .toList();
         return new SearchablePreferencesWithMap(
                 getSearchablePreferences(searchablePreferenceWithMapList),
                 Maps.mergeBiMaps(getPojoEntityMaps(searchablePreferenceWithMapList)));
@@ -136,7 +136,7 @@ public class PreferenceToSearchablePreferenceConverter {
         return pojoWithMapList
                 .stream()
                 .map(SearchablePreferenceWithMap::pojoEntityMap)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {

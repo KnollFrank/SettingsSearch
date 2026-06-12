@@ -152,7 +152,7 @@ public class SearchableTreeBuilder1Test extends PreferencesRoomDatabaseTest {
                                         new SearchablePreferenceScreenWithinTree(
                                                 searchablePreferenceScreen,
                                                 pojoGraph))
-                                .collect(Collectors.toSet());
+                                .collect(Collectors.toUnmodifiableSet());
                 final SearchablePreferenceOfHostWithinTree preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3ConnectedToFragment4.class,

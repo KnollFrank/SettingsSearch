@@ -28,6 +28,6 @@ public class DbDataProviderDatas {
                 dbDataProviderDatas
                         .stream()
                         .map(mapper)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toUnmodifiableSet()));
     }
 }

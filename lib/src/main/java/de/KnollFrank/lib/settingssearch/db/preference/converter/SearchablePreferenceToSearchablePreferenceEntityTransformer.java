@@ -28,6 +28,6 @@ class SearchablePreferenceToSearchablePreferenceEntityTransformer {
         return preferences
                 .stream()
                 .map(this::transform)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

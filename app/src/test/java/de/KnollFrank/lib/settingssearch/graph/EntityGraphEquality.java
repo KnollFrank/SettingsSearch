@@ -82,7 +82,7 @@ class EntityGraphEquality {
                 .getEdges(graph)
                 .stream()
                 .map(edge -> edge.endpointPair().source().id() + "->" + edge.endpointPair().target().id() + ":" + toString(edge.value(), dbDataProvider))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static String toString(final SearchablePreferenceScreenEntity entity,
