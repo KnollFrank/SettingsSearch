@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.common.collect.ImmutableSet;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -19,7 +17,11 @@ public record SearchablePreferenceScreen(String id,
                                          Set<SearchablePreference> immediatePreferences) {
 
     public Set<SearchablePreference> allPreferencesOfPreferenceHierarchy() {
-        return getRecursivePreferences(immediatePreferences);
+        return Sets.union(
+                immediatePreferences
+                        .stream()
+                        .map(SearchablePreferenceScreen::getAllPreferencesOfPreferenceHierarchy)
+                        .collect(Collectors.toUnmodifiableSet()));
     }
 
     @Override
@@ -34,20 +36,7 @@ public record SearchablePreferenceScreen(String id,
         return Objects.hashCode(id);
     }
 
-    private static Set<SearchablePreference> getRecursivePreferences(final Set<SearchablePreference> searchablePreference) {
-        return Sets.union(
-                searchablePreference
-                        .stream()
-                        .map(SearchablePreferenceScreen::getRecursivePreferences)
-                        .collect(Collectors.toSet()));
-    }
-
-    // FK-TODO: make instance method of SearchablePreference or even better return Tree rooted at searchablePreference
-    private static Set<SearchablePreference> getRecursivePreferences(final SearchablePreference searchablePreference) {
-        return ImmutableSet
-                .<SearchablePreference>builder()
-                .add(searchablePreference)
-                .addAll(getRecursivePreferences(searchablePreference.getImmediateChildren()))
-                .build();
+    private static Set<SearchablePreference> getAllPreferencesOfPreferenceHierarchy(final SearchablePreference searchablePreference) {
+        return searchablePreference.asTree().graph().nodes();
     }
 }

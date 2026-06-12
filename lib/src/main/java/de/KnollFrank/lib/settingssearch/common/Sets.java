@@ -17,7 +17,7 @@ public class Sets {
         return sets
                 .stream()
                 .flatMap(Set::stream)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     public static <T> Set<T> difference(final Set<T> set1, Set<T> set2) {
@@ -42,6 +42,6 @@ public class Sets {
         return elements
                 .stream()
                 .filter(predicate)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

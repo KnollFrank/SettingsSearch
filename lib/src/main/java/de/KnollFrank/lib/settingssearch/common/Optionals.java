@@ -27,6 +27,6 @@ public class Optionals {
     }
 
     public static <T> Set<T> asSet(final Optional<T> optional) {
-        return optional.stream().collect(Collectors.toSet());
+        return optional.stream().collect(Collectors.toUnmodifiableSet());
     }
 }

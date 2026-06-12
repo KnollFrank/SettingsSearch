@@ -25,7 +25,8 @@ public class Lists {
         return lists
                 .stream()
                 .flatMap(List::stream)
-                .collect(Collectors.toList());
+                // FK-TODO: ändere im gesamten Projekt alle Collectors.to*() in die entsprechenden Collectors.toUnmodifiable*() Varianten
+                .toList();
     }
 
     public static <T> Optional<T> getElementAtIndex(final List<T> ts, final int index) {
