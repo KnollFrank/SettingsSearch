@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.results;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
@@ -17,7 +16,7 @@ public class SearchResultsByPreferencePathSorter implements SearchResultsSorter 
         return searchResults
                 .stream()
                 .sorted(getPreferenceByPreferencePathComparator())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Comparator<SearchablePreferenceOfHostWithinTree> getPreferenceByPreferencePathComparator() {

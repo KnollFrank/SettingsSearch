@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.is;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -42,6 +41,6 @@ public class SearchablePreferenceEquality {
         return searchablePreferences
                 .stream()
                 .sorted(Comparator.comparing(SearchablePreference::getId))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

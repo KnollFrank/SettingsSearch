@@ -178,7 +178,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
                 searchablePreferenceScreens
                         .stream()
                         .map(screen -> screen.getAllPreferencesOfPreferenceHierarchy(dbDataProvider))
-                        .collect(Collectors.toList()));
+                        .toList());
     }
 
     private void invalidateCaches() {

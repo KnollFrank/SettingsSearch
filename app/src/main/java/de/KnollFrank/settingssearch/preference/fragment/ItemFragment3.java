@@ -19,7 +19,6 @@ import com.google.common.base.Preconditions;
 import java.time.Duration;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithActivityDescriptionBeforeOnCreate;
@@ -126,7 +125,7 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
             return items
                     .stream()
                     .map(placeholderItem -> asPreference(placeholderItem, context))
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         private static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,

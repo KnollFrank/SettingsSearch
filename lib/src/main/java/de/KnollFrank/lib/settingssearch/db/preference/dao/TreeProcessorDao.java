@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import com.codepoetics.ambivalence.Either;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
@@ -29,7 +28,7 @@ public class TreeProcessorDao<C> {
                 .map(treeProcessorDescriptionEntity ->
                              treeProcessorDescriptionConverter.convertForward(
                                      treeProcessorDescriptionEntity.treeProcessorDescription()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {

@@ -17,7 +17,6 @@ import com.google.common.graph.ImmutableValueGraph;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
@@ -40,7 +39,7 @@ public class TreesTest {
                 edgesOnPath
                         .stream()
                         .map(Edge::value)
-                        .collect(Collectors.toList());
+                        .toList();
         assertThat(edgesOnPath.size(), is(2));
         assertThat(edgeValues, contains(EDGE_1, EDGE_3));
         assertThat(edgesOnPath.get(0).endpointPair(), is(EndpointPair.ordered(ROOT, CHILD_1)));

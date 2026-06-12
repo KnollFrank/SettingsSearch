@@ -8,7 +8,6 @@ import com.codepoetics.ambivalence.Either;
 import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
@@ -62,7 +61,7 @@ class TreeProcessorExecutor<C> {
             return trees
                     .stream()
                     .map(tree -> applyTreeProcessorsToTree(treeProcessors, tree))
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         private SearchablePreferenceScreenTree<PersistableBundle> applyTreeProcessorsToTree(

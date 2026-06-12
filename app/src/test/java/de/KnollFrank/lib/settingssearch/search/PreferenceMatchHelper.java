@@ -22,7 +22,7 @@ class PreferenceMatchHelper {
     public static List<String> getKeyList(final Set<PreferenceMatch> preferenceMatches) {
         return PreferenceMatchHelper
                 .getKeyStream(preferenceMatches)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static Stream<String> getKeyStream(final Set<PreferenceMatch> preferenceMatches) {

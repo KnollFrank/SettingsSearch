@@ -29,7 +29,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.ActivityDescription;
 import de.KnollFrank.lib.settingssearch.FragmentClassOfActivity;
@@ -273,7 +272,7 @@ public class TreeMergerTest {
             return keys
                     .stream()
                     .map(this::createPreference)
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         private Preference createPreference(final String key) {

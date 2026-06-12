@@ -18,7 +18,7 @@ public class PreferenceWithScreens {
                              new PreferenceWithScreen(
                                      preferenceWithScreen.preference(),
                                      uniqueScreensById.get(preferenceWithScreen.screen().id())))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static Map<String, SearchablePreferenceScreenEntity> getUniqueScreensById(final List<PreferenceWithScreen> preferenceWithScreens) {

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.time.Duration;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
@@ -110,7 +109,7 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
             return items
                     .stream()
                     .map(placeholderItem -> asPreference(placeholderItem, context))
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         private static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,

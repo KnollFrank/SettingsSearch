@@ -5,7 +5,6 @@ import static de.KnollFrank.lib.settingssearch.results.SearchablePreferenceCompa
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
@@ -18,6 +17,6 @@ class LexicographicalSearchResultsSorter implements SearchResultsSorter {
         return searchResults
                 .stream()
                 .sorted(COMPARATOR)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

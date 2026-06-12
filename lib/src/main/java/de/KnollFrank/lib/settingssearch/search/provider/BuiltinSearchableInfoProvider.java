@@ -84,7 +84,7 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
                 .addAll(
                         Optionals
                                 .streamOfPresentElements(dialogTitle)
-                                .collect(Collectors.toList()))
+                                .toList())
                 .addAll(Optionals.asList(entries))
                 .build();
     }
