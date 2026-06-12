@@ -171,7 +171,6 @@ public final class SearchablePreference {
         return extras;
     }
 
-    // FK-TODO: entferne immediateChildren und übergebe im Konstruktor direkt den Tree
     public Set<SearchablePreference> getImmediateChildren() {
         return immediateChildren;
     }
