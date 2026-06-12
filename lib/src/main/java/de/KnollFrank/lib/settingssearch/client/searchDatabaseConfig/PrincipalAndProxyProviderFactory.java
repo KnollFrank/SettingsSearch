@@ -32,7 +32,7 @@ public class PrincipalAndProxyProviderFactory {
         return principalAndProxies
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 PrincipalAndProxy::principal,
                                 PrincipalAndProxy::proxy));
     }

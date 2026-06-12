@@ -166,7 +166,7 @@ public abstract class SearchablePreferenceScreenEntityDao implements SearchableP
         return preferenceWithScreens
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 PreferenceWithScreen::preference,
                                 PreferenceWithScreen::screen));
     }

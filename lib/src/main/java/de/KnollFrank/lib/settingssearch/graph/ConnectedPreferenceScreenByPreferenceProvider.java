@@ -55,7 +55,7 @@ class ConnectedPreferenceScreenByPreferenceProvider implements ChildNodeByEdgeVa
                         .getChildrenRecursively(preferenceScreenOfHostOfActivity.preferenceScreen())
                         .stream()
                         .collect(
-                                Collectors.toMap(
+                                Collectors.toUnmodifiableMap(
                                         Function.identity(),
                                         preference ->
                                                 getConnectedPreferenceScreen(

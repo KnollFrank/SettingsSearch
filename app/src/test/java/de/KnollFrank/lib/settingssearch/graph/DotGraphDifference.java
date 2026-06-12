@@ -274,12 +274,12 @@ public class DotGraphDifference {
 
     private Map<SearchablePreference, String> findPreferenceContentDifferences() {
         final Map<SearchablePreference, String> diffs = new HashMap<>();
-        final Map<String, SearchablePreferenceScreen> actualMap = actual.vertexSet().stream().collect(Collectors.toMap(SearchablePreferenceScreen::id, Function.identity(), (a, b) -> a));
-        final Map<String, SearchablePreferenceScreen> expectedMap = expected.vertexSet().stream().collect(Collectors.toMap(SearchablePreferenceScreen::id, Function.identity(), (a, b) -> a));
+        final Map<String, SearchablePreferenceScreen> actualMap = actual.vertexSet().stream().collect(Collectors.toUnmodifiableMap(SearchablePreferenceScreen::id, Function.identity(), (a, b) -> a));
+        final Map<String, SearchablePreferenceScreen> expectedMap = expected.vertexSet().stream().collect(Collectors.toUnmodifiableMap(SearchablePreferenceScreen::id, Function.identity(), (a, b) -> a));
         Sets.intersection(actualMap.keySet(), expectedMap.keySet()).forEach(id -> {
             SearchablePreferenceScreen sA = actualMap.get(id);
             SearchablePreferenceScreen sE = expectedMap.get(id);
-            Map<String, SearchablePreference> ePrefs = sE.immediatePreferences().stream().collect(Collectors.toMap(SearchablePreference::getId, Function.identity(), (a, b) -> a));
+            Map<String, SearchablePreference> ePrefs = sE.immediatePreferences().stream().collect(Collectors.toUnmodifiableMap(SearchablePreference::getId, Function.identity(), (a, b) -> a));
             sA.immediatePreferences().forEach(pA -> {
                 SearchablePreference pE = ePrefs.get(pA.getId());
                 if (pE != null && !pA.toString().equals(pE.toString()))

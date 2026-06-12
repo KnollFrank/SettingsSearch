@@ -17,7 +17,7 @@ class ImmediateChildrenByPreferenceProvider {
         return searchablePreferences
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 Function.identity(),
                                 SearchablePreference::getImmediateChildren));
     }

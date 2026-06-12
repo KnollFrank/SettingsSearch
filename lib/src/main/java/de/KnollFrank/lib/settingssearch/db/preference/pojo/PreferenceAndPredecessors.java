@@ -14,7 +14,7 @@ public class PreferenceAndPredecessors {
         return preferencesAndPredecessors
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 PreferenceAndPredecessor::getPreference,
                                 PreferenceAndPredecessor::getPredecessor));
     }

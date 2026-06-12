@@ -227,7 +227,7 @@ public final class SearchablePreference {
                                 .getImmediateChildren()
                                 .stream()
                                 .collect(
-                                        Collectors.toMap(
+                                        Collectors.toUnmodifiableMap(
                                                 Function.identity(),
                                                 Function.identity())));
     }

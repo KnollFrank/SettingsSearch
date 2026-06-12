@@ -20,7 +20,7 @@ class SearchablePreferenceToSearchablePreferenceEntityTransformerFactory {
         return preferences
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 SearchablePreferenceEntity::id,
                                 Function.identity()));
     }

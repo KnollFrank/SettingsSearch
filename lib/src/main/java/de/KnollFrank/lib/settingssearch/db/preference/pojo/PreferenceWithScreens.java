@@ -26,7 +26,7 @@ public class PreferenceWithScreens {
                 .stream()
                 .map(PreferenceWithScreen::screen)
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 SearchablePreferenceScreenEntity::id,
                                 Function.identity(),
                                 (first, second) -> first));

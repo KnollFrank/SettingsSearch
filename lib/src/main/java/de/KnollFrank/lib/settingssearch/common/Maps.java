@@ -23,7 +23,7 @@ public class Maps {
         return Maps
                 .getEntryStream(maps)
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 Map.Entry::getKey,
                                 Map.Entry::getValue));
     }
@@ -55,7 +55,7 @@ public class Maps {
                 .stream()
                 .filter(entry -> entry.getValue().isPresent())
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 Entry::getKey,
                                 entry -> entry.getValue().orElseThrow()));
     }
@@ -77,7 +77,7 @@ public class Maps {
         return keys
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 Function.identity(),
                                 key -> value));
     }
@@ -90,7 +90,7 @@ public class Maps {
                 .entrySet()
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 entry -> keyMapper.apply(entry.getKey()),
                                 entry -> valueMapper.apply(entry.getValue())));
     }
@@ -101,7 +101,7 @@ public class Maps {
                 .stream()
                 .filter(entry -> predicate.test(entry.getKey(), entry.getValue()))
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 Entry::getKey,
                                 Entry::getValue));
     }

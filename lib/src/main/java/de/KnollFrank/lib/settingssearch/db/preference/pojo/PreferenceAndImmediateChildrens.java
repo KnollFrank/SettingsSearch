@@ -13,7 +13,7 @@ public class PreferenceAndImmediateChildrens {
         return preferencesAndChildren
                 .stream()
                 .collect(
-                        Collectors.toMap(
+                        Collectors.toUnmodifiableMap(
                                 PreferenceAndImmediateChildren::preference,
                                 PreferenceAndImmediateChildren::immediateChildren));
     }
