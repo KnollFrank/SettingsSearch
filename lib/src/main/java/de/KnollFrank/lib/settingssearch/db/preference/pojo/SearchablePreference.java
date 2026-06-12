@@ -181,19 +181,6 @@ public final class SearchablePreference {
         return createTreeBuilder().buildTreeWithRoot(this);
     }
 
-    private TreeBuilder<SearchablePreference, SearchablePreference> createTreeBuilder() {
-        return new TreeBuilder<>(
-                TreeBuilderListeners.emptyTreeBuilderListener(),
-                searchablePreference ->
-                        searchablePreference
-                                .getImmediateChildren()
-                                .stream()
-                                .collect(
-                                        Collectors.toMap(
-                                                Function.identity(),
-                                                Function.identity())));
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -230,5 +217,18 @@ public final class SearchablePreference {
                                              DrawableAndStringConverter.stringToDrawable(
                                                      iconPixelData,
                                                      context.getResources())));
+    }
+
+    private TreeBuilder<SearchablePreference, SearchablePreference> createTreeBuilder() {
+        return new TreeBuilder<>(
+                TreeBuilderListeners.emptyTreeBuilderListener(),
+                searchablePreference ->
+                        searchablePreference
+                                .getImmediateChildren()
+                                .stream()
+                                .collect(
+                                        Collectors.toMap(
+                                                Function.identity(),
+                                                Function.identity())));
     }
 }
