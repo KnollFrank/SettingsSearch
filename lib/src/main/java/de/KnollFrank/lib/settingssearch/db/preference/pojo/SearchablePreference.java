@@ -9,15 +9,21 @@ import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.codepoetics.ambivalence.Either;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.graph.TreeBuilder;
+import de.KnollFrank.lib.settingssearch.graph.TreeBuilderListeners;
 
 public final class SearchablePreference {
 
@@ -165,8 +171,27 @@ public final class SearchablePreference {
         return extras;
     }
 
+    // FK-TODO: entferne immediateChildren und übergebe im Konstruktor direkt den Tree
     public Set<SearchablePreference> getImmediateChildren() {
         return immediateChildren;
+    }
+
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public Tree<SearchablePreference, SearchablePreference, ImmutableValueGraph<SearchablePreference, SearchablePreference>> asTree() {
+        return createTreeBuilder().buildTreeWithRoot(this);
+    }
+
+    private TreeBuilder<SearchablePreference, SearchablePreference> createTreeBuilder() {
+        return new TreeBuilder<>(
+                TreeBuilderListeners.emptyTreeBuilderListener(),
+                searchablePreference ->
+                        searchablePreference
+                                .getImmediateChildren()
+                                .stream()
+                                .collect(
+                                        Collectors.toMap(
+                                                Function.identity(),
+                                                Function.identity())));
     }
 
     @Override

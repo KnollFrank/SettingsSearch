@@ -18,6 +18,12 @@ public class SearchablePreferenceTestFactory {
     }
 
     public static SearchablePreference createSearchablePreference(final String key) {
+        return createSearchablePreference(key, Set.of());
+    }
+
+    public static SearchablePreference createSearchablePreference(
+            final String key,
+            final Set<SearchablePreference> immediateChildren) {
         return new SearchablePreference(
                 "id-" + key,
                 key,
@@ -31,7 +37,7 @@ public class SearchablePreferenceTestFactory {
                 true,
                 new PersistableBundle(),
                 Optional.empty(),
-                Set.of());
+                immediateChildren);
     }
 
     public static SearchablePreference createSearchablePreference(

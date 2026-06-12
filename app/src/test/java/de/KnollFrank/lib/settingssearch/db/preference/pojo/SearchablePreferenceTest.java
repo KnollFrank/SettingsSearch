@@ -12,8 +12,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 
@@ -41,5 +43,47 @@ public class SearchablePreferenceTest extends PreferencesRoomDatabaseTest {
 
         // Then
         assertThat(preferencePath, is(new PreferencePath(List.of(_predecessor, _parent))));
+    }
+
+    @Test
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public void test_asTree_singleNode() {
+        // Given
+        final SearchablePreference singleNode = createSearchablePreference("some key", Set.of());
+
+        // When
+        final Tree<SearchablePreference, SearchablePreference, ImmutableValueGraph<SearchablePreference, SearchablePreference>> tree = singleNode.asTree();
+
+        // Then
+        assertThat(
+                tree,
+                is(
+                        new Tree<>(
+                                // FK-TODO: use ImmutableGraph instead of ImmutableValueGraph
+                                Graphs
+                                        .<SearchablePreference, SearchablePreference>directedImmutableValueGraphBuilder()
+                                        .addNode(singleNode)
+                                        .build())));
+    }
+
+    @Test
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public void test_asTree_oneChild() {
+        // Given
+        final SearchablePreference child = createSearchablePreference("some child key", Set.of());
+        final SearchablePreference root = createSearchablePreference("some root key", Set.of(child));
+
+        // When
+        final Tree<SearchablePreference, SearchablePreference, ImmutableValueGraph<SearchablePreference, SearchablePreference>> tree = root.asTree();
+
+        // Then
+        assertThat(
+                tree,
+                is(
+                        new Tree<>(
+                                Graphs
+                                        .<SearchablePreference, SearchablePreference>directedImmutableValueGraphBuilder()
+                                        .putEdgeValue(root, child, child)
+                                        .build())));
     }
 }
